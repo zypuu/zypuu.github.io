@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,search," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Blog-Youth" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Elasticsearch的初步介绍，以及简单使用。">
+<meta name="keywords" content="web,search">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch的使用">
+<meta property="og:url" content="http://zypuu.com/2018/08/01/Elasticsearch的使用/index.html">
+<meta property="og:site_name" content="Blog-Youth">
+<meta property="og:description" content="Elasticsearch的初步介绍，以及简单使用。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://zypuu.com/2018/08/01/Elasticsearch的使用/1.jpg">
+<meta property="og:image" content="http://zypuu.com/2018/08/01/Elasticsearch的使用/2.jpg">
+<meta property="og:image" content="http://zypuu.com/2018/08/01/Elasticsearch的使用/3.jpg">
+<meta property="og:updated_time" content="2018-09-01T13:04:17.395Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticsearch的使用">
+<meta name="twitter:description" content="Elasticsearch的初步介绍，以及简单使用。">
+<meta name="twitter:image" content="http://zypuu.com/2018/08/01/Elasticsearch的使用/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'JLWKUI4P45',
+      apiKey: '8e228ba93459b8d9c187f86054d0b89e',
+      indexName: '5ad0f583d3142bdf565df2415a7c70c6',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到: ${query}","hits_stats":"${hits} 已找到，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zypuu.com/2018/08/01/Elasticsearch的使用/"/>
+
+
+
+
+
+  <title>Elasticsearch的使用 | Blog-Youth</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/zypuu" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog-Youth</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客网站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2018/08/01/Elasticsearch的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZYP">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog-Youth">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Elasticsearch的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T20:02:55+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web开发/" itemprop="url" rel="index">
+                    <span itemprop="name">web开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,092
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Elasticsearch的初步介绍，以及简单使用。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h2><p>ES=elaticsearch简写， Elasticsearch是一个开源的高扩展的分布式全文检索引擎，它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。<br>Elasticsearch也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。</p>
+<h2 id="ES工作原理"><a href="#ES工作原理" class="headerlink" title="ES工作原理"></a>ES工作原理</h2><p>当ElasticSearch的节点启动后，它会利用多播(multicast)(或者单播，如果用户更改了配置)寻找集群中的其它节点，并与之建立连接。这个过程如下图所示：<br><img src="/2018/08/01/Elasticsearch的使用/1.jpg"></p>
+<h2 id="ES核心概念"><a href="#ES核心概念" class="headerlink" title="ES核心概念"></a>ES核心概念</h2><h3 id="Cluster：集群"><a href="#Cluster：集群" class="headerlink" title="Cluster：集群"></a>Cluster：集群</h3><p>ES可以作为一个独立的单个搜索服务器。不过，为了处理大型数据集，实现容错和高可用性，ES可以运行在许多互相合作的服务器上。这些服务器的集合称为集群。</p>
+<h3 id="Node：节点"><a href="#Node：节点" class="headerlink" title="Node：节点"></a>Node：节点</h3><p>形成集群的每个服务器称为节点。</p>
+<h3 id="Shard：分片"><a href="#Shard：分片" class="headerlink" title="Shard：分片"></a>Shard：分片</h3><p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。<br>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的。</p>
+<h3 id="Replia：副本"><a href="#Replia：副本" class="headerlink" title="Replia：副本"></a>Replia：副本</h3><p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+<h3 id="全文检索"><a href="#全文检索" class="headerlink" title="全文检索"></a>全文检索</h3><p>全文检索就是对一篇文章进行索引，可以根据关键字搜索，类似于mysql里的like语句。<br>全文索引就是把内容根据词的意义进行分词，然后分别创建索引，例如”你们的激情是因为什么事情来的” 可能会被分词成：“你们“，”激情“，“什么事情“，”来“ 等token，这样当你搜索“你们” 或者 “激情” 都会把这句搜出来。</p>
+<h2 id="ES数据架构的主要概念（与关系数据库Mysql对比）"><a href="#ES数据架构的主要概念（与关系数据库Mysql对比）" class="headerlink" title="ES数据架构的主要概念（与关系数据库Mysql对比）"></a>ES数据架构的主要概念（与关系数据库Mysql对比）</h2><img src="/2018/08/01/Elasticsearch的使用/2.jpg">
+<p>（1）关系型数据库中的数据库（DataBase），等价于ES中的索引（Index）<br>（2）一个数据库下面有N张表（Table），等价于1个索引Index下面有N多类型（Type），<br>（3）一个数据库表（Table）下的数据由多行（ROW）多列（column，属性）组成，等价于1个Type由多个文档（Document）和多Field组成。<br>（4）在一个关系型数据库里面，schema定义了表、每个表的字段，还有表和字段之间的关系。 与之对应的，在ES中：Mapping定义索引下的Type的字段处理规则，即索引如何建立、索引类型、是否保存原始索引JSON文档、是否压缩原始JSON文档、是否需要分词处理、如何进行分词处理等。<br>（5）在数据库中的增insert、删delete、改update、查search操作等价于ES中的增PUT/POST、删Delete、改_update、查GET.</p>
+<h2 id="简单使用ES"><a href="#简单使用ES" class="headerlink" title="简单使用ES"></a>简单使用ES</h2><h3 id="使用Docker安装Elasticsearch及其扩展"><a href="#使用Docker安装Elasticsearch及其扩展" class="headerlink" title="使用Docker安装Elasticsearch及其扩展"></a>使用Docker安装Elasticsearch及其扩展</h3><p>获取镜像，可以通过网络pull</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image pull delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span><span class="number">-1.0</span></span><br></pre></td></tr></table></figure>
+<p>修改elasticsearch的配置文件 elasticsearc-2.4.6/config/elasticsearch.yml第54行，更改ip地址为本机ip地址</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">network.host: 自己机器的IP地址</span><br></pre></td></tr></table></figure>
+<p>创建docker容器运行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -dti --network=host --name=elasticsearch -v /home/python/elasticsearch<span class="number">-2.4</span><span class="number">.6</span>/config:<span class="regexp">/usr/</span>share/elasticsearch/config delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span><span class="number">-1.0</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用haystack对接Elasticsearch"><a href="#使用haystack对接Elasticsearch" class="headerlink" title="使用haystack对接Elasticsearch"></a>使用haystack对接Elasticsearch</h3><p>Haystack为Django提供了模块化的搜索。它的特点是统一的，熟悉的API，可以让你在不修改代码的情况下使用不同的搜索后端（比如 Solr, Elasticsearch, Whoosh, Xapian 等等）。</p>
+<p>这里通过使用haystack来调用Elasticsearch搜索引擎。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install drf-haystack</span><br><span class="line">pip install elasticsearch==<span class="number">2.4</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<p>drf-haystack是为了在REST framework中使用haystack而进行的封装（如果在Django中使用haystack，则安装django-haystack即可）。</p>
+<h4 id="注册应用"><a href="#注册应用" class="headerlink" title="注册应用"></a>注册应用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">'haystack'</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># Haystack</span><br><span class="line">HAYSTACK_CONNECTIONS = &#123;</span><br><span class="line">    <span class="string">'default'</span>: &#123;</span><br><span class="line">        <span class="string">'ENGINE'</span>: <span class="string">'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine'</span>,</span><br><span class="line">        # 端口号固定为9200</span><br><span class="line">        <span class="string">'URL'</span>: <span class="string">'http://es的IP:9200/'</span>,</span><br><span class="line">        # 指定elasticsearch建立的索引库的名称</span><br><span class="line">        <span class="string">'INDEX_NAME'</span>: <span class="string">'名称自定'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 当添加、修改、删除数据时，自动生成索引</span><br><span class="line">HAYSTACK_SIGNAL_PROCESSOR = <span class="string">'haystack.signals.RealtimeSignalProcessor'</span></span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<p>HAYSTACK_SIGNAL_PROCESSOR 的配置保证了在Django运行起来后，有新的数据产生时，haystack仍然可以让Elasticsearch实时生成新数据的索引</p>
+<h4 id="创建索引类"><a href="#创建索引类" class="headerlink" title="创建索引类"></a>创建索引类</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> haystack <span class="keyword">import</span> indexes</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> SKU</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class SKUIndex(indexes.SearchIndex, indexes.Indexable):</span><br><span class="line">    <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">    SKU索引数据模型类</span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    text = indexes.CharField(<span class="built_in">document</span>=True, use_template=True)</span><br><span class="line"></span><br><span class="line">    def get_model(self):</span><br><span class="line">        <span class="string">""</span><span class="string">"返回建立索引的模型类"</span><span class="string">""</span></span><br><span class="line">        <span class="keyword">return</span> SKU</span><br><span class="line"></span><br><span class="line">    def index_queryset(self, using=None):</span><br><span class="line">        <span class="string">""</span><span class="string">"返回要建立索引的数据查询集"</span><span class="string">""</span></span><br><span class="line">        <span class="keyword">return</span> self.get_model().objects.filter(is_launched=True)</span><br></pre></td></tr></table></figure>
+<p>在SKUIndex建立的字段，都可以借助haystack由elasticsearch搜索引擎查询。</p>
+<p>其中text字段我们声明为document=True，表名该字段是主要进行关键字查询的字段， 该字段的索引值可以由多个数据库模型类字段组成，具体由哪些模型类字段组成，我们用use_template=True表示后续通过模板来指明。</p>
+<p>在REST framework中，索引类的字段会作为查询结果返回数据的来源。</p>
+<h4 id="在templates目录中创建text字段使用的模板文件"><a href="#在templates目录中创建text字段使用的模板文件" class="headerlink" title="在templates目录中创建text字段使用的模板文件"></a>在templates目录中创建text字段使用的模板文件</h4><p>具体在templates/search/indexes/goods/sku_text.txt文件中定义</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; object.name &#125;&#125;</span><br><span class="line">&#123;&#123; object.caption &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>此模板指明当将关键词通过text参数名传递时，可以通过sku的name、caption、id来进行关键字索引查询。</p>
+<h4 id="手动生成初始索引"><a href="#手动生成初始索引" class="headerlink" title="手动生成初始索引"></a>手动生成初始索引</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py rebuild_index</span><br></pre></td></tr></table></figure>
+<h4 id="创建序列化器"><a href="#创建序列化器" class="headerlink" title="创建序列化器"></a>创建序列化器</h4><p>在goods/serializers.py中创建haystack序列化器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.serializers <span class="keyword">import</span> HaystackSerializer</span><br><span class="line"><span class="keyword">from</span> .search_indexes <span class="keyword">import</span> SKUIndex</span><br><span class="line"></span><br><span class="line">class SKUIndexSerializer(HaystackSerializer):</span><br><span class="line">    <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">    SKU索引结果数据序列化器</span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    object = SKUSerializer(read_only=True)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        index_classes = [SKUIndex]</span><br><span class="line">        fields = (</span><br><span class="line">            'text',  # 用于接收查询关键字</span><br><span class="line">            'object'  # 用于返回查询结果</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<p>下面的搜索视图使用SKUIndexSerializer序列化器用来检查前端传入的参数text，并且检索出数据后再使用这个序列化器返回给前端；</p>
+<p>SKUIndexSerializer序列化器中的object字段是用来向前端返回数据时序列化的字段。</p>
+<p>Haystack通过Elasticsearch检索出匹配关键词的搜索结果后，还会在数据库中取出完整的数据库模型类对象，放到搜索结果的object属性中，并将结果通过SKUIndexSerializer序列化器进行序列化。所以我们可以通过声明搜索结果的object字段以SKUSerializer序列化的形式进行处理，明确要返回的搜索结果中每个数据对象包含哪些字段。</p>
+<h4 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h4><p>在goods/views.py中创建视图</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.viewsets <span class="keyword">import</span> HaystackViewSet</span><br><span class="line"><span class="keyword">from</span> .serializers <span class="keyword">import</span> SKUIndexSerializer</span><br><span class="line"></span><br><span class="line">class SKUSearchViewSet(HaystackViewSet):</span><br><span class="line">    <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">    SKU搜索</span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    index_models = [SKU]</span><br><span class="line"></span><br><span class="line">    serializer_class = SKUIndexSerializer</span><br></pre></td></tr></table></figure>
+<p>注意：<br>该视图会返回搜索结果的列表数据，所以可以为视图增加REST framework的分页功能。<br>我们在实现商品列表页面时已经定义了全局的分页配置，所以此搜索视图会使用全局的分页配置。</p>
+<h4 id="定义路由"><a href="#定义路由" class="headerlink" title="定义路由"></a>定义路由</h4><p>在goods/urls.py中通过REST framework的router来定义路由<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.routers <span class="keyword">import</span> DefaultRouter</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">router = DefaultRouter()</span><br><span class="line">router.register(<span class="string">'skus/search'</span>, views.SKUSearchViewSet, base_name=<span class="string">'skus_search'</span>)</span><br><span class="line"></span><br><span class="line">urlpatterns += router.urls</span><br></pre></td></tr></table></figure></p>
+<h4 id="bug说明"><a href="#bug说明" class="headerlink" title="bug说明"></a>bug说明</h4><p>如果在配置完haystack并启动程序后，出现如下异常，是因为drf-haystack还没有适配最新版本的REST framework框架<br><img src="/2018/08/01/Elasticsearch的使用/3.jpg"><br>可以通过修改REST framework框架代码，补充_get_count函数定义即可</p>
+<p>文件路径 虚拟环境下的 lib/python3.6/site-packages/rest_framework/pagination.py</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def _get_count(queryset):</span><br><span class="line">    <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">    Determine an object count, supporting either querysets or regular lists.</span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> queryset.count()</span><br><span class="line">    except (AttributeError, <span class="built_in">TypeError</span>):</span><br><span class="line">        <span class="keyword">return</span> len(queryset)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #FFFAFA;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+    
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web-search/" rel="tag"><i class="fa fa-tag"></i> web,search</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/01/关于docker的个人理解/" rel="next" title="关于docker的个人理解">
+                <i class="fa fa-chevron-left"></i> 关于docker的个人理解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/18/关于数据库redis与Mysql的区别以及在web开发中的配合使用/" rel="prev" title="关于数据库redis与Mysql的区别以及在web开发中的配合使用">
+                关于数据库redis与Mysql的区别以及在web开发中的配合使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+ 
+ 
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZYP" />
+            
+              <p class="site-author-name" itemprop="name">ZYP</p>
+              <p class="site-description motion-element" itemprop="description">究竟什么样的终点才配得上这一路的颠沛流离</p>
+          </div>
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypuu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:375133421@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <div id="player1" class="aplayer"></div>
+<script src="/js/src/APlayer.min.js"></script>
+<script type="text/javascript">
+var ap1 = new APlayer({
+        element: document.getElementById('player1'),                       // Optional, player element
+        narrow: false,                                                     // Optional, narrow style
+        autoplay: true,                                                    // Optional, autoplay song(s), not supported by mobile browsers
+        showlrc: 0,                                                        // Optional, show lrc, can be 0, 1, 2, see: ###With lrc
+        mutex: true,                                                       // Optional, pause other players when this player playing
+        theme: '#8B008B',                                                  // Optional, theme color, default: #b7daff
+        mode: 'order',                                                    // Optional, play mode, can be `random` `single` `circulation`(loop) `order`(no loop), default: `circulation`
+        preload: 'metadata',                                               // Optional, the way to load music, can be 'none' 'metadata' 'auto', default: 'auto'
+        listmaxheight: '65px',                                             // Optional, max height of play list
+        music: [
+        {
+            title: 'A Little Story',
+            author: 'Valentin',
+            url: 'http://music.163.com/song/media/outer/url?id=857896.mp3',
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t01d85b3c19301a9db2.jpg'
+        },
+        {
+            title: 'Radioactive',
+            author: 'William Joseph',
+            url: 'http://music.163.com/song/media/outer/url?id=27903692.mp3',
+            pic: 'http://p0.so.qhimgs1.com/bdr/_240_/t01c8b1b2ea836dc744.jpg'
+        },
+        {
+            title: 'Journey',
+            author: 'Capo Productions',
+            url: 'http://music.163.com/song/media/outer/url?id=16846088.mp3',
+            pic: 'http://p3.so.qhmsg.com/bdr/_240_/t0139e580781f6e30b8.jpg'
+        },
+        {
+            title: '花鳥風月',                                          // Required, music title
+            author: 'コアラモード.',                          // Required, music authorhttp://music.163.com/song/media/outer/url?id=718418.mp3
+            url: 'http://music.163.com/song/media/outer/url?id=550138127.mp3',  // Required, music url
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t01cb31d8f5dd83801e.jpg'
+        },
+        {
+            title: 'I SAY YES(wedding version)',
+            author: '光宗信吉',
+            url: 'http://music.163.com/song/media/outer/url?id=28191063.mp3',
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t019619e63e4202ecbe.jpg'
+        },
+        {
+            title: '比翼の羽根',
+            author: 'eufonius',
+            url: 'http://music.163.com/song/media/outer/url?id=718418.mp3',
+            pic: 'http://p1.so.qhimgs1.com/bdr/_240_/t0139d306c2fe380a61.jpg'
+        },
+        {
+            title: '远い空へ',
+            author: '缘之空',
+            url: 'http://music.163.com/song/media/outer/url?id=440357242.mp3',
+            pic: 'http://p2.so.qhmsg.com/bdr/_240_/t01c290ef4e9134fb97.jpg'
+        },
+         {
+            title: '夜明',
+            author: '佐藤康夫',
+            url: 'http://music.163.com/song/media/outer/url?id=29047169.mp3',
+            pic: 'http://p1.so.qhimgs1.com/bdr/_240_/t019ae8482762b92afd.jpg'
+        },
+         {
+            title: 'Kimi Wo Omou Melodi',
+            author: 'Atchorite',
+            url: 'http://music.163.com/song/media/outer/url?id=26524343.mp3',
+            pic: 'http://p3.so.qhimgs1.com/bdr/_240_/t01de9733d51958de33.jpg'
+        },
+        {
+            title: 'The Right Path',
+            author: 'Thomas Greenberg',
+            url: 'http://music.163.com/song/media/outer/url?id=2061452.mp3',
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t01acf27e4a905fccae.jpg'
+        }
+
+        ]
+});
+</script>
+        </div>
+        
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ES"><span class="nav-number">1.</span> <span class="nav-text">ES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES工作原理"><span class="nav-number">2.</span> <span class="nav-text">ES工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES核心概念"><span class="nav-number">3.</span> <span class="nav-text">ES核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster：集群"><span class="nav-number">3.1.</span> <span class="nav-text">Cluster：集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node：节点"><span class="nav-number">3.2.</span> <span class="nav-text">Node：节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shard：分片"><span class="nav-number">3.3.</span> <span class="nav-text">Shard：分片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replia：副本"><span class="nav-number">3.4.</span> <span class="nav-text">Replia：副本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全文检索"><span class="nav-number">3.5.</span> <span class="nav-text">全文检索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES数据架构的主要概念（与关系数据库Mysql对比）"><span class="nav-number">4.</span> <span class="nav-text">ES数据架构的主要概念（与关系数据库Mysql对比）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单使用ES"><span class="nav-number">5.</span> <span class="nav-text">简单使用ES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Docker安装Elasticsearch及其扩展"><span class="nav-number">5.1.</span> <span class="nav-text">使用Docker安装Elasticsearch及其扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用haystack对接Elasticsearch"><span class="nav-number">5.2.</span> <span class="nav-text">使用haystack对接Elasticsearch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">5.2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注册应用"><span class="nav-number">5.2.2.</span> <span class="nav-text">注册应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">5.2.3.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建索引类"><span class="nav-number">5.2.4.</span> <span class="nav-text">创建索引类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在templates目录中创建text字段使用的模板文件"><span class="nav-number">5.2.5.</span> <span class="nav-text">在templates目录中创建text字段使用的模板文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动生成初始索引"><span class="nav-number">5.2.6.</span> <span class="nav-text">手动生成初始索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建序列化器"><span class="nav-number">5.2.7.</span> <span class="nav-text">创建序列化器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建视图"><span class="nav-number">5.2.8.</span> <span class="nav-text">创建视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义路由"><span class="nav-number">5.2.9.</span> <span class="nav-text">定义路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bug说明"><span class="nav-number">5.2.10.</span> <span class="nav-text">bug说明</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYP</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">本站总字数&#58;</span>
+    
+    <span title="本站总字数">29.6k</span>
+  
+</div>
+
+
+
+  <div class="powered-by">由ZYP强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">蒂花之秀 &mdash;  v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  <script src="/js/src/Aplayer-Controler.js"></script>
+<div id="AP-controler"></div>
+<script type="text/javascript">
+var myapc=new APlayer_Controler({
+        APC_dom:$('#AP-controler'),
+        aplayer:ap1,
+        attach_right:true,
+        position:{top:'150px',bottom:''},
+        fixed:true,
+        btn_width:120,
+        btn_height:160,
+        img_src:['http://oty1v077k.bkt.clouddn.com/bukagirl.jpg',
+                'http://oty1v077k.bkt.clouddn.com/jumpgirl.jpg',
+                'http://oty1v077k.bkt.clouddn.com/pentigirl.jpg',
+                'http://oty1v077k.bkt.clouddn.com/%E8%90%8C1.gif'],
+        img_style:{repeat:'no-repeat',position:'center',size:'contain'},
+        ctrls_color:'rgba(173,255,47,0.8)',
+        ctrls_hover_color:'rgba(255,140,0,0.7)',
+        tips_on:true,
+        tips_width:140,
+        tips_height:25,
+        tips_color:'rgba(255,255,255,0.6)',
+        tips_content:{},
+        timeout:30
+    });
+</script>
+
+
+
+
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":90,"height":185},"mobile":{"show":false},"log":false,"tagMode":false});</script></body>
+</html>

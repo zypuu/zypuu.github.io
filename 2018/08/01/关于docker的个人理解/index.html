@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="虚拟技术,docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Blog-Youth" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="理解docker与镜像，如何使用docker来运行程序">
+<meta name="keywords" content="虚拟技术,docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于docker的个人理解">
+<meta property="og:url" content="http://zypuu.com/2018/08/01/关于docker的个人理解/index.html">
+<meta property="og:site_name" content="Blog-Youth">
+<meta property="og:description" content="理解docker与镜像，如何使用docker来运行程序">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-29T10:24:26.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于docker的个人理解">
+<meta name="twitter:description" content="理解docker与镜像，如何使用docker来运行程序">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'JLWKUI4P45',
+      apiKey: '8e228ba93459b8d9c187f86054d0b89e',
+      indexName: '5ad0f583d3142bdf565df2415a7c70c6',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到: ${query}","hits_stats":"${hits} 已找到，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zypuu.com/2018/08/01/关于docker的个人理解/"/>
+
+
+
+
+
+  <title>关于docker的个人理解 | Blog-Youth</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/zypuu" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog-Youth</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客网站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2018/08/01/关于docker的个人理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZYP">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog-Youth">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于docker的个人理解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T15:19:59+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/环境安装/" itemprop="url" rel="index">
+                    <span itemprop="name">环境安装</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,279
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  理解docker与镜像，如何使用docker来运行程序
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Docker通俗理解"><a href="#Docker通俗理解" class="headerlink" title="Docker通俗理解"></a>Docker通俗理解</h3><p>什么是docker，docker翻译过来的名称就是容器，而容器是干什么用的，容器用来装东西的，就像一个集装箱，一个密闭的容器，不受外部的干扰，也无法干扰外部。<br>docker就是这么一个密闭的容器，将那些程序服务就放在docker里来运行。</p>
+<h3 id="为什么使用Docker"><a href="#为什么使用Docker" class="headerlink" title="为什么使用Docker"></a>为什么使用Docker</h3><p>将程序软件安装在docker容器里去运行，本质上讲是一种虚拟技术，提到虚拟技术，就会想到虚拟机，那为什么要将程序安装到docker里运行，不直接在本机安装，使用虚拟技术，它又与虚拟机有和区别呢？</p>
+<p>将程序直接安装在本机上，对于服务或者运行效率当然是最佳的体验，所以为什么使用容器，最主要原因就是成本原因，每一台主机都是有成本的，如果为了保证效率，每一台主机只跑部分服务，而需要多台主机的话，那成本就高了，当然有钱的另说，比如银行，追求省心稳定，一个服务器挂一台主机，性能用不完。但是一般的商业公司追求一定的经济性，一个主机只跑一些服务太浪费了，所以就出现把主机分开独立运行的手段—docker，降低服务器成本，还要保证一定的使用效率。</p>
+<p>还有VM虚拟机，同样是虚拟技术，docker相对于虚拟机有何优点？<br>docker是直接调用原生系统资源，不像虚拟机是安装在操作系统上层层吃配置的软件服务。它比虚拟机更加强大，体积小，运行速度快，启动和关闭只需要几秒。相对于普通虚拟机来说，启动时间在分钟级别，占用内存大。所以这就是docker出现之后的优势。</p>
+<h3 id="docker的应用场景"><a href="#docker的应用场景" class="headerlink" title="docker的应用场景"></a>docker的应用场景</h3><p>容器提供了隔离性，结论是，容器可以为各种测试提供很好的沙盒环境。并且，容器本 身就具有“标准性”的特征，非常适合为服务创建构建块。<br>Docker 的一些应用场景如下:<br>1.加速本地开发和构建流程，使其更加高效、更加轻量化。本地开发人员可以构建、 运行并分享 Docker 容器。容器可以在开发环境中构建，然后轻松的提交到测试环境中，并 最终进入生产环境。<br>2.能够让独立的服务或应用程序在不同的环境中，得到相同的运行结果。这一点在 面向服务的架构和重度依赖微型服务的部署由其实用。<br>3.用 Docker 创建隔离的环境来进行测试。例如，用 Jenkins CI 这样的持续集成工具 启动一个用于测试的容器。<br>4.Docker 可以让开发者先在本机上构建一个复杂的程序或架构来进行测试，而不是 一开始就在生产环境部署、测试。</p>
+<h3 id="镜像、容器与仓库"><a href="#镜像、容器与仓库" class="headerlink" title="镜像、容器与仓库"></a>镜像、容器与仓库</h3><h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4><p>创建虚拟机和docker 都必不可少的东西。  用过虚拟机的朋友都知道，创建一个虚拟机就先得下载操作系统的ISO镜像文件，然后通过镜像文件安装操作系统，和实体机类似，然后能在虚拟机中去安装各种软件。也可以将镜像当作容器的“源代码”。镜像体积很小，非常便携，易于分享、存储和更新。<br>Docker 容器启动是需要一些文件的， 而这些文件就可以称为 Docker 镜像。</p>
+<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>通俗拿VM虚拟机和docker来举例，一个容器就类似于一个虚拟机，只不过在docker技术的术语上称为容器。这个容器装的就是我们部署的应用在运行，和虚拟机一样可以开机，关机，重启。docker称为容器的运行，关闭，重启。而且这个容器可以打包为镜像文件，类似虚拟机快照的文件，放在其它虚拟机上又可以保持原样能运行，docker也是如此，把容器打包为镜像文件，然后在新的服务器安装好的docker环境下导入进去，保持原来的状态能够运行。<br>容器是基于镜像启动起来的，容器中可以运行一个或多个进程。我们可以认为，镜像是Docker生命周期中的构建或者打包阶段，而容器则是启动或者执行阶段。 容器基于镜像启动，一旦容器启动完成后，我们就可以登录到容器中安装自己需要的软件或者服务。</p>
+<h4 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h4><p>如果你使用过git和github就很容易理解Docker的仓库概念。Docker 仓库的概念跟Git 类似，注册服务器可以理解为 GitHub 这样的托管服务。</p>
+<p>Docker 仓库是用来包含镜像的位置，Docker提供一个注册服务器（Register）来保存多个仓库，每个仓库又可以包含多个具备不同tag的镜像。Docker运行中使用的默认仓库是 Docker Hub 公共仓库。</p>
+<p>仓库支持的操作类似git，当用户创建了自己的镜像之后就可以使用 push 命令将它上传到公有或者私有仓库，这样下次在另外一台机器上使用这个镜像时候，只需要从仓库上 pull 下来就可以了。.</p>
+<h3 id="docker、容器、镜像的安装与操作"><a href="#docker、容器、镜像的安装与操作" class="headerlink" title="docker、容器、镜像的安装与操作"></a>docker、容器、镜像的安装与操作</h3><h4 id="docker的安装与操作"><a href="#docker的安装与操作" class="headerlink" title="docker的安装与操作"></a>docker的安装与操作</h4><p>添加Docker官方GPG key<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key add gpg</span><br></pre></td></tr></table></figure></p>
+<p>安装Docker稳定版<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i docker-ce_17<span class="number">.03</span><span class="number">.2</span>~ce<span class="number">-0</span>~ubuntu-xenial_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p>检查Docker是否安装正确<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure></p>
+<p>为了避免每次命令都输入sudo，可以设置用户权限，注意执行后须注销重新登录<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -a -G docker $USER</span><br></pre></td></tr></table></figure></p>
+<p>安装完成Docker后，默认已经启动了docker服务，如需手动控制docker服务的启停，可执行如下命令</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 启动docker</span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br><span class="line"># 停止docker</span><br><span class="line">sudo service docker stop</span><br><span class="line"></span><br><span class="line"># 重启docker</span><br><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure>
+<h4 id="镜像操作"><a href="#镜像操作" class="headerlink" title="镜像操作"></a>镜像操作</h4><p>列出镜像</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+<p>拉取镜像。即从官方仓库docker hub上拉取。<a href="https://hub.docker.com/" target="_blank" rel="noopener">docker hub</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image pull library/hello-world</span><br></pre></td></tr></table></figure>
+<p>由于 Docker 官方提供的 image 文件，都放在library组里面，所以它的是默认组，可以省略，hello world 是镜像文件名字。</p>
+<p>删除镜像</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image rm 镜像名或镜像id</span><br></pre></td></tr></table></figure>
+<h4 id="容器操作"><a href="#容器操作" class="headerlink" title="容器操作"></a>容器操作</h4><p>创建容器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run [option] 镜像名 [向启动容器中传入的命令]</span><br></pre></td></tr></table></figure>
+<p>-i 表示以“交互模式”运行容器<br>-t 表示容器启动后会进入其命令行。加入这两个参数后，容器创建就能登录进去。即 分配一个伪终端。<br>–name 为创建的容器命名<br>-v 表示目录映射关系(前者是宿主机目录，后者是映射到宿主机上的目录，即 宿主机目录:容器中目录)，可以使 用多个-v 做多个目录或文件映射。注意:最好做目录映射，在宿主机上做修改，然后 共享到容器上。<br>-d 在run后面加上-d参数,则会创建一个守护式容器在后台运行(这样创建容器后不 会自动登录容器，如果只加-i -t 两个参数，创建后就会自动进去容器)。<br>-p 表示端口映射，前者是宿主机端口，后者是容器内的映射端口。可以使用多个-p 做多个端口映射<br>-e 为容器设置环境变量<br>–network=host 表示将主机的网络环境映射到容器中，容器的网络与主机相同<br>例：<br>交互式容器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name=myubuntu ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+<p>可以执行linux命令。<br>守护式容器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -dit --name=myubuntu2 ubuntu</span><br></pre></td></tr></table></figure>
+<p>如果对于一个需要长期运行的容器来说，我们可以创建一个守护式容器。在容器内部exit退出时，容器也不会停止。</p>
+<p>查看容器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机正在运行的容器</span><br><span class="line">docker container ls</span><br><span class="line"></span><br><span class="line"># 列出本机所有容器，包括已经终止运行的</span><br><span class="line">docker container ls --all</span><br></pre></td></tr></table></figure>
+<p>停止与启动容器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 停止一个已经在运行的容器</span><br><span class="line">docker container stop 容器名或容器id</span><br><span class="line"></span><br><span class="line"># 启动一个已经停止的容器</span><br><span class="line">docker container start 容器名或容器id</span><br><span class="line"></span><br><span class="line"># kill掉一个已经在运行的容器</span><br><span class="line">docker container kill 容器名或容器id</span><br></pre></td></tr></table></figure>
+<p>删除容器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container rm 容器名或容器id</span><br></pre></td></tr></table></figure>
+<h4 id="将容器保存为镜像，备份迁移"><a href="#将容器保存为镜像，备份迁移" class="headerlink" title="将容器保存为镜像，备份迁移"></a>将容器保存为镜像，备份迁移</h4><p>将容器保存为镜像<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit 容器名 镜像名</span><br></pre></td></tr></table></figure></p>
+<p>将镜像打包成文件，拷贝给别人使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save -o 保存的文件名 镜像名</span><br></pre></td></tr></table></figure>
+<p>拿到镜像文件加载到本地</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load -i ./ubuntu.tar</span><br></pre></td></tr></table></figure>
+<p>当前目录下的ubantu为例</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #FFFAFA;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+    
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/虚拟技术-docker/" rel="tag"><i class="fa fa-tag"></i> 虚拟技术,docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/16/关于FastDFS文件分布式系统/" rel="next" title="关于FastDFS文件分布式系统">
+                <i class="fa fa-chevron-left"></i> 关于FastDFS文件分布式系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/01/Elasticsearch的使用/" rel="prev" title="Elasticsearch的使用">
+                Elasticsearch的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+ 
+ 
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZYP" />
+            
+              <p class="site-author-name" itemprop="name">ZYP</p>
+              <p class="site-description motion-element" itemprop="description">究竟什么样的终点才配得上这一路的颠沛流离</p>
+          </div>
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypuu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:375133421@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <div id="player1" class="aplayer"></div>
+<script src="/js/src/APlayer.min.js"></script>
+<script type="text/javascript">
+var ap1 = new APlayer({
+        element: document.getElementById('player1'),                       // Optional, player element
+        narrow: false,                                                     // Optional, narrow style
+        autoplay: true,                                                    // Optional, autoplay song(s), not supported by mobile browsers
+        showlrc: 0,                                                        // Optional, show lrc, can be 0, 1, 2, see: ###With lrc
+        mutex: true,                                                       // Optional, pause other players when this player playing
+        theme: '#8B008B',                                                  // Optional, theme color, default: #b7daff
+        mode: 'order',                                                    // Optional, play mode, can be `random` `single` `circulation`(loop) `order`(no loop), default: `circulation`
+        preload: 'metadata',                                               // Optional, the way to load music, can be 'none' 'metadata' 'auto', default: 'auto'
+        listmaxheight: '65px',                                             // Optional, max height of play list
+        music: [
+        {
+            title: 'A Little Story',
+            author: 'Valentin',
+            url: 'http://music.163.com/song/media/outer/url?id=857896.mp3',
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t01d85b3c19301a9db2.jpg'
+        },
+        {
+            title: 'Radioactive',
+            author: 'William Joseph',
+            url: 'http://music.163.com/song/media/outer/url?id=27903692.mp3',
+            pic: 'http://p0.so.qhimgs1.com/bdr/_240_/t01c8b1b2ea836dc744.jpg'
+        },
+        {
+            title: 'Journey',
+            author: 'Capo Productions',
+            url: 'http://music.163.com/song/media/outer/url?id=16846088.mp3',
+            pic: 'http://p3.so.qhmsg.com/bdr/_240_/t0139e580781f6e30b8.jpg'
+        },
+        {
+            title: '花鳥風月',                                          // Required, music title
+            author: 'コアラモード.',                          // Required, music authorhttp://music.163.com/song/media/outer/url?id=718418.mp3
+            url: 'http://music.163.com/song/media/outer/url?id=550138127.mp3',  // Required, music url
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t01cb31d8f5dd83801e.jpg'
+        },
+        {
+            title: 'I SAY YES(wedding version)',
+            author: '光宗信吉',
+            url: 'http://music.163.com/song/media/outer/url?id=28191063.mp3',
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t019619e63e4202ecbe.jpg'
+        },
+        {
+            title: '比翼の羽根',
+            author: 'eufonius',
+            url: 'http://music.163.com/song/media/outer/url?id=718418.mp3',
+            pic: 'http://p1.so.qhimgs1.com/bdr/_240_/t0139d306c2fe380a61.jpg'
+        },
+        {
+            title: '远い空へ',
+            author: '缘之空',
+            url: 'http://music.163.com/song/media/outer/url?id=440357242.mp3',
+            pic: 'http://p2.so.qhmsg.com/bdr/_240_/t01c290ef4e9134fb97.jpg'
+        },
+         {
+            title: '夜明',
+            author: '佐藤康夫',
+            url: 'http://music.163.com/song/media/outer/url?id=29047169.mp3',
+            pic: 'http://p1.so.qhimgs1.com/bdr/_240_/t019ae8482762b92afd.jpg'
+        },
+         {
+            title: 'Kimi Wo Omou Melodi',
+            author: 'Atchorite',
+            url: 'http://music.163.com/song/media/outer/url?id=26524343.mp3',
+            pic: 'http://p3.so.qhimgs1.com/bdr/_240_/t01de9733d51958de33.jpg'
+        },
+        {
+            title: 'The Right Path',
+            author: 'Thomas Greenberg',
+            url: 'http://music.163.com/song/media/outer/url?id=2061452.mp3',
+            pic: 'http://p2.so.qhimgs1.com/bdr/_240_/t01acf27e4a905fccae.jpg'
+        }
+
+        ]
+});
+</script>
+        </div>
+        
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker通俗理解"><span class="nav-number">1.</span> <span class="nav-text">Docker通俗理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么使用Docker"><span class="nav-number">2.</span> <span class="nav-text">为什么使用Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker的应用场景"><span class="nav-number">3.</span> <span class="nav-text">docker的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像、容器与仓库"><span class="nav-number">4.</span> <span class="nav-text">镜像、容器与仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像"><span class="nav-number">4.1.</span> <span class="nav-text">镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器"><span class="nav-number">4.2.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#仓库"><span class="nav-number">4.3.</span> <span class="nav-text">仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker、容器、镜像的安装与操作"><span class="nav-number">5.</span> <span class="nav-text">docker、容器、镜像的安装与操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker的安装与操作"><span class="nav-number">5.1.</span> <span class="nav-text">docker的安装与操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像操作"><span class="nav-number">5.2.</span> <span class="nav-text">镜像操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器操作"><span class="nav-number">5.3.</span> <span class="nav-text">容器操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将容器保存为镜像，备份迁移"><span class="nav-number">5.4.</span> <span class="nav-text">将容器保存为镜像，备份迁移</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYP</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">本站总字数&#58;</span>
+    
+    <span title="本站总字数">29.6k</span>
+  
+</div>
+
+
+
+  <div class="powered-by">由ZYP强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">蒂花之秀 &mdash;  v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  <script src="/js/src/Aplayer-Controler.js"></script>
+<div id="AP-controler"></div>
+<script type="text/javascript">
+var myapc=new APlayer_Controler({
+        APC_dom:$('#AP-controler'),
+        aplayer:ap1,
+        attach_right:true,
+        position:{top:'150px',bottom:''},
+        fixed:true,
+        btn_width:120,
+        btn_height:160,
+        img_src:['http://oty1v077k.bkt.clouddn.com/bukagirl.jpg',
+                'http://oty1v077k.bkt.clouddn.com/jumpgirl.jpg',
+                'http://oty1v077k.bkt.clouddn.com/pentigirl.jpg',
+                'http://oty1v077k.bkt.clouddn.com/%E8%90%8C1.gif'],
+        img_style:{repeat:'no-repeat',position:'center',size:'contain'},
+        ctrls_color:'rgba(173,255,47,0.8)',
+        ctrls_hover_color:'rgba(255,140,0,0.7)',
+        tips_on:true,
+        tips_width:140,
+        tips_height:25,
+        tips_color:'rgba(255,255,255,0.6)',
+        tips_content:{},
+        timeout:30
+    });
+</script>
+
+
+
+
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":90,"height":185},"mobile":{"show":false},"log":false,"tagMode":false});</script></body>
+</html>
