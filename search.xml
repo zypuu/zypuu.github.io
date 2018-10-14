@@ -4,6 +4,12 @@
     <title><![CDATA[关于ubuntu18下docker无法启动服务的问题解决]]></title>
     <url>%2F2018%2F10%2F14%2F%E5%85%B3%E4%BA%8Eubuntu18%E4%B8%8Bdocker%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%2F</url>
     <content type="text"><![CDATA[问题近日在最新版本的Ubuntu下安装docker，配置指定安全参数ip（--insecure -registry），并启动docker服务的时候，遇到无法启动的问题，通过查看启动日志查看启动日志1systemctl status docker 查看docker.service的启动日志，发现如下错误 1Failed to start Docker Application Container Engine 解决方案修改docker启动默认配置文件1vim etc/default/docker vim打开这个文件，找到 1DOCKER_OPTS = ...... 在这一行打开注释，添加自己的安全参数，ip等信息，然后保存退出。 修改docker启动服务文件1vim /lib/systemd/system/docker.service vim打开docker启动服务文件 在里面添加指定环境文件 1EnvironmentFile = -/etc/default/docker # 就是第一步修改的文件 然后下一行找到 1Execstart = /usr/bin dockerd -H fd:// $DOCKER_OPTS 即加载第一步环境文件里的DOCKER_OPTS，自己指定的insecure registry. 删除其他默认的加载12rm /etc/systemd/system/docke.service.drm /etc/docker/daemon.json 删除这两个文件，不删除，会加载这两个文件里的配置 重新启动docker服务重新启动12systemctl daemon -reloadsystemctl restart docker 查看docker进程 1ps -ef | grep docker]]></content>
+      <categories>
+        <category>环境安装</category>
+      </categories>
+      <tags>
+        <tag>Linux,docker</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[关于数据库redis与Mysql的区别以及在web开发中的配合使用]]></title>

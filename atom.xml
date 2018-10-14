@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2018-10-14T02:51:25.048Z</updated>
+  <updated>2018-10-14T03:05:25.345Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -21,19 +21,20 @@
     <link href="http://zypuu.com/2018/10/14/%E5%85%B3%E4%BA%8Eubuntu18%E4%B8%8Bdocker%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <id>http://zypuu.com/2018/10/14/关于ubuntu18下docker无法启动服务的问题解决/</id>
     <published>2018-10-14T02:08:22.000Z</published>
-    <updated>2018-10-14T02:51:25.048Z</updated>
+    <updated>2018-10-14T03:05:25.345Z</updated>
     
     <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>近日在最新版本的Ubuntu下安装docker，配置指定安全参数ip（<code>--insecure -registry</code>），并启动docker服务的时候，遇到无法启动的问题，通过查看启动日志<br>查看启动日志<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure></p><p>查看docker.service的启动日志，发现如下错误</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Failed to start Docker Application Container Engine</span><br></pre></td></tr></table></figure><h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="修改docker启动默认配置文件"><a href="#修改docker启动默认配置文件" class="headerlink" title="修改docker启动默认配置文件"></a>修改docker启动默认配置文件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim etc/<span class="keyword">default</span>/docker</span><br></pre></td></tr></table></figure><p>vim打开这个文件，找到</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOCKER_OPTS = ......</span><br></pre></td></tr></table></figure><p>在这一行打开注释，添加自己的安全参数，ip等信息，然后保存退出。</p><h4 id="修改docker启动服务文件"><a href="#修改docker启动服务文件" class="headerlink" title="修改docker启动服务文件"></a>修改docker启动服务文件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim  /lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure><p>vim打开docker启动服务文件</p><p>在里面添加指定环境文件</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EnvironmentFile = -/etc/default/docker # 就是第一步修改的文件</span><br></pre></td></tr></table></figure><p>然后下一行找到</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Execstart = <span class="regexp">/usr/</span>bin dockerd -H fd:<span class="comment">// $DOCKER_OPTS</span></span><br></pre></td></tr></table></figure><p>即加载第一步环境文件里的DOCKER_OPTS，自己指定的insecure registry.</p><h4 id="删除其他默认的加载"><a href="#删除其他默认的加载" class="headerlink" title="删除其他默认的加载"></a>删除其他默认的加载</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm /etc/systemd/system/docke.service.d</span><br><span class="line">rm /etc/docker/daemon.json</span><br></pre></td></tr></table></figure><p>删除这两个文件，不删除，会加载这两个文件里的配置</p><h4 id="重新启动docker服务"><a href="#重新启动docker服务" class="headerlink" title="重新启动docker服务"></a>重新启动docker服务</h4><p>重新启动<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon -reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></p><p>查看docker进程</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep docker</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;近日在最新版本的Ubuntu下安装docker，配置指定安全参数ip（&lt;code&gt;--insecure -registry&lt;/code&gt;），
-      
+      docker服务启动问题
     
     </summary>
     
+      <category term="环境安装" scheme="http://zypuu.com/categories/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"/>
+    
+    
+      <category term="Linux,docker" scheme="http://zypuu.com/tags/Linux-docker/"/>
     
   </entry>
   
