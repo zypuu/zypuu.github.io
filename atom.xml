@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-01T06:16:50.140Z</updated>
+  <updated>2020-12-01T08:21:18.266Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于Linux buff/cache缓存处理</title>
+    <link href="http://zypuu.com/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/"/>
+    <id>http://zypuu.com/2020/09/12/关于Linux buff_cache缓存处理/</id>
+    <published>2020-09-12T07:35:15.000Z</published>
+    <updated>2020-12-01T08:21:18.266Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="buff-cache"><a href="#buff-cache" class="headerlink" title="buff/cache"></a>buff/cache</h3><p>buffer/cache 一般用于磁盘或文件的缓存，一些shared memory 也会放在这里，一般情况下大部分都是可以回收的，在一些较新版本的Linux 中，free 命令会有一个available 的列，它表示在计算了可回收的buffer/cache的情况下可用的内存</p><p>Linux内存回收机制比较复杂，但一般来说会在内存不足的情况下主动去释放cache，在/proc/meminfo 里可以看到相对详细的数据，包括哪些内存是可以回收的，哪些是不能回收的。如果你通过命令这种方法主动去清理的话，如果内存中有一些没有落盘的数据，会在这个时候去写回。如果这个过程顺利进行，就不会有数据的丢失或损坏，但是下次你要使用这些文件，又需要重新从磁盘读到内存，所以大多数情况下没有正面意义，反而会降低效率。</p><h3 id="buff-cache占用过大，清理"><a href="#buff-cache占用过大，清理" class="headerlink" title="buff/cache占用过大，清理"></a>buff/cache占用过大，清理</h3><p>在Linux下经常会遇到buff/cache内存占用过多问题，尤其是使用云主机的时候最严重，由于很多是虚拟内存，因此如果buff/cache占用过大的，free空闲内存就很少，影响使用；</p><p>可以使用<code>free -m</code>查看<br> <img src="/2020/09/12/关于Linux%20buff_cache缓存处理/1.png"></p><p>通常内存关系是：</p><p>普通机器：total=used+free</p><p>虚拟机器：total=used+free+buff/cache</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="number">1</span> &gt; <span class="regexp">/proc/</span>sys/vm/drop_caches</span><br><span class="line">echo <span class="number">2</span> &gt; <span class="regexp">/proc/</span>sys/vm/drop_caches</span><br><span class="line">echo <span class="number">3</span> &gt; <span class="regexp">/proc/</span>sys/vm/drop_caches</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      linux相关基础，linux开发环境下开发使用
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://zypuu.com/categories/Linux/"/>
+    
+    
+      <category term="Linux命令" scheme="http://zypuu.com/tags/Linux%E5%91%BD%E4%BB%A4/"/>
+    
+  </entry>
   
   <entry>
     <title>websocket分布式共享解决方案</title>
@@ -431,28 +453,6 @@
     
     
       <category term="web,验证码" scheme="http://zypuu.com/tags/web-%E9%AA%8C%E8%AF%81%E7%A0%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于Mysql的sql注入问题</title>
-    <link href="http://zypuu.com/2018/06/15/%E5%85%B3%E4%BA%8EMysql%E7%9A%84sql%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98/"/>
-    <id>http://zypuu.com/2018/06/15/关于Mysql的sql注入问题/</id>
-    <published>2018-06-15T07:54:42.000Z</published>
-    <updated>2018-09-05T07:54:54.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="什么是sql注入"><a href="#什么是sql注入" class="headerlink" title="什么是sql注入"></a>什么是sql注入</h2><p>所谓SQL注入，就是通过把SQL命令插入到Web表单提交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令。具体来说，它是利用现有应用程序，将(恶意的)SQL命令注入到后台数据库引擎执行的能力，它可以通过在Web表单中输入(恶意)SQL语句得到一个存在安全漏洞的网站上的数据库，而不是按照设计者意图去执行SQL语句。</p><h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>SQL注入产生的原因：程序开发过程中不注意规范书写 sql语句和对特殊字符进行过滤，导致客户端可以通过全局变量POST 和GET 提交一些 sql语句正常执行。<br>比如：拼接字符串的方法</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    sql = <span class="string">'select * from goods where name="%s"'</span> % find_name</span><br><span class="line">   # 执行select语句，并返回受影响的行数：查询所有数据</span><br><span class="line"># findname为要输入的查询对象</span><br></pre></td></tr></table></figure><p>输入 “ or 1=1 or “ (双引号也要输入)就会产生sql注入</p><h2 id="后果"><a href="#后果" class="headerlink" title="后果"></a>后果</h2><p>如果是让别人发现了你的这个注入的漏洞的话，你的整个数据库有可能直接获得管理员的权限，也就是说这个数据库又可以能掌握在别人的手里，里面的数据想查询就查询，想删除就删除，想对你数据库怎样就怎样，后果很严重。</p><h2 id="预防sql注入"><a href="#预防sql注入" class="headerlink" title="预防sql注入"></a>预防sql注入</h2><h3 id="解决办法一：查询参数预防sql注入，预编译"><a href="#解决办法一：查询参数预防sql注入，预编译" class="headerlink" title="解决办法一：查询参数预防sql注入，预编译"></a>解决办法一：查询参数预防sql注入，预编译</h3><p>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> args = (id, type)</span><br><span class="line"><span class="number">2</span> cur.execute(<span class="string">'select id, type ,name from xl_bugs where id = %s and type = %s'</span>, args )</span><br></pre></td></tr></table></figure></p><p>使用如此参数带入方式，python会自动过滤args中的特殊字符，制止SQL注入的产生。</p><h3 id="解决办法二：正则表达式过滤传入参数"><a href="#解决办法二：正则表达式过滤传入参数" class="headerlink" title="解决办法二：正则表达式过滤传入参数"></a>解决办法二：正则表达式过滤传入参数</h3><p>检测SQL meta-characters的正则表达式 ：/(\%27)|(\’)|(--)|(\%23)|(#)/ix</p><p>修正检测SQL meta-characters的正则表达式 ：/((\%3D)|(=))[^\n]*((\%27)|(\’)|(--)|(\%3B)|(:))/i</p><p>典型的SQL 注入攻击的正则表达式 ：/\w*((\%27)|(\’))((\%6F)|o|(\%4F))((\%72)|r|(\%52))/ix</p><p>检测SQL注入，UNION查询关键字的正则表达式 ：/((\%27)|(\’))union/ix(\%27)|(\’)</p><p>检测MS SQL Server SQL注入攻击的正则表达式：/exec(\s|+)+(s|x)p\w+/ix</p><h3 id="解决办法三：前端js防sql注入"><a href="#解决办法三：前端js防sql注入" class="headerlink" title="解决办法三：前端js防sql注入"></a>解决办法三：前端js防sql注入</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url = location.search;</span><br><span class="line"><span class="keyword">var</span> re=<span class="regexp">/^\?(.*)(select%20|insert%20|delete%20from%20|count\(|drop%20table|update%20truncate%20|asc\(|mid\(|char\(|xp_cmdshell|exec%20master|net%20localgroup%20administrators|\"|:|net%20user|\|%20or%20)(.*)$/gi</span>;</span><br><span class="line"><span class="keyword">var</span> e = re.test(url);</span><br><span class="line"><span class="keyword">if</span>(e) &#123;</span><br><span class="line">    alert(<span class="string">"地址中含有非法字符～"</span>);</span><br><span class="line">    location.href=<span class="string">"error.asp"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>前端验证只能起到一定作用，还需要后台参数化阻止SQL注入。</p>]]></content>
-    
-    <summary type="html">
-    
-      Python中mysql的sql注入问题，以及如何预防sql注入。
-    
-    </summary>
-    
-      <category term="数据库" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-      <category term="数据库,Mysql,web安全" scheme="http://zypuu.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-Mysql-web%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
