@@ -82,24 +82,24 @@
 
 
 <meta name="description" content="理解docker与镜像，如何使用docker来运行程序">
-<meta name="keywords" content="虚拟技术,docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于docker的个人理解">
-<meta property="og:url" content="http://zypuu.com/2018/08/01/关于docker的个人理解/index.html">
+<meta property="og:url" content="http://zypuu.com/2018/08/01/%E5%85%B3%E4%BA%8Edocker%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3/index.html">
 <meta property="og:site_name" content="Blog-Youth">
 <meta property="og:description" content="理解docker与镜像，如何使用docker来运行程序">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-29T10:24:28.000Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-08-01T07:19:59.000Z">
+<meta property="article:modified_time" content="2018-08-29T10:24:28.000Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="虚拟技术,docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于docker的个人理解">
-<meta name="twitter:description" content="理解docker与镜像，如何使用docker来运行程序">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -138,7 +138,7 @@
 
 
 
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
@@ -149,7 +149,7 @@
 
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
-    <a href="https://github.com/zypuu" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <a target="_blank" rel="noopener" href="https://github.com/zypuu" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
@@ -299,10 +299,10 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2018/08/01/关于docker的个人理解/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2018/08/01/%E5%85%B3%E4%BA%8Edocker%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ZYP">
+      <meta itemprop="name" content="">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
@@ -351,7 +351,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/环境安装/" itemprop="url" rel="index">
+                  <a href="/categories/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" itemprop="url" rel="index">
                     <span itemprop="name">环境安装</span>
                   </a>
                 </span>
@@ -382,7 +382,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  2,279
+                  2.2k
                 </span>
               
 
@@ -433,19 +433,25 @@
 <h4 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h4><p>如果你使用过git和github就很容易理解Docker的仓库概念。Docker 仓库的概念跟Git 类似，注册服务器可以理解为 GitHub 这样的托管服务。</p>
 <p>Docker 仓库是用来包含镜像的位置，Docker提供一个注册服务器（Register）来保存多个仓库，每个仓库又可以包含多个具备不同tag的镜像。Docker运行中使用的默认仓库是 Docker Hub 公共仓库。</p>
 <p>仓库支持的操作类似git，当用户创建了自己的镜像之后就可以使用 push 命令将它上传到公有或者私有仓库，这样下次在另外一台机器上使用这个镜像时候，只需要从仓库上 pull 下来就可以了。.</p>
-<h3 id="docker、容器、镜像的安装与操作"><a href="#docker、容器、镜像的安装与操作" class="headerlink" title="docker、容器、镜像的安装与操作"></a>docker、容器、镜像的安装与操作</h3><h4 id="docker的安装与操作"><a href="#docker的安装与操作" class="headerlink" title="docker的安装与操作"></a>docker的安装与操作</h4><p>添加Docker官方GPG key<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key add gpg</span><br></pre></td></tr></table></figure></p>
-<p>安装Docker稳定版<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i docker-ce_17<span class="number">.03</span><span class="number">.2</span>~ce<span class="number">-0</span>~ubuntu-xenial_amd64.deb</span><br></pre></td></tr></table></figure></p>
-<p>检查Docker是否安装正确<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure></p>
-<p>为了避免每次命令都输入sudo，可以设置用户权限，注意执行后须注销重新登录<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -a -G docker $USER</span><br></pre></td></tr></table></figure></p>
+<h3 id="docker、容器、镜像的安装与操作"><a href="#docker、容器、镜像的安装与操作" class="headerlink" title="docker、容器、镜像的安装与操作"></a>docker、容器、镜像的安装与操作</h3><h4 id="docker的安装与操作"><a href="#docker的安装与操作" class="headerlink" title="docker的安装与操作"></a>docker的安装与操作</h4><p>添加Docker官方GPG key</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key add gpg</span><br></pre></td></tr></table></figure>
+<p>安装Docker稳定版</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i docker-ce_17<span class="number">.03</span><span class="number">.2</span>~ce-<span class="number">0</span>~ubuntu-xenial_amd64.deb</span><br></pre></td></tr></table></figure>
+<p>检查Docker是否安装正确</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+<p>为了避免每次命令都输入sudo，可以设置用户权限，注意执行后须注销重新登录</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -a -G docker $USER</span><br></pre></td></tr></table></figure>
 <p>安装完成Docker后，默认已经启动了docker服务，如需手动控制docker服务的启停，可执行如下命令</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 启动docker</span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br><span class="line"># 停止docker</span><br><span class="line">sudo service docker stop</span><br><span class="line"></span><br><span class="line"># 重启docker</span><br><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure>
+
 <h4 id="镜像操作"><a href="#镜像操作" class="headerlink" title="镜像操作"></a>镜像操作</h4><p>列出镜像</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
-<p>拉取镜像。即从官方仓库docker hub上拉取。<a href="https://hub.docker.com/" target="_blank" rel="noopener">docker hub</a></p>
+<p>拉取镜像。即从官方仓库docker hub上拉取。<a target="_blank" rel="noopener" href="https://hub.docker.com/">docker hub</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image pull library/hello-world</span><br></pre></td></tr></table></figure>
 <p>由于 Docker 官方提供的 image 文件，都放在library组里面，所以它的是默认组，可以省略，hello world 是镜像文件名字。</p>
 <p>删除镜像</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image rm 镜像名或镜像id</span><br></pre></td></tr></table></figure>
+
 <h4 id="容器操作"><a href="#容器操作" class="headerlink" title="容器操作"></a>容器操作</h4><p>创建容器</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run [option] 镜像名 [向启动容器中传入的命令]</span><br></pre></td></tr></table></figure>
 <p>-i 表示以“交互模式”运行容器<br>-t 表示容器启动后会进入其命令行。加入这两个参数后，容器创建就能登录进去。即 分配一个伪终端。<br>–name 为创建的容器命名<br>-v 表示目录映射关系(前者是宿主机目录，后者是映射到宿主机上的目录，即 宿主机目录:容器中目录)，可以使 用多个-v 做多个目录或文件映射。注意:最好做目录映射，在宿主机上做修改，然后 共享到容器上。<br>-d 在run后面加上-d参数,则会创建一个守护式容器在后台运行(这样创建容器后不 会自动登录容器，如果只加-i -t 两个参数，创建后就会自动进去容器)。<br>-p 表示端口映射，前者是宿主机端口，后者是容器内的映射端口。可以使用多个-p 做多个端口映射<br>-e 为容器设置环境变量<br>–network=host 表示将主机的网络环境映射到容器中，容器的网络与主机相同<br>例：<br>交互式容器</p>
@@ -459,7 +465,9 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 停止一个已经在运行的容器</span><br><span class="line">docker container stop 容器名或容器id</span><br><span class="line"></span><br><span class="line"># 启动一个已经停止的容器</span><br><span class="line">docker container start 容器名或容器id</span><br><span class="line"></span><br><span class="line"># kill掉一个已经在运行的容器</span><br><span class="line">docker container kill 容器名或容器id</span><br></pre></td></tr></table></figure>
 <p>删除容器</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container rm 容器名或容器id</span><br></pre></td></tr></table></figure>
-<h4 id="将容器保存为镜像，备份迁移"><a href="#将容器保存为镜像，备份迁移" class="headerlink" title="将容器保存为镜像，备份迁移"></a>将容器保存为镜像，备份迁移</h4><p>将容器保存为镜像<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit 容器名 镜像名</span><br></pre></td></tr></table></figure></p>
+
+<h4 id="将容器保存为镜像，备份迁移"><a href="#将容器保存为镜像，备份迁移" class="headerlink" title="将容器保存为镜像，备份迁移"></a>将容器保存为镜像，备份迁移</h4><p>将容器保存为镜像</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit 容器名 镜像名</span><br></pre></td></tr></table></figure>
 <p>将镜像打包成文件，拷贝给别人使用</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save -o 保存的文件名 镜像名</span><br></pre></td></tr></table></figure>
 <p>拿到镜像文件加载到本地</p>
@@ -492,7 +500,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/虚拟技术-docker/" rel="tag"><i class="fa fa-tag"></i> 虚拟技术,docker</a>
+            <a href="/tags/%E8%99%9A%E6%8B%9F%E6%8A%80%E6%9C%AF-docker/" rel="tag"><i class="fa fa-tag"></i> 虚拟技术,docker</a>
           
         </div>
       
@@ -505,7 +513,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/16/关于FastDFS文件分布式系统/" rel="next" title="关于FastDFS文件分布式系统">
+              <a href="/2018/07/16/%E5%85%B3%E4%BA%8EFastDFS%E6%96%87%E4%BB%B6%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" rel="next" title="关于FastDFS文件分布式系统">
                 <i class="fa fa-chevron-left"></i> 关于FastDFS文件分布式系统
               </a>
             
@@ -515,7 +523,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/01/Elasticsearch的使用/" rel="prev" title="Elasticsearch的使用">
+              <a href="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="Elasticsearch的使用">
                 Elasticsearch的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -622,17 +630,17 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/avatar.jpg"
-                alt="ZYP" />
+                alt="" />
             
-              <p class="site-author-name" itemprop="name">ZYP</p>
-              <p class="site-description motion-element" itemprop="description">You Never Know Your Luck</p>
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
           <nav class="site-state motion-element">
 
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
+                <a href="/archives/%7C%7C%20archive">
               
                   <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">posts</span>
@@ -789,7 +797,7 @@ var ap1 = new APlayer({
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker通俗理解"><span class="nav-number">1.</span> <span class="nav-text">Docker通俗理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么使用Docker"><span class="nav-number">2.</span> <span class="nav-text">为什么使用Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker的应用场景"><span class="nav-number">3.</span> <span class="nav-text">docker的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像、容器与仓库"><span class="nav-number">4.</span> <span class="nav-text">镜像、容器与仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像"><span class="nav-number">4.1.</span> <span class="nav-text">镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器"><span class="nav-number">4.2.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#仓库"><span class="nav-number">4.3.</span> <span class="nav-text">仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker、容器、镜像的安装与操作"><span class="nav-number">5.</span> <span class="nav-text">docker、容器、镜像的安装与操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker的安装与操作"><span class="nav-number">5.1.</span> <span class="nav-text">docker的安装与操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像操作"><span class="nav-number">5.2.</span> <span class="nav-text">镜像操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器操作"><span class="nav-number">5.3.</span> <span class="nav-text">容器操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将容器保存为镜像，备份迁移"><span class="nav-number">5.4.</span> <span class="nav-text">将容器保存为镜像，备份迁移</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker%E9%80%9A%E4%BF%97%E7%90%86%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">Docker通俗理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8Docker"><span class="nav-number">2.</span> <span class="nav-text">为什么使用Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">docker的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E3%80%81%E5%AE%B9%E5%99%A8%E4%B8%8E%E4%BB%93%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">镜像、容器与仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%9C%E5%83%8F"><span class="nav-number">4.1.</span> <span class="nav-text">镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8"><span class="nav-number">4.2.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%93%E5%BA%93"><span class="nav-number">4.3.</span> <span class="nav-text">仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E3%80%81%E5%AE%B9%E5%99%A8%E3%80%81%E9%95%9C%E5%83%8F%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">docker、容器、镜像的安装与操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E6%93%8D%E4%BD%9C"><span class="nav-number">5.1.</span> <span class="nav-text">docker的安装与操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E6%93%8D%E4%BD%9C"><span class="nav-number">5.2.</span> <span class="nav-text">镜像操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">5.3.</span> <span class="nav-text">容器操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%AE%B9%E5%99%A8%E4%BF%9D%E5%AD%98%E4%B8%BA%E9%95%9C%E5%83%8F%EF%BC%8C%E5%A4%87%E4%BB%BD%E8%BF%81%E7%A7%BB"><span class="nav-number">5.4.</span> <span class="nav-text">将容器保存为镜像，备份迁移</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -824,7 +832,7 @@ var ap1 = new APlayer({
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">49.3k</span>
+    <span title="Site words total count">48.6k</span>
   
 </div>
 
