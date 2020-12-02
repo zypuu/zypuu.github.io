@@ -12,6 +12,28 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[关于vue前端的生命周期与钩子函数]]></title>
+    <url>%2F2020%2F05%2F03%2F%E5%85%B3%E4%BA%8Evue%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8E%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[beforeCreateVue对象用新方法实例化。它创建一个Vue类的对象来处理DOM元素。对象的这个生命阶段可以通过beforeCreated 挂钩来访问 。我们可以在这个钩子中插入我们的代码，在对象初始化之前执行。 created在这个生命阶段，对象及其事件完全初始化。 created 是访问这个阶段并编写代码的钩子。 beforeMount这个钩子被调用 beforeMounted。在这个阶段，它检查是否有任何模板可用于要在DOM中呈现的对象。如果没有找到模板，那么它将所定义元素的外部HTML视为模板。 mounted一旦模板准备就绪。它将数据放入模板并创建可呈现元素。用这个新的数据填充元素替换DOM元素。这一切都发生在mounted钩子上。 beforeUpdate在外部事件/用户输入beforeUpdate发生更改时，此钩子即 在反映原始DOM元素的更改之前被触发。 为了解决这个问题 beforeUpdated，我添加了下面的代码。它通过更新DOM来更改运行时中的hello_message。 updated然后，通过实际更新DOM对象并触发updated，屏幕上的变化得到呈现 。 beforeDestroydestroyedvue实例在被创建的时候会经历这些钩子函数 在beforeCreate和created钩子函数之间的生命周期在这个生命周期之间，进行初始化事件，进行数据的观测，可以看到在created的时候数据已经和data属性进行绑定（放在data中的属性当值发生改变的同时，视图也会改变）。created的时候，数据已经和data进行绑定了注意看下：此时还是没有el选项，也就是beforecreate的时候，数据还没有和data绑定。 created钩子函数和beforeMount间的生命周期首先会判断对象是否有el选项。如果有的话就继续向下编译，如果没有el选项，则停止编译，也就意味着停止了生命周期，直到在该vue实例上调用vm.$mount(el)。]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[关于vue的ref与$ref的问题]]></title>
+    <url>%2F2020%2F03%2F29%2F%E5%85%B3%E4%BA%8Evue%E7%9A%84ref%E4%B8%8E%24ref%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[释义refsvm.$refs，一个对象，object，持有已注册过ref的所有子组件。 refref用来给元素或子组件注册引用信息。引用信息将会注册在父组件的refs上。如果普通dom上使用，引用指向的就是dom元素，如果用在子组件上，引用就指向子组件示例。 注意问题：ref属于非响应式ref本身是作为渲染结果被创建的，在初始渲染的时候并不能访问他们，因为还不存在，会报错。而$refs也不是响应式的，所以同样不能访问，要注意。 开发中的实例问题123456789&lt;el-form ref="booksForm" onsubmit="return false" :model="form" :inline="true" :rules="rules_search"&gt;&lt;el-form-item prop="books_ids"&gt; &lt;el-input style="width: 300px;" placeholder="ID搜索,逗号英文分隔" v-model="form.books_ids" clearable &gt;&lt;/el-input&gt; &lt;/el-form-item&gt; 在页面表单中绑定了ref，el-input是一个搜索输入框，如果不输入值，则默认搜索全部数据。 但是在搜索的时候需要在前端进行验证，检验是否是数字 12345 getBooks() &#123; this.$refs['booksForm'].validate(valid =&gt; &#123; if (valid) &#123;.....&#125;# ......中为通过api，查询数据库的逻辑，然后返回数据 看上面代码，是通过$ref绑定调用，进行的验证。 但是在页面刚进入，对象实例在被创建前，也就是在vue对象创建的钩子函数中，需要对页面进行初始化，查询数据显示，也就是在mounted中进行一次查询操作 123mounted() &#123; this.getBooks() &#125;, 然后问题就来了，因为$ref是非响应式的，所以在页面初始化的时候，并没有被创建，也就无法通过验证，会报错 1validate is undefined 解决方法将验证方法，拆出来，也就是调用ref的地方，不要放在钩子函数中，待页面加载完在进行调用验证。 12345678methods: &#123; searchBooks() &#123; this.$refs['booksForm'].validate(valid =&gt; &#123; if (valid) &#123; this.getBooks(this.booksData) &#125; &#125;) &#125;, 由searchBooks进行一层包装，将调用ref的验证放到外面，在mounted的钩子函数中还是调用getBooks方法。]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[websocket分布式共享解决方案]]></title>
     <url>%2F2019%2F07%2F14%2Fwebsocket%E5%88%86%E5%B8%83%E5%BC%8F%E5%85%B1%E4%BA%AB%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
     <content type="text"><![CDATA[websocket分布式问题如果在单机情况下，当websocket需要给用户推送消息时，由于用户已经与websocket服务建立连接，消息推送能够成功。但如果在集群情况下，用户甲向websocket发起连接请求，有多台服务时strong text，只能与一台服务建立连接（以服务A为例），而这些websocket服务都是有可能会给用户甲推送消息，这时候的服务B和C并没有建立连接，所以会有一部分消息推送失败。因为websocket是长连接，session保持在一个server中，所以在不同server在使用websocket推送消息时就需要获取对应的session进行推送，在分布式系统中就无法获取到所有session。 解决方案这里就需要使用一个中间件，将消息推送到个系统中，这里使用redis作为中间件，使用redis的发布订阅功能 pub/sub。在原来的系统里，由业务模块的服务处理业务逻辑，发生需要推送给用户的数据的时候，发消息给websocket服务，由websocket服务推送消息给用户。那么，问题的关键就是确保和用户建立连接的websocket服务就是接收到消息的服务，但是由于建立连接的websockt是由ngnx进行负载均衡分配的，接收消息的服务也是无法确定的，这一点并没有什么太好的办法保证。因此，我们可以换个思路，只要确保对于业务模块发送的消息，所有的websocket服务都能收到消息，只要做到了这一点，与用户建立连接websocket自然也能接收到消息。而且，这种方式相对单台服务收到消息还有一个在处理多点登陆场景下的优势。对于允许多点登录的系统，同一用户可以在多处进行登录，以为着同一用户与多个服务拥有多个websocket连接，这就要求我们保证多台用户消费同一台业务模块的消息。 代码实现1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950class RedisListenDelegate(object): """ redis 队列监控""" def __init__(self, system, connection): """ init :param system: 系统名 :param connection: websockets """ self.connection = connection self.system = system self.redis = self.get_redis() self.redis.connect() self.listen() def parse_redis_conf(self, redis_conf): """ 解析redis的配置 :param redis_conf: redis配置 :return: redis配置字典 """ return re.match(PATTERN['redis_config'], redis_conf).groupdict() def get_redis(self): """ 获得redis连接客户端 :return: redis 客户端 """ info = self.parse_redis_conf(REDIS_URL) return tornadoredis.Client(host=info['host'], port=int(info['port'])) def handle_message(self, message): """ 所有监听redis通道后的处理,都应该继承本函数,本函数是redis通道收到消息后的回调函数 :param message: redis监听结果信息 """ if message.kind != 'message': # 不处理redis连接信息 return self.connection.message_delegate.send_message(message.body) # 发送消息 @gen.coroutine def listen(self): """ 监听redis通道,回调消息处理 """ yield gen.Task(self.redis.subscribe, SUBSCRIBE_KEY.format(self.system)) yield self.redis.listen(self.handle_message) # 发送消息，访问websocket，最终将消息发布到redis即可，由上面的连接进行监听 publish(system, message) 原理每个系统作为一个redis通道进行监听，该系统频道收到消息后，该websocket的server会监听到该消息，通过消息内的用户属性，去从本地服务存储的websocket连接获取该用户的连接，然后对该用户发送消息。分布式情况下，所有的server都会监听到该消息，但是用户建立连接只在其中一个server，这样这个server也就可以监听到这个消息，因为连接存在，所以这个server会对用户发送消息，其他server即使监听到但是没有连接，所以不做处理即可。 优点1、解决了websocket分布式推送消息的问题。2、代码解耦，websocket服务建立连接，与推送消息到websocket解耦，互不影响，websocket服务挂掉也可以推送消息到redis，无法推消息到redis系统挂掉，也不会影响websocket服务。]]></content>
