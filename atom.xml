@@ -171,11 +171,11 @@
   </entry>
   
   <entry>
-    <title>Mysql的常用命令</title>
+    <title>sql进程锁表问题</title>
     <link href="http://zypuu.com/2019/01/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E8%A1%A8%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
     <id>http://zypuu.com/2019/01/10/数据库锁表解决办法/</id>
     <published>2019-01-10T01:10:00.000Z</published>
-    <updated>2020-12-01T06:55:45.966Z</updated>
+    <updated>2020-12-02T02:20:02.731Z</updated>
     
     <content type="html"><![CDATA[<h4 id="解决锁表问题，杀进程"><a href="#解决锁表问题，杀进程" class="headerlink" title="解决锁表问题，杀进程"></a>解决锁表问题，杀进程</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM information_schema.processlist</span><br><span class="line"># 查询正在进行的进程，然后kill掉</span><br><span class="line"></span><br><span class="line">show processlist 命令行操作</span><br></pre></td></tr></table></figure>]]></content>
     

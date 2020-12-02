@@ -78,7 +78,7 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Mysql的常用命令]]></title>
+    <title><![CDATA[sql进程锁表问题]]></title>
     <url>%2F2019%2F01%2F10%2F%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E8%A1%A8%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%2F</url>
     <content type="text"><![CDATA[解决锁表问题，杀进程1234SELECT * FROM information_schema.processlist# 查询正在进行的进程，然后kill掉show processlist 命令行操作]]></content>
       <categories>
