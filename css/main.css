@@ -1175,7 +1175,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #6fff2d;
+  background: #b4cbff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1493,7 +1493,7 @@ pre .javascript .function {
   background: #222;
   bottom: -100px;
   box-sizing: border-box;
-  color: #73a279;
+  color: #6ab01b;
   cursor: pointer;
   right: 30px;
   opacity: 1;
@@ -2400,21 +2400,18 @@ embed {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/*body {
-      background: url(/images/background.jpg);//自己喜欢的图片地址
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-position: 50% 50%;
-}*/
-/*/
-侧边框的透明度设置,
-.sidebar {
-  opacity: 0.8;
+body {
+  background: url("/images/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 50%;
 }
-*
+.sidebar {
+  opacity: 0.5;
+}
 .header-inner {
-  background: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0);
 }
 .popup {
   opacity: 0.85;
