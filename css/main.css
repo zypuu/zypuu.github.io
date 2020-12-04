@@ -1175,7 +1175,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b4cbff;
+  background: #fe0f47;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1493,7 +1493,7 @@ pre .javascript .function {
   background: #222;
   bottom: -100px;
   box-sizing: border-box;
-  color: #6ab01b;
+  color: #25ffd2;
   cursor: pointer;
   right: 30px;
   opacity: 1;
@@ -2400,6 +2400,8 @@ embed {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/*/
+添加背景图片,
 body {
   background: url("/images/background.jpg");
   background-size: cover;
@@ -2407,6 +2409,7 @@ body {
   background-attachment: fixed;
   background-position: 50% 50%;
 }
+*
 .sidebar {
   opacity: 0.5;
 }
