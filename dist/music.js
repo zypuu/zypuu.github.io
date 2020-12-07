@@ -1,12 +1,13 @@
 const ap = new APlayer({
   container: document.getElementById('aplayer'),
-  fixed: true,
+  fixed: false,
   autoplay: true,
   listFolded: true,
   preload: 'auto',
   mutex: true,
   loop: 'all',
-  lrcType: 1,
+  lrcType: 0,
+  theme:'#000000',
   audio: [{
       theme: 'pink',
       name: '圈住你',

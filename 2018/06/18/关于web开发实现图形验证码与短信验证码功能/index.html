@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -83,10 +83,6 @@
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <link rel="stylesheet" href="/dist/APlayer.min.css">
-  <div id="aplayer"></div>
-  <script type="text/javascript" src="/dist/APlayer.min.js"></script>
-  <script type="text/javascript" src="/dist/music.js"></script>
   <div class="container use-motion">
     <div class="headband"></div>
 
@@ -432,6 +428,7 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
 
   <aside class="sidebar">
     <div class="sidebar-inner">
+      <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -490,6 +487,10 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
 
 
 
+        <link rel="stylesheet" href="/dist/APlayer.min.css">
+        <div id="aplayer"></div>
+        <script type="text/javascript" src="/dist/APlayer.min.js"></script>
+        <script type="text/javascript" src="/dist/music.js"></script>
       </div>
 
     </div>
@@ -646,9 +647,6 @@ window.addEventListener('pjax:success', () => {
 
   
 
-    </div>
-
-  <!-- 页面点击小红心 -->
   <script type="text/javascript" src="/js/love.js"></script>
   <script src="/js/snowfall.jquery.js"></script> 
   <script>
@@ -660,6 +658,9 @@ window.addEventListener('pjax:success', () => {
           maxSize: 25
       });
   </script>
+    </div>
+
+  <!-- 页面点击小红心 -->
 
 </body>
 </html>
