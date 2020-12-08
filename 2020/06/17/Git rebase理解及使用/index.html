@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+  </script>
+
+  <meta name="description" content="git 合并分支，提交历史相关处理，如何保证一条干净的master分支提交历史">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git rebase 理解及使用">
+<meta property="og:url" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="ALL-Nothing">
+<meta property="og:description" content="git 合并分支，提交历史相关处理，如何保证一条干净的master分支提交历史">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/1.png">
+<meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/2.png">
+<meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/3.png">
+<meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/4.png">
+<meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/5.png">
+<meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/6.png">
+<meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/7.png">
+<meta property="article:published_time" content="2020-06-17T08:27:20.000Z">
+<meta property="article:modified_time" content="2020-12-08T10:07:47.957Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/1.png">
+
+<link rel="canonical" href="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Git rebase 理解及使用 | ALL-Nothing</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ALL-Nothing</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ZYP">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ALL-Nothing">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git rebase 理解及使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-17 16:27:20" itemprop="dateCreated datePublished" datetime="2020-06-17T16:27:20+08:00">2020-06-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-08 18:07:47" itemprop="dateModified" datetime="2020-12-08T18:07:47+08:00">2020-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">Git代码管理</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+            <div class="post-description">git 合并分支，提交历史相关处理，如何保证一条干净的master分支提交历史</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="什么是git-rebase"><a href="#什么是git-rebase" class="headerlink" title="什么是git rebase"></a>什么是git rebase</h2><p>官方描述</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“git-rebase: Forward-port local commits to the updated upstream head”— git doc</span><br></pre></td></tr></table></figure>
+<p>翻译一下，主要用在从上游分支获取最新commit信息，并有机的将当前分支和上游分支进行合并</p>
+<p>PS： gitrebase并不会删除老的提交，也就是说你在对某个分支执行了rebase操作之后，老的提交仍然会存放在.git文件夹的objects目录下</p>
+<h2 id="使用rebase意义"><a href="#使用rebase意义" class="headerlink" title="使用rebase意义"></a>使用rebase意义</h2><p>1.使用git log时，可以看到一个更整洁commit 历史树；</p>
+<p>2.对于git工作流，commit数要多而有意义，这样review 代码速度加快，而且commit 都是有意义的，而且利于回退；</p>
+<p>3.很多人的分支提交历史经常是fix，fix, fix agian,好的commit应该反映出项目的一步步开发。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/1.png" alt="1"></p>
+<p> 如上图所示，C1是线上的版本，在C1的代码上线了之后我们发现了一个bug，于是我们checkout了一个叫做bugFix的分支。与此同时还有新的功能在开发，新的功能提交到了master之后形成了节点C2。这个时候我们在bugFix分支当然可以merge master这没有什么问题，但是也可以rebase master，rebase之后整棵git树会变成这样：</p>
+<p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/2.png" alt="2"></p>
+<p> 这个结果就好像是我们先到了C2然后checkout出了bugFix分支，然后在bugFix分支上将之前写过的代码重新写了一遍。这样的操作就是变基，当我们rebase了之后再提交合并请求我们的合并记录里面会非常干净，没有多余merge的信息。</p>
+<p>操作命令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	git checkout bugFix</span><br><span class="line">git rebase master</span><br><span class="line">git checkout master</span><br><span class="line">git merge bugFix</span><br></pre></td></tr></table></figure>
+<p>前两步也可以直接写，直接在master分支执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase master bugFix</span><br></pre></td></tr></table></figure>
+<p>它会先checkout到bugFix分支然后执行rebase master的操作，之后我们再checkout到master进行合并即可</p>
+<p>更复杂一点<br><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/3.png" alt="3"></p>
+<p>master是正常的线上分支，在C2节点处代码上线。上线之后继续开发新的需求checkout了新的分支feature，与此同时master也经过了一些合并，合并了另外的一些改动到了C4节点。之后新的分支feature开发完成了一个重要性能提升的改动C5，这时，我们发现了线上代码的一个bug并且性能不佳，我们需要紧急修复。于是在C5处checkout了新的分支bugFix，我们在bugFix分支当中修复了bug，想要发布上线。<br>这时候feature分支继续开发到了C6节点，仍然没有开发完成，也没有经过系统测试。所以我们并不希望C6的代码发布上线，我们希望合并进入master的代码之后C5，C7和C8。我们只需要在bugFix分支rebase到master，然后修复冲突之后提交。提交完成了之后，我们再checkout到master把bugFix分支merge进来<br>结果如下：</p>
+<p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/4.png" alt="4"></p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="远程代码同步使用-pull-–rebase"><a href="#远程代码同步使用-pull-–rebase" class="headerlink" title="远程代码同步使用 pull –rebase"></a>远程代码同步使用 pull –rebase</h3><p>当我们项目多人在同一个分支开发时，不可避免在你要提交代码之前有人已往远程仓库提交代码。当我们push时，提示你先pull，如果我们直接pull，有冲突的情况我们需要解决冲突，没有冲突的情况自动合并，不管哪种情况我们都会产生一条新的提交记录</p>
+<p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/5.png" alt="5"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase</span><br></pre></td></tr></table></figure>
+<p> 可以避免这一条记录产生</p>
+<p>如果是两人同时修改一个文件而产生了冲突，解决冲突后</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  git add .</span><br><span class="line">git rebase --<span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+<p>通过git log查看，会发现修改会放到最新的修改之后，一条线顺延，不会有多余的commit记录</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   git pull --rebase 当需要进行pull代码时候，使用这个命令，可以不生成merge branch 的log</span><br><span class="line"></span><br><span class="line">git rebase --<span class="keyword">continue</span> 当冲突问题解决之后可以使用git add .再使用该命令继续完成</span><br><span class="line"></span><br><span class="line">git rebase --abort 当前的commit会回到rebase操作之前的状态。</span><br><span class="line"></span><br><span class="line">git rebase --skip 如果你想丢弃该条引起冲突的commits，可以使用该命令，慎用；</span><br></pre></td></tr></table></figure>
+
+<p>git pull实际执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">   git pull的默认行为是git fetch + git merge</span><br><span class="line">git pull --rebase则是git fetch + git rebase.</span><br></pre></td></tr></table></figure>
+
+<h3 id="整合分支"><a href="#整合分支" class="headerlink" title="整合分支"></a>整合分支</h3><p>一般的merge工作流程是这样的：</p>
+<p>在当前你的master分支切出一个新分支test,增加一个文件，而此时master上有个小东西需要直接改一下，你接下来切回master分支，你修改了一些提交commit 并push远程。之后回到test分支继续开发完成，之后commit提交”测试合并”,push远程。</p>
+<p>接下来，test分支没问题了，你需要合并test分支到master。通常我们最多的是在master分支上使用git merge test 命令，这时master会产生一条新的commit记录，默认叫 Merge branch ‘test’.你可以修改它，之后push远程。</p>
+<p>整合分支要显示整洁的代码提交记录</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   git checkout -b test    #在test 的 branch 上添加一个文件</span><br><span class="line">   git commit</span><br><span class="line">git rebase master  之后回master分支，</span><br><span class="line">git merge test进行一次快进合并.</span><br></pre></td></tr></table></figure>
+<p>使用git log 查看test上的commit记录，和上面直接使用merge的方式不同，会少一条merge记录。</p>
+<p>这两种整合方法的最终结果没有任何区别，但是变基使得提交历史更加整洁</p>
+<h3 id="合并多个commit"><a href="#合并多个commit" class="headerlink" title="合并多个commit"></a>合并多个commit</h3><p>在一个分支为了解决一个问题，进行了多次commit，则会有多条commit记录，显得杂而乱</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i [startpoint] [endpoint]</span><br><span class="line">其中-i的意思是--interactive，即弹出交互式的界面让用户编辑完成合并操作，</span><br><span class="line">[startpoint] [endpoint]则指定了一个编辑区间，如果不指定[endpoint]，则该区间的终点默认是当前分支HEAD所指向的commit(注：该区间指定的是一个前开后闭的区间)</span><br><span class="line">git rebase -i f4c477^ （使用^表示从该commitid开始）</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>会有如下的交互提示，进入编辑页面</p>
+<p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/6.png" alt="6"></p>
+<p>pick：保留该commit（缩写:p）<br>reword：保留该commit，但我需要修改该commit的注释（缩写:r）<br>edit：保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）<br>squash：将该commit和前一个commit合并（缩写:s）<br>fixup：将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）<br>exec：执行shell命令（缩写:x）<br>drop：我要丢弃该commit（缩写:d）</p>
+<p>然后对commit内容进行修改，对需要合并的commit进行s操作合并，缩写即可</p>
+<p>：wq保存后，会进入另一个编辑页面</p>
+<p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/7.png" alt="7"></p>
+<p>编辑commit信息，然后保存</p>
+<h3 id="git-rebase-–onto-A-B-C-的用法"><a href="#git-rebase-–onto-A-B-C-的用法" class="headerlink" title="git rebase –onto A B C 的用法"></a>git rebase –onto A B C 的用法</h3><p>A : 是一个分支名称（代表此分支的 HEAD）或者是一个 commit_id (此 id 不在 C 上)<br>B : 一个分支名称（此分支与 C 有共同的祖先 commit）或者是一个 commit_id (此 id 在 C 上)<br>C : 一个分支名称</p>
+<p>命令的作用：       </p>
+<ol>
+<li>首先会执行 git checkout 切换到 C       </li>
+<li> 将 B 到 C(HEAD) 之间所标识范围内的提交写到一个临时文件中 ，若B 为分支名称，则找 B 与 C 共同的祖先 commit，则为此 commit 到 C(HEAD) 之间所标识范围内的提交。       </li>
+<li> 将当前分支强制重置（git reset –hard）到 A       </li>
+<li> 从2中临时文件的提交列表中，一个一个将提交按照顺序重新提交到重置之后的分支上<br>注：       </li>
+<li>如果遇到提交已经在分支中包含，跳过该提交。       </li>
+<li>如果在提交过程遇到冲突，衍合过程暂停。用户解决冲突后，执行 git rebase –continue 继续变基操作。或者执行 git rebase –skip 跳过此提交。或者执行 git rebase –abort 就此终止变基操作切换到变基前的分支上。       </li>
+<li>衍合操作结束后，当前分支为 C</li>
+</ol>
+<h2 id="注意-使用法则"><a href="#注意-使用法则" class="headerlink" title="注意-使用法则"></a>注意-使用法则</h2><p>不要通过rebase对任何已经提交到公共仓库中的commit进行修改,自己一个人玩的分支除外.</p>
+<p>只要你把变基命令当作是在推送前清理提交使之整洁的工具，并且只在从未推送至共用仓库的提交上执行变基命令，就不会有事。假如在那些已经被推送至共用仓库的提交上执行变基命令，并因此丢弃了一些别人的开发所基于的提交，那你就麻烦了.</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>ZYP
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/" title="Git rebase 理解及使用">http://zypuu.com/2020/06/17/Git rebase理解及使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/16/%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E7%BA%AF%E6%95%B0%E5%AD%97%E7%BB%84%E6%88%90/" rel="prev" title="判断字符串是否由纯数字组成">
+      <i class="fa fa-chevron-left"></i> 判断字符串是否由纯数字组成
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/20/%E5%AD%97%E5%85%B8%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E5%80%BCdefault/" rel="next" title="字典设置默认值 defaultdict">
+      字典设置默认值 defaultdict <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFgit-rebase"><span class="nav-number">1.</span> <span class="nav-text">什么是git rebase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8rebase%E6%84%8F%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">使用rebase意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E5%90%8C%E6%AD%A5%E4%BD%BF%E7%94%A8-pull-%E2%80%93rebase"><span class="nav-number">4.1.</span> <span class="nav-text">远程代码同步使用 pull –rebase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E5%88%86%E6%94%AF"><span class="nav-number">4.2.</span> <span class="nav-text">整合分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AAcommit"><span class="nav-number">4.3.</span> <span class="nav-text">合并多个commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-rebase-%E2%80%93onto-A-B-C-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">4.4.</span> <span class="nav-text">git rebase –onto A B C 的用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F-%E4%BD%BF%E7%94%A8%E6%B3%95%E5%88%99"><span class="nav-number">5.</span> <span class="nav-text">注意-使用法则</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        <link rel="stylesheet" href="/dist/APlayer.min.css">
+        <div id="aplayer"></div>
+        <script type="text/javascript" src="/dist/APlayer.min.js"></script>
+        <script type="text/javascript" src="/dist/music.js"></script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYP</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">59k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">54 mins.</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+  <script src="/js/snowfall.jquery.js"></script> 
+  <script>
+      $(document).snowfall('clear');
+      $(document).snowfall({
+          image: "/images/yumao.png",
+          flakeCount:15,
+          minSize: 5,
+          maxSize: 25
+      });
+  </script>
+    </div>
+
+  <!-- 页面点击小红心 -->
+
+</body>
+</html>
