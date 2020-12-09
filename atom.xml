@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-02T05:55:29.357Z</updated>
+  <updated>2020-12-09T10:16:45.961Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,90 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>删除排序数组中的重复项</title>
+    <link href="http://zypuu.com/2020/12/09/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/"/>
+    <id>http://zypuu.com/2020/12/09/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/</id>
+    <published>2020-12-09T07:40:00.000Z</published>
+    <updated>2020-12-09T10:16:45.961Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给定一个排序数组，你需要在 原地 删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。</p><p>不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。</p><p>给定 nums = [0,0,1,1,1,2,2,3,3,4],</p><p>函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。</p><p>你不需要考虑数组中超出新长度后面的元素。</p><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>首先注意数组是有序的，那么重复的元素一定会相邻。</p><p>要求删除重复元素，实际上就是将不重复的元素移到数组的左侧。</p><p>考虑用 2 个指针，一个在前记作a，一个在后记作 b，算法流程如下：</p><p>比较 a 和 b 位置的元素是否相等。</p><p>如果相等，b 后移 1 位<br>如果不相等，将 a 位置的元素复制到 a+1 位置上，a 后移一位，b 后移 1 位<br>重复上述过程，直到 b 等于数组长度。</p><p>返回 a + 1，即为新数组长度。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func removeDuplicates(nums []int) int &#123;</span><br><span class="line">    <span class="keyword">if</span> len(nums) == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    a, <span class="attr">b</span> := <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> ;b &lt; len(nums);b++ &#123;</span><br><span class="line">        <span class="keyword">if</span> b == <span class="function"><span class="title">len</span>(<span class="params">nums</span>)</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> nums[b]!=nums[a] &#123;</span><br><span class="line">            nums[a+<span class="number">1</span>] = nums[b]</span><br><span class="line">            a++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a+<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">给定排序数组，原地删除重复元素</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>斐波那契数列</title>
+    <link href="http://zypuu.com/2020/12/09/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/"/>
+    <id>http://zypuu.com/2020/12/09/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/</id>
+    <published>2020-12-09T03:10:00.000Z</published>
+    <updated>2020-12-09T07:02:56.407Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Fib"><a href="#Fib" class="headerlink" title="Fib"></a>Fib</h2><p>0, 1, 1, 2, 3, 5, 8, 13, 21 ……</p><p>数学公式： F(n) = F(n - 1) + F(n - 2)</p><h2 id="爬楼梯问题"><a href="#爬楼梯问题" class="headerlink" title="爬楼梯问题"></a>爬楼梯问题</h2><p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。</p><p>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p><p>注意：给定 n 是一个正整数。</p><p>类似：青蛙跳台阶</p><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p>f(x)=f(x−1)+f(x−2)</p><p>每次只能爬1级或2级，所以f(x)只能从f(x−1)和f(x−2)转移过来，而这里要统计方案总数，我们就需要对这两项的贡献求和。</p><p>以上是动态规划的转移方程，下面我们来讨论边界条件。我们是从第0级开始爬的，所以从第0级爬到第0级我们可以看作只有一种方案，即f(0)=1从第0级到第1级也只有一种方案，即爬一级，f(1)=1。这两个作为边界条件就可以继续向后推导出第n 级的正确结果。我们不妨写几项来验证一下，根据转移方程得到f(2)=2，f(3)=3，f(4)=5……我们把这些情况都枚举出来，发现计算的结果是正确的。</p><p>符合斐波那契数列规律,这里形成的数列正好是斐波那契数列，答案要求的f(n 即是斐波那契数列的第n项（下标从0开始）</p><p>我们不难通过转移方程和边界条件给出一个时间复杂度和空间复杂度都是(n) 的实现，但是由于这里的f(x) 只和f(x−1)与f(x−2) 有关，所以我们可以用「滚动数组思想」把空间复杂度优化成 O(1)</p><h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func Fib(n int) []int &#123;</span><br><span class="line">  dp := make([]int, n+<span class="number">1</span>)</span><br><span class="line">  dp[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">  dp[<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">  <span class="keyword">for</span> i:=<span class="number">2</span>; i&lt;=n; i++ &#123;</span><br><span class="line">    dp[i] = dp[i-<span class="number">2</span>] + dp[i-<span class="number">1</span>]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>时间复杂度：O(n)<br>空间复杂度：O(n)</p><h4 id="常数-优化"><a href="#常数-优化" class="headerlink" title="常数(优化)"></a>常数(优化)</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func Fib(n int) int &#123;</span><br><span class="line">    p, q, <span class="attr">r</span> := <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= n; i++ &#123;</span><br><span class="line">        p = q</span><br><span class="line">        q = r</span><br><span class="line">        r = p + q</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>用常数作辅助中间变量，时间复杂度为O(n),空间复杂度为(1)</p><p>该方法适用于n比较小的时候，n比较大的时候，复杂度就会比较高</p><h3 id="递归方法"><a href="#递归方法" class="headerlink" title="递归方法"></a>递归方法</h3><h4 id="直接递归"><a href="#直接递归" class="headerlink" title="直接递归"></a>直接递归</h4><p>直接利用斐波那契公式即可</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func Fib(i int) int &#123;</span><br><span class="line"><span class="keyword">if</span> i &lt; <span class="number">2</span> &#123;</span><br><span class="line"><span class="keyword">return</span> i</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> Fib(i-<span class="number">1</span>) + Fib(i-<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>递归方法虽然可以得到斐波那契数列，但是分析它的时间复杂度，</p><p>画出递归树(状态树)</p><p><img src="/2020/12/09/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/1.png" alt="1"></p><p>直接递归的时间复杂度是2^n次方<br>空间复杂度为递归深度是O(n)<br>可以发现有很多重复的计算部分，有些结果不只计算了一次</p><h4 id="记忆化递归"><a href="#记忆化递归" class="headerlink" title="记忆化递归"></a>记忆化递归</h4><p>将中间结果进行缓存,可以加速程序执行</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = map[int]int&#123;<span class="number">1</span>:<span class="number">1</span>,<span class="number">2</span>:<span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line">func Fib(n int, c map[int]int) int &#123;</span><br><span class="line">  <span class="keyword">if</span> _, <span class="attr">ok</span> := a[n]; !ok &#123;</span><br><span class="line">    a[n] = Fib(n-<span class="number">1</span>, a) + Fib(n-<span class="number">2</span>, a)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a[n]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>申请了一块长度为n的map<br>所以<br>时间复杂度:O(n)<br>空间复杂度:O(n)<br>相比直接递归，缩短了程序执行时间</p>]]></content>
+    
+    
+    <summary type="html">斐波那契数列，普通计算方式，递归，相关复杂度优化， 爬楼梯问题，动态规划</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>求和计算累加</title>
+    <link href="http://zypuu.com/2020/12/09/%E6%B1%82%E5%92%8C%E8%AE%A1%E7%AE%97%E7%B4%AF%E5%8A%A0/"/>
+    <id>http://zypuu.com/2020/12/09/%E6%B1%82%E5%92%8C%E8%AE%A1%E7%AE%97%E7%B4%AF%E5%8A%A0/</id>
+    <published>2020-12-09T02:58:00.000Z</published>
+    <updated>2020-12-09T03:07:58.617Z</updated>
+    
+    <content type="html"><![CDATA[<p>计算： 1+2+3+4+5…..+n</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>;i &lt;= n; i++ &#123;</span><br><span class="line">a += i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>循环n次，时间复杂度为O(n)</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = n*(n+<span class="number">1</span>)/<span class="number">2</span></span><br></pre></td></tr></table></figure><p>执行1次，时间复杂度为O(1)</p>]]></content>
+    
+    
+    <summary type="html">求和计算累加复杂度分析</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>时间复杂度与空间复杂度</title>
+    <link href="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/"/>
+    <id>http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/</id>
+    <published>2020-12-08T10:14:00.000Z</published>
+    <updated>2020-12-09T02:57:33.281Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>算法：解决特定问题的步骤的描述<br>特性：<br>—输入：有零个输入或者多个输<br>—输出：只有一个或者多个输出<br>—有穷型性：算法在执行有限个步骤时，会自动结束而不会陷入无限循环里面<br>—确定性：算法的每一步都有确定的含义而不会出现二义性<br>—可行性：算法的每一步都可以通过有限次数完成。</p><p>要求：<br>正确性、可读性、健壮性、时间效率高而且空间使用率低、简单性。<br>算法的复杂度分为时间复杂度和空间复杂度。</p><h2 id="时间复杂度Big-O-Notation"><a href="#时间复杂度Big-O-Notation" class="headerlink" title="时间复杂度Big O Notation"></a>时间复杂度Big O Notation</h2><p>时间复杂度实际上是一个函数，代表基本操作重复执行的次数，进而分析函数虽变量的变化来确定数量级，数量级用O表示</p><p>「 大O符号表示法 」，即 T(n) = O(f(n))</p><p>其中f(n) 表示每行代码执行次数之和，而 O 表示正比例关系，这个公式的全称是：算法的渐进时间复杂度</p><p>常见的时间复杂度量级有：</p><p>常数阶O(1)<br>对数阶O(logN)<br>线性阶O(n)<br>线性对数阶O(nlogN)<br>平方阶O(n²)<br>立方阶O(n³)<br>K次方阶O(n^k)<br>指数阶(2^n)</p><p>PS： 并列运行的为同级复杂度</p><p><img src="/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/1.png" alt="1"></p><h2 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h2><p>是对一个算法在运行过程中临时占用存储空间的度量，一个算法在计算机存储器上所占用的存储空间包括存储算法本身所占用的空间，算数和输入输出所占用的存储空间以及临时占用存储空间三个部分。</p><p>算法的输入输出数据所占用的存储空间是由待解决的问题来决定的，通过参数表由调用函数而来，它随本算法的不同而改变，存储算法本身所占用的存储空间有算法的书写长短成正比。算法在运行过程中占用的临时空间由不同的算法决定。</p><p>1、数组</p><p>2、递归深度</p>]]></content>
+    
+    
+    <summary type="html">算法基础，关于时间复杂度与空间复杂度的理解</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>关于Linux buff/cache缓存处理</title>
@@ -349,90 +433,6 @@
     
     
     <category term="websocket" scheme="http://zypuu.com/tags/websocket/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git查看文件历史</title>
-    <link href="http://zypuu.com/2019/03/04/Git%E6%9F%A5%E7%9C%8B%E8%AE%B0%E5%BD%95%E7%9B%B8%E5%85%B3/"/>
-    <id>http://zypuu.com/2019/03/04/Git%E6%9F%A5%E7%9C%8B%E8%AE%B0%E5%BD%95%E7%9B%B8%E5%85%B3/</id>
-    <published>2019-03-04T13:21:03.000Z</published>
-    <updated>2020-12-01T06:00:07.136Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="显示commit历史，以及每次commit发生变更的文件"><a href="#显示commit历史，以及每次commit发生变更的文件" class="headerlink" title="显示commit历史，以及每次commit发生变更的文件"></a>显示commit历史，以及每次commit发生变更的文件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --stat</span><br></pre></td></tr></table></figure><h4 id="搜索提交历史，根据关键词"><a href="#搜索提交历史，根据关键词" class="headerlink" title="搜索提交历史，根据关键词"></a>搜索提交历史，根据关键词</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log -S [keyword]</span><br></pre></td></tr></table></figure><h4 id="显示某个commit之后的所有变动，每个commit占据一行"><a href="#显示某个commit之后的所有变动，每个commit占据一行" class="headerlink" title="显示某个commit之后的所有变动，每个commit占据一行"></a>显示某个commit之后的所有变动，每个commit占据一行</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log [tag] HEAD --pretty=format:%s</span><br></pre></td></tr></table></figure><h4 id="显示某个commit之后的所有变动，其”提交说明”必须符合搜索条件"><a href="#显示某个commit之后的所有变动，其”提交说明”必须符合搜索条件" class="headerlink" title="显示某个commit之后的所有变动，其”提交说明”必须符合搜索条件"></a>显示某个commit之后的所有变动，其”提交说明”必须符合搜索条件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log [tag] HEAD --grep feature</span><br></pre></td></tr></table></figure><h4 id="显示某个文件的版本历史，包括文件改名"><a href="#显示某个文件的版本历史，包括文件改名" class="headerlink" title="显示某个文件的版本历史，包括文件改名"></a>显示某个文件的版本历史，包括文件改名</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log --follow [file]</span><br><span class="line">git whatchanged [file]</span><br></pre></td></tr></table></figure><h4 id="显示指定文件相关的每一次diff"><a href="#显示指定文件相关的每一次diff" class="headerlink" title="显示指定文件相关的每一次diff"></a>显示指定文件相关的每一次diff</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log -p [file]</span><br></pre></td></tr></table></figure><h4 id="显示过去5次提交"><a href="#显示过去5次提交" class="headerlink" title="显示过去5次提交"></a>显示过去5次提交</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log -<span class="number">5</span> --pretty --oneline</span><br></pre></td></tr></table></figure><h4 id="显示所有提交过的用户，按提交次数排序"><a href="#显示所有提交过的用户，按提交次数排序" class="headerlink" title="显示所有提交过的用户，按提交次数排序"></a>显示所有提交过的用户，按提交次数排序</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git shortlog -sn</span><br></pre></td></tr></table></figure><h4 id="显示指定文件是什么人在什么时间修改过"><a href="#显示指定文件是什么人在什么时间修改过" class="headerlink" title="显示指定文件是什么人在什么时间修改过"></a>显示指定文件是什么人在什么时间修改过</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame [file]</span><br></pre></td></tr></table></figure><h4 id="显示暂存区和工作区的代码差异"><a href="#显示暂存区和工作区的代码差异" class="headerlink" title="显示暂存区和工作区的代码差异"></a>显示暂存区和工作区的代码差异</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure><h4 id="显示暂存区和上一个commit的差异"><a href="#显示暂存区和上一个commit的差异" class="headerlink" title="显示暂存区和上一个commit的差异"></a>显示暂存区和上一个commit的差异</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached [file]</span><br></pre></td></tr></table></figure><h4 id="显示工作区与当前分支最新commit之间的差异"><a href="#显示工作区与当前分支最新commit之间的差异" class="headerlink" title="显示工作区与当前分支最新commit之间的差异"></a>显示工作区与当前分支最新commit之间的差异</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff HEAD</span><br></pre></td></tr></table></figure><h4 id="显示两次提交之间的差异"><a href="#显示两次提交之间的差异" class="headerlink" title="显示两次提交之间的差异"></a>显示两次提交之间的差异</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff [first-branch]...[second-branch]</span><br></pre></td></tr></table></figure><h4 id="显示今天你写了多少行代码"><a href="#显示今天你写了多少行代码" class="headerlink" title="显示今天你写了多少行代码"></a>显示今天你写了多少行代码</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --shortstat <span class="string">&quot;@&#123;0 day ago&#125;&quot;</span></span><br></pre></td></tr></table></figure><h4 id="显示某次提交的元数据和内容变化"><a href="#显示某次提交的元数据和内容变化" class="headerlink" title="显示某次提交的元数据和内容变化"></a>显示某次提交的元数据和内容变化</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show [commit]</span><br></pre></td></tr></table></figure><h4 id="显示某次提交发生变化的文件"><a href="#显示某次提交发生变化的文件" class="headerlink" title="显示某次提交发生变化的文件"></a>显示某次提交发生变化的文件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show --name-only [commit]</span><br></pre></td></tr></table></figure><h4 id="显示某次提交时，某个文件的内容"><a href="#显示某次提交时，某个文件的内容" class="headerlink" title="显示某次提交时，某个文件的内容"></a>显示某次提交时，某个文件的内容</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show [commit]:[filename]</span><br></pre></td></tr></table></figure><h4 id="显示当前分支的最近几次提交"><a href="#显示当前分支的最近几次提交" class="headerlink" title="显示当前分支的最近几次提交"></a>显示当前分支的最近几次提交</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure><h4 id="从本地master拉取代码更新当前分支：branch-一般为master"><a href="#从本地master拉取代码更新当前分支：branch-一般为master" class="headerlink" title="从本地master拉取代码更新当前分支：branch 一般为master"></a>从本地master拉取代码更新当前分支：branch 一般为master</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase [branch]</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">git代码管理，分支，常用命令</summary>
-    
-    
-    
-    <category term="Git代码管理" scheme="http://zypuu.com/categories/Git%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86/"/>
-    
-    
-    <category term="git" scheme="http://zypuu.com/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>sql进程锁表问题</title>
-    <link href="http://zypuu.com/2019/01/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E8%A1%A8%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
-    <id>http://zypuu.com/2019/01/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E8%A1%A8%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</id>
-    <published>2019-01-10T01:10:00.000Z</published>
-    <updated>2020-12-02T02:20:02.731Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="解决锁表问题，杀进程"><a href="#解决锁表问题，杀进程" class="headerlink" title="解决锁表问题，杀进程"></a>解决锁表问题，杀进程</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM information_schema.processlist</span><br><span class="line"># 查询正在进行的进程，然后kill掉</span><br><span class="line"></span><br><span class="line">show processlist 命令行操作</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">mysql数据库工具。</summary>
-    
-    
-    
-    <category term="数据库" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-    <category term="Mysql" scheme="http://zypuu.com/tags/Mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于ubuntu18下docker无法启动服务的问题解决</title>
-    <link href="http://zypuu.com/2018/10/14/%E5%85%B3%E4%BA%8Eubuntu18%E4%B8%8Bdocker%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    <id>http://zypuu.com/2018/10/14/%E5%85%B3%E4%BA%8Eubuntu18%E4%B8%8Bdocker%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</id>
-    <published>2018-10-14T02:08:22.000Z</published>
-    <updated>2018-10-14T03:05:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>近日在最新版本的Ubuntu下安装docker，配置指定安全参数ip（<code>--insecure -registry</code>），并启动docker服务的时候，遇到无法启动的问题，通过查看启动日志<br>查看启动日志</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure><p>查看docker.service的启动日志，发现如下错误</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Failed to start Docker Application Container Engine</span><br></pre></td></tr></table></figure><h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="修改docker启动默认配置文件"><a href="#修改docker启动默认配置文件" class="headerlink" title="修改docker启动默认配置文件"></a>修改docker启动默认配置文件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim etc/<span class="keyword">default</span>/docker</span><br></pre></td></tr></table></figure><p>vim打开这个文件，找到</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOCKER_OPTS = ......</span><br></pre></td></tr></table></figure><p>在这一行打开注释，添加自己的安全参数，ip等信息，然后保存退出。</p><h4 id="修改docker启动服务文件"><a href="#修改docker启动服务文件" class="headerlink" title="修改docker启动服务文件"></a>修改docker启动服务文件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim  /lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure><p>vim打开docker启动服务文件</p><p>在里面添加指定环境文件</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EnvironmentFile = -/etc/default/docker # 就是第一步修改的文件</span><br></pre></td></tr></table></figure><p>然后下一行找到</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Execstart = <span class="regexp">/usr/</span>bin dockerd -H fd:<span class="comment">// $DOCKER_OPTS </span></span><br></pre></td></tr></table></figure><p>即加载第一步环境文件里的DOCKER_OPTS，自己指定的insecure registry.</p><h4 id="删除其他默认的加载"><a href="#删除其他默认的加载" class="headerlink" title="删除其他默认的加载"></a>删除其他默认的加载</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm /etc/systemd/system/docke.service.d</span><br><span class="line">rm /etc/docker/daemon.json</span><br></pre></td></tr></table></figure><p>删除这两个文件，不删除，会加载这两个文件里的配置</p><h4 id="重新启动docker服务"><a href="#重新启动docker服务" class="headerlink" title="重新启动docker服务"></a>重新启动docker服务</h4><p>重新启动</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon -reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure><p>查看docker进程</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep docker</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">docker服务启动问题</summary>
-    
-    
-    
-    <category term="环境安装" scheme="http://zypuu.com/categories/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"/>
-    
-    
-    <category term="Linux,docker" scheme="http://zypuu.com/tags/Linux-docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于数据库redis与Mysql的区别以及在web开发中的配合使用</title>
-    <link href="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/"/>
-    <id>http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/</id>
-    <published>2018-08-18T13:51:28.000Z</published>
-    <updated>2020-12-02T06:13:48.601Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="传统型关系数据库Mysql的瓶颈"><a href="#传统型关系数据库Mysql的瓶颈" class="headerlink" title="传统型关系数据库Mysql的瓶颈"></a>传统型关系数据库Mysql的瓶颈</h3><p>在互联网领域，MySQL作为一款关系型数据库为互联网的发展做出了卓越的贡献。然而随着互联网的发展，在大数据量高并发的环境下，应用开发也越来越复杂，具有很强的技术挑战性。分表分库子库等无不在增加数据库结构的复杂程度。MySQL数据库也经常存储一些大文本字段，导致数据库表非常的大，在做数据库恢复的时候就导致非常的慢，不容易快速恢复数据库。比如1000万4KB大小的文本就接近40GB的大小，如果能把这些数据从MySQL省去，MySQL将变得非常的小。<br><br>关系数据库很强大，但是它并不能很好的应付所有的应用场景。MySQL的扩展性差，大数据下IO压力大，表结构更改困难。</p><h3 id="Nosql与redis"><a href="#Nosql与redis" class="headerlink" title="Nosql与redis"></a>Nosql与redis</h3><p>NoSQL最常见的解释是“non-relational”，“Not Only SQL”也被很多人接受，指的是非关系型的数据库。</p><h4 id="Nosql的优势"><a href="#Nosql的优势" class="headerlink" title="Nosql的优势"></a>Nosql的优势</h4><p>易扩展：NoSQL数据库种类繁多，但是一个共同的特点都是去掉关系数据库的关系型特性。数据之间无关系，这样就非常容易扩展。<br>大数据量，高性能：NoSQL数据库都具有非常高的读写性能，尤其在大数据量下，同样表现优秀。这得益于它的无关系性，数据库的结构简单<br>灵活的数据模型：NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式。而在关系数据库里，增删字段是一件非常麻烦的事情。如果是非常大数据量的表，增加字段简直就是一个噩梦<br>高可用：NoSQL在不太影响性能的情况，就可以方便的实现高可用的架构。</p><h4 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h4><p>Redis是一个开源（BSD许可）的、内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。<br>redis是一个高性能的key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sortedset–有序集合)和hash（哈希类型）。redis的出现，很大程度补偿了memcached这类key/value存储的不足，在部分场合可以对关系数据库起到很好的补充作用。它提供了Python，Ruby，Erlang，PHP客户端，使用很方便<br>Redis支持主从同步。数据可以从主服务器向任意数量的从服务器上同步，从服务器可以是关联其他从服务器的主服务器。这使得Redis可执行单层树复制。从盘可以有意无意的对数据进行写操作。由于完全实现了发布/订阅机制，使得从数据库在任何地方同步树时，可订阅一个频道并接收主服务器完整的消息发布记录。同步对读取操作的可扩展性和数据冗余很有帮助。</p><h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>NoSQL数据库的出现，弥补了关系数据（比如MySQL）在某些方面的不足，在某些方面能极大的节省开发成本和维护成本<br>MySQL和NoSQL都有各自的特点和使用的应用场景，两者的紧密结合将会给数据库发展带来新的思路。让关系数据库关注在关系上，NoSQL关注在存储上。</p><h3 id="利用redis做mysql的缓存"><a href="#利用redis做mysql的缓存" class="headerlink" title="利用redis做mysql的缓存"></a>利用redis做mysql的缓存</h3><p>前面部分已经介绍mysql的瓶颈，当网站的处理和访问量非常大的时候，我们的数据库的压力就变大了，数据库的连接池，数据库同时处理数据的能力就会受到很大的挑战，一旦数据库承受了其最大承受能力，网站的数据处理效率就会大打折扣。此时就要使用高并发处理、负载均衡和分布式数据库，而这些技术既花费人力，又花费资金。</p><h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><p><img src="/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/1.jpg" alt="1"></p><p>页面缓存经常用在CMS(content manage system)内存管理系统里面。<br>数据缓存经常会用在页面的具体数据里面。</p><h4 id="Redis缓存原理"><a href="#Redis缓存原理" class="headerlink" title="Redis缓存原理"></a>Redis缓存原理</h4><p>采用redis nosql数据库作为Mysql数据库的缓存，在查找的时候，首先查找redis缓存，如果找到则返回结果；如果在redis中没有找到，那么查找Mysql数据库，找到的花则返回结果并且更新redis；如果没有找到则返回空。</p><p><img src="/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/2.jpg" alt="2"></p><p>对于写入：用户增删改数据库，先访问mysql，mysql再把数据更新到redis。</p><p>Mysql中的数据都是按表存储的；更微观地看，这些表都是按行存储的。每执行一次select查询，Mysql都会返回一个结果集，这个结果集由若干行组成。所以，一个自然而然的想法就是在Redis中找到一种对应于Mysql行的数据结构。<br>Redis中提供了五种基本数据结构，即字符串（string）、列表（list）、哈希（hash）、集合（set）和有序集合（sorted set）。经过调研，发现适合存储行的数据结构有两种，即string和hash。</p><p>用户的缓存数据在返回时一般都是JSON的字典格式，对应的存到redis里就是hash格式，这个与python的字典是相对应的。</p><table><thead><tr><th>redis中的hash</th><th>python中的字典</th></tr></thead><tbody><tr><td><font color="#000000">key</font></td><td><font color="#000000">对象</font></td></tr><tr><td><font color="#000000">field</font></td><td><font color="#000000">key</font></td></tr><tr><td><font color="#000000">value</font></td><td><font color="#000000">value</font></td></tr><tr><td>即hash会根据要缓存的数据生成唯一标识UUID，UUID作为键，用户的字典数据中的键值对作为UUID键的值，存储到redis中。</td><td></td></tr></tbody></table>]]></content>
-    
-    
-    <summary type="html">redis与mysql的优缺点分析，以及在web中的配合使用</summary>
-    
-    
-    
-    <category term="数据库" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-    <category term="数据库,redis,mysql" scheme="http://zypuu.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-redis-mysql/"/>
     
   </entry>
   
