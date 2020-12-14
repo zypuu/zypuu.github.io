@@ -30,7 +30,7 @@
 <meta property="og:description" content="求和计算累加复杂度分析">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-09T02:58:00.000Z">
-<meta property="article:modified_time" content="2020-12-09T03:07:58.617Z">
+<meta property="article:modified_time" content="2020-12-10T06:59:10.851Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -215,10 +215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-12-09 10:58:00 / Modified: 11:07:58" itemprop="dateCreated datePublished" datetime="2020-12-09T10:58:00+08:00">2020-12-09</time>
+              <time title="Created: 2020-12-09 10:58:00" itemprop="dateCreated datePublished" datetime="2020-12-09T10:58:00+08:00">2020-12-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-10 14:59:10" itemprop="dateModified" datetime="2020-12-10T14:59:10+08:00">2020-12-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>47</span>
+              <span>51</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -255,8 +261,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>计算： 1+2+3+4+5…..+n</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>;i &lt;= n; i++ &#123;</span><br><span class="line">	a += i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>计算： 1+2+3+4+5…..+n</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>;i &lt;= n; i++ &#123;</span><br><span class="line">	a += i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>循环n次，时间复杂度为O(n)</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = n*(n+<span class="number">1</span>)/<span class="number">2</span></span><br></pre></td></tr></table></figure>
 <p>执行1次，时间复杂度为O(1)</p>
@@ -361,6 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -376,7 +383,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -437,12 +444,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">61k</span>
+    <span title="Symbols count total">62k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">55 mins.</span>
+    <span title="Reading time total">57 mins.</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
