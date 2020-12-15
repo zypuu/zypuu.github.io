@@ -30,7 +30,7 @@
 <meta property="og:description" content="关于二叉树的前序遍历方法">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-10T10:01:00.000Z">
-<meta property="article:modified_time" content="2020-12-14T12:14:59.206Z">
+<meta property="article:modified_time" content="2020-12-15T09:16:43.585Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-14 20:14:59" itemprop="dateModified" datetime="2020-12-14T20:14:59+08:00">2020-12-14</time>
+                <time title="Modified: 2020-12-15 17:16:43" itemprop="dateModified" datetime="2020-12-15T17:16:43+08:00">2020-12-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>679</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -277,7 +277,27 @@
 
 <p>时间复杂度：O(n)，其中 n 是二叉树的节点数。每一个节点恰好被遍历一次。</p>
 <p>空间复杂度：O(n)，为迭代过程中显式栈的开销，平均情况下为 O(logn)，最坏情况下树呈现链状，为 O(n)</p>
-<h3 id="Morris-遍历"><a href="#Morris-遍历" class="headerlink" title="Morris 遍历"></a>Morris 遍历</h3>
+<h3 id="Morris-遍历"><a href="#Morris-遍历" class="headerlink" title="Morris 遍历"></a>Morris 遍历</h3><p>记录当前处理节点cur<br>tail记录当前节点下层左子树的下层最右节点<br>外层循环节点不为空<br>如果tail不为空，while循环，找到所有tail的位置，直到tail为空，也就是找到左子树的最后一个右节点<br>也就是第一层，往下第一层的左节点，第二层的右节点（到第三层），直到找到最后的右节点 </p>
+<p>如果tail.right为空了,则输出这个节点，并设tail.right为当前节点cur</p>
+<p>然后cur= cur.left设为左节点，继续外层循环，也就是第二层为根，找到第二层的左节点，<br>第三层，往下第三层的右节点往下，直到为空</p>
+<p>然后指向cur为第二层为根节点，指向第三层的左节点，找tail.right,为空则记录结果</p>
+<p>直到tail为none，也就是cur的左子节点为空了，说明左子树处理完了，记录结果</p>
+<p>cur=cur.right</p>
+<p>Morris 遍历的核心思想是利用树的大量空闲指针，实现空间开销的极限缩减。其前序遍历规则总结如下：</p>
+<p>新建临时节点，令该节点为 root；</p>
+<p>如果当前节点的左子节点为空，将当前节点加入答案，并遍历当前节点的右子节点；</p>
+<p>如果当前节点的左子节点不为空，在当前节点的左子树中找到当前节点在中序遍历下的前驱节点：</p>
+<p>如果前驱节点的右子节点为空，将前驱节点的右子节点设置为当前节点。然后将当前节点加入答案，并将前驱节点的右子节点更新为当前节点。当前节点更新为当前节点的左子节点。</p>
+<p>如果前驱节点的右子节点为当前节点，将它的右子节点重新设为空。当前节点更新为当前节点的右子节点。</p>
+<p>重复步骤 2 和步骤 3，直到遍历结束</p>
+<p>Morris遍历的通解：<br>1）cur无左子节点，向右移动<br>2）cur有左子节点，则找到cur左子节点的最右子节点，即为前驱节点pre<br>2-1) pre.right == null，说明是首次访问，将pre.right指向cur，cur向左移<br>2-2) pre.right == cur，说明是第二次访问，将pre.right置空，cur向右移动<br>3) cur为空时遍历结束</p>
+<h4 id="python-2"><a href="#python-2" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def preorderTraversal(self, <span class="attr">root</span>: TreeNode) -&gt; List[int]:</span><br><span class="line">        # 结果列表</span><br><span class="line">        res = list()</span><br><span class="line">        # 如果不是根节点，返回</span><br><span class="line">        <span class="keyword">if</span> not root:</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        # 设定起始遍历节点，p1</span><br><span class="line">        p1 = root</span><br><span class="line">        # 遍历树，节点有值就一直遍历</span><br><span class="line">        <span class="keyword">while</span> p1:</span><br><span class="line">            # 选取该节点的左子树节点，该节点的第二层，并设为p2，p2位第二层</span><br><span class="line">            p2 = p1.left</span><br><span class="line">            # 如果该节点有左子树节点</span><br><span class="line">            <span class="keyword">if</span> p2:</span><br><span class="line">                # 对第二层的p2节点的右子树遍历，p2.right为第三层</span><br><span class="line">                # 有值，且不为p1，没有指向第一层，直到 p2.right为空</span><br><span class="line">                # 一直向下遍历，设p2为其下一层的右子树节点</span><br><span class="line">                <span class="keyword">while</span> p2.right and p2.right != p1:</span><br><span class="line">                    p2 = p2.right</span><br><span class="line">                # 遍历到最底层，p2.right为空了</span><br><span class="line">                <span class="keyword">if</span> not p2.right:</span><br><span class="line">                    # 第一层的节点，放入结果</span><br><span class="line">                    res.append(p1.val)</span><br><span class="line">                    # 修改 p2.right，指向第一层的节点</span><br><span class="line">                    p2.right = p1</span><br><span class="line">                    # p1到第二层的左子树节点</span><br><span class="line">                    p1 = p1.left</span><br><span class="line">                    # 返回while继续遍历，第二次循环，就把第二层的左子树节点放入结果</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    p2.right = None</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res.append(p1.val)</span><br><span class="line">            p1 = p1.right</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="GO"><a href="#GO" class="headerlink" title="GO"></a>GO</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func preorderTraversal(root *TreeNode) []int &#123;</span><br><span class="line">    res := []int&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    p1 := root</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> p1 == nil &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        p2 := p1.Left</span><br><span class="line">        <span class="keyword">if</span> p2 != nil &#123;</span><br><span class="line">            <span class="keyword">for</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> p2.Right != nil &amp;&amp; p2.Right != p1 &#123;</span><br><span class="line">                    p2 = p2.Right</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> p2.Right == nil &#123;</span><br><span class="line">                res = append(res, p1.Val)</span><br><span class="line">                p2.Right = p1</span><br><span class="line">                p1 = p1.Left</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                p2.Right = nil</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            res = append(res, p1.Val)</span><br><span class="line">        &#125;</span><br><span class="line">        p1 = p1.Right</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O(n)，其中 n 是二叉树的节点数。没有左子树的节点只被访问一次，有左子树的节点被访问两次。</p>
+<p>空间复杂度：O(1)。只操作已经存在的指针（树的空闲指针），因此只需要常数的额外空间。</p>
+
     </div>
 
     
@@ -315,7 +335,10 @@
     <a href="/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/" rel="prev" title="数组、链表和跳表">
       <i class="fa fa-chevron-left"></i> 数组、链表和跳表
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/15/%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" rel="next" title="树，二叉树，二叉搜索树">
+      树，二叉树，二叉搜索树 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -375,7 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">1.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">1.1.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go"><span class="nav-number">1.2.</span> <span class="nav-text">go</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3"><span class="nav-number">2.</span> <span class="nav-text">迭代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-1"><span class="nav-number">2.1.</span> <span class="nav-text">go</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-1"><span class="nav-number">2.2.</span> <span class="nav-text">python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Morris-%E9%81%8D%E5%8E%86"><span class="nav-number">3.</span> <span class="nav-text">Morris 遍历</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">1.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">1.1.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go"><span class="nav-number">1.2.</span> <span class="nav-text">go</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3"><span class="nav-number">2.</span> <span class="nav-text">迭代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-1"><span class="nav-number">2.1.</span> <span class="nav-text">go</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-1"><span class="nav-number">2.2.</span> <span class="nav-text">python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Morris-%E9%81%8D%E5%8E%86"><span class="nav-number">3.</span> <span class="nav-text">Morris 遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python-2"><span class="nav-number">3.1.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GO"><span class="nav-number">3.2.</span> <span class="nav-text">GO</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -391,7 +414,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -452,12 +475,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">62k</span>
+    <span title="Symbols count total">64k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">57 mins.</span>
+    <span title="Reading time total">58 mins.</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
