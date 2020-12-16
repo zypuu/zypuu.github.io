@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-15T09:49:15.294Z</updated>
+  <updated>2020-12-16T11:31:28.220Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Git工作流</title>
+    <link href="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/"/>
+    <id>http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/</id>
+    <published>2020-12-15T10:08:05.305Z</published>
+    <updated>2020-12-16T11:31:28.220Z</updated>
+    
+    <content type="html"><![CDATA[<p>Git工作流：为工作中团队成员遵守的一种代码管理方案，在Git中有以下几种工作流方案作为方案指导。</p><h2 id="集中式工作流"><a href="#集中式工作流" class="headerlink" title="集中式工作流"></a>集中式工作流</h2><p>这种工作方式跟svn类似，它只有一个master分支，开发者会先把远程的仓库克隆到本地，之后的修 改和提交都在本地操作，直到在某个合适的时间点将本地的代码合入到远程master。这种工作流比 较适合小团队，因为小团队可能不会太多的协作和合流的动作。</p><h2 id="功能分支工作流"><a href="#功能分支工作流" class="headerlink" title="功能分支工作流"></a>功能分支工作流</h2><p>这种工作流关注功能开发，不直接往master提交代码保证它是稳定并且干净的，而是从master拉 取feature分支进行功能开发，团队成员根据分工拉取不同的功能分支来进行不同的功能开发，这样 就可以完全隔离开每个人的工作。当功能开发完成后，会向master分支发起Pull Request，只有审 核通过的代码才真正允许合入master，这样就加强了团队成员之间的代码交流。</p><h2 id="Gitflow工作流"><a href="#Gitflow工作流" class="headerlink" title="Gitflow工作流"></a>Gitflow工作流</h2><p>相对复杂一点，但它非常适合用来管理大型项目的发布和维护，贯穿整个开发周期，master和develop分支是一直存在的，master分支可以被视为稳定的分支， 而develop分支是相对稳定的分支，特性开发会在feature分支上进行，发布会在release分支上 进行，而bug修复则会在hotfix分支上进行</p><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><h4 id="两个分支，master，develop分支"><a href="#两个分支，master，develop分支" class="headerlink" title="两个分支，master，develop分支"></a>两个分支，master，develop分支</h4><p>相对使用仅有的一个master分支，Gitflow工作流使用2个分支来记录项目的历史。 master分支存储了正式发布的历史，而develop分支作为功能的集成分支。 这样也方便master分支上的所有提交分配一个版本号。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png" alt="1"></p><h4 id="每个人开发的功能分支"><a href="#每个人开发的功能分支" class="headerlink" title="每个人开发的功能分支"></a>每个人开发的功能分支</h4><p>每个新功能位于一个自己的分支，这样可以push到中央仓库以备份和协作。 但功能分支不是从master分支上拉出新分支，而是使用develop分支作为父分支。 当新功能完成时，合并回develop分支。 新功能提交应该从不直接与master分支交互。 从各种含义和目的上来看，功能分支加上develop分支就是功能分支工作流的用法。但Gitflow工作流没有在这里止步。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/2.png" alt="2"></p><h4 id="develop和master中间的发布分支"><a href="#develop和master中间的发布分支" class="headerlink" title="develop和master中间的发布分支"></a>develop和master中间的发布分支</h4><p>一旦develop分支上有了做一次发布（或者说快到了既定的发布日）的足够功能，就从develop分支上checkout一个发布分支。 新建的分支用于开始发布循环，所以从这个时间点开始之后新的功能不能再加到这个分支上—— 这个分支只应该做Bug修复、文档生成和其它面向发布任务。 一旦对外发布的工作都完成了， 发布分支合并到master分支并分配一个版本号打好Tag。 另外，这些从新建发布分支以来的做的修改要合并回develop分支。</p><p>使用一个用于发布准备的专门分支，使得一个团队可以在完善当前的发布版本的同时，另一个团队可以继续开发下个版本的功能。 这也打造定义良好的开发阶段。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/3.png" alt="3"></p><h4 id="修复分支"><a href="#修复分支" class="headerlink" title="修复分支"></a>修复分支</h4><p>维护分支或说是热修复（hotfix）分支用于生成快速给产品发布版本（production releases）打补丁， 这是唯一可以直接从master分支fork出来的分支。 修复完成，修改应该马上合并回master分支和dev elop分支（当前的发布分支），master分支应该用新的版本号打好Tag。</p><p>为Bug修复使用专门分支，让团队可以处理掉问题而不用打断其它工作或是等待下一个发布循环。 你可以把维护分支想成是一个直接在master分支上处理的临时发布。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/4.png" alt="4"></p><h2 id="Forking工作流"><a href="#Forking工作流" class="headerlink" title="Forking工作流"></a>Forking工作流</h2><p>Forking工作流对于开源项目贡献者一定不陌生了，它有一个公开的中央仓库，其他贡献 者可以Fork（克隆）这个仓库作为你自己的私有仓库，开源项目维护者可以直接往中央仓库 push代码，而代码贡献者只能将代码push到自己的私有仓库，只有项目维护者接受代码贡献 者往中央仓库发起的pull request才会真正合入。</p>]]></content>
+    
+    
+    <summary type="html">git几种工作流，flow工作流</summary>
+    
+    
+    
+    <category term="Git代码管理" scheme="http://zypuu.com/categories/Git%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86/"/>
+    
+    
+    <category term="git" scheme="http://zypuu.com/tags/git/"/>
+    
+  </entry>
   
   <entry>
     <title>树，二叉树，二叉搜索树</title>
@@ -412,27 +433,6 @@
     
     
     <category term="git" scheme="http://zypuu.com/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>websocket分布式共享解决方案</title>
-    <link href="http://zypuu.com/2019/07/14/websocket%E5%88%86%E5%B8%83%E5%BC%8F%E5%85%B1%E4%BA%AB%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
-    <id>http://zypuu.com/2019/07/14/websocket%E5%88%86%E5%B8%83%E5%BC%8F%E5%85%B1%E4%BA%AB%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</id>
-    <published>2019-07-14T09:43:21.000Z</published>
-    <updated>2020-12-01T06:16:50.140Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="websocket分布式问题"><a href="#websocket分布式问题" class="headerlink" title="websocket分布式问题"></a>websocket分布式问题</h3><p>如果在单机情况下，当websocket需要给用户推送消息时，由于用户已经与websocket服务建立连接，消息推送能够成功。<br>但如果在集群情况下，用户甲向websocket发起连接请求，有多台服务时strong text，只能与一台服务建立连接（以服务A为例），而这些websocket服务都是有可能会给用户甲推送消息，这时候的服务B和C并没有建立连接，所以会有一部分消息推送失败。<br>因为websocket是长连接，session保持在一个server中，所以在不同server在使用websocket推送消息时就需要获取对应的session进行推送，在分布式系统中就无法获取到所有session。</p><h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>这里就需要使用一个中间件，将消息推送到个系统中，这里使用redis作为中间件，使用redis的发布订阅功能 pub/sub。<br>在原来的系统里，由业务模块的服务处理业务逻辑，发生需要推送给用户的数据的时候，发消息给websocket服务，由websocket服务推送消息给用户。<br>那么，问题的关键就是确保和用户建立连接的websocket服务就是接收到消息的服务，但是由于建立连接的websockt是由ngnx进行负载均衡分配的，接收消息的服务也是无法确定的，这一点并没有什么太好的办法保证。<br>因此，我们可以换个思路，只要确保对于业务模块发送的消息，所有的websocket服务都能收到消息，只要做到了这一点，与用户建立连接websocket自然也能接收到消息。而且，这种方式相对单台服务收到消息还有一个在处理多点登陆场景下的优势。对于允许多点登录的系统，同一用户可以在多处进行登录，以为着同一用户与多个服务拥有多个websocket连接，这就要求我们保证多台用户消费同一台业务模块的消息。</p><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">class RedisListenDelegate(object):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; redis 队列监控&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, system, connection):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            init</span></span><br><span class="line"><span class="string">        :param system: 系统名</span></span><br><span class="line"><span class="string">        :param connection: websockets</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        self.connection = connection</span><br><span class="line">        self.system = system</span><br><span class="line">        self.redis = self.get_redis()</span><br><span class="line">        self.redis.connect()</span><br><span class="line">        self.listen()</span><br><span class="line"></span><br><span class="line">    def parse_redis_conf(self, redis_conf):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            解析redis的配置</span></span><br><span class="line"><span class="string">        :param redis_conf: redis配置</span></span><br><span class="line"><span class="string">        :return: redis配置字典</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> re.match(PATTERN[<span class="string">&#x27;redis_config&#x27;</span>], redis_conf).groupdict()</span><br><span class="line"></span><br><span class="line">    def get_redis(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            获得redis连接客户端</span></span><br><span class="line"><span class="string">        :return: redis 客户端</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        info = self.parse_redis_conf(REDIS_URL)</span><br><span class="line">        <span class="keyword">return</span> tornadoredis.Client(host=info[<span class="string">&#x27;host&#x27;</span>], port=int(info[<span class="string">&#x27;port&#x27;</span>]))</span><br><span class="line"></span><br><span class="line">    def handle_message(self, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            所有监听redis通道后的处理,都应该继承本函数,本函数是redis通道收到消息后的回调函数</span></span><br><span class="line"><span class="string">        :param message: redis监听结果信息</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        if message.kind != &#x27;message&#x27;:  # 不处理redis连接信息</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.connection.message_delegate.send_message(message.body)  # 发送消息</span><br><span class="line"></span><br><span class="line">    @gen.coroutine</span><br><span class="line">    def listen(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">        监听redis通道,回调消息处理</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">yield</span> gen.Task(self.redis.subscribe, SUBSCRIBE_KEY.format(self.system))</span><br><span class="line">        <span class="keyword">yield</span> self.redis.listen(self.handle_message)</span><br><span class="line"></span><br><span class="line"># 发送消息，访问websocket，最终将消息发布到redis即可，由上面的连接进行监听</span><br><span class="line">publish(system, message)</span><br></pre></td></tr></table></figure><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>每个系统作为一个redis通道进行监听，该系统频道收到消息后，该websocket的server会监听到该消息，通过消息内的用户属性，去从本地服务存储的websocket连接获取该用户的连接，然后对该用户发送消息。分布式情况下，所有的server都会监听到该消息，但是用户建立连接只在其中一个server，这样这个server也就可以监听到这个消息，因为连接存在，所以这个server会对用户发送消息，其他server即使监听到但是没有连接，所以不做处理即可。</p><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1、解决了websocket分布式推送消息的问题。<br>2、代码解耦，websocket服务建立连接，与推送消息到websocket解耦，互不影响，websocket服务挂掉也可以推送消息到redis，无法推消息到redis系统挂掉，也不会影响websocket服务。</p>]]></content>
-    
-    
-    <summary type="html">websocket项目</summary>
-    
-    
-    
-    <category term="Websocket" scheme="http://zypuu.com/categories/Websocket/"/>
-    
-    
-    <category term="websocket" scheme="http://zypuu.com/tags/websocket/"/>
     
   </entry>
   
