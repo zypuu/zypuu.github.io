@@ -22,23 +22,20 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="redis与mysql的优缺点分析，以及在web中的配合使用">
+  <meta name="description" content="关于N叉树的前序遍历方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于数据库redis与Mysql的区别以及在web开发中的配合使用">
-<meta property="og:url" content="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:title" content="N叉树的前序遍历">
+<meta property="og:url" content="http://zypuu.com/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="redis与mysql的优缺点分析，以及在web中的配合使用">
+<meta property="og:description" content="关于N叉树的前序遍历方法">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/1.jpg">
-<meta property="og:image" content="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/2.jpg">
-<meta property="article:published_time" content="2018-08-18T13:51:28.000Z">
-<meta property="article:modified_time" content="2020-12-02T06:13:48.601Z">
+<meta property="article:published_time" content="2020-12-16T12:05:00.000Z">
+<meta property="article:modified_time" content="2020-12-16T12:39:20.636Z">
 <meta property="article:author" content="ZYP">
-<meta property="article:tag" content="数据库,redis,mysql">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/1.jpg">
 
-<link rel="canonical" href="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/">
+<link rel="canonical" href="http://zypuu.com/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/">
 
 
 <script id="page-configurations">
@@ -51,7 +48,7 @@
   };
 </script>
 
-  <title>关于数据库redis与Mysql的区别以及在web开发中的配合使用 | ALL-Nothing</title>
+  <title>N叉树的前序遍历 | ALL-Nothing</title>
   
 
 
@@ -196,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -209,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于数据库redis与Mysql的区别以及在web开发中的配合使用
+          N叉树的前序遍历
         </h1>
 
         <div class="post-meta">
@@ -218,23 +215,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2018-08-18 21:51:28" itemprop="dateCreated datePublished" datetime="2018-08-18T21:51:28+08:00">2018-08-18</time>
+              <time title="Created: 2020-12-16 20:05:00 / Modified: 20:39:20" itemprop="dateCreated datePublished" datetime="2020-12-16T20:05:00+08:00">2020-12-16</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-02 14:13:48" itemprop="dateModified" datetime="2020-12-02T14:13:48+08:00">2020-12-02</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
                 </span>
             </span>
 
@@ -244,16 +235,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2k</span>
+              <span>44</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
+              <span>1 mins.</span>
             </span>
-            <div class="post-description">redis与mysql的优缺点分析，以及在web中的配合使用</div>
+            <div class="post-description">关于N叉树的前序遍历方法</div>
 
         </div>
       </header>
@@ -264,44 +255,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="传统型关系数据库Mysql的瓶颈"><a href="#传统型关系数据库Mysql的瓶颈" class="headerlink" title="传统型关系数据库Mysql的瓶颈"></a>传统型关系数据库Mysql的瓶颈</h3><p>在互联网领域，MySQL作为一款关系型数据库为互联网的发展做出了卓越的贡献。然而随着互联网的发展，在大数据量高并发的环境下，应用开发也越来越复杂，具有很强的技术挑战性。分表分库子库等无不在增加数据库结构的复杂程度。MySQL数据库也经常存储一些大文本字段，导致数据库表非常的大，在做数据库恢复的时候就导致非常的慢，不容易快速恢复数据库。比如1000万4KB大小的文本就接近40GB的大小，如果能把这些数据从MySQL省去，MySQL将变得非常的小。<br><br>关系数据库很强大，但是它并不能很好的应付所有的应用场景。MySQL的扩展性差，大数据下IO压力大，表结构更改困难。</p>
-<h3 id="Nosql与redis"><a href="#Nosql与redis" class="headerlink" title="Nosql与redis"></a>Nosql与redis</h3><p>NoSQL最常见的解释是“non-relational”，“Not Only SQL”也被很多人接受，指的是非关系型的数据库。</p>
-<h4 id="Nosql的优势"><a href="#Nosql的优势" class="headerlink" title="Nosql的优势"></a>Nosql的优势</h4><p>易扩展：NoSQL数据库种类繁多，但是一个共同的特点都是去掉关系数据库的关系型特性。数据之间无关系，这样就非常容易扩展。<br>大数据量，高性能：NoSQL数据库都具有非常高的读写性能，尤其在大数据量下，同样表现优秀。这得益于它的无关系性，数据库的结构简单<br>灵活的数据模型：NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式。而在关系数据库里，增删字段是一件非常麻烦的事情。如果是非常大数据量的表，增加字段简直就是一个噩梦<br>高可用：NoSQL在不太影响性能的情况，就可以方便的实现高可用的架构。</p>
-<h4 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h4><p>Redis是一个开源（BSD许可）的、内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。<br>redis是一个高性能的key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sortedset–有序集合)和hash（哈希类型）。redis的出现，很大程度补偿了memcached这类key/value存储的不足，在部分场合可以对关系数据库起到很好的补充作用。它提供了Python，Ruby，Erlang，PHP客户端，使用很方便<br>Redis支持主从同步。数据可以从主服务器向任意数量的从服务器上同步，从服务器可以是关联其他从服务器的主服务器。这使得Redis可执行单层树复制。从盘可以有意无意的对数据进行写操作。由于完全实现了发布/订阅机制，使得从数据库在任何地方同步树时，可订阅一个频道并接收主服务器完整的消息发布记录。同步对读取操作的可扩展性和数据冗余很有帮助。</p>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>NoSQL数据库的出现，弥补了关系数据（比如MySQL）在某些方面的不足，在某些方面能极大的节省开发成本和维护成本<br>MySQL和NoSQL都有各自的特点和使用的应用场景，两者的紧密结合将会给数据库发展带来新的思路。让关系数据库关注在关系上，NoSQL关注在存储上。</p>
-<h3 id="利用redis做mysql的缓存"><a href="#利用redis做mysql的缓存" class="headerlink" title="利用redis做mysql的缓存"></a>利用redis做mysql的缓存</h3><p>前面部分已经介绍mysql的瓶颈，当网站的处理和访问量非常大的时候，我们的数据库的压力就变大了，数据库的连接池，数据库同时处理数据的能力就会受到很大的挑战，一旦数据库承受了其最大承受能力，网站的数据处理效率就会大打折扣。此时就要使用高并发处理、负载均衡和分布式数据库，而这些技术既花费人力，又花费资金。</p>
-<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><p><img src="/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/1.jpg" alt="1"></p>
-<p>页面缓存经常用在CMS(content manage system)内存管理系统里面。<br>数据缓存经常会用在页面的具体数据里面。</p>
-<h4 id="Redis缓存原理"><a href="#Redis缓存原理" class="headerlink" title="Redis缓存原理"></a>Redis缓存原理</h4><p>采用redis nosql数据库作为Mysql数据库的缓存，在查找的时候，首先查找redis缓存，如果找到则返回结果；如果在redis中没有找到，那么查找Mysql数据库，找到的花则返回结果并且更新redis；如果没有找到则返回空。</p>
-<p><img src="/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/2.jpg" alt="2"></p>
-<p>对于写入：用户增删改数据库，先访问mysql，mysql再把数据更新到redis。</p>
-<p>Mysql中的数据都是按表存储的；更微观地看，这些表都是按行存储的。每执行一次select查询，Mysql都会返回一个结果集，这个结果集由若干行组成。所以，一个自然而然的想法就是在Redis中找到一种对应于Mysql行的数据结构。<br>Redis中提供了五种基本数据结构，即字符串（string）、列表（list）、哈希（hash）、集合（set）和有序集合（sorted set）。经过调研，发现适合存储行的数据结构有两种，即string和hash。</p>
-<p>用户的缓存数据在返回时一般都是JSON的字典格式，对应的存到redis里就是hash格式，这个与python的字典是相对应的。</p>
-<table>
-<thead>
-<tr>
-<th>redis中的hash</th>
-<th>python中的字典</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><font color="#000000">key</font></td>
-<td><font color="#000000">对象</font></td>
-</tr>
-<tr>
-<td><font color="#000000">field</font></td>
-<td><font color="#000000">key</font></td>
-</tr>
-<tr>
-<td><font color="#000000">value</font></td>
-<td><font color="#000000">value</font></td>
-</tr>
-<tr>
-<td>即hash会根据要缓存的数据生成唯一标识UUID，UUID作为键，用户的字典数据中的键值对作为UUID键的值，存储到redis中。</td>
-<td></td>
-</tr>
-</tbody></table>
+        <h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><p>类似二叉树，子节点for循环遍历一下就好</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># Definition for a Node.</span><br><span class="line"># class Node:</span><br><span class="line">#    def __init__(self, val=None, children=None):</span><br><span class="line">#        self.val = val</span><br><span class="line">#        self.children = children</span><br><span class="line"></span><br><span class="line">class Solution:</span><br><span class="line">    def preorder(self, <span class="attr">root</span>: <span class="string">&#x27;Node&#x27;</span>) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        def handle(root):</span><br><span class="line">            <span class="keyword">if</span> not root:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            res.append(root.val)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> root.children:</span><br><span class="line">                handle(i)</span><br><span class="line">        handle(root)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>按子节点顺序即可</p>
+<h4 id="python-1"><a href="#python-1" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        <span class="keyword">if</span> root is None:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        </span><br><span class="line">        stack, output = [root, ], []            </span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">        	# 移除最后一个元素</span><br><span class="line">            root = stack.pop()</span><br><span class="line">            output.append(root.val)</span><br><span class="line">            # 反转数组 </span><br><span class="line">            stack.extend(root.children[::-<span class="number">1</span>])</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -316,7 +274,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://zypuu.com/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/" title="关于数据库redis与Mysql的区别以及在web开发中的配合使用">http://zypuu.com/2018/08/18/关于数据库redis与Mysql的区别以及在web开发中的配合使用/</a>
+    <a href="http://zypuu.com/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/" title="N叉树的前序遍历">http://zypuu.com/2020/12/16/N叉树的前序遍历/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -327,7 +285,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-redis-mysql/" rel="tag"><i class="fa fa-tag"></i> 数据库,redis,mysql</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
           </div>
 
         
@@ -336,13 +294,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="Elasticsearch的使用">
-      <i class="fa fa-chevron-left"></i> Elasticsearch的使用
+    <a href="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="prev" title="Git工作流">
+      <i class="fa fa-chevron-left"></i> Git工作流
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2018/10/14/%E5%85%B3%E4%BA%8Eubuntu18%E4%B8%8Bdocker%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="next" title="关于ubuntu18下docker无法启动服务的问题解决">
-      关于ubuntu18下docker无法启动服务的问题解决 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -402,7 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E5%9E%8B%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93Mysql%E7%9A%84%E7%93%B6%E9%A2%88"><span class="nav-number">1.</span> <span class="nav-text">传统型关系数据库Mysql的瓶颈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nosql%E4%B8%8Eredis"><span class="nav-number">2.</span> <span class="nav-text">Nosql与redis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nosql%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">2.1.</span> <span class="nav-text">Nosql的优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis"><span class="nav-number">2.2.</span> <span class="nav-text">redis</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">3.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8redis%E5%81%9Amysql%E7%9A%84%E7%BC%93%E5%AD%98"><span class="nav-number">4.</span> <span class="nav-text">利用redis做mysql的缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98"><span class="nav-number">4.1.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis%E7%BC%93%E5%AD%98%E5%8E%9F%E7%90%86"><span class="nav-number">4.2.</span> <span class="nav-text">Redis缓存原理</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">1.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">1.1.</span> <span class="nav-text">python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3"><span class="nav-number">2.</span> <span class="nav-text">迭代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python-1"><span class="nav-number">2.1.</span> <span class="nav-text">python</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

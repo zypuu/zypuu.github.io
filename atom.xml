@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-16T11:31:28.220Z</updated>
+  <updated>2020-12-16T12:39:20.636Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>N叉树的前序遍历</title>
+    <link href="http://zypuu.com/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/"/>
+    <id>http://zypuu.com/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/</id>
+    <published>2020-12-16T12:05:00.000Z</published>
+    <updated>2020-12-16T12:39:20.636Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><p>类似二叉树，子节点for循环遍历一下就好</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># Definition for a Node.</span><br><span class="line"># class Node:</span><br><span class="line">#    def __init__(self, val=None, children=None):</span><br><span class="line">#        self.val = val</span><br><span class="line">#        self.children = children</span><br><span class="line"></span><br><span class="line">class Solution:</span><br><span class="line">    def preorder(self, <span class="attr">root</span>: <span class="string">&#x27;Node&#x27;</span>) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        def handle(root):</span><br><span class="line">            <span class="keyword">if</span> not root:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            res.append(root.val)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> root.children:</span><br><span class="line">                handle(i)</span><br><span class="line">        handle(root)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br></pre></td></tr></table></figure><h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>按子节点顺序即可</p><h4 id="python-1"><a href="#python-1" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        <span class="keyword">if</span> root is None:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        </span><br><span class="line">        stack, output = [root, ], []            </span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">        # 移除最后一个元素</span><br><span class="line">            root = stack.pop()</span><br><span class="line">            output.append(root.val)</span><br><span class="line">            # 反转数组 </span><br><span class="line">            stack.extend(root.children[::-<span class="number">1</span>])</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">关于N叉树的前序遍历方法</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Git工作流</title>
@@ -412,27 +433,6 @@
     
     
     <category term="VMware" scheme="http://zypuu.com/tags/VMware/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git撤销回滚</title>
-    <link href="http://zypuu.com/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/"/>
-    <id>http://zypuu.com/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/</id>
-    <published>2019-11-05T09:19:03.000Z</published>
-    <updated>2020-12-08T06:18:52.504Z</updated>
-    
-    <content type="html"><![CDATA[<p>了解git如何撤销回滚，先了解git的工作流</p><h2 id="git工作流"><a href="#git工作流" class="headerlink" title="git工作流"></a>git工作流</h2><p>完成一次完整的本地分支git提交工作，分为三个区域</p><p>工作区：即自己当前分支所修改的代码，git add xx 之前的！不包括 git add xx 和 git commit xxx 之后的。</p><p>暂存区：已经 git add xxx 进去，且未 git commit xxx 的。</p><p>本地分支：已经git commit -m xxx 提交到本地分支的。</p><p> <img src="/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/1.png" alt="1"></p><p>代码回滚</p><p>在上传代码到远程仓库的时候，不免会出现问题，任何过程都有可能要回滚代码</p><h2 id="如何回滚"><a href="#如何回滚" class="headerlink" title="如何回滚"></a>如何回滚</h2><p>分为以下几种场景</p><h3 id="工作区的代码"><a href="#工作区的代码" class="headerlink" title="工作区的代码"></a>工作区的代码</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout ./a.txt   # 丢弃某个文件，或者</span><br><span class="line">git checkout ./       # 丢弃全部</span><br></pre></td></tr></table></figure><p>注意：git checkout – . 丢弃全部，也包括：新增的文件会被删除、删除的文件会恢复回来、修改的文件会回去。这几个前提都说的是，回到暂存区之前的样子。对之前保存在暂存区里的代码不会有任何影响。对commit提交到本地分支的代码就更没影响了。当然，如果你之前压根都没有暂存或commit，那就是回到你上次pull下来的样子了</p><h3 id="代码git-add到缓存区，并未commit提交"><a href="#代码git-add到缓存区，并未commit提交" class="headerlink" title="代码git add到缓存区，并未commit提交"></a>代码git add到缓存区，并未commit提交</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD .  或者</span><br><span class="line">git reset HEAD a.txt</span><br></pre></td></tr></table></figure><p>这个命令仅改变暂存区，并不改变工作区，这意味着在无任何其他操作的情况下，工作区中的实际文件同该命令运行之前无任何变化</p><h3 id="git-commit到本地分支、但没有git-push到远程"><a href="#git-commit到本地分支、但没有git-push到远程" class="headerlink" title="git commit到本地分支、但没有git push到远程"></a>git commit到本地分支、但没有git push到远程</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;  # 回到其中你想要的某个版</span><br><span class="line">或者</span><br><span class="line">git reset --hard HEAD^  # 回到最新的一次提交</span><br><span class="line">或者</span><br><span class="line">git reset HEAD^  # 此时代码保留，回到 git add 之前</span><br></pre></td></tr></table></figure><h3 id="git-push把修改提交到远程仓库"><a href="#git-push把修改提交到远程仓库" class="headerlink" title="git push把修改提交到远程仓库"></a>git push把修改提交到远程仓库</h3><p>reset和revert两种方式</p><h4 id="通过git-reset是直接删除指定的commit"><a href="#通过git-reset是直接删除指定的commit" class="headerlink" title="通过git reset是直接删除指定的commit"></a>通过git reset是直接删除指定的commit</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;</span><br><span class="line">git push origin HEAD --force # 强制提交一次，之前错误的提交就从远程仓库删除</span><br></pre></td></tr></table></figure><h4 id="通过git-revert是用一次新的commit来回滚之前的commit"><a href="#通过git-revert是用一次新的commit来回滚之前的commit" class="headerlink" title="通过git revert是用一次新的commit来回滚之前的commit"></a>通过git revert是用一次新的commit来回滚之前的commit</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git revert &lt;commit_id&gt;  # 撤销指定的版本，撤销也会作为一次提交进行保存</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">git提交错误的回退处理，reset与revert</summary>
-    
-    
-    
-    <category term="Git代码管理" scheme="http://zypuu.com/categories/Git%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86/"/>
-    
-    
-    <category term="git" scheme="http://zypuu.com/tags/git/"/>
     
   </entry>
   
