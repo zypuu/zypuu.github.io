@@ -30,7 +30,7 @@
 <meta property="og:description" content="关于N叉树的前序遍历方法">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-16T12:05:00.000Z">
-<meta property="article:modified_time" content="2020-12-16T12:39:20.636Z">
+<meta property="article:modified_time" content="2020-12-18T09:00:28.509Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -215,10 +215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-12-16 20:05:00 / Modified: 20:39:20" itemprop="dateCreated datePublished" datetime="2020-12-16T20:05:00+08:00">2020-12-16</time>
+              <time title="Created: 2020-12-16 20:05:00" itemprop="dateCreated datePublished" datetime="2020-12-16T20:05:00+08:00">2020-12-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-18 17:00:28" itemprop="dateModified" datetime="2020-12-18T17:00:28+08:00">2020-12-18</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>44</span>
+              <span>178</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -260,6 +266,10 @@
 
 <h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>按子节点顺序即可</p>
 <h4 id="python-1"><a href="#python-1" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        <span class="keyword">if</span> root is None:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        </span><br><span class="line">        stack, output = [root, ], []            </span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">        	# 移除最后一个元素</span><br><span class="line">            root = stack.pop()</span><br><span class="line">            output.append(root.val)</span><br><span class="line">            # 反转数组 </span><br><span class="line">            stack.extend(root.children[::-<span class="number">1</span>])</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：时间复杂度：O(M)，其中 MM 是 N 叉树中的节点个数。每个节点只会入栈和出栈各一次。</p>
+<p>空间复杂度：O(M)。在最坏的情况下，这棵 N 叉树只有 2 层，所有第 2 层的节点都是根节点的孩子。将根节点推出栈后，需要将这些节点都放入栈，共有 M−1 个节点，因此栈的大小为 O(M)</p>
+
     </div>
 
     
@@ -376,7 +386,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
