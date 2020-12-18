@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-16T12:39:20.636Z</updated>
+  <updated>2020-12-18T08:40:20.218Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>递归</title>
+    <link href="http://zypuu.com/2020/12/18/%E9%80%92%E5%BD%92/"/>
+    <id>http://zypuu.com/2020/12/18/%E9%80%92%E5%BD%92/</id>
+    <published>2020-12-18T08:27:00.000Z</published>
+    <updated>2020-12-18T08:40:20.218Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><h3 id="思维要点"><a href="#思维要点" class="headerlink" title="思维要点"></a>思维要点</h3><ol><li><p>不要人肉进行递归（最大误区）</p></li><li><p>找到最近最简方法，将其拆解成可重复解决的问题（重复子问题）</p></li><li><p>数学归纳法思维</p></li></ol><p>模板：</p><ol><li>首先规定递归什么时候结束，一定要限制条件，不能无限循环</li><li>递归的执行逻辑，当前层的执行逻辑，即重复性思维，重复性处理，找相似性</li><li>递归调用，层数加1，进入下一层</li><li>最后清除，如果有涉及到外部逻辑的</li></ol><h3 id="python模板"><a href="#python模板" class="headerlink" title="python模板"></a>python模板</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def recursion(level, param1, param2, ...):</span><br><span class="line"># recursion terminator递归跳出条件</span><br><span class="line"><span class="keyword">if</span> level &gt; MAX_LEVEL:</span><br><span class="line"> process_result</span><br><span class="line"> <span class="keyword">return</span></span><br><span class="line"># process logic in current level 当前层的执行逻辑</span><br><span class="line">process(level, data...)</span><br><span class="line"># drill down</span><br><span class="line">self.recursion(level + <span class="number">1</span>, p1, ...) 递归调用</span><br><span class="line"># reverse the current level status if neede 清除收尾</span><br></pre></td></tr></table></figure><h3 id="GO模板"><a href="#GO模板" class="headerlink" title="GO模板"></a>GO模板</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func recursion(level int, param1, param2 interface&#123;&#125;):</span><br><span class="line"># recursion terminator递归跳出条件</span><br><span class="line"><span class="keyword">if</span> level &gt; MAX_LEVEL:</span><br><span class="line"> process_result</span><br><span class="line"> <span class="keyword">return</span></span><br><span class="line"># process logic in current level 当前层的执行逻辑</span><br><span class="line">process(level, data...)</span><br><span class="line"># drill down</span><br><span class="line">recursion(level + <span class="number">1</span>, p1, ...) 递归调用</span><br><span class="line"># reverse the current level status if neede 清除收尾</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">递归模板</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>N叉树的前序遍历</title>
@@ -412,27 +433,6 @@
     
     
     <category term="git" scheme="http://zypuu.com/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>VMware的.vmdk文件只赠不减的处理方法</title>
-    <link href="http://zypuu.com/2019/11/14/VMware%E7%9A%84.vmdk%E6%96%87%E4%BB%B6%E5%8F%AA%E8%B5%A0%E4%B8%8D%E5%87%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/"/>
-    <id>http://zypuu.com/2019/11/14/VMware%E7%9A%84.vmdk%E6%96%87%E4%BB%B6%E5%8F%AA%E8%B5%A0%E4%B8%8D%E5%87%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</id>
-    <published>2019-11-14T08:28:22.000Z</published>
-    <updated>2020-12-01T08:51:50.622Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>VMware虚拟机的虚拟磁盘的大小会随着使用时间不断变大，而且只赠不减。即使在虚拟系统中删除了磁盘中的文件，虚拟磁盘的大小仍然不会变小。</p><h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>VMWare Tools中的 Shrink功能，和vmware-vdiskmanager工具。</p><ol><li><p>虚拟Windows系统，安装VMWare Tools，直接调用右下角图形工具Shrink。</p></li><li><p>虚拟Linux系统，关注虚拟机，在VMWare的安装跟路径下，使用vmware-vdiskmanager工具。</p></li></ol><p>如我的VMware安装在H盘，在windows的命令行中：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ H:\&gt;cd VMware</span><br><span class="line"></span><br><span class="line">$ H:\VMware&gt;vmware-vdiskmanager.exe -k <span class="string">&quot;H:\UbuntuVMware\Ubuntu 64-bit\Ubuntu 64-bit.vmdk&quot;</span></span><br></pre></td></tr></table></figure><p>说明：H:\UbuntuVMware\Ubuntu 64-bit\Ubuntu 64-bit.vmdk是你指定需要shrink的.vmdk文件；另外，由于我的路径中有空格，所以路径用双引号包含，若路径无空格则可以忽略双引号。</p><p>如此瘦身之后，我的硬盘并未节省太多空间。原因是Ubuntu系统占用了空间，系统未释放，所有用工具逼它释放并不能达成目的。解决方案如下：</p><p>在虚拟Linux系统中，终端使用命令：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /dev/zero &gt; zero.fill</span><br></pre></td></tr></table></figure><p>执行完毕后，发现zero.fill非常大，使用命令将其删除</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm -f zero.fill</span><br></pre></td></tr></table></figure><p>删除后再退出虚拟系统，在windows下再用vmware-vdiskmanager.exe去shrink文件*.vmdk。结束后我的电脑清理了大量空间。</p>]]></content>
-    
-    
-    <summary type="html">虚拟机</summary>
-    
-    
-    
-    <category term="环境安装" scheme="http://zypuu.com/categories/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"/>
-    
-    
-    <category term="VMware" scheme="http://zypuu.com/tags/VMware/"/>
     
   </entry>
   
