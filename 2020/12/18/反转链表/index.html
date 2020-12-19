@@ -30,7 +30,7 @@
 <meta property="og:description" content="反转链表">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-18T09:04:00.000Z">
-<meta property="article:modified_time" content="2020-12-18T09:22:08.799Z">
+<meta property="article:modified_time" content="2020-12-19T05:02:57.502Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -215,10 +215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-12-18 17:04:00 / Modified: 17:22:08" itemprop="dateCreated datePublished" datetime="2020-12-18T17:04:00+08:00">2020-12-18</time>
+              <time title="Created: 2020-12-18 17:04:00" itemprop="dateCreated datePublished" datetime="2020-12-18T17:04:00+08:00">2020-12-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-19 13:02:57" itemprop="dateModified" datetime="2020-12-19T13:02:57+08:00">2020-12-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>122</span>
+              <span>195</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -262,6 +268,10 @@
 <h3 id="go"><a href="#go" class="headerlink" title="go"></a>go</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func reverseList(head *ListNode) *ListNode &#123;</span><br><span class="line">    <span class="keyword">var</span>  prev *ListNode</span><br><span class="line">    cur := head</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> cur == nil &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取指向当前的下一个</span></span><br><span class="line">        a := cur.Next</span><br><span class="line">        <span class="comment">// 当前的指向前一个</span></span><br><span class="line">        cur.Next = prev</span><br><span class="line">        <span class="comment">// 为下次循环准备，前一个变成当前的</span></span><br><span class="line">        prev = cur</span><br><span class="line">        <span class="comment">// 当前的变成下一个</span></span><br><span class="line">        cur = a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> prev</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度：O(n)，假设 n 是列表的长度，时间复杂度是 O(n)。<br>空间复杂度：O(1)。</p>
+<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><h3 id="python-1"><a href="#python-1" class="headerlink" title="python"></a>python</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># Definition for singly-linked list.</span><br><span class="line"># class ListNode:</span><br><span class="line">#     def __init__(self, x):</span><br><span class="line">#         self.val = x</span><br><span class="line">#         self.next = None</span><br><span class="line"></span><br><span class="line">class Solution:</span><br><span class="line">    def reverseList(self, <span class="attr">head</span>: ListNode) -&gt; ListNode:</span><br><span class="line">        def handle(cur, prev):</span><br><span class="line">            # 终止条件</span><br><span class="line">            <span class="keyword">if</span> not cur:</span><br><span class="line">                <span class="keyword">return</span> prev</span><br><span class="line">            # 递归执行</span><br><span class="line">            res = handle(cur.next, cur)</span><br><span class="line">            # 重复逻辑，将指针指向前一个，前后逻辑不影响</span><br><span class="line">            cur.next = prev</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        <span class="keyword">return</span> handle(head, None)</span><br></pre></td></tr></table></figure>
+
+<h3 id="go-1"><a href="#go-1" class="headerlink" title="go"></a>go</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func reverseList(head *ListNode) *ListNode &#123;</span><br><span class="line">    # 判断结束条件，当前节点为空，或者该节点的指向为空</span><br><span class="line">    <span class="keyword">if</span> head == nil || head.Next == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line">    # 递归调用，直接拿到最后一个的前一个节点</span><br><span class="line">    node := reverseList(head.Next)</span><br><span class="line">    # 然后最后一个前一个节点的next，也就是最后一个节点，最后一个节点的next指针指向他前一个节点</span><br><span class="line">    head.Next.Next = head</span><br><span class="line">    # 修改当前指向nil</span><br><span class="line">    head.Next = nil</span><br><span class="line">    <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不要人肉递归，当前指向nil了，前一个怎么办，通用就是前一个指向nil<br>要在递归后再修改指向，不然就找不到最后一层，无法进行递归</p>
 
     </div>
 
@@ -360,7 +370,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">迭代法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python"><span class="nav-number">1.1.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go"><span class="nav-number">1.2.</span> <span class="nav-text">go</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">迭代法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python"><span class="nav-number">1.1.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go"><span class="nav-number">1.2.</span> <span class="nav-text">go</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">2.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python-1"><span class="nav-number">2.1.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-1"><span class="nav-number">2.2.</span> <span class="nav-text">go</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
