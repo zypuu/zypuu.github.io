@@ -22,18 +22,22 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="Give it a try, whispered the HEART">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ALL-Nothing">
-<meta property="og:url" content="http://zypuu.com/archives/2018/10/index.html">
+  <meta name="description" content="解析go语言，go的基本结构，slice切片">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO基本结构：slice">
+<meta property="og:url" content="http://zypuu.com/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="Give it a try, whispered the HEART">
+<meta property="og:description" content="解析go语言，go的基本结构，slice切片">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zypuu.com/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/1.png">
+<meta property="article:published_time" content="2020-12-21T09:56:22.000Z">
+<meta property="article:modified_time" content="2020-12-21T11:57:15.143Z">
 <meta property="article:author" content="ZYP">
-<meta property="article:tag" content="Python GO">
+<meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zypuu.com/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/1.png">
 
-<link rel="canonical" href="http://zypuu.com/archives/2018/10/">
+<link rel="canonical" href="http://zypuu.com/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/">
 
 
 <script id="page-configurations">
@@ -41,12 +45,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | ALL-Nothing</title>
+  <title>GO基本结构：slice | ALL-Nothing</title>
   
 
 
@@ -184,51 +188,136 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">Nice! 64 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ZYP">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ALL-Nothing">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO基本结构：slice
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-21 17:56:22 / Modified: 19:57:15" itemprop="dateCreated datePublished" datetime="2020-12-21T17:56:22+08:00">2020-12-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>423</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+            <div class="post-description">解析go语言，go的基本结构，slice切片</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2018</span>
+        <p>一个slice是一个数组某个部分的引用。在内存中，它是一个包含3个域的结构体，</p>
+<p>分为3个部分：</p>
+<p>1.指向slice的指针<br>2.slice的长度，长度是下标操作的上界，如x[i]中i必须小于长度<br>3.slice的容量，容量是分割操作的上界，如x[i:j]中j不能大于容量</p>
+<p><img src="/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/1.png" alt="1"></p>
+<p>数组的slice不是复制操作，而是一个新的数据结构，新的指针，x[1:3]它只是写了一个新的slice结构的属性来引用相同的存储数据</p>
+<h3 id="slice的扩容"><a href="#slice的扩容" class="headerlink" title="slice的扩容"></a>slice的扩容</h3><p>其实slice在Go的运行时库中就是一个<br>C语言动态数组的实现，<br>在$GOROOT/src/pkg/runtime/runtime.h中可以看到它的定义</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct    Slice</span><br><span class="line">&#123;    <span class="comment">// must not move anything</span></span><br><span class="line">    byte*    array;        <span class="comment">// actual data</span></span><br><span class="line">    uintgo    len;        <span class="comment">// number of elements</span></span><br><span class="line">    uintgo    cap;        <span class="comment">// allocated number of elements</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对slice进行append的操作时，slice会自动扩容</p>
+<p>规则：<br>1、扩容后的大小是当前大小的2倍以上，则是新大小</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	size = newSize</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>2、如果扩容后的大小小于当前大小的2倍，则循环以下操作：<br>    1.当前大小小于1024,则按2倍大小增长<br>    2.当前大小大于1024，则按1/4倍大小增长<br>增长后的大小超过新大小，则结束循环</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> oldSize &gt; newSize &#123;</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> oldSize &lt; <span class="number">1024</span> &#123;</span><br><span class="line">				oldSize += <span class="number">2</span>* oldSize</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				oldSize += <span class="number">1</span>/<span class="number">4</span>* oldSize</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-10-14T10:08:22+08:00"
-              content="2018-10-14">
-          10-14
-        </time>
-      </div>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>ZYP
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="http://zypuu.com/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/" title="GO基本结构：slice">http://zypuu.com/2020/12/21/GO基本结构：slice/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/10/14/%E5%85%B3%E4%BA%8Eubuntu18%E4%B8%8Bdocker%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" itemprop="url">
-            <span itemprop="name">关于ubuntu18下docker无法启动服务的问题解决</span>
-          </a>
-      </div>
 
-    </header>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="prev" title="GO的make和new的区别">
+      <i class="fa fa-chevron-left"></i> GO的make和new的区别
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -282,6 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#slice%E7%9A%84%E6%89%A9%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">slice的扩容</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

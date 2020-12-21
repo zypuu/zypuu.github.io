@@ -206,62 +206,6 @@
       </tags>
   </entry>
   <entry>
-    <title>GO的make和new的区别</title>
-    <url>/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
-<p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO环境安装</title>
-    <url>/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h2 id="安装包下载、安装"><a href="#安装包下载、安装" class="headerlink" title="安装包下载、安装"></a>安装包下载、安装</h2><p>去官网下载go安装包即可，根据自己的操作系统。</p>
-<p>提取到 /usr/local 目录，在 /usr/local/go 中创建Go目录树</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz</span><br></pre></td></tr></table></figure>
-<p>sudo运行，或者root用户</p>
-<h2 id="环境变量设置"><a href="#环境变量设置" class="headerlink" title="环境变量设置"></a>环境变量设置</h2><p>要将 /usr/local/go/bin 添加到 PATH 环境变量， 你需要将此行添加到你的 /etc/profile（全系统安装）或 $HOME/.profile 文件中</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> PATH=$PATH:<span class="regexp">/usr/</span>local/go/bin</span><br></pre></td></tr></table></figure>
-
-<p>如果安装到其他位置，则需要设置GOROOT</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br><span class="line"><span class="keyword">export</span> PATH=$PATH:$GOROOT/bin</span><br></pre></td></tr></table></figure>
-
-<h2 id="相关环境变量参数"><a href="#相关环境变量参数" class="headerlink" title="相关环境变量参数"></a>相关环境变量参数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">go env</span><br><span class="line">go version</span><br></pre></td></tr></table></figure>
-
-<p>go env可查看go的环境变量参数，go version 可查看go的版本</p>
-<h3 id="GO111Module"><a href="#GO111Module" class="headerlink" title="GO111Module"></a>GO111Module</h3><p>go 1.11才有的特性</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on # 开启GoModule特性</span><br></pre></td></tr></table></figure>
-<p>GO111MODULE解释, 当为on时则使用Go Modules,go 会忽略 $GOPATH和 vendor文件夹,只根据go.mod下载依赖。</p>
-<p>当为 off时则不适用新特性 Go Modules支持，它会查找 vendor目录和 $GOPATH来查找依赖关系，也就是继续使用“GOPATH模式”。</p>
-<p>当为 auto时或未设置时则根据当前项目目录下是否存在 go.mod文件或 $GOPATH/src之外并且其本身包含go.mod文件时才会使用新特性 Go Modules模式，</p>
-<p>并且auto为 GO111MODULE的默认值。</p>
-<h3 id="GOPATH"><a href="#GOPATH" class="headerlink" title="GOPATH"></a>GOPATH</h3><p>表示go的工作目录，这个目录指定了需要从哪个地方寻找GO的包、可执行程序等，这个目录可以是多个目录表示</p>
-<h3 id="GOROOT"><a href="#GOROOT" class="headerlink" title="GOROOT"></a>GOROOT</h3><p>表示的是go语言编译、工具、标准库等的安装路径。</p>
-<p>在Linux下设置GOROOT目录：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br></pre></td></tr></table></figure>
-
-<h3 id="GOPROXY"><a href="#GOPROXY" class="headerlink" title="GOPROXY"></a>GOPROXY</h3><p>简单来说就是一个代理，让我们更方便的下载哪些由于墙的原因而导致无法下载的第三方包，</p>
-<p><a href="http://proxy.golang.org/">http://proxy.golang.org</a> 在中国无法访问，故而建议使用 <a href="http://goproxy.cn/">http://goproxy.cn</a> 作为替代</p>
-<h2 id="GO-MOD"><a href="#GO-MOD" class="headerlink" title="GO MOD"></a>GO MOD</h2><h3 id="初始化模块"><a href="#初始化模块" class="headerlink" title="初始化模块"></a>初始化模块</h3><p>go mod init &lt;项目模块名称&gt;</p>
-<h3 id="依赖关系处理-根据go-mod文件"><a href="#依赖关系处理-根据go-mod文件" class="headerlink" title="依赖关系处理 ,根据go.mod文件"></a>依赖关系处理 ,根据go.mod文件</h3><p>go mod tidy</p>
-<h3 id="将依赖包复制到项目下的-vendor目录。"><a href="#将依赖包复制到项目下的-vendor目录。" class="headerlink" title="将依赖包复制到项目下的 vendor目录。"></a>将依赖包复制到项目下的 vendor目录。</h3><p>go mod vendor<br>如果包被屏蔽(墙),可以使用这个命令，随后使用go build -mod=vendor编译</p>
-<h3 id="显示依赖关系"><a href="#显示依赖关系" class="headerlink" title="显示依赖关系"></a>显示依赖关系</h3><p>go list -m all</p>
-<h3 id="显示详细依赖关系"><a href="#显示详细依赖关系" class="headerlink" title="显示详细依赖关系"></a>显示详细依赖关系</h3><p>go list -m -json all</p>
-<h3 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h3><p>go mod download [path@version]<br>[path@version]是非必写的</p>
-]]></content>
-      <categories>
-        <category>环境安装</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Elasticsearch的使用</title>
     <url>/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h2><p>ES=elaticsearch简写， Elasticsearch是一个开源的高扩展的分布式全文检索引擎，它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。<br>Elasticsearch也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。</p>
@@ -319,6 +263,89 @@
       </categories>
       <tags>
         <tag>web,search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO基本结构：slice</title>
+    <url>/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/</url>
+    <content><![CDATA[<p>一个slice是一个数组某个部分的引用。在内存中，它是一个包含3个域的结构体，</p>
+<p>分为3个部分：</p>
+<p>1.指向slice的指针<br>2.slice的长度，长度是下标操作的上界，如x[i]中i必须小于长度<br>3.slice的容量，容量是分割操作的上界，如x[i:j]中j不能大于容量</p>
+<p><img src="/2020/12/21/GO%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aslice/1.png" alt="1"></p>
+<p>数组的slice不是复制操作，而是一个新的数据结构，新的指针，x[1:3]它只是写了一个新的slice结构的属性来引用相同的存储数据</p>
+<h3 id="slice的扩容"><a href="#slice的扩容" class="headerlink" title="slice的扩容"></a>slice的扩容</h3><p>其实slice在Go的运行时库中就是一个<br>C语言动态数组的实现，<br>在$GOROOT/src/pkg/runtime/runtime.h中可以看到它的定义</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">struct    Slice</span><br><span class="line">&#123;    <span class="comment">// must not move anything</span></span><br><span class="line">    byte*    array;        <span class="comment">// actual data</span></span><br><span class="line">    uintgo    len;        <span class="comment">// number of elements</span></span><br><span class="line">    uintgo    cap;        <span class="comment">// allocated number of elements</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对slice进行append的操作时，slice会自动扩容</p>
+<p>规则：<br>1、扩容后的大小是当前大小的2倍以上，则是新大小</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	size = newSize</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>2、如果扩容后的大小小于当前大小的2倍，则循环以下操作：<br>    1.当前大小小于1024,则按2倍大小增长<br>    2.当前大小大于1024，则按1/4倍大小增长<br>增长后的大小超过新大小，则结束循环</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> oldSize &gt; newSize &#123;</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> oldSize &lt; <span class="number">1024</span> &#123;</span><br><span class="line">				oldSize += <span class="number">2</span>* oldSize</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				oldSize += <span class="number">1</span>/<span class="number">4</span>* oldSize</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO环境安装</title>
+    <url>/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h2 id="安装包下载、安装"><a href="#安装包下载、安装" class="headerlink" title="安装包下载、安装"></a>安装包下载、安装</h2><p>去官网下载go安装包即可，根据自己的操作系统。</p>
+<p>提取到 /usr/local 目录，在 /usr/local/go 中创建Go目录树</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz</span><br></pre></td></tr></table></figure>
+<p>sudo运行，或者root用户</p>
+<h2 id="环境变量设置"><a href="#环境变量设置" class="headerlink" title="环境变量设置"></a>环境变量设置</h2><p>要将 /usr/local/go/bin 添加到 PATH 环境变量， 你需要将此行添加到你的 /etc/profile（全系统安装）或 $HOME/.profile 文件中</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> PATH=$PATH:<span class="regexp">/usr/</span>local/go/bin</span><br></pre></td></tr></table></figure>
+
+<p>如果安装到其他位置，则需要设置GOROOT</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br><span class="line"><span class="keyword">export</span> PATH=$PATH:$GOROOT/bin</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关环境变量参数"><a href="#相关环境变量参数" class="headerlink" title="相关环境变量参数"></a>相关环境变量参数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">go env</span><br><span class="line">go version</span><br></pre></td></tr></table></figure>
+
+<p>go env可查看go的环境变量参数，go version 可查看go的版本</p>
+<h3 id="GO111Module"><a href="#GO111Module" class="headerlink" title="GO111Module"></a>GO111Module</h3><p>go 1.11才有的特性</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on # 开启GoModule特性</span><br></pre></td></tr></table></figure>
+<p>GO111MODULE解释, 当为on时则使用Go Modules,go 会忽略 $GOPATH和 vendor文件夹,只根据go.mod下载依赖。</p>
+<p>当为 off时则不适用新特性 Go Modules支持，它会查找 vendor目录和 $GOPATH来查找依赖关系，也就是继续使用“GOPATH模式”。</p>
+<p>当为 auto时或未设置时则根据当前项目目录下是否存在 go.mod文件或 $GOPATH/src之外并且其本身包含go.mod文件时才会使用新特性 Go Modules模式，</p>
+<p>并且auto为 GO111MODULE的默认值。</p>
+<h3 id="GOPATH"><a href="#GOPATH" class="headerlink" title="GOPATH"></a>GOPATH</h3><p>表示go的工作目录，这个目录指定了需要从哪个地方寻找GO的包、可执行程序等，这个目录可以是多个目录表示</p>
+<h3 id="GOROOT"><a href="#GOROOT" class="headerlink" title="GOROOT"></a>GOROOT</h3><p>表示的是go语言编译、工具、标准库等的安装路径。</p>
+<p>在Linux下设置GOROOT目录：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br></pre></td></tr></table></figure>
+
+<h3 id="GOPROXY"><a href="#GOPROXY" class="headerlink" title="GOPROXY"></a>GOPROXY</h3><p>简单来说就是一个代理，让我们更方便的下载哪些由于墙的原因而导致无法下载的第三方包，</p>
+<p><a href="http://proxy.golang.org/">http://proxy.golang.org</a> 在中国无法访问，故而建议使用 <a href="http://goproxy.cn/">http://goproxy.cn</a> 作为替代</p>
+<h2 id="GO-MOD"><a href="#GO-MOD" class="headerlink" title="GO MOD"></a>GO MOD</h2><h3 id="初始化模块"><a href="#初始化模块" class="headerlink" title="初始化模块"></a>初始化模块</h3><p>go mod init &lt;项目模块名称&gt;</p>
+<h3 id="依赖关系处理-根据go-mod文件"><a href="#依赖关系处理-根据go-mod文件" class="headerlink" title="依赖关系处理 ,根据go.mod文件"></a>依赖关系处理 ,根据go.mod文件</h3><p>go mod tidy</p>
+<h3 id="将依赖包复制到项目下的-vendor目录。"><a href="#将依赖包复制到项目下的-vendor目录。" class="headerlink" title="将依赖包复制到项目下的 vendor目录。"></a>将依赖包复制到项目下的 vendor目录。</h3><p>go mod vendor<br>如果包被屏蔽(墙),可以使用这个命令，随后使用go build -mod=vendor编译</p>
+<h3 id="显示依赖关系"><a href="#显示依赖关系" class="headerlink" title="显示依赖关系"></a>显示依赖关系</h3><p>go list -m all</p>
+<h3 id="显示详细依赖关系"><a href="#显示详细依赖关系" class="headerlink" title="显示详细依赖关系"></a>显示详细依赖关系</h3><p>go list -m -json all</p>
+<h3 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h3><p>go mod download [path@version]<br>[path@version]是非必写的</p>
+]]></content>
+      <categories>
+        <category>环境安装</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO的make和new的区别</title>
+    <url>/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
+<p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
       </tags>
   </entry>
   <entry>
@@ -421,55 +448,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Git常用命令及分支</title>
-    <url>/2018/05/21/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E5%88%86%E6%94%AF/</url>
-    <content><![CDATA[<h2 id="git分支"><a href="#git分支" class="headerlink" title="git分支"></a>git分支</h2><p><img src="/2018/05/21/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E5%88%86%E6%94%AF/1.jpg" alt="1"><br>从上图可以看到主要包含下面几个分支：</p>
-<p>master: 主分支，主要用来版本发布。<br>develop：日常开发分支，该分支正常保存了开发的最新代码。<br>feature：具体的功能开发分支，只与 develop 分支交互。<br>release：release 分支可以认为是 master 分支的未测试版。比如说某一期的功能全部开发完成，那么就将 develop 分支合并到 release 分支，测试没有问题并且到了发布日期就合并到 master 分支，进行发布。<br>hotfix：线上 bug 修复分支。</p>
-<h3 id="主分支"><a href="#主分支" class="headerlink" title="主分支"></a>主分支</h3><p>主分支包括 master 分支和 develop 分支。master 分支用来发布，HEAD 就是当前线上的运行代码。develop 分支就是我们的日常开发。使用这两个分支就具有了最简单的开发模式：develop 分支用来开发功能，开发完成并且测试没有问题则将 develop 分支的代码合并到 master 分支并发布。</p>
-<h3 id="辅助分支"><a href="#辅助分支" class="headerlink" title="辅助分支"></a>辅助分支</h3><p>feature 分支<br>release 分支<br>hotfix 分支<br>通过这些分支，我们可以做到：团队成员之间并行开发，feature track 更加容易，开发和发布并行以及线上问题修复。</p>
-<h4 id="Feature-分支"><a href="#Feature-分支" class="headerlink" title="Feature 分支"></a>Feature 分支</h4><p>feature 分支用来开发具体的功能，一般 fork 自 develop 分支，最终可能会合并到 develop 分支。比如我们要在下一个版本增加功能1、功能2、功能3。那么我们就可以起三个feature 分支：feature1，feature2，feature3。（feature 分支命名最好能够自解释，这并不是一种好的命名。）随着我们开发，功能1和功能2都被完成了，而功能3因为某些原因完成不了，那么最终 feature1 和 feature2 分支将被合并到 develop 分支，而 feature3 分支将被干掉。</p>
-<h4 id="Release-分支"><a href="#Release-分支" class="headerlink" title="Release 分支"></a>Release 分支</h4><p>我们最初所有的开发工作都在 develop 分支上，当我们这一期的功能开发完毕的时候，我们基于 develop 分支开一个新的 release 分支。这个时候我们就可以对 release 分支做统一的测试了，另外做一些发布准备工作：比如版本号之类的。如果测试有问题的话，我们将直接在 release 分支上修改，然后将修改合并到 develop 分支上。</p>
-<h4 id="Hotfix-分支"><a href="#Hotfix-分支" class="headerlink" title="Hotfix 分支"></a>Hotfix 分支</h4><p>顾名思义，hotfix 分支用来修复线上 bug。当线上代码出现 bug 时，我们基于 master 分支开一个 hotfix 分支，修复 bug 之后再将 hotfix 分支合并到 master 分支并进行发布，同时 develop 分支作为最新最全的代码分支，hotfix 分支也需要合并到 develop 分支上去。仔细想一想，其实 hotfix 分支和 release 分支功能类似。hotfix 的好处是不打断 develop 分支正常进行，</p>
-<h2 id="git基本命令"><a href="#git基本命令" class="headerlink" title="git基本命令"></a>git基本命令</h2><p>1）git add 将想要快照的内容写入缓存区<br>2）git status -s “AM” 状态的意思是，这个文件在我们将它添加到缓存之后又有改动<br>3）git commit -m ‘第一次版本提交’ -m选项添加备注信息<br>4）git clone url 使用 git clone 拷贝一个 Git 仓库到本地<br>5）git diff 查看执行 git status 的结果的详细信息<br>　　尚未缓存的改动：git diff<br>　　查看已缓存的改动： git diff –cached<br>　　查看已缓存的与未缓存的所有改动：git diff HEAD<br>　　显示摘要而非整个 diff：git diff –stat<br>6）git commit -a 跳过git add 提交缓存的流程<br>7）git reset HEAD 用于取消已缓存的内容<br>8）git rm file<br>　　git rm 会将条目从缓存区中移除。这与 git reset HEAD 将条目取消缓存是有区别的。<br>　　“取消缓存”的意思就是将缓存区恢复为我们做出修改之前的样子。<br>　　默认情况下，git rm file 会将文件从缓存区和你的硬盘中（工作目录）删除。<br>9）git mv 重命名磁盘上的文件 如 git mv README README.md</p>
-<p>10）git push -u origin master 提交代码</p>
-<h2 id="git分支管理"><a href="#git分支管理" class="headerlink" title="git分支管理"></a>git分支管理</h2><p>查看本地分支：$ git branch</p>
-<p>查看远程分支：$ git branch -r</p>
-<p>创建本地分支：$ git branch [name] —-注意新分支创建后不会自动切换为当前分支</p>
-<p>切换分支：$ git checkout [name]</p>
-<p>创建新分支并立即切换到新分支：$ git checkout -b [name]</p>
-<p>删除分支：$ git branch -d [name] —- -d选项只能删除已经参与了合并的分支，对于未有合并的分支是无法删除的。如果想强制删除一个分支，可以使用-D选项</p>
-<p>合并分支：$ git merge [name] —-将名称为[name]的分支与当前分支合并</p>
-<p>创建远程分支(本地分支push到远程)：$ git push origin [name]</p>
-<p>删除远程分支：$ git push origin :heads/[name] 或 $ gitpush origin :[name] </p>
-<h2 id="git仓库相关命令"><a href="#git仓库相关命令" class="headerlink" title="git仓库相关命令"></a>git仓库相关命令</h2><p>检出仓库：        $ git clone git://github.com/jquery/jquery.git</p>
-<p>查看远程仓库：$ git remote -v</p>
-<p>添加远程仓库：$ git remote add [name] [url]</p>
-<p>删除远程仓库：$ git remote rm [name]</p>
-<p>修改远程仓库：$ git remote set-url –push [name] [newUrl]</p>
-<p>拉取远程仓库：$ git pull [remoteName] [localBranchName]</p>
-<p>推送远程仓库：$ git push [remoteName] [localBranchName]</p>
-<p>如果想把本地的某个分支test提交到远程仓库，并作为远程仓库的master分支，或者作为另外一个名叫test的分支，如下：</p>
-<p>$git push origin test:master         // 提交本地test分支作为远程的master分支</p>
-<p>$git push origin test:test              // 提交本地test分支作为远程的test分支</p>
-<h2 id="git版本相关操作命令"><a href="#git版本相关操作命令" class="headerlink" title="git版本相关操作命令"></a>git版本相关操作命令</h2><p>查看版本：$ git tag</p>
-<p>创建版本：$ git tag [name]</p>
-<p>删除版本：$ git tag -d [name]</p>
-<p>查看远程版本：$ git tag -r</p>
-<p>创建远程版本(本地版本push到远程)：$ git push origin [name]</p>
-<p>删除远程版本：$ git push origin :refs/tags/[name]</p>
-<p>合并远程仓库的tag到本地：$ git pull origin –tags</p>
-<p>上传本地tag到远程仓库：$ git push origin –tags</p>
-<p>创建带注释的tag：$ git tag -a [name] -m ‘yourMessage’</p>
-<h2 id="提取远程代码"><a href="#提取远程代码" class="headerlink" title="提取远程代码"></a>提取远程代码</h2><p>1）git fetch　　从远程仓库下载新分支与数据<br>2)）git pull　　从远端仓库提取数据并尝试合并到当前分支</p>
-]]></content>
-      <categories>
-        <category>Git代码管理</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git撤销回滚</title>
     <url>/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/</url>
     <content><![CDATA[<p>了解git如何撤销回滚，先了解git的工作流</p>
@@ -553,52 +531,22 @@
       </tags>
   </entry>
   <entry>
-    <title>Git的reset与revert的区别</title>
-    <url>/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h2 id="git的head理解"><a href="#git的head理解" class="headerlink" title="git的head理解"></a>git的head理解</h2><p>使用git的每次提交，Git都会自动把它们串成一条时间线，这条时间线就是一个分支。如果没有新建分支，那么只有一条时间线，即只有一个分支，在Git里，这个分支叫主分支，即master分支。有一个HEAD指针指向当前分支（只有一个分支的情况下会指向master，而master是指向最新提交）</p>
-<h2 id="reset操作"><a href="#reset操作" class="headerlink" title="reset操作"></a>reset操作</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>git reset的作用是修改HEAD的位置，即将HEAD指向的位置改变为之前存在的某个版本</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
-<p>reset之后，目标版本之后的版本会被删除，更新为reset的版本</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/2.png" alt="2"></p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>如果想恢复到之前某个提交的版本，且那个版本之后提交的版本我们都不要了，就可以用这种方法</p>
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+    <title>N叉树的前序遍历</title>
+    <url>/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
+    <content><![CDATA[<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><p>类似二叉树，子节点for循环遍历一下就好</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"># Definition for a Node.</span><br><span class="line"># class Node:</span><br><span class="line">#    def __init__(self, val=None, children=None):</span><br><span class="line">#        self.val = val</span><br><span class="line">#        self.children = children</span><br><span class="line"></span><br><span class="line">class Solution:</span><br><span class="line">    def preorder(self, <span class="attr">root</span>: <span class="string">&#x27;Node&#x27;</span>) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        def handle(root):</span><br><span class="line">            <span class="keyword">if</span> not root:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            res.append(root.val)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> root.children:</span><br><span class="line">                handle(i)</span><br><span class="line">        handle(root)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>如下图所示，选择要回退的commit ID</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/3.png" alt="3"></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
+<h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>按子节点顺序即可</p>
+<h4 id="python-1"><a href="#python-1" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        <span class="keyword">if</span> root is None:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        </span><br><span class="line">        stack, output = [root, ], []            </span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">        	# 移除最后一个元素</span><br><span class="line">            root = stack.pop()</span><br><span class="line">            output.append(root.val)</span><br><span class="line">            # 反转数组 </span><br><span class="line">            stack.extend(root.children[::-<span class="number">1</span>])</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>然后提交更改</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
-<p>PS： “git push”会报错，因为我们本地库HEAD指向的版本比远程库的要旧</p>
-<p>强推则回退成功</p>
-<h2 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p> git revert是用于“反做”某一个版本，以达到撤销该版本的修改的目的。比如，我们commit了三个版本（版本一、版本二、 版本三），突然发现版本二不行（如：有bug），想要撤销版本二，但又不想影响撤销版本三的提交，就可以用 git revert 命令来反做版本二，生成新的版本四，这个版本四里会保留版本三的东西，但撤销了版本二的东西</p>
-<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/4.png" alt="4"></p>
-<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/5.png" alt="5"></p>
-<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>如果我们想撤销之前的某一版本，但是又想保留该目标版本后面的版本，记录下这整个版本变动流程，就可以用这种方法。</p>
-<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
-
-<p>选择要反做的版本号，撤销该版本的修改</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git revert -n 版本号</span><br></pre></td></tr></table></figure>
-
-<p>PS： 这里可能会出现冲突，那么需要手动修改冲突的文件。而且要git add 文件名。</p>
-<p>提交反做的内容</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;新提交说明&quot;</span> </span><br></pre></td></tr></table></figure>
-
-<p>这时可以git log查看本地的版本信息，会发现新增一个版本</p>
-<p>git push推上去</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
-
-<p>反做成功</p>
-<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><p>reset： 回滚“到”某个版本</p>
-<p>revert： 回滚某个版本</p>
+<p>时间复杂度：时间复杂度：O(M)，其中 MM 是 N 叉树中的节点个数。每个节点只会入栈和出栈各一次。</p>
+<p>空间复杂度：O(M)。在最坏的情况下，这棵 N 叉树只有 2 层，所有第 2 层的节点都是根节点的孩子。将根节点推出栈后，需要将这些节点都放入栈，共有 M−1 个节点，因此栈的大小为 O(M)</p>
 ]]></content>
       <categories>
-        <category>Git代码管理</category>
+        <category>数据算法</category>
       </categories>
       <tags>
-        <tag>git</tag>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -724,22 +672,52 @@
       </tags>
   </entry>
   <entry>
-    <title>N叉树的前序遍历</title>
-    <url>/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><p>类似二叉树，子节点for循环遍历一下就好</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"># Definition for a Node.</span><br><span class="line"># class Node:</span><br><span class="line">#    def __init__(self, val=None, children=None):</span><br><span class="line">#        self.val = val</span><br><span class="line">#        self.children = children</span><br><span class="line"></span><br><span class="line">class Solution:</span><br><span class="line">    def preorder(self, <span class="attr">root</span>: <span class="string">&#x27;Node&#x27;</span>) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        def handle(root):</span><br><span class="line">            <span class="keyword">if</span> not root:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            res.append(root.val)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> root.children:</span><br><span class="line">                handle(i)</span><br><span class="line">        handle(root)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    <title>Git的reset与revert的区别</title>
+    <url>/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="git的head理解"><a href="#git的head理解" class="headerlink" title="git的head理解"></a>git的head理解</h2><p>使用git的每次提交，Git都会自动把它们串成一条时间线，这条时间线就是一个分支。如果没有新建分支，那么只有一条时间线，即只有一个分支，在Git里，这个分支叫主分支，即master分支。有一个HEAD指针指向当前分支（只有一个分支的情况下会指向master，而master是指向最新提交）</p>
+<h2 id="reset操作"><a href="#reset操作" class="headerlink" title="reset操作"></a>reset操作</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>git reset的作用是修改HEAD的位置，即将HEAD指向的位置改变为之前存在的某个版本</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<p>reset之后，目标版本之后的版本会被删除，更新为reset的版本</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/2.png" alt="2"></p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>如果想恢复到之前某个提交的版本，且那个版本之后提交的版本我们都不要了，就可以用这种方法</p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
 
-<h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>按子节点顺序即可</p>
-<h4 id="python-1"><a href="#python-1" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        <span class="keyword">if</span> root is None:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        </span><br><span class="line">        stack, output = [root, ], []            </span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">        	# 移除最后一个元素</span><br><span class="line">            root = stack.pop()</span><br><span class="line">            output.append(root.val)</span><br><span class="line">            # 反转数组 </span><br><span class="line">            stack.extend(root.children[::-<span class="number">1</span>])</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如下图所示，选择要回退的commit ID</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/3.png" alt="3"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
 
-<p>时间复杂度：时间复杂度：O(M)，其中 MM 是 N 叉树中的节点个数。每个节点只会入栈和出栈各一次。</p>
-<p>空间复杂度：O(M)。在最坏的情况下，这棵 N 叉树只有 2 层，所有第 2 层的节点都是根节点的孩子。将根节点推出栈后，需要将这些节点都放入栈，共有 M−1 个节点，因此栈的大小为 O(M)</p>
+<p>然后提交更改</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+<p>PS： “git push”会报错，因为我们本地库HEAD指向的版本比远程库的要旧</p>
+<p>强推则回退成功</p>
+<h2 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p> git revert是用于“反做”某一个版本，以达到撤销该版本的修改的目的。比如，我们commit了三个版本（版本一、版本二、 版本三），突然发现版本二不行（如：有bug），想要撤销版本二，但又不想影响撤销版本三的提交，就可以用 git revert 命令来反做版本二，生成新的版本四，这个版本四里会保留版本三的东西，但撤销了版本二的东西</p>
+<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/4.png" alt="4"></p>
+<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/5.png" alt="5"></p>
+<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>如果我们想撤销之前的某一版本，但是又想保留该目标版本后面的版本，记录下这整个版本变动流程，就可以用这种方法。</p>
+<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+
+<p>选择要反做的版本号，撤销该版本的修改</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git revert -n 版本号</span><br></pre></td></tr></table></figure>
+
+<p>PS： 这里可能会出现冲突，那么需要手动修改冲突的文件。而且要git add 文件名。</p>
+<p>提交反做的内容</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;新提交说明&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这时可以git log查看本地的版本信息，会发现新增一个版本</p>
+<p>git push推上去</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<p>反做成功</p>
+<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><p>reset： 回滚“到”某个版本</p>
+<p>revert： 回滚某个版本</p>
 ]]></content>
       <categories>
-        <category>数据算法</category>
+        <category>Git代码管理</category>
       </categories>
       <tags>
-        <tag>算法</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -863,6 +841,37 @@
       </tags>
   </entry>
   <entry>
+    <title>VMware的.vmdk文件只赠不减的处理方法</title>
+    <url>/2019/11/14/VMware%E7%9A%84.vmdk%E6%96%87%E4%BB%B6%E5%8F%AA%E8%B5%A0%E4%B8%8D%E5%87%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>VMware虚拟机的虚拟磁盘的大小会随着使用时间不断变大，而且只赠不减。即使在虚拟系统中删除了磁盘中的文件，虚拟磁盘的大小仍然不会变小。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>VMWare Tools中的 Shrink功能，和vmware-vdiskmanager工具。</p>
+<ol>
+<li><p>虚拟Windows系统，安装VMWare Tools，直接调用右下角图形工具Shrink。</p>
+</li>
+<li><p>虚拟Linux系统，关注虚拟机，在VMWare的安装跟路径下，使用vmware-vdiskmanager工具。</p>
+</li>
+</ol>
+<p>如我的VMware安装在H盘，在windows的命令行中：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ H:\&gt;cd VMware</span><br><span class="line"></span><br><span class="line">$ H:\VMware&gt;vmware-vdiskmanager.exe -k <span class="string">&quot;H:\UbuntuVMware\Ubuntu 64-bit\Ubuntu 64-bit.vmdk&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：H:\UbuntuVMware\Ubuntu 64-bit\Ubuntu 64-bit.vmdk是你指定需要shrink的.vmdk文件；另外，由于我的路径中有空格，所以路径用双引号包含，若路径无空格则可以忽略双引号。</p>
+<p>如此瘦身之后，我的硬盘并未节省太多空间。原因是Ubuntu系统占用了空间，系统未释放，所有用工具逼它释放并不能达成目的。解决方案如下：</p>
+<p>在虚拟Linux系统中，终端使用命令：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ cat /dev/zero &gt; zero.fill</span><br></pre></td></tr></table></figure>
+
+<p>执行完毕后，发现zero.fill非常大，使用命令将其删除</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ rm -f zero.fill</span><br></pre></td></tr></table></figure>
+
+<p>删除后再退出虚拟系统，在windows下再用vmware-vdiskmanager.exe去shrink文件*.vmdk。结束后我的电脑清理了大量空间。</p>
+]]></content>
+      <categories>
+        <category>环境安装</category>
+      </categories>
+      <tags>
+        <tag>VMware</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RestFul设计规则</title>
     <url>/2018/06/02/RestFul%E8%AE%BE%E8%AE%A1%E8%A7%84%E5%88%99/</url>
     <content><![CDATA[<h2 id="restful"><a href="#restful" class="headerlink" title="restful"></a>restful</h2><p>REST全称是Representational State Transfer，REST本身并没有创造新的技术、组件或服务，而隐藏在RESTful背后的理念就是使用Web的现有特征和能力， 更好地使用现有Web标准中的一些准则和约束。虽然REST本身受Web技术的影响很深， 但是理论上REST架构风格并不是绑定在HTTP上，只不过目前HTTP是唯一与REST相关的实例。 所以我们这里描述的REST也是通过HTTP实现的REST。</p>
@@ -902,37 +911,6 @@
       </tags>
   </entry>
   <entry>
-    <title>VMware的.vmdk文件只赠不减的处理方法</title>
-    <url>/2019/11/14/VMware%E7%9A%84.vmdk%E6%96%87%E4%BB%B6%E5%8F%AA%E8%B5%A0%E4%B8%8D%E5%87%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>VMware虚拟机的虚拟磁盘的大小会随着使用时间不断变大，而且只赠不减。即使在虚拟系统中删除了磁盘中的文件，虚拟磁盘的大小仍然不会变小。</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>VMWare Tools中的 Shrink功能，和vmware-vdiskmanager工具。</p>
-<ol>
-<li><p>虚拟Windows系统，安装VMWare Tools，直接调用右下角图形工具Shrink。</p>
-</li>
-<li><p>虚拟Linux系统，关注虚拟机，在VMWare的安装跟路径下，使用vmware-vdiskmanager工具。</p>
-</li>
-</ol>
-<p>如我的VMware安装在H盘，在windows的命令行中：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ H:\&gt;cd VMware</span><br><span class="line"></span><br><span class="line">$ H:\VMware&gt;vmware-vdiskmanager.exe -k <span class="string">&quot;H:\UbuntuVMware\Ubuntu 64-bit\Ubuntu 64-bit.vmdk&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：H:\UbuntuVMware\Ubuntu 64-bit\Ubuntu 64-bit.vmdk是你指定需要shrink的.vmdk文件；另外，由于我的路径中有空格，所以路径用双引号包含，若路径无空格则可以忽略双引号。</p>
-<p>如此瘦身之后，我的硬盘并未节省太多空间。原因是Ubuntu系统占用了空间，系统未释放，所有用工具逼它释放并不能达成目的。解决方案如下：</p>
-<p>在虚拟Linux系统中，终端使用命令：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ cat /dev/zero &gt; zero.fill</span><br></pre></td></tr></table></figure>
-
-<p>执行完毕后，发现zero.fill非常大，使用命令将其删除</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ rm -f zero.fill</span><br></pre></td></tr></table></figure>
-
-<p>删除后再退出虚拟系统，在windows下再用vmware-vdiskmanager.exe去shrink文件*.vmdk。结束后我的电脑清理了大量空间。</p>
-]]></content>
-      <categories>
-        <category>环境安装</category>
-      </categories>
-      <tags>
-        <tag>VMware</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>tornado websocket源码分析及解决实际问题</title>
     <url>/2019/06/30/tornado%20websocket%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h2 id="tornado-websocket"><a href="#tornado-websocket" class="headerlink" title="tornado websocket"></a>tornado websocket</h2><p>tornado版本：4.5.2</p>
@@ -969,6 +947,23 @@
       </tags>
   </entry>
   <entry>
+    <title>websocket分布式共享解决方案</title>
+    <url>/2019/07/14/websocket%E5%88%86%E5%B8%83%E5%BC%8F%E5%85%B1%E4%BA%AB%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h3 id="websocket分布式问题"><a href="#websocket分布式问题" class="headerlink" title="websocket分布式问题"></a>websocket分布式问题</h3><p>如果在单机情况下，当websocket需要给用户推送消息时，由于用户已经与websocket服务建立连接，消息推送能够成功。<br>但如果在集群情况下，用户甲向websocket发起连接请求，有多台服务时strong text，只能与一台服务建立连接（以服务A为例），而这些websocket服务都是有可能会给用户甲推送消息，这时候的服务B和C并没有建立连接，所以会有一部分消息推送失败。<br>因为websocket是长连接，session保持在一个server中，所以在不同server在使用websocket推送消息时就需要获取对应的session进行推送，在分布式系统中就无法获取到所有session。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>这里就需要使用一个中间件，将消息推送到个系统中，这里使用redis作为中间件，使用redis的发布订阅功能 pub/sub。<br>在原来的系统里，由业务模块的服务处理业务逻辑，发生需要推送给用户的数据的时候，发消息给websocket服务，由websocket服务推送消息给用户。<br>那么，问题的关键就是确保和用户建立连接的websocket服务就是接收到消息的服务，但是由于建立连接的websockt是由ngnx进行负载均衡分配的，接收消息的服务也是无法确定的，这一点并没有什么太好的办法保证。<br>因此，我们可以换个思路，只要确保对于业务模块发送的消息，所有的websocket服务都能收到消息，只要做到了这一点，与用户建立连接websocket自然也能接收到消息。而且，这种方式相对单台服务收到消息还有一个在处理多点登陆场景下的优势。对于允许多点登录的系统，同一用户可以在多处进行登录，以为着同一用户与多个服务拥有多个websocket连接，这就要求我们保证多台用户消费同一台业务模块的消息。</p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class RedisListenDelegate(object):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; redis 队列监控&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, system, connection):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            init</span></span><br><span class="line"><span class="string">        :param system: 系统名</span></span><br><span class="line"><span class="string">        :param connection: websockets</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        self.connection = connection</span><br><span class="line">        self.system = system</span><br><span class="line">        self.redis = self.get_redis()</span><br><span class="line">        self.redis.connect()</span><br><span class="line">        self.listen()</span><br><span class="line"></span><br><span class="line">    def parse_redis_conf(self, redis_conf):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            解析redis的配置</span></span><br><span class="line"><span class="string">        :param redis_conf: redis配置</span></span><br><span class="line"><span class="string">        :return: redis配置字典</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> re.match(PATTERN[<span class="string">&#x27;redis_config&#x27;</span>], redis_conf).groupdict()</span><br><span class="line"></span><br><span class="line">    def get_redis(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            获得redis连接客户端</span></span><br><span class="line"><span class="string">        :return: redis 客户端</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        info = self.parse_redis_conf(REDIS_URL)</span><br><span class="line">        <span class="keyword">return</span> tornadoredis.Client(host=info[<span class="string">&#x27;host&#x27;</span>], port=int(info[<span class="string">&#x27;port&#x27;</span>]))</span><br><span class="line"></span><br><span class="line">    def handle_message(self, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            所有监听redis通道后的处理,都应该继承本函数,本函数是redis通道收到消息后的回调函数</span></span><br><span class="line"><span class="string">        :param message: redis监听结果信息</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        if message.kind != &#x27;message&#x27;:  # 不处理redis连接信息</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.connection.message_delegate.send_message(message.body)  # 发送消息</span><br><span class="line"></span><br><span class="line">    @gen.coroutine</span><br><span class="line">    def listen(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">        监听redis通道,回调消息处理</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">yield</span> gen.Task(self.redis.subscribe, SUBSCRIBE_KEY.format(self.system))</span><br><span class="line">        <span class="keyword">yield</span> self.redis.listen(self.handle_message)</span><br><span class="line">		</span><br><span class="line"># 发送消息，访问websocket，最终将消息发布到redis即可，由上面的连接进行监听		</span><br><span class="line">publish(system, message)</span><br></pre></td></tr></table></figure>
+
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>每个系统作为一个redis通道进行监听，该系统频道收到消息后，该websocket的server会监听到该消息，通过消息内的用户属性，去从本地服务存储的websocket连接获取该用户的连接，然后对该用户发送消息。分布式情况下，所有的server都会监听到该消息，但是用户建立连接只在其中一个server，这样这个server也就可以监听到这个消息，因为连接存在，所以这个server会对用户发送消息，其他server即使监听到但是没有连接，所以不做处理即可。</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1、解决了websocket分布式推送消息的问题。<br>2、代码解耦，websocket服务建立连接，与推送消息到websocket解耦，互不影响，websocket服务挂掉也可以推送消息到redis，无法推消息到redis系统挂掉，也不会影响websocket服务。</p>
+]]></content>
+      <categories>
+        <category>Websocket</category>
+      </categories>
+      <tags>
+        <tag>websocket</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>tornado-redis版本兼容问题</title>
     <url>/2020/01/16/tornado-redis%E7%89%88%E6%9C%AC%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>主要兼容 tornado5.1 因为这个版本删掉了io_loop所以会造成引用时候报错找不到 io_loop.</p>
@@ -987,23 +982,6 @@
       </tags>
   </entry>
   <entry>
-    <title>websocket分布式共享解决方案</title>
-    <url>/2019/07/14/websocket%E5%88%86%E5%B8%83%E5%BC%8F%E5%85%B1%E4%BA%AB%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h3 id="websocket分布式问题"><a href="#websocket分布式问题" class="headerlink" title="websocket分布式问题"></a>websocket分布式问题</h3><p>如果在单机情况下，当websocket需要给用户推送消息时，由于用户已经与websocket服务建立连接，消息推送能够成功。<br>但如果在集群情况下，用户甲向websocket发起连接请求，有多台服务时strong text，只能与一台服务建立连接（以服务A为例），而这些websocket服务都是有可能会给用户甲推送消息，这时候的服务B和C并没有建立连接，所以会有一部分消息推送失败。<br>因为websocket是长连接，session保持在一个server中，所以在不同server在使用websocket推送消息时就需要获取对应的session进行推送，在分布式系统中就无法获取到所有session。</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>这里就需要使用一个中间件，将消息推送到个系统中，这里使用redis作为中间件，使用redis的发布订阅功能 pub/sub。<br>在原来的系统里，由业务模块的服务处理业务逻辑，发生需要推送给用户的数据的时候，发消息给websocket服务，由websocket服务推送消息给用户。<br>那么，问题的关键就是确保和用户建立连接的websocket服务就是接收到消息的服务，但是由于建立连接的websockt是由ngnx进行负载均衡分配的，接收消息的服务也是无法确定的，这一点并没有什么太好的办法保证。<br>因此，我们可以换个思路，只要确保对于业务模块发送的消息，所有的websocket服务都能收到消息，只要做到了这一点，与用户建立连接websocket自然也能接收到消息。而且，这种方式相对单台服务收到消息还有一个在处理多点登陆场景下的优势。对于允许多点登录的系统，同一用户可以在多处进行登录，以为着同一用户与多个服务拥有多个websocket连接，这就要求我们保证多台用户消费同一台业务模块的消息。</p>
-<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class RedisListenDelegate(object):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; redis 队列监控&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, system, connection):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            init</span></span><br><span class="line"><span class="string">        :param system: 系统名</span></span><br><span class="line"><span class="string">        :param connection: websockets</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        self.connection = connection</span><br><span class="line">        self.system = system</span><br><span class="line">        self.redis = self.get_redis()</span><br><span class="line">        self.redis.connect()</span><br><span class="line">        self.listen()</span><br><span class="line"></span><br><span class="line">    def parse_redis_conf(self, redis_conf):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            解析redis的配置</span></span><br><span class="line"><span class="string">        :param redis_conf: redis配置</span></span><br><span class="line"><span class="string">        :return: redis配置字典</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> re.match(PATTERN[<span class="string">&#x27;redis_config&#x27;</span>], redis_conf).groupdict()</span><br><span class="line"></span><br><span class="line">    def get_redis(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            获得redis连接客户端</span></span><br><span class="line"><span class="string">        :return: redis 客户端</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        info = self.parse_redis_conf(REDIS_URL)</span><br><span class="line">        <span class="keyword">return</span> tornadoredis.Client(host=info[<span class="string">&#x27;host&#x27;</span>], port=int(info[<span class="string">&#x27;port&#x27;</span>]))</span><br><span class="line"></span><br><span class="line">    def handle_message(self, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            所有监听redis通道后的处理,都应该继承本函数,本函数是redis通道收到消息后的回调函数</span></span><br><span class="line"><span class="string">        :param message: redis监听结果信息</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        if message.kind != &#x27;message&#x27;:  # 不处理redis连接信息</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.connection.message_delegate.send_message(message.body)  # 发送消息</span><br><span class="line"></span><br><span class="line">    @gen.coroutine</span><br><span class="line">    def listen(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">        监听redis通道,回调消息处理</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">yield</span> gen.Task(self.redis.subscribe, SUBSCRIBE_KEY.format(self.system))</span><br><span class="line">        <span class="keyword">yield</span> self.redis.listen(self.handle_message)</span><br><span class="line">		</span><br><span class="line"># 发送消息，访问websocket，最终将消息发布到redis即可，由上面的连接进行监听		</span><br><span class="line">publish(system, message)</span><br></pre></td></tr></table></figure>
-
-<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>每个系统作为一个redis通道进行监听，该系统频道收到消息后，该websocket的server会监听到该消息，通过消息内的用户属性，去从本地服务存储的websocket连接获取该用户的连接，然后对该用户发送消息。分布式情况下，所有的server都会监听到该消息，但是用户建立连接只在其中一个server，这样这个server也就可以监听到这个消息，因为连接存在，所以这个server会对用户发送消息，其他server即使监听到但是没有连接，所以不做处理即可。</p>
-<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1、解决了websocket分布式推送消息的问题。<br>2、代码解耦，websocket服务建立连接，与推送消息到websocket解耦，互不影响，websocket服务挂掉也可以推送消息到redis，无法推消息到redis系统挂掉，也不会影响websocket服务。</p>
-]]></content>
-      <categories>
-        <category>Websocket</category>
-      </categories>
-      <tags>
-        <tag>websocket</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>websocket 心跳机制处理</title>
     <url>/2019/07/01/websocket%E5%BF%83%E8%B7%B3%E9%87%8D%E8%BF%9E%E6%9C%BA%E5%88%B6%E5%A4%84%E7%90%86/</url>
     <content><![CDATA[<h3 id="websocket使用问题"><a href="#websocket使用问题" class="headerlink" title="websocket使用问题"></a>websocket使用问题</h3><p>在使用websocket的过程中，有时候会遇到网络断开的情况，或者断电，电脑死机，但是在这些情况下服务器端与客户端并没有触发onclose的事件。这样会有：服务器会继续向客户端发送多余的链接，并且这些数据还会丢失。所以就需要一种机制来检测客户端和服务端是否处于正常的链接状态。因此就有了websocket的心跳了。还有心跳，说明还活着，没有心跳说明已经挂掉了。</p>
@@ -1018,41 +996,6 @@
 <h4 id="重连机制代码"><a href="#重连机制代码" class="headerlink" title="重连机制代码"></a>重连机制代码</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重连机制</span></span><br><span class="line">    <span class="function"><span class="title">reconnect</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="comment">// 避免重复连接</span></span><br><span class="line">      <span class="keyword">if</span>(<span class="built_in">this</span>.lockReconnect)&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">this</span>.lockReconnect = <span class="literal">true</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务异常关闭，正在重连中。。。&#x27;</span>)</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.reconnectTime &gt;= <span class="number">5</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务重连失败, 请刷新浏览器&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">this</span>.reconnectData &amp;&amp; <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.reconnectData)</span><br><span class="line">      <span class="built_in">this</span>.reconnectData = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.initWebSocket()</span><br><span class="line">        <span class="built_in">this</span>.reconnectTime++</span><br><span class="line">        <span class="built_in">this</span>.lockReconnect = <span class="literal">false</span></span><br><span class="line">      &#125;,<span class="number">5000</span>)</span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
 
 <h4 id="重连原理"><a href="#重连原理" class="headerlink" title="重连原理"></a>重连原理</h4><p>在onerror与onclose里都加上了重连机制，也就是说websocket遇到异常，或者关闭进行重连，由于websocket本身在触发onerror事件后一定会触发onclose，所以会进行两次重连，为了避免这种情况，加上了一个重连锁的机制，避免重复连接。<br>当然也不能无限重连，所以要设定重连最大次数，如果到达最大次数还未重连成功，需要用户从新登陆或者刷新浏览器进行重连。<br>设定重连定时器，一但触发重连，5秒之后初始化websocket，从新建立连接，连接次数加一，释放重连锁。</p>
-]]></content>
-      <categories>
-        <category>Websocket</category>
-      </categories>
-      <tags>
-        <tag>websocket</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>websocket 服务项目搭建</title>
-    <url>/2019/07/10/websocket%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h3><p>根据项目要求，在各系统之间实现异步通知服务，从客户端到服务端，从服务端到客户端实现双向通知。以客户端主动，由客户端向服务端发起http请求，来实现任务的发起，服务端执行异步任务，由于非同步，所以客户端并不知道这个任务什么时候执行完毕，所以需要服务端在执行完任务的时候，主动向客户端发送一个请求，来告知客户端我已经完成任务了，来完成服务端客户端的双向通信。</p>
-<h3 id="websocket选择"><a href="#websocket选择" class="headerlink" title="websocket选择"></a>websocket选择</h3><p>一般来说，客户端与服务端的交互都是主动的，客户端与服务端对应的模式就是：客户端请求-服务端响应。而服务端主动向客户端推送消息，客户端不像服务端只有一个地址，要解决这一个问题，我考虑到以下两种方式。</p>
-<h4 id="Ajax轮询"><a href="#Ajax轮询" class="headerlink" title="Ajax轮询"></a>Ajax轮询</h4><p>所谓的Ajax轮询，其实就是定时的通过Ajax查询服务端，客户端按规定时间定时像服务端发送ajax请求，服务器接到请求后马上返回响应信息并关闭连接。</p>
-<p>这种技术方式实现起来非常简单，但是这种方式会有非常严重的问题，就是需要不断的向服务器发送消息询问，这种方式会对服务器造成极大的性能浪费。不是实时通信，不顾及应用的状态改变而盲目检查更新，导致服务器资源的浪费，且会加重网络负载，拖累服务器。</p>
-<h4 id="websocket服务"><a href="#websocket服务" class="headerlink" title="websocket服务"></a>websocket服务</h4><p> WebSocket是HTML5开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。在WebSocket API中，浏览器和服务器只需要做一个握手的动作，然后，浏览器和服务器之间就形成了一条快速通道。两者之间就直接可以数据互相传送。详情看</p>
-<p> 这里选择使用websocket</p>
-<h3 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h3><p>Python + tornado + vue + websocket</p>
-<h3 id="前端（客户端）建立websocket"><a href="#前端（客户端）建立websocket" class="headerlink" title="前端（客户端）建立websocket"></a>前端（客户端）建立websocket</h3><p>由客户端主动与服务端建立websocket连接，并保持连接通道，通道保持就可以实现双向通信，发消息，建立连接时，根据用户行为（登录等）初始化链接。代码如下</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"> </span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name : <span class="string">&#x27;websocket&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;     </span><br><span class="line">    <span class="keyword">return</span> &#123; </span><br><span class="line">      websock: <span class="literal">null</span>,</span><br><span class="line">      reconnectTime: <span class="number">0</span>,       <span class="comment">// 重连次数</span></span><br><span class="line">      reconnectData:<span class="literal">null</span>,     <span class="comment">// 重连定时</span></span><br><span class="line">      lockReconnect:<span class="literal">false</span>,    <span class="comment">//避免重复连接，因为onerror之后会立即触发 onclose</span></span><br><span class="line">      timeout:<span class="number">1000</span>,          <span class="comment">//60s一次心跳检测</span></span><br><span class="line">      timeoutObj:<span class="literal">null</span>,        <span class="comment">// 客户端发送定时</span></span><br><span class="line">      serverTimeoutObj:<span class="literal">null</span>,  <span class="comment">// 收到服务器响应定时</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">created</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.initWebSocket()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">destroyed</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.lockReconnect = <span class="literal">true</span></span><br><span class="line">    <span class="built_in">this</span>.websock.close()                  <span class="comment">//离开路由之后断开websocket连接</span></span><br><span class="line">    <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.reconnectData)      <span class="comment">//离开清除 timeout</span></span><br><span class="line">    <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.timeoutObj)         <span class="comment">//离开清除 timeout</span></span><br><span class="line">    <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.serverTimeoutObj)   <span class="comment">//离开清除 timeout</span></span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="comment">//初始化weosocket</span></span><br><span class="line">    <span class="function"><span class="title">initWebSocket</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      const wsuri = &#x27; &#x27; # 链接地址</span><br><span class="line">      <span class="built_in">this</span>.websock = <span class="keyword">new</span> WebSocket(wsuri + <span class="string">&#x27;?token=&#x27;</span> + <span class="built_in">this</span>.$store.getters.token)  </span><br><span class="line">      <span class="built_in">this</span>.websock.onmessage = <span class="built_in">this</span>.websocketOnMessage     </span><br><span class="line">      <span class="built_in">this</span>.websock.onopen = <span class="built_in">this</span>.websocketOnOpen    </span><br><span class="line">      <span class="built_in">this</span>.websock.onerror = <span class="built_in">this</span>.websocketOnError    </span><br><span class="line">      <span class="built_in">this</span>.websock.onclose = <span class="built_in">this</span>.websocketClose</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//连接建立之后执行send方法发送数据</span></span><br><span class="line">    <span class="function"><span class="title">websocketOnOpen</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.heartBeat()</span><br><span class="line">      <span class="built_in">this</span>.reconnectTime = <span class="number">0</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务连接成功&#x27;</span>) </span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//连接建立失败重连</span></span><br><span class="line">    <span class="function"><span class="title">websocketOnError</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.reconnect()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//数据发送</span></span><br><span class="line">    <span class="function"><span class="title">websocketSend</span>(<span class="params">Data</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.websock.send(<span class="built_in">JSON</span>.stringify(Data))</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//关闭</span></span><br><span class="line">    <span class="function"><span class="title">websocketClose</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.reconnect()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//数据接收</span></span><br><span class="line">    <span class="function"><span class="title">websocketOnMessage</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.heartBeat()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 心跳检测</span></span><br><span class="line">    <span class="function"><span class="title">heartBeat</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.timeoutObj &amp;&amp; <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.timeoutObj)</span><br><span class="line">      <span class="built_in">this</span>.serverTimeoutObj &amp;&amp; <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.serverTimeoutObj)</span><br><span class="line">      <span class="built_in">this</span>.timeoutObj = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.websocketSend(<span class="string">&#x27;heart_beat&#x27;</span>)</span><br><span class="line">        <span class="built_in">this</span>.serverTimeoutObj = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">this</span>.websock.close()     </span><br><span class="line">        &#125;, <span class="number">5000</span>)</span><br><span class="line">      &#125;, <span class="built_in">this</span>.timeout)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 重连机制</span></span><br><span class="line">    <span class="function"><span class="title">reconnect</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="comment">// 避免重复连接</span></span><br><span class="line">      <span class="keyword">if</span>(<span class="built_in">this</span>.lockReconnect)&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">this</span>.lockReconnect = <span class="literal">true</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务异常关闭，正在重连中。。。&#x27;</span>)</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.reconnectTime &gt;= <span class="number">5</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务重连失败, 请刷新浏览器&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">this</span>.reconnectData &amp;&amp; <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.reconnectData)</span><br><span class="line">      <span class="built_in">this</span>.reconnectData = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.initWebSocket()</span><br><span class="line">        <span class="built_in">this</span>.reconnectTime++</span><br><span class="line">        <span class="built_in">this</span>.lockReconnect = <span class="literal">false</span></span><br><span class="line">      &#125;,<span class="number">5000</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>用户行为操作后，或者前端项目启动后，加载这个组件，然后就会初始化websocket，与服务端进行连接，连接成功之后会触发心跳机制维持连接，可以通过websocket的事件进行收发消息</p>
-<h3 id="服务端启动websocket服务"><a href="#服务端启动websocket服务" class="headerlink" title="服务端启动websocket服务"></a>服务端启动websocket服务</h3><h4 id="websocket连接层"><a href="#websocket连接层" class="headerlink" title="websocket连接层"></a>websocket连接层</h4><p>前端通过连接地址，指定websocket服务端启动的ip端口，继承websocket基类，创立连接</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> base.websocket <span class="keyword">import</span> BaseWebSocket</span><br><span class="line"><span class="keyword">from</span> lib.routes <span class="keyword">import</span> route</span><br><span class="line"><span class="keyword">from</span> services.connection <span class="keyword">import</span> Connection</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@route(r<span class="string">&#x27;/websocket&#x27;</span>)</span><br><span class="line">class AthenaWebsocket(BaseWebSocket):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;websocket连接层，创建连接&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    connection = Connection(<span class="string">&#x27;athena&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="websocket基类"><a href="#websocket基类" class="headerlink" title="websocket基类"></a>websocket基类</h4><p>建立连接成功后，可对该连接进行处理，将该用户访问的连接保存在本地，维护连接通道</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ujson</span><br><span class="line"><span class="keyword">from</span> tornado.websocket <span class="keyword">import</span> WebSocketHandler</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaseWebSocket(WebSocketHandler):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; websocket基类&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">	user = None</span><br><span class="line">	connection = None  # 维护的连接</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> def open(self, *args, **kwargs):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            建立websocket时，触发的方法，可对用户进行注册，保存本地连接实例</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">		  self.connection.register(self)</span><br><span class="line"></span><br><span class="line">    def on_message(self, info):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;处理由web页面传递的消息</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            message = ujson.loads(info)</span><br><span class="line">            # 心跳处理</span><br><span class="line">            <span class="keyword">if</span> message == <span class="string">&#x27;heart_beat&#x27;</span>:</span><br><span class="line">                self.write_message(<span class="string">&#x27;ok&#x27;</span>)</span><br><span class="line">        except Exception <span class="keyword">as</span> e:</span><br><span class="line">           pass</span><br><span class="line"></span><br><span class="line">    def on_close(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;websocket 关闭， 移除socket连接实例</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.user:</span><br><span class="line">            self.connection.unregister(self)</span><br><span class="line"></span><br><span class="line">    def check_origin(self, origin):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">             默认允许跨域请求</span></span><br><span class="line"><span class="string">        :param origin:</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> True</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="保存连接"><a href="#保存连接" class="headerlink" title="保存连接"></a>保存连接</h4><p>用户通过前端建立连接后，将连接实例保存在本地（无法保存在redis，mysql等库中，为连接对象），之后通过连接实例进行收发消息</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class Connection(object):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;连接状态&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, system):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            连接初始化，若需重写连接状态的部分逻辑，替换对应的代理&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">		# 保存的websocket连接实例</span></span><br><span class="line"><span class="string">        self.websockets = defaultdict(list)</span></span><br><span class="line"><span class="string">        self.message_delegate = MessageDelegate(system, self.websockets)  # 发送消息代理类</span></span><br><span class="line"><span class="string">        self.redis_delegate = RedisListenDelegate(system, self)  # redis 监听类</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    def register(self, item):</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">            用户建立webscoket</span><br><span class="line">            <span class="number">1.</span> 添加新连接， </span><br><span class="line">        :param item: websocket instance</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">        if item in self.websockets[item.user]:</span></span><br><span class="line"><span class="string">            return</span></span><br><span class="line"><span class="string">        self.websockets[item.user].append(item)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    def unregister(self, item):</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">            用户退出websocket</span><br><span class="line">             <span class="number">1.</span> 删除连接,  <span class="number">2.</span>删除用户在线状态</span><br><span class="line">        :param item: websocket instance</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">        self.websockets[item.user].remove(item)</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h4><p>服务端只要调用发消息的方法，从本地根据连接的用户属性，获取当前用户在建立连接时保存的连接，然后根据连接对象实现主动向客户端发送消息</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class MessageDelegate(object):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; 消息代理&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, system, websockets):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            init</span></span><br><span class="line"><span class="string">        :param websockets: websoctets</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        self.websockets = websockets  # 和connection宿主维护同一个连接记录池</span><br><span class="line"></span><br><span class="line">    def send_message(self, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">             向指定用户发送请求,若用户在线直接发送</span></span><br><span class="line"><span class="string">        :param message:</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        msg = ujson.loads(message)</span><br><span class="line">        receiver = msg.get(<span class="string">&#x27;receiver&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> receiver:</span><br><span class="line">            self.unicast(receiver, msg)</span><br><span class="line"></span><br><span class="line">    def unicast(self, receiver, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            指定用户发送消息</span></span><br><span class="line"><span class="string">        :param receiver: 用户</span></span><br><span class="line"><span class="string">        :param message: 消息</span></span><br><span class="line"><span class="string">        # :return:</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        websockets = self.websockets.get(receiver, [])</span><br><span class="line">        <span class="keyword">if</span> not websockets:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">for</span> websocket <span class="keyword">in</span> websockets:</span><br><span class="line">            self.write_message(websocket, message)</span><br><span class="line"></span><br><span class="line">    def write_message(self, socket, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            向客户端发消息</span></span><br><span class="line"><span class="string">        :param socket: 需要发送信息的websocketHandler连接</span></span><br><span class="line"><span class="string">        :param message: 发送的信息</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        socket.write_message(message)</span><br></pre></td></tr></table></figure>
-
-
 ]]></content>
       <categories>
         <category>Websocket</category>
@@ -1190,6 +1133,41 @@
       </tags>
   </entry>
   <entry>
+    <title>websocket 服务项目搭建</title>
+    <url>/2019/07/10/websocket%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h3 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h3><p>根据项目要求，在各系统之间实现异步通知服务，从客户端到服务端，从服务端到客户端实现双向通知。以客户端主动，由客户端向服务端发起http请求，来实现任务的发起，服务端执行异步任务，由于非同步，所以客户端并不知道这个任务什么时候执行完毕，所以需要服务端在执行完任务的时候，主动向客户端发送一个请求，来告知客户端我已经完成任务了，来完成服务端客户端的双向通信。</p>
+<h3 id="websocket选择"><a href="#websocket选择" class="headerlink" title="websocket选择"></a>websocket选择</h3><p>一般来说，客户端与服务端的交互都是主动的，客户端与服务端对应的模式就是：客户端请求-服务端响应。而服务端主动向客户端推送消息，客户端不像服务端只有一个地址，要解决这一个问题，我考虑到以下两种方式。</p>
+<h4 id="Ajax轮询"><a href="#Ajax轮询" class="headerlink" title="Ajax轮询"></a>Ajax轮询</h4><p>所谓的Ajax轮询，其实就是定时的通过Ajax查询服务端，客户端按规定时间定时像服务端发送ajax请求，服务器接到请求后马上返回响应信息并关闭连接。</p>
+<p>这种技术方式实现起来非常简单，但是这种方式会有非常严重的问题，就是需要不断的向服务器发送消息询问，这种方式会对服务器造成极大的性能浪费。不是实时通信，不顾及应用的状态改变而盲目检查更新，导致服务器资源的浪费，且会加重网络负载，拖累服务器。</p>
+<h4 id="websocket服务"><a href="#websocket服务" class="headerlink" title="websocket服务"></a>websocket服务</h4><p> WebSocket是HTML5开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。在WebSocket API中，浏览器和服务器只需要做一个握手的动作，然后，浏览器和服务器之间就形成了一条快速通道。两者之间就直接可以数据互相传送。详情看</p>
+<p> 这里选择使用websocket</p>
+<h3 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h3><p>Python + tornado + vue + websocket</p>
+<h3 id="前端（客户端）建立websocket"><a href="#前端（客户端）建立websocket" class="headerlink" title="前端（客户端）建立websocket"></a>前端（客户端）建立websocket</h3><p>由客户端主动与服务端建立websocket连接，并保持连接通道，通道保持就可以实现双向通信，发消息，建立连接时，根据用户行为（登录等）初始化链接。代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"> </span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name : <span class="string">&#x27;websocket&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;     </span><br><span class="line">    <span class="keyword">return</span> &#123; </span><br><span class="line">      websock: <span class="literal">null</span>,</span><br><span class="line">      reconnectTime: <span class="number">0</span>,       <span class="comment">// 重连次数</span></span><br><span class="line">      reconnectData:<span class="literal">null</span>,     <span class="comment">// 重连定时</span></span><br><span class="line">      lockReconnect:<span class="literal">false</span>,    <span class="comment">//避免重复连接，因为onerror之后会立即触发 onclose</span></span><br><span class="line">      timeout:<span class="number">1000</span>,          <span class="comment">//60s一次心跳检测</span></span><br><span class="line">      timeoutObj:<span class="literal">null</span>,        <span class="comment">// 客户端发送定时</span></span><br><span class="line">      serverTimeoutObj:<span class="literal">null</span>,  <span class="comment">// 收到服务器响应定时</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">created</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.initWebSocket()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">destroyed</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.lockReconnect = <span class="literal">true</span></span><br><span class="line">    <span class="built_in">this</span>.websock.close()                  <span class="comment">//离开路由之后断开websocket连接</span></span><br><span class="line">    <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.reconnectData)      <span class="comment">//离开清除 timeout</span></span><br><span class="line">    <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.timeoutObj)         <span class="comment">//离开清除 timeout</span></span><br><span class="line">    <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.serverTimeoutObj)   <span class="comment">//离开清除 timeout</span></span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="comment">//初始化weosocket</span></span><br><span class="line">    <span class="function"><span class="title">initWebSocket</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      const wsuri = &#x27; &#x27; # 链接地址</span><br><span class="line">      <span class="built_in">this</span>.websock = <span class="keyword">new</span> WebSocket(wsuri + <span class="string">&#x27;?token=&#x27;</span> + <span class="built_in">this</span>.$store.getters.token)  </span><br><span class="line">      <span class="built_in">this</span>.websock.onmessage = <span class="built_in">this</span>.websocketOnMessage     </span><br><span class="line">      <span class="built_in">this</span>.websock.onopen = <span class="built_in">this</span>.websocketOnOpen    </span><br><span class="line">      <span class="built_in">this</span>.websock.onerror = <span class="built_in">this</span>.websocketOnError    </span><br><span class="line">      <span class="built_in">this</span>.websock.onclose = <span class="built_in">this</span>.websocketClose</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//连接建立之后执行send方法发送数据</span></span><br><span class="line">    <span class="function"><span class="title">websocketOnOpen</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.heartBeat()</span><br><span class="line">      <span class="built_in">this</span>.reconnectTime = <span class="number">0</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务连接成功&#x27;</span>) </span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//连接建立失败重连</span></span><br><span class="line">    <span class="function"><span class="title">websocketOnError</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.reconnect()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//数据发送</span></span><br><span class="line">    <span class="function"><span class="title">websocketSend</span>(<span class="params">Data</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.websock.send(<span class="built_in">JSON</span>.stringify(Data))</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//关闭</span></span><br><span class="line">    <span class="function"><span class="title">websocketClose</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.reconnect()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//数据接收</span></span><br><span class="line">    <span class="function"><span class="title">websocketOnMessage</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.heartBeat()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 心跳检测</span></span><br><span class="line">    <span class="function"><span class="title">heartBeat</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.timeoutObj &amp;&amp; <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.timeoutObj)</span><br><span class="line">      <span class="built_in">this</span>.serverTimeoutObj &amp;&amp; <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.serverTimeoutObj)</span><br><span class="line">      <span class="built_in">this</span>.timeoutObj = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.websocketSend(<span class="string">&#x27;heart_beat&#x27;</span>)</span><br><span class="line">        <span class="built_in">this</span>.serverTimeoutObj = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">this</span>.websock.close()     </span><br><span class="line">        &#125;, <span class="number">5000</span>)</span><br><span class="line">      &#125;, <span class="built_in">this</span>.timeout)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 重连机制</span></span><br><span class="line">    <span class="function"><span class="title">reconnect</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="comment">// 避免重复连接</span></span><br><span class="line">      <span class="keyword">if</span>(<span class="built_in">this</span>.lockReconnect)&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">this</span>.lockReconnect = <span class="literal">true</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务异常关闭，正在重连中。。。&#x27;</span>)</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.reconnectTime &gt;= <span class="number">5</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;websocket服务重连失败, 请刷新浏览器&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">this</span>.reconnectData &amp;&amp; <span class="built_in">clearTimeout</span>(<span class="built_in">this</span>.reconnectData)</span><br><span class="line">      <span class="built_in">this</span>.reconnectData = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.initWebSocket()</span><br><span class="line">        <span class="built_in">this</span>.reconnectTime++</span><br><span class="line">        <span class="built_in">this</span>.lockReconnect = <span class="literal">false</span></span><br><span class="line">      &#125;,<span class="number">5000</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>用户行为操作后，或者前端项目启动后，加载这个组件，然后就会初始化websocket，与服务端进行连接，连接成功之后会触发心跳机制维持连接，可以通过websocket的事件进行收发消息</p>
+<h3 id="服务端启动websocket服务"><a href="#服务端启动websocket服务" class="headerlink" title="服务端启动websocket服务"></a>服务端启动websocket服务</h3><h4 id="websocket连接层"><a href="#websocket连接层" class="headerlink" title="websocket连接层"></a>websocket连接层</h4><p>前端通过连接地址，指定websocket服务端启动的ip端口，继承websocket基类，创立连接</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> base.websocket <span class="keyword">import</span> BaseWebSocket</span><br><span class="line"><span class="keyword">from</span> lib.routes <span class="keyword">import</span> route</span><br><span class="line"><span class="keyword">from</span> services.connection <span class="keyword">import</span> Connection</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@route(r<span class="string">&#x27;/websocket&#x27;</span>)</span><br><span class="line">class AthenaWebsocket(BaseWebSocket):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;websocket连接层，创建连接&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    connection = Connection(<span class="string">&#x27;athena&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="websocket基类"><a href="#websocket基类" class="headerlink" title="websocket基类"></a>websocket基类</h4><p>建立连接成功后，可对该连接进行处理，将该用户访问的连接保存在本地，维护连接通道</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ujson</span><br><span class="line"><span class="keyword">from</span> tornado.websocket <span class="keyword">import</span> WebSocketHandler</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaseWebSocket(WebSocketHandler):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; websocket基类&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">	user = None</span><br><span class="line">	connection = None  # 维护的连接</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> def open(self, *args, **kwargs):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            建立websocket时，触发的方法，可对用户进行注册，保存本地连接实例</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">		  self.connection.register(self)</span><br><span class="line"></span><br><span class="line">    def on_message(self, info):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;处理由web页面传递的消息</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            message = ujson.loads(info)</span><br><span class="line">            # 心跳处理</span><br><span class="line">            <span class="keyword">if</span> message == <span class="string">&#x27;heart_beat&#x27;</span>:</span><br><span class="line">                self.write_message(<span class="string">&#x27;ok&#x27;</span>)</span><br><span class="line">        except Exception <span class="keyword">as</span> e:</span><br><span class="line">           pass</span><br><span class="line"></span><br><span class="line">    def on_close(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;websocket 关闭， 移除socket连接实例</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.user:</span><br><span class="line">            self.connection.unregister(self)</span><br><span class="line"></span><br><span class="line">    def check_origin(self, origin):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">             默认允许跨域请求</span></span><br><span class="line"><span class="string">        :param origin:</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> True</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="保存连接"><a href="#保存连接" class="headerlink" title="保存连接"></a>保存连接</h4><p>用户通过前端建立连接后，将连接实例保存在本地（无法保存在redis，mysql等库中，为连接对象），之后通过连接实例进行收发消息</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class Connection(object):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;连接状态&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, system):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            连接初始化，若需重写连接状态的部分逻辑，替换对应的代理&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">		# 保存的websocket连接实例</span></span><br><span class="line"><span class="string">        self.websockets = defaultdict(list)</span></span><br><span class="line"><span class="string">        self.message_delegate = MessageDelegate(system, self.websockets)  # 发送消息代理类</span></span><br><span class="line"><span class="string">        self.redis_delegate = RedisListenDelegate(system, self)  # redis 监听类</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    def register(self, item):</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">            用户建立webscoket</span><br><span class="line">            <span class="number">1.</span> 添加新连接， </span><br><span class="line">        :param item: websocket instance</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">        if item in self.websockets[item.user]:</span></span><br><span class="line"><span class="string">            return</span></span><br><span class="line"><span class="string">        self.websockets[item.user].append(item)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    def unregister(self, item):</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">            用户退出websocket</span><br><span class="line">             <span class="number">1.</span> 删除连接,  <span class="number">2.</span>删除用户在线状态</span><br><span class="line">        :param item: websocket instance</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">        self.websockets[item.user].remove(item)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h4><p>服务端只要调用发消息的方法，从本地根据连接的用户属性，获取当前用户在建立连接时保存的连接，然后根据连接对象实现主动向客户端发送消息</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class MessageDelegate(object):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; 消息代理&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, system, websockets):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            init</span></span><br><span class="line"><span class="string">        :param websockets: websoctets</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        self.websockets = websockets  # 和connection宿主维护同一个连接记录池</span><br><span class="line"></span><br><span class="line">    def send_message(self, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">             向指定用户发送请求,若用户在线直接发送</span></span><br><span class="line"><span class="string">        :param message:</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        msg = ujson.loads(message)</span><br><span class="line">        receiver = msg.get(<span class="string">&#x27;receiver&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> receiver:</span><br><span class="line">            self.unicast(receiver, msg)</span><br><span class="line"></span><br><span class="line">    def unicast(self, receiver, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            指定用户发送消息</span></span><br><span class="line"><span class="string">        :param receiver: 用户</span></span><br><span class="line"><span class="string">        :param message: 消息</span></span><br><span class="line"><span class="string">        # :return:</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        websockets = self.websockets.get(receiver, [])</span><br><span class="line">        <span class="keyword">if</span> not websockets:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">for</span> websocket <span class="keyword">in</span> websockets:</span><br><span class="line">            self.write_message(websocket, message)</span><br><span class="line"></span><br><span class="line">    def write_message(self, socket, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">            向客户端发消息</span></span><br><span class="line"><span class="string">        :param socket: 需要发送信息的websocketHandler连接</span></span><br><span class="line"><span class="string">        :param message: 发送的信息</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        socket.write_message(message)</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>Websocket</category>
+      </categories>
+      <tags>
+        <tag>websocket</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于Celery的异步服务使用</title>
     <url>/2018/05/26/%E5%85%B3%E4%BA%8ECelery%E7%9A%84%E5%BC%82%E6%AD%A5%E6%9C%8D%E5%8A%A1%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h3 id="什么是Celery？"><a href="#什么是Celery？" class="headerlink" title="什么是Celery？"></a>什么是Celery？</h3><p>Celery是一个专注于实时处理和任务调度的分布式任务队列。所谓任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。</p>
@@ -1278,6 +1256,31 @@
       </tags>
   </entry>
   <entry>
+    <title>关于Linux swap分区相关处理</title>
+    <url>/2020/08/15/%E5%85%B3%E4%BA%8ELinux%20swap%E5%88%86%E5%8C%BA%E7%9B%B8%E5%85%B3%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h3 id="什么是swap分区"><a href="#什么是swap分区" class="headerlink" title="什么是swap分区"></a>什么是swap分区</h3><p>在Linux下，SWAP的作用类似Windows系统下的“虚拟内存”。当物理内存不足时，拿出部分硬盘空间当SWAP分区（虚拟成内存）使用，从而解决内存容量不足的情况。</p>
+<p>SWAP意思是交换，顾名思义，当某进程向OS请求内存发现不足时，OS会把内存中暂时不用的数据交换出去，放在SWAP分区中，这个过程称为SWAP OUT。当某进程又需要这些数据且OS发现还有空闲物理内存时，又会把SWAP分区中的数据交换回物理内存中，这个过程称为SWAP IN。</p>
+<p>当然，swap大小是有上限的，一旦swap使用完，操作系统会触发OOM-Killer机制，把消耗内存最多的进程kill掉以释放内存。</p>
+<p>使用 swap 交换分区，显著的优点是，通过操作系统的调度，应用程序实际可以使用的内存空间将远远超过系统的物理内存。由于硬盘空间的价格远比 RAM 要低，因此这种方式无疑是经济实惠的。当然，频繁地读写硬盘，会显著降低操作系统的运行速率，这也是使用 swap 交换分区最大的限制。</p>
+<p>具体使用多大的 swap 分区，取决于物理内存大小和硬盘的容量。一般来讲，swap 分区容量应大于物理内存大小，建议是内存的两倍，但不超过 2GB。但是，有时服务器的访问量确实很大，有可能出现 swap 分区不够用的情况</p>
+<h3 id="swap对数据库的影响"><a href="#swap对数据库的影响" class="headerlink" title="swap对数据库的影响"></a>swap对数据库的影响</h3><p>swap机制的初衷是为了缓解物理内存用尽而选择直接粗暴OOM进程的尴尬。但坦白讲，几乎所有数据库对swap都不怎么待见，无论MySQL、Oracal、MongoDB抑或HBase，为什么？这主要和下面两个方面有关：</p>
+<ol>
+<li><p>数据库系统一般都对响应延迟比较敏感，如果使用swap代替内存，数据库服务性能必然不可接受。对于响应延迟极其敏感的系统来讲，延迟太大和服务不可用没有任何区别，比服务不可用更严重的是，swap场景下进程就是不死，这就意味着系统一直不可用……再想想如果不使用swap直接oom，是不是一种更好的选择，这样很多高可用系统直接会主从切换掉，用户基本无感知。</p>
+</li>
+<li><p>另外对分布式系统来说，其实并不担心某个节点宕掉，而恰恰担心某个节点夯住。一个节点宕掉，最多就是小部分请求短暂不可用，重试即可恢复。但是一个节点夯住会将所有分布式请求都夯住，服务器端线程资源被占用不放，导致整个集群请求阻塞，甚至集群被拖垮。</p>
+</li>
+</ol>
+<p>从这两个角度考虑，所有数据库都不喜欢swap还是很有道理的！</p>
+<h3 id="swap关闭重启命令"><a href="#swap关闭重启命令" class="headerlink" title="swap关闭重启命令"></a>swap关闭重启命令</h3><p>对swap分区进行关闭重启，可清空swap虚拟内存数据<br>root用户下</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">swapoff a 关闭swap分区</span><br><span class="line">swapon a 开启swap分区</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux命令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于Linux buff/cache缓存处理</title>
     <url>/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/</url>
     <content><![CDATA[<h3 id="buff-cache"><a href="#buff-cache" class="headerlink" title="buff/cache"></a>buff/cache</h3><p>buffer/cache 一般用于磁盘或文件的缓存，一些shared memory 也会放在这里，一般情况下大部分都是可以回收的，在一些较新版本的Linux 中，free 命令会有一个available 的列，它表示在计算了可回收的buffer/cache的情况下可用的内存</p>
@@ -1298,23 +1301,32 @@
       </tags>
   </entry>
   <entry>
-    <title>关于Linux swap分区相关处理</title>
-    <url>/2020/08/15/%E5%85%B3%E4%BA%8ELinux%20swap%E5%88%86%E5%8C%BA%E7%9B%B8%E5%85%B3%E5%A4%84%E7%90%86/</url>
-    <content><![CDATA[<h3 id="什么是swap分区"><a href="#什么是swap分区" class="headerlink" title="什么是swap分区"></a>什么是swap分区</h3><p>在Linux下，SWAP的作用类似Windows系统下的“虚拟内存”。当物理内存不足时，拿出部分硬盘空间当SWAP分区（虚拟成内存）使用，从而解决内存容量不足的情况。</p>
-<p>SWAP意思是交换，顾名思义，当某进程向OS请求内存发现不足时，OS会把内存中暂时不用的数据交换出去，放在SWAP分区中，这个过程称为SWAP OUT。当某进程又需要这些数据且OS发现还有空闲物理内存时，又会把SWAP分区中的数据交换回物理内存中，这个过程称为SWAP IN。</p>
-<p>当然，swap大小是有上限的，一旦swap使用完，操作系统会触发OOM-Killer机制，把消耗内存最多的进程kill掉以释放内存。</p>
-<p>使用 swap 交换分区，显著的优点是，通过操作系统的调度，应用程序实际可以使用的内存空间将远远超过系统的物理内存。由于硬盘空间的价格远比 RAM 要低，因此这种方式无疑是经济实惠的。当然，频繁地读写硬盘，会显著降低操作系统的运行速率，这也是使用 swap 交换分区最大的限制。</p>
-<p>具体使用多大的 swap 分区，取决于物理内存大小和硬盘的容量。一般来讲，swap 分区容量应大于物理内存大小，建议是内存的两倍，但不超过 2GB。但是，有时服务器的访问量确实很大，有可能出现 swap 分区不够用的情况</p>
-<h3 id="swap对数据库的影响"><a href="#swap对数据库的影响" class="headerlink" title="swap对数据库的影响"></a>swap对数据库的影响</h3><p>swap机制的初衷是为了缓解物理内存用尽而选择直接粗暴OOM进程的尴尬。但坦白讲，几乎所有数据库对swap都不怎么待见，无论MySQL、Oracal、MongoDB抑或HBase，为什么？这主要和下面两个方面有关：</p>
-<ol>
-<li><p>数据库系统一般都对响应延迟比较敏感，如果使用swap代替内存，数据库服务性能必然不可接受。对于响应延迟极其敏感的系统来讲，延迟太大和服务不可用没有任何区别，比服务不可用更严重的是，swap场景下进程就是不死，这就意味着系统一直不可用……再想想如果不使用swap直接oom，是不是一种更好的选择，这样很多高可用系统直接会主从切换掉，用户基本无感知。</p>
-</li>
-<li><p>另外对分布式系统来说，其实并不担心某个节点宕掉，而恰恰担心某个节点夯住。一个节点宕掉，最多就是小部分请求短暂不可用，重试即可恢复。但是一个节点夯住会将所有分布式请求都夯住，服务器端线程资源被占用不放，导致整个集群请求阻塞，甚至集群被拖垮。</p>
-</li>
-</ol>
-<p>从这两个角度考虑，所有数据库都不喜欢swap还是很有道理的！</p>
-<h3 id="swap关闭重启命令"><a href="#swap关闭重启命令" class="headerlink" title="swap关闭重启命令"></a>swap关闭重启命令</h3><p>对swap分区进行关闭重启，可清空swap虚拟内存数据<br>root用户下</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">swapoff a 关闭swap分区</span><br><span class="line">swapon a 开启swap分区</span><br></pre></td></tr></table></figure>]]></content>
+    <title>关于Linux的常用基本命令（二）</title>
+    <url>/2018/01/24/%E5%85%B3%E4%BA%8ELinux%E7%9A%84%E7%BB%88%E7%AB%AF%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    <content><![CDATA[<div>接上面《关于Linux的常用基本命令（一）》</div>[点这里](https://zypuu.github.io/2018/08/15/%E5%85%B3%E4%BA%8ELinux%E7%9A%84%E5%B8%B8%E7%94%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%EF%BC%88%E4%B8%80%EF%BC%89/)
+
+<h4 id="管道命令"><a href="#管道命令" class="headerlink" title="管道命令"></a>管道命令</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">【命令1】 | 【命令2】 # 命令1的输出结果作为命令2的输入</span><br></pre></td></tr></table></figure>
+
+<h4 id="查找某个文件的文本"><a href="#查找某个文件的文本" class="headerlink" title="查找某个文件的文本"></a>查找某个文件的文本</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">grep 【选项】 “字符串”  【文件】</span><br><span class="line">选项：-i 忽略大小写</span><br><span class="line">		  -n 显示匹配行及行号</span><br><span class="line">		  -v 取反（显示余下的信息）</span><br></pre></td></tr></table></figure>
+<div>例： ps -aux | grep ’mysql‘ 查看运行中的进程，带有mysql的进程</div>
+
+<h4 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">find 【路径】 【选项】</span><br><span class="line">选项：-name ’字符串‘ # 查找该文件名的文件</span><br><span class="line">           -size +（-）’大小‘ # 查找文件大于（小于）多少的文件</span><br><span class="line">		   -permission 权限 # 查找拥有该权限的文件</span><br></pre></td></tr></table></figure>
+
+<h4 id="tar打包压缩文件与解压缩"><a href="#tar打包压缩文件与解压缩" class="headerlink" title="tar打包压缩文件与解压缩"></a>tar打包压缩文件与解压缩</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">tar 【选项】【打包后的文件名】【 要打包的文件名】</span><br><span class="line">选项： -c 生成打包文件</span><br><span class="line">			-v 显示进度</span><br><span class="line">			-f 指定打包文件名称，所以f选项要放最后</span><br><span class="line">			-x 拆包解包</span><br><span class="line">			-z gzip格式压缩解压</span><br><span class="line">			-j bzip2格式压缩解压</span><br><span class="line">			c 指定目录</span><br></pre></td></tr></table></figure>
+
+<h4 id="gzip格式压缩解压"><a href="#gzip格式压缩解压" class="headerlink" title="gzip格式压缩解压"></a>gzip格式压缩解压</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">gizp 【文件名】 # 压缩文件</span><br><span class="line">gzip -d 【文件名】 # 解压缩文件</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看命令位置"><a href="#查看命令位置" class="headerlink" title="查看命令位置"></a>查看命令位置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">which</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看当前用户登录"><a href="#查看当前用户登录" class="headerlink" title="查看当前用户登录"></a>查看当前用户登录</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">who # tty 本地登录 pts 远程登录</span><br></pre></td></tr></table></figure>
+
+<h4 id="授权当前用户执行命令"><a href="#授权当前用户执行命令" class="headerlink" title="授权当前用户执行命令"></a>授权当前用户执行命令</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">sudo # 管理员权限</span><br></pre></td></tr></table></figure>
+
+<h4 id="退出终端，回到上一用户，退出远程"><a href="#退出终端，回到上一用户，退出远程" class="headerlink" title="退出终端，回到上一用户，退出远程"></a>退出终端，回到上一用户，退出远程</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<h4 id="软件卸载与安装"><a href="#软件卸载与安装" class="headerlink" title="软件卸载与安装"></a>软件卸载与安装</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">sudo apt-get install “安装包” # 安装</span><br><span class="line">sudo apt-get remove “安装包” # 删除</span><br><span class="line">sudo apt-get update “安装包” # 更新</span><br></pre></td></tr></table></figure>
+
+<h4 id="关机重启"><a href="#关机重启" class="headerlink" title="关机重启"></a>关机重启</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">shutdown -h now （或加时间） # 立即关机，或者多少时间后关机</span><br><span class="line">				-r # 重启</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Linux</category>
       </categories>
@@ -1386,40 +1398,6 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
       </tags>
   </entry>
   <entry>
-    <title>关于Linux的常用基本命令（二）</title>
-    <url>/2018/01/24/%E5%85%B3%E4%BA%8ELinux%E7%9A%84%E7%BB%88%E7%AB%AF%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
-    <content><![CDATA[<div>接上面《关于Linux的常用基本命令（一）》</div>[点这里](https://zypuu.github.io/2018/08/15/%E5%85%B3%E4%BA%8ELinux%E7%9A%84%E5%B8%B8%E7%94%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%EF%BC%88%E4%B8%80%EF%BC%89/)
-
-<h4 id="管道命令"><a href="#管道命令" class="headerlink" title="管道命令"></a>管道命令</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">【命令1】 | 【命令2】 # 命令1的输出结果作为命令2的输入</span><br></pre></td></tr></table></figure>
-
-<h4 id="查找某个文件的文本"><a href="#查找某个文件的文本" class="headerlink" title="查找某个文件的文本"></a>查找某个文件的文本</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">grep 【选项】 “字符串”  【文件】</span><br><span class="line">选项：-i 忽略大小写</span><br><span class="line">		  -n 显示匹配行及行号</span><br><span class="line">		  -v 取反（显示余下的信息）</span><br></pre></td></tr></table></figure>
-<div>例： ps -aux | grep ’mysql‘ 查看运行中的进程，带有mysql的进程</div>
-
-<h4 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">find 【路径】 【选项】</span><br><span class="line">选项：-name ’字符串‘ # 查找该文件名的文件</span><br><span class="line">           -size +（-）’大小‘ # 查找文件大于（小于）多少的文件</span><br><span class="line">		   -permission 权限 # 查找拥有该权限的文件</span><br></pre></td></tr></table></figure>
-
-<h4 id="tar打包压缩文件与解压缩"><a href="#tar打包压缩文件与解压缩" class="headerlink" title="tar打包压缩文件与解压缩"></a>tar打包压缩文件与解压缩</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">tar 【选项】【打包后的文件名】【 要打包的文件名】</span><br><span class="line">选项： -c 生成打包文件</span><br><span class="line">			-v 显示进度</span><br><span class="line">			-f 指定打包文件名称，所以f选项要放最后</span><br><span class="line">			-x 拆包解包</span><br><span class="line">			-z gzip格式压缩解压</span><br><span class="line">			-j bzip2格式压缩解压</span><br><span class="line">			c 指定目录</span><br></pre></td></tr></table></figure>
-
-<h4 id="gzip格式压缩解压"><a href="#gzip格式压缩解压" class="headerlink" title="gzip格式压缩解压"></a>gzip格式压缩解压</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">gizp 【文件名】 # 压缩文件</span><br><span class="line">gzip -d 【文件名】 # 解压缩文件</span><br></pre></td></tr></table></figure>
-
-<h4 id="查看命令位置"><a href="#查看命令位置" class="headerlink" title="查看命令位置"></a>查看命令位置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">which</span><br></pre></td></tr></table></figure>
-
-<h4 id="查看当前用户登录"><a href="#查看当前用户登录" class="headerlink" title="查看当前用户登录"></a>查看当前用户登录</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">who # tty 本地登录 pts 远程登录</span><br></pre></td></tr></table></figure>
-
-<h4 id="授权当前用户执行命令"><a href="#授权当前用户执行命令" class="headerlink" title="授权当前用户执行命令"></a>授权当前用户执行命令</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">sudo # 管理员权限</span><br></pre></td></tr></table></figure>
-
-<h4 id="退出终端，回到上一用户，退出远程"><a href="#退出终端，回到上一用户，退出远程" class="headerlink" title="退出终端，回到上一用户，退出远程"></a>退出终端，回到上一用户，退出远程</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
-
-<h4 id="软件卸载与安装"><a href="#软件卸载与安装" class="headerlink" title="软件卸载与安装"></a>软件卸载与安装</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">sudo apt-get install “安装包” # 安装</span><br><span class="line">sudo apt-get remove “安装包” # 删除</span><br><span class="line">sudo apt-get update “安装包” # 更新</span><br></pre></td></tr></table></figure>
-
-<h4 id="关机重启"><a href="#关机重启" class="headerlink" title="关机重启"></a>关机重启</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">shutdown -h now （或加时间） # 立即关机，或者多少时间后关机</span><br><span class="line">				-r # 重启</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux命令</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于Mysql的sql注入问题</title>
     <url>/2018/06/15/%E5%85%B3%E4%BA%8EMysql%E7%9A%84sql%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h2 id="什么是sql注入"><a href="#什么是sql注入" class="headerlink" title="什么是sql注入"></a>什么是sql注入</h2><p>所谓SQL注入，就是通过把SQL命令插入到Web表单提交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令。具体来说，它是利用现有应用程序，将(恶意的)SQL命令注入到后台数据库引擎执行的能力，它可以通过在Web表单中输入(恶意)SQL语句得到一个存在安全漏洞的网站上的数据库，而不是按照设计者意图去执行SQL语句。</p>
@@ -1443,6 +1421,27 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
       </categories>
       <tags>
         <tag>数据库,Mysql,web安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于Python的冒泡排序</title>
+    <url>/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>冒泡排序的思想: 每次比较两个相邻的元素, 如果他们的顺序错误就把他们交换位置。<br>比如有五个数: 12, 35, 99, 18, 76, 从大到小排序, 对相邻的两位进行比较</p>
+<p>第一趟:<br>第一次比较: 35, 12, 99, 18, 76<br>第二次比较: 35, 99, 12, 18, 76<br>第三次比较: 35, 99, 18, 12, 76<br>第四次比较: 35, 99, 18, 76, 12<br>经过第一趟比较后, 五个数中最小的数已经在最后面了, 接下来只比较前四个数, 依次类推</p>
+<p>第二趟<br>99, 35, 76, 18, 12<br>第三趟<br>99, 76, 35, 18, 12<br>第四趟<br>99, 76, 35, 18, 12<br>比较完成<br>冒泡排序原理: 每一趟只能将一个数归位, 如果有n个数进行排序,只需将n-1个数归位, 也就是说要进行n-1趟操作(已经归位的数不用再比较)</p>
+<h2 id="代码实现一"><a href="#代码实现一" class="headerlink" title="代码实现一"></a>代码实现一</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">l1 = [<span class="number">8</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">l2=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> l1[j]&lt;l1[j-<span class="number">1</span>]:</span><br><span class="line">            l1[j],l1[j-<span class="number">1</span>]=l1[j-<span class="number">1</span>],l1[j]</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    l2.append(l1[k])</span><br><span class="line">print(l2)</span><br></pre></td></tr></table></figure>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><ol>
+<li>第一层循环可不用循环所有元素。</li>
+</ol>
+<p>2.两层循环变量与第一层的循环变量相关联。</p>
+<p>3.第二层循环，最终必须循环集合内所有元素。</p>
+<h2 id="代码实现二"><a href="#代码实现二" class="headerlink" title="代码实现二"></a>代码实现二</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">l1 = [<span class="number">8</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">l2=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)-<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> l1[j]&lt;l1[j-<span class="number">1</span>]:</span><br><span class="line">            l1[j],l1[j-<span class="number">1</span>]=l1[j-<span class="number">1</span>],l1[j]</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    l2.append(l1[k])</span><br><span class="line">print(l2)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>数据算法</category>
+      </categories>
+      <tags>
+        <tag>排序</tag>
       </tags>
   </entry>
   <entry>
@@ -1471,27 +1470,6 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
       </categories>
       <tags>
         <tag>数据库,Mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于Python的冒泡排序</title>
-    <url>/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>冒泡排序的思想: 每次比较两个相邻的元素, 如果他们的顺序错误就把他们交换位置。<br>比如有五个数: 12, 35, 99, 18, 76, 从大到小排序, 对相邻的两位进行比较</p>
-<p>第一趟:<br>第一次比较: 35, 12, 99, 18, 76<br>第二次比较: 35, 99, 12, 18, 76<br>第三次比较: 35, 99, 18, 12, 76<br>第四次比较: 35, 99, 18, 76, 12<br>经过第一趟比较后, 五个数中最小的数已经在最后面了, 接下来只比较前四个数, 依次类推</p>
-<p>第二趟<br>99, 35, 76, 18, 12<br>第三趟<br>99, 76, 35, 18, 12<br>第四趟<br>99, 76, 35, 18, 12<br>比较完成<br>冒泡排序原理: 每一趟只能将一个数归位, 如果有n个数进行排序,只需将n-1个数归位, 也就是说要进行n-1趟操作(已经归位的数不用再比较)</p>
-<h2 id="代码实现一"><a href="#代码实现一" class="headerlink" title="代码实现一"></a>代码实现一</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">l1 = [<span class="number">8</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">l2=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> l1[j]&lt;l1[j-<span class="number">1</span>]:</span><br><span class="line">            l1[j],l1[j-<span class="number">1</span>]=l1[j-<span class="number">1</span>],l1[j]</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    l2.append(l1[k])</span><br><span class="line">print(l2)</span><br></pre></td></tr></table></figure>
-<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><ol>
-<li>第一层循环可不用循环所有元素。</li>
-</ol>
-<p>2.两层循环变量与第一层的循环变量相关联。</p>
-<p>3.第二层循环，最终必须循环集合内所有元素。</p>
-<h2 id="代码实现二"><a href="#代码实现二" class="headerlink" title="代码实现二"></a>代码实现二</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">l1 = [<span class="number">8</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">l2=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)-<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> l1[j]&lt;l1[j-<span class="number">1</span>]:</span><br><span class="line">            l1[j],l1[j-<span class="number">1</span>]=l1[j-<span class="number">1</span>],l1[j]</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    l2.append(l1[k])</span><br><span class="line">print(l2)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>数据算法</category>
-      </categories>
-      <tags>
-        <tag>排序</tag>
       </tags>
   </entry>
   <entry>
@@ -1677,6 +1655,33 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
       </tags>
   </entry>
   <entry>
+    <title>关于vue的ref与$ref的问题</title>
+    <url>/2020/03/29/%E5%85%B3%E4%BA%8Evue%E7%9A%84ref%E4%B8%8E$ref%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id="释义"><a href="#释义" class="headerlink" title="释义"></a>释义</h3><h4 id="refs"><a href="#refs" class="headerlink" title="refs"></a>refs</h4><p>vm.$refs，一个对象，object，持有已注册过ref的所有子组件。</p>
+<h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><p>ref用来给元素或子组件注册引用信息。引用信息将会注册在父组件的refs上。如果普通dom上使用，引用指向的就是dom元素，如果用在子组件上，引用就指向子组件示例。</p>
+<h4 id="注意问题：ref属于非响应式"><a href="#注意问题：ref属于非响应式" class="headerlink" title="注意问题：ref属于非响应式"></a>注意问题：ref属于非响应式</h4><p>ref本身是作为渲染结果被创建的，在初始渲染的时候并不能访问他们，因为还不存在，会报错。而$refs也不是响应式的，所以同样不能访问，要注意。</p>
+<h4 id="开发中的实例问题"><a href="#开发中的实例问题" class="headerlink" title="开发中的实例问题"></a>开发中的实例问题</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;el-form ref=<span class="string">&quot;booksForm&quot;</span> onsubmit=<span class="string">&quot;return false&quot;</span> :model=<span class="string">&quot;form&quot;</span> :inline=<span class="string">&quot;true&quot;</span> :rules=<span class="string">&quot;rules_search&quot;</span>&gt;</span><br><span class="line">&lt;el-form-item prop=<span class="string">&quot;books_ids&quot;</span>&gt;</span><br><span class="line">        &lt;el-input</span><br><span class="line">          style=<span class="string">&quot;width: 300px;&quot;</span></span><br><span class="line">          placeholder=<span class="string">&quot;ID搜索,逗号英文分隔&quot;</span></span><br><span class="line">          v-model=<span class="string">&quot;form.books_ids&quot;</span></span><br><span class="line">          clearable</span><br><span class="line">        &gt;&lt;/el-input&gt;</span><br><span class="line">      &lt;/el-form-item&gt;</span><br></pre></td></tr></table></figure>
+<p>在页面表单中绑定了ref，el-input是一个搜索输入框，如果不输入值，则默认搜索全部数据。</p>
+<p>但是在搜索的时候需要在前端进行验证，检验是否是数字</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"> <span class="function"><span class="title">getBooks</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.$refs[<span class="string">&#x27;booksForm&#x27;</span>].validate(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (valid) &#123;.....&#125;</span><br><span class="line"></span><br><span class="line"># ......中为通过api，查询数据库的逻辑，然后返回数据</span><br></pre></td></tr></table></figure>
+<p>看上面代码，是通过$ref绑定调用，进行的验证。</p>
+<p>但是在页面刚进入，对象实例在被创建前，也就是在vue对象创建的钩子函数中，需要对页面进行初始化，查询数据显示，也就是在mounted中进行一次查询操作</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.getBooks()</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>然后问题就来了，因为$ref是非响应式的，所以在页面初始化的时候，并没有被创建，也就无法通过验证，会报错</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">validate is <span class="literal">undefined</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>将验证方法，拆出来，也就是调用ref的地方，不要放在钩子函数中，待页面加载完在进行调用验证。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">   <span class="function"><span class="title">searchBooks</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">     <span class="built_in">this</span>.$refs[<span class="string">&#x27;booksForm&#x27;</span>].validate(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">       <span class="keyword">if</span> (valid) &#123;</span><br><span class="line">         <span class="built_in">this</span>.getBooks(<span class="built_in">this</span>.booksData)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;)</span><br><span class="line">   &#125;,</span><br></pre></td></tr></table></figure>
+<p>由searchBooks进行一层包装，将调用ref的验证放到外面，在mounted的钩子函数中还是调用getBooks方法。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于ubuntu18下docker无法启动服务的问题解决</title>
     <url>/2018/10/14/%E5%85%B3%E4%BA%8Eubuntu18%E4%B8%8Bdocker%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
     <content><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>近日在最新版本的Ubuntu下安装docker，配置指定安全参数ip（<code>--insecure -registry</code>），并启动docker服务的时候，遇到无法启动的问题，通过查看启动日志<br>查看启动日志</p>
@@ -1706,33 +1711,6 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
       </categories>
       <tags>
         <tag>Linux,docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于vue的ref与$ref的问题</title>
-    <url>/2020/03/29/%E5%85%B3%E4%BA%8Evue%E7%9A%84ref%E4%B8%8E$ref%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h3 id="释义"><a href="#释义" class="headerlink" title="释义"></a>释义</h3><h4 id="refs"><a href="#refs" class="headerlink" title="refs"></a>refs</h4><p>vm.$refs，一个对象，object，持有已注册过ref的所有子组件。</p>
-<h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><p>ref用来给元素或子组件注册引用信息。引用信息将会注册在父组件的refs上。如果普通dom上使用，引用指向的就是dom元素，如果用在子组件上，引用就指向子组件示例。</p>
-<h4 id="注意问题：ref属于非响应式"><a href="#注意问题：ref属于非响应式" class="headerlink" title="注意问题：ref属于非响应式"></a>注意问题：ref属于非响应式</h4><p>ref本身是作为渲染结果被创建的，在初始渲染的时候并不能访问他们，因为还不存在，会报错。而$refs也不是响应式的，所以同样不能访问，要注意。</p>
-<h4 id="开发中的实例问题"><a href="#开发中的实例问题" class="headerlink" title="开发中的实例问题"></a>开发中的实例问题</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;el-form ref=<span class="string">&quot;booksForm&quot;</span> onsubmit=<span class="string">&quot;return false&quot;</span> :model=<span class="string">&quot;form&quot;</span> :inline=<span class="string">&quot;true&quot;</span> :rules=<span class="string">&quot;rules_search&quot;</span>&gt;</span><br><span class="line">&lt;el-form-item prop=<span class="string">&quot;books_ids&quot;</span>&gt;</span><br><span class="line">        &lt;el-input</span><br><span class="line">          style=<span class="string">&quot;width: 300px;&quot;</span></span><br><span class="line">          placeholder=<span class="string">&quot;ID搜索,逗号英文分隔&quot;</span></span><br><span class="line">          v-model=<span class="string">&quot;form.books_ids&quot;</span></span><br><span class="line">          clearable</span><br><span class="line">        &gt;&lt;/el-input&gt;</span><br><span class="line">      &lt;/el-form-item&gt;</span><br></pre></td></tr></table></figure>
-<p>在页面表单中绑定了ref，el-input是一个搜索输入框，如果不输入值，则默认搜索全部数据。</p>
-<p>但是在搜索的时候需要在前端进行验证，检验是否是数字</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"> <span class="function"><span class="title">getBooks</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.$refs[<span class="string">&#x27;booksForm&#x27;</span>].validate(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (valid) &#123;.....&#125;</span><br><span class="line"></span><br><span class="line"># ......中为通过api，查询数据库的逻辑，然后返回数据</span><br></pre></td></tr></table></figure>
-<p>看上面代码，是通过$ref绑定调用，进行的验证。</p>
-<p>但是在页面刚进入，对象实例在被创建前，也就是在vue对象创建的钩子函数中，需要对页面进行初始化，查询数据显示，也就是在mounted中进行一次查询操作</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.getBooks()</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>然后问题就来了，因为$ref是非响应式的，所以在页面初始化的时候，并没有被创建，也就无法通过验证，会报错</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">validate is <span class="literal">undefined</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>将验证方法，拆出来，也就是调用ref的地方，不要放在钩子函数中，待页面加载完在进行调用验证。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">   <span class="function"><span class="title">searchBooks</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">     <span class="built_in">this</span>.$refs[<span class="string">&#x27;booksForm&#x27;</span>].validate(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">       <span class="keyword">if</span> (valid) &#123;</span><br><span class="line">         <span class="built_in">this</span>.getBooks(<span class="built_in">this</span>.booksData)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;)</span><br><span class="line">   &#125;,</span><br></pre></td></tr></table></figure>
-<p>由searchBooks进行一层包装，将调用ref的验证放到外面，在mounted的钩子函数中还是调用getBooks方法。</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -1897,6 +1875,19 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
       </tags>
   </entry>
   <entry>
+    <title>判断字符串是否由纯数字组成</title>
+    <url>/2020/06/16/%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E7%BA%AF%E6%95%B0%E5%AD%97%E7%BB%84%E6%88%90/</url>
+    <content><![CDATA[<p>Python isdigit() 方法检测字符串是否只由数字组成。</p>
+<p>如果字符串只包含数字，则返回true，否则返回false</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">str.isdigit()  # 用法</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>删除排序数组中的重复项</title>
     <url>/2020/12/09/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/</url>
     <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给定一个排序数组，你需要在 原地 删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。</p>
@@ -1920,16 +1911,52 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
       </tags>
   </entry>
   <entry>
-    <title>判断字符串是否由纯数字组成</title>
-    <url>/2020/06/16/%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E7%BA%AF%E6%95%B0%E5%AD%97%E7%BB%84%E6%88%90/</url>
-    <content><![CDATA[<p>Python isdigit() 方法检测字符串是否只由数字组成。</p>
-<p>如果字符串只包含数字，则返回true，否则返回false</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">str.isdigit()  # 用法</span><br></pre></td></tr></table></figure>]]></content>
+    <title>Git常用命令及分支</title>
+    <url>/2018/05/21/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E5%88%86%E6%94%AF/</url>
+    <content><![CDATA[<h2 id="git分支"><a href="#git分支" class="headerlink" title="git分支"></a>git分支</h2><p><img src="/2018/05/21/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E5%88%86%E6%94%AF/1.jpg" alt="1"><br>从上图可以看到主要包含下面几个分支：</p>
+<p>master: 主分支，主要用来版本发布。<br>develop：日常开发分支，该分支正常保存了开发的最新代码。<br>feature：具体的功能开发分支，只与 develop 分支交互。<br>release：release 分支可以认为是 master 分支的未测试版。比如说某一期的功能全部开发完成，那么就将 develop 分支合并到 release 分支，测试没有问题并且到了发布日期就合并到 master 分支，进行发布。<br>hotfix：线上 bug 修复分支。</p>
+<h3 id="主分支"><a href="#主分支" class="headerlink" title="主分支"></a>主分支</h3><p>主分支包括 master 分支和 develop 分支。master 分支用来发布，HEAD 就是当前线上的运行代码。develop 分支就是我们的日常开发。使用这两个分支就具有了最简单的开发模式：develop 分支用来开发功能，开发完成并且测试没有问题则将 develop 分支的代码合并到 master 分支并发布。</p>
+<h3 id="辅助分支"><a href="#辅助分支" class="headerlink" title="辅助分支"></a>辅助分支</h3><p>feature 分支<br>release 分支<br>hotfix 分支<br>通过这些分支，我们可以做到：团队成员之间并行开发，feature track 更加容易，开发和发布并行以及线上问题修复。</p>
+<h4 id="Feature-分支"><a href="#Feature-分支" class="headerlink" title="Feature 分支"></a>Feature 分支</h4><p>feature 分支用来开发具体的功能，一般 fork 自 develop 分支，最终可能会合并到 develop 分支。比如我们要在下一个版本增加功能1、功能2、功能3。那么我们就可以起三个feature 分支：feature1，feature2，feature3。（feature 分支命名最好能够自解释，这并不是一种好的命名。）随着我们开发，功能1和功能2都被完成了，而功能3因为某些原因完成不了，那么最终 feature1 和 feature2 分支将被合并到 develop 分支，而 feature3 分支将被干掉。</p>
+<h4 id="Release-分支"><a href="#Release-分支" class="headerlink" title="Release 分支"></a>Release 分支</h4><p>我们最初所有的开发工作都在 develop 分支上，当我们这一期的功能开发完毕的时候，我们基于 develop 分支开一个新的 release 分支。这个时候我们就可以对 release 分支做统一的测试了，另外做一些发布准备工作：比如版本号之类的。如果测试有问题的话，我们将直接在 release 分支上修改，然后将修改合并到 develop 分支上。</p>
+<h4 id="Hotfix-分支"><a href="#Hotfix-分支" class="headerlink" title="Hotfix 分支"></a>Hotfix 分支</h4><p>顾名思义，hotfix 分支用来修复线上 bug。当线上代码出现 bug 时，我们基于 master 分支开一个 hotfix 分支，修复 bug 之后再将 hotfix 分支合并到 master 分支并进行发布，同时 develop 分支作为最新最全的代码分支，hotfix 分支也需要合并到 develop 分支上去。仔细想一想，其实 hotfix 分支和 release 分支功能类似。hotfix 的好处是不打断 develop 分支正常进行，</p>
+<h2 id="git基本命令"><a href="#git基本命令" class="headerlink" title="git基本命令"></a>git基本命令</h2><p>1）git add 将想要快照的内容写入缓存区<br>2）git status -s “AM” 状态的意思是，这个文件在我们将它添加到缓存之后又有改动<br>3）git commit -m ‘第一次版本提交’ -m选项添加备注信息<br>4）git clone url 使用 git clone 拷贝一个 Git 仓库到本地<br>5）git diff 查看执行 git status 的结果的详细信息<br>　　尚未缓存的改动：git diff<br>　　查看已缓存的改动： git diff –cached<br>　　查看已缓存的与未缓存的所有改动：git diff HEAD<br>　　显示摘要而非整个 diff：git diff –stat<br>6）git commit -a 跳过git add 提交缓存的流程<br>7）git reset HEAD 用于取消已缓存的内容<br>8）git rm file<br>　　git rm 会将条目从缓存区中移除。这与 git reset HEAD 将条目取消缓存是有区别的。<br>　　“取消缓存”的意思就是将缓存区恢复为我们做出修改之前的样子。<br>　　默认情况下，git rm file 会将文件从缓存区和你的硬盘中（工作目录）删除。<br>9）git mv 重命名磁盘上的文件 如 git mv README README.md</p>
+<p>10）git push -u origin master 提交代码</p>
+<h2 id="git分支管理"><a href="#git分支管理" class="headerlink" title="git分支管理"></a>git分支管理</h2><p>查看本地分支：$ git branch</p>
+<p>查看远程分支：$ git branch -r</p>
+<p>创建本地分支：$ git branch [name] —-注意新分支创建后不会自动切换为当前分支</p>
+<p>切换分支：$ git checkout [name]</p>
+<p>创建新分支并立即切换到新分支：$ git checkout -b [name]</p>
+<p>删除分支：$ git branch -d [name] —- -d选项只能删除已经参与了合并的分支，对于未有合并的分支是无法删除的。如果想强制删除一个分支，可以使用-D选项</p>
+<p>合并分支：$ git merge [name] —-将名称为[name]的分支与当前分支合并</p>
+<p>创建远程分支(本地分支push到远程)：$ git push origin [name]</p>
+<p>删除远程分支：$ git push origin :heads/[name] 或 $ gitpush origin :[name] </p>
+<h2 id="git仓库相关命令"><a href="#git仓库相关命令" class="headerlink" title="git仓库相关命令"></a>git仓库相关命令</h2><p>检出仓库：        $ git clone git://github.com/jquery/jquery.git</p>
+<p>查看远程仓库：$ git remote -v</p>
+<p>添加远程仓库：$ git remote add [name] [url]</p>
+<p>删除远程仓库：$ git remote rm [name]</p>
+<p>修改远程仓库：$ git remote set-url –push [name] [newUrl]</p>
+<p>拉取远程仓库：$ git pull [remoteName] [localBranchName]</p>
+<p>推送远程仓库：$ git push [remoteName] [localBranchName]</p>
+<p>如果想把本地的某个分支test提交到远程仓库，并作为远程仓库的master分支，或者作为另外一个名叫test的分支，如下：</p>
+<p>$git push origin test:master         // 提交本地test分支作为远程的master分支</p>
+<p>$git push origin test:test              // 提交本地test分支作为远程的test分支</p>
+<h2 id="git版本相关操作命令"><a href="#git版本相关操作命令" class="headerlink" title="git版本相关操作命令"></a>git版本相关操作命令</h2><p>查看版本：$ git tag</p>
+<p>创建版本：$ git tag [name]</p>
+<p>删除版本：$ git tag -d [name]</p>
+<p>查看远程版本：$ git tag -r</p>
+<p>创建远程版本(本地版本push到远程)：$ git push origin [name]</p>
+<p>删除远程版本：$ git push origin :refs/tags/[name]</p>
+<p>合并远程仓库的tag到本地：$ git pull origin –tags</p>
+<p>上传本地tag到远程仓库：$ git push origin –tags</p>
+<p>创建带注释的tag：$ git tag -a [name] -m ‘yourMessage’</p>
+<h2 id="提取远程代码"><a href="#提取远程代码" class="headerlink" title="提取远程代码"></a>提取远程代码</h2><p>1）git fetch　　从远程仓库下载新分支与数据<br>2)）git pull　　从远端仓库提取数据并尝试合并到当前分支</p>
+]]></content>
       <categories>
-        <category>Python</category>
+        <category>Git代码管理</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,55 +2043,6 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
       </categories>
       <tags>
         <tag>web,Django</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2018/01/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><div>
-        学习编程之后，逐渐在这一领域有了一定的了解，在CSDN博客上看各种大神写的文章，那些未知的技术，引起了我的求知欲，同时看着别人炫酷的博客，也让我有了一个搭建自己的博客网站的想法，来对自己学过的知识，进行总结梳理，于是开始了我的博客之旅。
-</div>
-
-
-<h4 id="1-搭建自己的博客网站需要耐心"><a href="#1-搭建自己的博客网站需要耐心" class="headerlink" title="1.搭建自己的博客网站需要耐心"></a>1.搭建自己的博客网站需要耐心</h4><div>
-        对于我这种博客小白来说，搭建自己的个人博客，着实费了一番功夫，经过大约一周时间的研究学习，查阅各种资料，解决各种bug，尝试不同的主题效果，终于搭建好我自己的个人博客网站，可以开始写自己的第一篇博客文章，此刻我的心情是非常激动的，毕竟这大约一周时间的努力，取得了一定的成果，效果还比较满意，不过还要继续完善。
-        总的来说，过程非常繁琐，需要耐心，网上教程都很详细，一步步按照教程走即可，但是过程中有些细节需要综合自己的实际情况来定，不然会出一些难解决的bug，所以要懂一些js，css知识的原理。我用的是github+hexo搭建的，个人认为比较简单吧，也研究过ruby，jkelly那些方法，不过没安装上环境，就换了hexo，有兴趣的可以好好研究下。
-</div>
-
-<h4 id="2-IT知识研究领域"><a href="#2-IT知识研究领域" class="headerlink" title="2. IT知识研究领域"></a>2. IT知识研究领域</h4><div>
-        我主要学习的是Python，所以我的博客内容主要围绕着python来展开的，当然这只是一种编写程序的语言方式，所以本质上还是编程以及相关内容，比如Linux，web开发，框架，算法，爬虫，人工智能等，我个人对人工智能非常感兴趣，所以也会慢慢往这个方向去靠近，机器学习，神经网络等，自己慢慢研究学习吧。
-</div>        
-
-<h4 id="3-写博客文章的一些基本格式与上传命令"><a href="#3-写博客文章的一些基本格式与上传命令" class="headerlink" title="3. 写博客文章的一些基本格式与上传命令"></a>3. 写博客文章的一些基本格式与上传命令</h4><div>
-        为了以后方便写博客，对于我这个博客小白，还是有必要在这里对于一些文章相关格式及命令，进行总结的。
-        通过github+hexo搭建好博客后，如何创建一篇新博客呢
-        在搭建博客的时候，会安装git软件，在根目录下打开git，通过git命令来执行，新建一篇博客：
-</div>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> <span class="string">&quot;你的博客的名称&quot;</span></span><br></pre></td></tr></table></figure>
-<div>
-    然后在根目录文件夹下source/_posts下新生成一个md文件，名称就是你自己起的名字，打开就可以开始写博客啦，要用markdown语法写，所以要提前准备一款编辑器，我个人用的是小书匠编辑器，还不错。
-    文章的一些格式属性有以下几种可以自己设置：
-</div>
-<figure class="highlight subunit"><table><tr><td class="code"><pre><span class="line">title: 文章标题</span><br><span class="line">date:  创建时间，这里可以随意修改</span><br><span class="line">categories:  文章分类目录，可以为空</span><br><span class="line"><span class="keyword">tags:</span> 文章标签，可空，多标签请用格式[tag1,tag2,tag3]</span><br><span class="line">description: 对本页的描述，相当于是一个简介，如果这个定义了，就会在首页中出现这里的内容而不会出现整个文章详细内容。</span><br></pre></td></tr></table></figure>
-<div>
-     然后下面就可以开始写文章了，写完即可通过git上传了
-    </div> 
-
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-<div>
-     即可部署到github上。
-</div>
-
-<h4 id="4-开启博客之旅"><a href="#4-开启博客之旅" class="headerlink" title="4.开启博客之旅"></a>4.开启博客之旅</h4><div>
-        以前的学习笔记都记录在本子上，或者其他文档里，之后将会慢慢整理在自己的博客上，来完善自己的学习体系，同时搭建自己的博客，让自己的博客更炫酷。
-</div>
-
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>第一篇</tag>
       </tags>
   </entry>
   <entry>
@@ -2314,21 +2292,6 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
       </tags>
   </entry>
   <entry>
-    <title>盛水容器问题</title>
-    <url>/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给你 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。</p>
-<p>说明：你不能倾斜容器。<br><img src="/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/1.png" alt="1"></p>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>设两个坐标a,b,分别从列表的起始端和结束端向中间移动，起始面积为0，每移动一次，即得到新的面积，与上一次移动的面积进行比较，取最大值，移动到ab相等时结束移动，如果a板高于b板，则以b板算面积，算完进行比较然后，缩减b的长度，a板小于b板，则以a板算面积，进行比较，增加a。最后a&gt;=b跳出循环</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func maxArea(height []int) int &#123;</span><br><span class="line">    a, b, <span class="attr">res</span> := <span class="number">0</span>, len(height)-<span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> a &gt;= b &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> height[a] &gt; height[b]&#123;</span><br><span class="line">            <span class="keyword">if</span>  height[b]*(b-a) &gt; res &#123;</span><br><span class="line">                res = height[b]*(b-a)</span><br><span class="line">            &#125;</span><br><span class="line">            b--</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>  height[a]*(b-a) &gt; res &#123;</span><br><span class="line">                res = height[a]*(b-a)</span><br><span class="line">            &#125;</span><br><span class="line">            a++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>数据算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>递归</title>
     <url>/2020/12/18/%E9%80%92%E5%BD%92/</url>
     <content><![CDATA[<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><h3 id="思维要点"><a href="#思维要点" class="headerlink" title="思维要点"></a>思维要点</h3><ol>
@@ -2351,6 +2314,21 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
 <h3 id="python模板"><a href="#python模板" class="headerlink" title="python模板"></a>python模板</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">def recursion(level, param1, param2, ...):</span><br><span class="line">	# recursion terminator递归跳出条件</span><br><span class="line">	<span class="keyword">if</span> level &gt; MAX_LEVEL:</span><br><span class="line"> 		process_result</span><br><span class="line"> 		<span class="keyword">return</span></span><br><span class="line">	# process logic in current level 当前层的执行逻辑</span><br><span class="line">	process(level, data...)</span><br><span class="line">	# drill down</span><br><span class="line">	self.recursion(level + <span class="number">1</span>, p1, ...) 递归调用</span><br><span class="line">	# reverse the current level status if neede 清除收尾</span><br></pre></td></tr></table></figure>
 
 <h3 id="GO模板"><a href="#GO模板" class="headerlink" title="GO模板"></a>GO模板</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">func recursion(level int, param1, param2 interface&#123;&#125;):</span><br><span class="line">	# recursion terminator递归跳出条件</span><br><span class="line">	<span class="keyword">if</span> level &gt; MAX_LEVEL:</span><br><span class="line"> 		process_result</span><br><span class="line"> 		<span class="keyword">return</span></span><br><span class="line">	# process logic in current level 当前层的执行逻辑</span><br><span class="line">	process(level, data...)</span><br><span class="line">	# drill down</span><br><span class="line">	recursion(level + <span class="number">1</span>, p1, ...) 递归调用</span><br><span class="line">	# reverse the current level status if neede 清除收尾</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>数据算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>盛水容器问题</title>
+    <url>/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给你 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。</p>
+<p>说明：你不能倾斜容器。<br><img src="/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/1.png" alt="1"></p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>设两个坐标a,b,分别从列表的起始端和结束端向中间移动，起始面积为0，每移动一次，即得到新的面积，与上一次移动的面积进行比较，取最大值，移动到ab相等时结束移动，如果a板高于b板，则以b板算面积，算完进行比较然后，缩减b的长度，a板小于b板，则以a板算面积，进行比较，增加a。最后a&gt;=b跳出循环</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func maxArea(height []int) int &#123;</span><br><span class="line">    a, b, <span class="attr">res</span> := <span class="number">0</span>, len(height)-<span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> a &gt;= b &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> height[a] &gt; height[b]&#123;</span><br><span class="line">            <span class="keyword">if</span>  height[b]*(b-a) &gt; res &#123;</span><br><span class="line">                res = height[b]*(b-a)</span><br><span class="line">            &#125;</span><br><span class="line">            b--</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>  height[a]*(b-a) &gt; res &#123;</span><br><span class="line">                res = height[a]*(b-a)</span><br><span class="line">            &#125;</span><br><span class="line">            a++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>数据算法</category>
       </categories>
@@ -2401,6 +2379,55 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
       </categories>
       <tags>
         <tag>html静态化,处理高并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2018/01/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><div>
+        学习编程之后，逐渐在这一领域有了一定的了解，在CSDN博客上看各种大神写的文章，那些未知的技术，引起了我的求知欲，同时看着别人炫酷的博客，也让我有了一个搭建自己的博客网站的想法，来对自己学过的知识，进行总结梳理，于是开始了我的博客之旅。
+</div>
+
+
+<h4 id="1-搭建自己的博客网站需要耐心"><a href="#1-搭建自己的博客网站需要耐心" class="headerlink" title="1.搭建自己的博客网站需要耐心"></a>1.搭建自己的博客网站需要耐心</h4><div>
+        对于我这种博客小白来说，搭建自己的个人博客，着实费了一番功夫，经过大约一周时间的研究学习，查阅各种资料，解决各种bug，尝试不同的主题效果，终于搭建好我自己的个人博客网站，可以开始写自己的第一篇博客文章，此刻我的心情是非常激动的，毕竟这大约一周时间的努力，取得了一定的成果，效果还比较满意，不过还要继续完善。
+        总的来说，过程非常繁琐，需要耐心，网上教程都很详细，一步步按照教程走即可，但是过程中有些细节需要综合自己的实际情况来定，不然会出一些难解决的bug，所以要懂一些js，css知识的原理。我用的是github+hexo搭建的，个人认为比较简单吧，也研究过ruby，jkelly那些方法，不过没安装上环境，就换了hexo，有兴趣的可以好好研究下。
+</div>
+
+<h4 id="2-IT知识研究领域"><a href="#2-IT知识研究领域" class="headerlink" title="2. IT知识研究领域"></a>2. IT知识研究领域</h4><div>
+        我主要学习的是Python，所以我的博客内容主要围绕着python来展开的，当然这只是一种编写程序的语言方式，所以本质上还是编程以及相关内容，比如Linux，web开发，框架，算法，爬虫，人工智能等，我个人对人工智能非常感兴趣，所以也会慢慢往这个方向去靠近，机器学习，神经网络等，自己慢慢研究学习吧。
+</div>        
+
+<h4 id="3-写博客文章的一些基本格式与上传命令"><a href="#3-写博客文章的一些基本格式与上传命令" class="headerlink" title="3. 写博客文章的一些基本格式与上传命令"></a>3. 写博客文章的一些基本格式与上传命令</h4><div>
+        为了以后方便写博客，对于我这个博客小白，还是有必要在这里对于一些文章相关格式及命令，进行总结的。
+        通过github+hexo搭建好博客后，如何创建一篇新博客呢
+        在搭建博客的时候，会安装git软件，在根目录下打开git，通过git命令来执行，新建一篇博客：
+</div>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> <span class="string">&quot;你的博客的名称&quot;</span></span><br></pre></td></tr></table></figure>
+<div>
+    然后在根目录文件夹下source/_posts下新生成一个md文件，名称就是你自己起的名字，打开就可以开始写博客啦，要用markdown语法写，所以要提前准备一款编辑器，我个人用的是小书匠编辑器，还不错。
+    文章的一些格式属性有以下几种可以自己设置：
+</div>
+<figure class="highlight subunit"><table><tr><td class="code"><pre><span class="line">title: 文章标题</span><br><span class="line">date:  创建时间，这里可以随意修改</span><br><span class="line">categories:  文章分类目录，可以为空</span><br><span class="line"><span class="keyword">tags:</span> 文章标签，可空，多标签请用格式[tag1,tag2,tag3]</span><br><span class="line">description: 对本页的描述，相当于是一个简介，如果这个定义了，就会在首页中出现这里的内容而不会出现整个文章详细内容。</span><br></pre></td></tr></table></figure>
+<div>
+     然后下面就可以开始写文章了，写完即可通过git上传了
+    </div> 
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<div>
+     即可部署到github上。
+</div>
+
+<h4 id="4-开启博客之旅"><a href="#4-开启博客之旅" class="headerlink" title="4.开启博客之旅"></a>4.开启博客之旅</h4><div>
+        以前的学习笔记都记录在本子上，或者其他文档里，之后将会慢慢整理在自己的博客上，来完善自己的学习体系，同时搭建自己的博客，让自己的博客更炫酷。
+</div>
+
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>第一篇</tag>
       </tags>
   </entry>
   <entry>
