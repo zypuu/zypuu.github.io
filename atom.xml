@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-20T13:13:51.902Z</updated>
+  <updated>2020-12-21T09:31:42.754Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GO的make和new的区别</title>
+    <link href="http://zypuu.com/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://zypuu.com/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2020-12-21T09:20:22.000Z</published>
+    <updated>2020-12-21T09:31:42.754Z</updated>
+    
+    <content type="html"><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p><p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>]]></content>
+    
+    
+    <summary type="html">解析go语言</summary>
+    
+    
+    
+    <category term="GO" scheme="http://zypuu.com/categories/GO/"/>
+    
+    
+    <category term="GO" scheme="http://zypuu.com/tags/GO/"/>
+    
+  </entry>
   
   <entry>
     <title>GO环境安装</title>
@@ -402,27 +423,6 @@
     <updated>2020-12-01T07:40:30.529Z</updated>
     
     <content type="html"><![CDATA[<h4 id="beforeCreate"><a href="#beforeCreate" class="headerlink" title="beforeCreate"></a>beforeCreate</h4><p>Vue对象用新方法实例化。它创建一个Vue类的对象来处理DOM元素。对象的这个生命阶段可以通过beforeCreated 挂钩来访问 。我们可以在这个钩子中插入我们的代码，在对象初始化之前执行。</p><h4 id="created"><a href="#created" class="headerlink" title="created"></a>created</h4><p>在这个生命阶段，对象及其事件完全初始化。 created 是访问这个阶段并编写代码的钩子。</p><h4 id="beforeMount"><a href="#beforeMount" class="headerlink" title="beforeMount"></a>beforeMount</h4><p>这个钩子被调用 beforeMounted。在这个阶段，它检查是否有任何模板可用于要在DOM中呈现的对象。如果没有找到模板，那么它将所定义元素的外部HTML视为模板。</p><h4 id="mounted"><a href="#mounted" class="headerlink" title="mounted"></a>mounted</h4><p>一旦模板准备就绪。它将数据放入模板并创建可呈现元素。用这个新的数据填充元素替换DOM元素。这一切都发生在mounted钩子上。</p><h4 id="beforeUpdate"><a href="#beforeUpdate" class="headerlink" title="beforeUpdate"></a>beforeUpdate</h4><p>在外部事件/用户输入beforeUpdate发生更改时，此钩子即 在反映原始DOM元素的更改之前被触发。</p><p>为了解决这个问题 beforeUpdated，我添加了下面的代码。它通过更新DOM来更改运行时中的hello_message。</p><h4 id="updated"><a href="#updated" class="headerlink" title="updated"></a>updated</h4><p>然后，通过实际更新DOM对象并触发updated，屏幕上的变化得到呈现 。</p><h4 id="beforeDestroy"><a href="#beforeDestroy" class="headerlink" title="beforeDestroy"></a>beforeDestroy</h4><h4 id="destroyed"><a href="#destroyed" class="headerlink" title="destroyed"></a>destroyed</h4><p>vue实例在被创建的时候会经历这些钩子函数</p><ol><li>在beforeCreate和created钩子函数之间的生命周期<br>在这个生命周期之间，进行初始化事件，进行数据的观测，可以看到在created的时候数据已经和data属性进行绑定（放在data中的属性当值发生改变的同时，视图也会改变）。created的时候，数据已经和data进行绑定了<br>注意看下：此时还是没有el选项，也就是beforecreate的时候，数据还没有和data绑定。</li><li>created钩子函数和beforeMount间的生命周期<br>首先会判断对象是否有el选项。如果有的话就继续向下编译，如果没有el选项，则停止编译，也就意味着停止了生命周期，直到在该vue实例上调用vm.$mount(el)。</li></ol>]]></content>
-    
-    
-    <summary type="html">前端页面的一问题处理</summary>
-    
-    
-    
-    <category term="前端" scheme="http://zypuu.com/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-    <category term="Vue" scheme="http://zypuu.com/tags/Vue/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于vue的ref与$ref的问题</title>
-    <link href="http://zypuu.com/2020/03/29/%E5%85%B3%E4%BA%8Evue%E7%9A%84ref%E4%B8%8E$ref%E9%97%AE%E9%A2%98/"/>
-    <id>http://zypuu.com/2020/03/29/%E5%85%B3%E4%BA%8Evue%E7%9A%84ref%E4%B8%8E$ref%E9%97%AE%E9%A2%98/</id>
-    <published>2020-03-29T13:09:43.000Z</published>
-    <updated>2020-12-01T07:34:42.220Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="释义"><a href="#释义" class="headerlink" title="释义"></a>释义</h3><h4 id="refs"><a href="#refs" class="headerlink" title="refs"></a>refs</h4><p>vm.$refs，一个对象，object，持有已注册过ref的所有子组件。</p><h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><p>ref用来给元素或子组件注册引用信息。引用信息将会注册在父组件的refs上。如果普通dom上使用，引用指向的就是dom元素，如果用在子组件上，引用就指向子组件示例。</p><h4 id="注意问题：ref属于非响应式"><a href="#注意问题：ref属于非响应式" class="headerlink" title="注意问题：ref属于非响应式"></a>注意问题：ref属于非响应式</h4><p>ref本身是作为渲染结果被创建的，在初始渲染的时候并不能访问他们，因为还不存在，会报错。而$refs也不是响应式的，所以同样不能访问，要注意。</p><h4 id="开发中的实例问题"><a href="#开发中的实例问题" class="headerlink" title="开发中的实例问题"></a>开发中的实例问题</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-form ref=<span class="string">&quot;booksForm&quot;</span> onsubmit=<span class="string">&quot;return false&quot;</span> :model=<span class="string">&quot;form&quot;</span> :inline=<span class="string">&quot;true&quot;</span> :rules=<span class="string">&quot;rules_search&quot;</span>&gt;</span><br><span class="line">&lt;el-form-item prop=<span class="string">&quot;books_ids&quot;</span>&gt;</span><br><span class="line">        &lt;el-input</span><br><span class="line">          style=<span class="string">&quot;width: 300px;&quot;</span></span><br><span class="line">          placeholder=<span class="string">&quot;ID搜索,逗号英文分隔&quot;</span></span><br><span class="line">          v-model=<span class="string">&quot;form.books_ids&quot;</span></span><br><span class="line">          clearable</span><br><span class="line">        &gt;&lt;/el-input&gt;</span><br><span class="line">      &lt;/el-form-item&gt;</span><br></pre></td></tr></table></figure><p>在页面表单中绑定了ref，el-input是一个搜索输入框，如果不输入值，则默认搜索全部数据。</p><p>但是在搜索的时候需要在前端进行验证，检验是否是数字</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="title">getBooks</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.$refs[<span class="string">&#x27;booksForm&#x27;</span>].validate(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (valid) &#123;.....&#125;</span><br><span class="line"></span><br><span class="line"># ......中为通过api，查询数据库的逻辑，然后返回数据</span><br></pre></td></tr></table></figure><p>看上面代码，是通过$ref绑定调用，进行的验证。</p><p>但是在页面刚进入，对象实例在被创建前，也就是在vue对象创建的钩子函数中，需要对页面进行初始化，查询数据显示，也就是在mounted中进行一次查询操作</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.getBooks()</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure><p>然后问题就来了，因为$ref是非响应式的，所以在页面初始化的时候，并没有被创建，也就无法通过验证，会报错</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">validate is <span class="literal">undefined</span></span><br></pre></td></tr></table></figure><h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>将验证方法，拆出来，也就是调用ref的地方，不要放在钩子函数中，待页面加载完在进行调用验证。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">   <span class="function"><span class="title">searchBooks</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">     <span class="built_in">this</span>.$refs[<span class="string">&#x27;booksForm&#x27;</span>].validate(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">       <span class="keyword">if</span> (valid) &#123;</span><br><span class="line">         <span class="built_in">this</span>.getBooks(<span class="built_in">this</span>.booksData)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;)</span><br><span class="line">   &#125;,</span><br></pre></td></tr></table></figure><p>由searchBooks进行一层包装，将调用ref的验证放到外面，在mounted的钩子函数中还是调用getBooks方法。</p>]]></content>
     
     
     <summary type="html">前端页面的一问题处理</summary>
