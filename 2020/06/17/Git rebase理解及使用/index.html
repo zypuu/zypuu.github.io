@@ -37,7 +37,7 @@
 <meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/6.png">
 <meta property="og:image" content="http://zypuu.com/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/7.png">
 <meta property="article:published_time" content="2020-06-17T08:27:20.000Z">
-<meta property="article:modified_time" content="2020-12-08T10:07:47.957Z">
+<meta property="article:modified_time" content="2020-12-22T09:02:40.227Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
@@ -231,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-08 18:07:47" itemprop="dateModified" datetime="2020-12-08T18:07:47+08:00">2020-12-08</time>
+                <time title="Modified: 2020-12-22 17:02:40" itemprop="dateModified" datetime="2020-12-22T17:02:40+08:00">2020-12-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -276,7 +276,7 @@
 <h2 id="使用rebase意义"><a href="#使用rebase意义" class="headerlink" title="使用rebase意义"></a>使用rebase意义</h2><p>1.使用git log时，可以看到一个更整洁commit 历史树；</p>
 <p>2.对于git工作流，commit数要多而有意义，这样review 代码速度加快，而且commit 都是有意义的，而且利于回退；</p>
 <p>3.很多人的分支提交历史经常是fix，fix, fix agian,好的commit应该反映出项目的一步步开发。</p>
-<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/1.png" alt="1"></p>
+<h2 id="工作流程及原理：变基"><a href="#工作流程及原理：变基" class="headerlink" title="工作流程及原理：变基"></a>工作流程及原理：变基</h2><p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/1.png" alt="1"></p>
 <p> 如上图所示，C1是线上的版本，在C1的代码上线了之后我们发现了一个bug，于是我们checkout了一个叫做bugFix的分支。与此同时还有新的功能在开发，新的功能提交到了master之后形成了节点C2。这个时候我们在bugFix分支当然可以merge master这没有什么问题，但是也可以rebase master，rebase之后整棵git树会变成这样：</p>
 <p><img src="/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/2.png" alt="2"></p>
 <p> 这个结果就好像是我们先到了C2然后checkout出了bugFix分支，然后在bugFix分支上将之前写过的代码重新写了一遍。这样的操作就是变基，当我们rebase了之后再提交合并请求我们的合并记录里面会非常干净，没有多余merge的信息。</p>
@@ -432,7 +432,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFgit-rebase"><span class="nav-number">1.</span> <span class="nav-text">什么是git rebase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8rebase%E6%84%8F%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">使用rebase意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E5%90%8C%E6%AD%A5%E4%BD%BF%E7%94%A8-pull-%E2%80%93rebase"><span class="nav-number">4.1.</span> <span class="nav-text">远程代码同步使用 pull –rebase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E5%88%86%E6%94%AF"><span class="nav-number">4.2.</span> <span class="nav-text">整合分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AAcommit"><span class="nav-number">4.3.</span> <span class="nav-text">合并多个commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-rebase-%E2%80%93onto-A-B-C-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">4.4.</span> <span class="nav-text">git rebase –onto A B C 的用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F-%E4%BD%BF%E7%94%A8%E6%B3%95%E5%88%99"><span class="nav-number">5.</span> <span class="nav-text">注意-使用法则</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFgit-rebase"><span class="nav-number">1.</span> <span class="nav-text">什么是git rebase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8rebase%E6%84%8F%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">使用rebase意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%8E%9F%E7%90%86%EF%BC%9A%E5%8F%98%E5%9F%BA"><span class="nav-number">3.</span> <span class="nav-text">工作流程及原理：变基</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E5%90%8C%E6%AD%A5%E4%BD%BF%E7%94%A8-pull-%E2%80%93rebase"><span class="nav-number">4.1.</span> <span class="nav-text">远程代码同步使用 pull –rebase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E5%88%86%E6%94%AF"><span class="nav-number">4.2.</span> <span class="nav-text">整合分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AAcommit"><span class="nav-number">4.3.</span> <span class="nav-text">合并多个commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-rebase-%E2%80%93onto-A-B-C-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">4.4.</span> <span class="nav-text">git rebase –onto A B C 的用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F-%E4%BD%BF%E7%94%A8%E6%B3%95%E5%88%99"><span class="nav-number">5.</span> <span class="nav-text">注意-使用法则</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -448,7 +448,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -509,12 +509,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">68k</span>
+    <span title="Symbols count total">69k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:02</span>
+    <span title="Reading time total">1:03</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
