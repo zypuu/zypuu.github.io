@@ -22,20 +22,20 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="linux相关基础，linux开发环境下开发使用">
+  <meta name="description" content="寻找两个有序数组的中位数，二分查找优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于Linux swap分区相关处理">
-<meta property="og:url" content="http://zypuu.com/2020/08/15/%E5%85%B3%E4%BA%8ELinux%20swap%E5%88%86%E5%8C%BA%E7%9B%B8%E5%85%B3%E5%A4%84%E7%90%86/index.html">
+<meta property="og:title" content="两个有序数组的中位数">
+<meta property="og:url" content="http://zypuu.com/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="linux相关基础，linux开发环境下开发使用">
+<meta property="og:description" content="寻找两个有序数组的中位数，二分查找优化">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-08-15T11:15:15.000Z">
-<meta property="article:modified_time" content="2020-12-01T08:19:10.882Z">
+<meta property="article:published_time" content="2020-12-22T12:51:00.000Z">
+<meta property="article:modified_time" content="2020-12-23T08:10:22.563Z">
 <meta property="article:author" content="ZYP">
-<meta property="article:tag" content="Linux命令">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://zypuu.com/2020/08/15/%E5%85%B3%E4%BA%8ELinux%20swap%E5%88%86%E5%8C%BA%E7%9B%B8%E5%85%B3%E5%A4%84%E7%90%86/">
+<link rel="canonical" href="http://zypuu.com/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>关于Linux swap分区相关处理 | ALL-Nothing</title>
+  <title>两个有序数组的中位数 | ALL-Nothing</title>
   
 
 
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/08/15/%E5%85%B3%E4%BA%8ELinux%20swap%E5%88%86%E5%8C%BA%E7%9B%B8%E5%85%B3%E5%A4%84%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -206,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于Linux swap分区相关处理
+          两个有序数组的中位数
         </h1>
 
         <div class="post-meta">
@@ -216,14 +216,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-15 19:15:15" itemprop="dateCreated datePublished" datetime="2020-08-15T19:15:15+08:00">2020-08-15</time>
+              <time title="Created: 2020-12-22 20:51:00" itemprop="dateCreated datePublished" datetime="2020-12-22T20:51:00+08:00">2020-12-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-01 16:19:10" itemprop="dateModified" datetime="2020-12-01T16:19:10+08:00">2020-12-01</time>
+                <time title="Modified: 2020-12-23 16:10:22" itemprop="dateModified" datetime="2020-12-23T16:10:22+08:00">2020-12-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +231,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
                 </span>
             </span>
 
@@ -241,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1k</span>
+              <span>503</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -250,7 +250,7 @@
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
-            <div class="post-description">linux相关基础，linux开发环境下开发使用</div>
+            <div class="post-description">寻找两个有序数组的中位数，二分查找优化</div>
 
         </div>
       </header>
@@ -261,21 +261,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="什么是swap分区"><a href="#什么是swap分区" class="headerlink" title="什么是swap分区"></a>什么是swap分区</h3><p>在Linux下，SWAP的作用类似Windows系统下的“虚拟内存”。当物理内存不足时，拿出部分硬盘空间当SWAP分区（虚拟成内存）使用，从而解决内存容量不足的情况。</p>
-<p>SWAP意思是交换，顾名思义，当某进程向OS请求内存发现不足时，OS会把内存中暂时不用的数据交换出去，放在SWAP分区中，这个过程称为SWAP OUT。当某进程又需要这些数据且OS发现还有空闲物理内存时，又会把SWAP分区中的数据交换回物理内存中，这个过程称为SWAP IN。</p>
-<p>当然，swap大小是有上限的，一旦swap使用完，操作系统会触发OOM-Killer机制，把消耗内存最多的进程kill掉以释放内存。</p>
-<p>使用 swap 交换分区，显著的优点是，通过操作系统的调度，应用程序实际可以使用的内存空间将远远超过系统的物理内存。由于硬盘空间的价格远比 RAM 要低，因此这种方式无疑是经济实惠的。当然，频繁地读写硬盘，会显著降低操作系统的运行速率，这也是使用 swap 交换分区最大的限制。</p>
-<p>具体使用多大的 swap 分区，取决于物理内存大小和硬盘的容量。一般来讲，swap 分区容量应大于物理内存大小，建议是内存的两倍，但不超过 2GB。但是，有时服务器的访问量确实很大，有可能出现 swap 分区不够用的情况</p>
-<h3 id="swap对数据库的影响"><a href="#swap对数据库的影响" class="headerlink" title="swap对数据库的影响"></a>swap对数据库的影响</h3><p>swap机制的初衷是为了缓解物理内存用尽而选择直接粗暴OOM进程的尴尬。但坦白讲，几乎所有数据库对swap都不怎么待见，无论MySQL、Oracal、MongoDB抑或HBase，为什么？这主要和下面两个方面有关：</p>
-<ol>
-<li><p>数据库系统一般都对响应延迟比较敏感，如果使用swap代替内存，数据库服务性能必然不可接受。对于响应延迟极其敏感的系统来讲，延迟太大和服务不可用没有任何区别，比服务不可用更严重的是，swap场景下进程就是不死，这就意味着系统一直不可用……再想想如果不使用swap直接oom，是不是一种更好的选择，这样很多高可用系统直接会主从切换掉，用户基本无感知。</p>
-</li>
-<li><p>另外对分布式系统来说，其实并不担心某个节点宕掉，而恰恰担心某个节点夯住。一个节点宕掉，最多就是小部分请求短暂不可用，重试即可恢复。但是一个节点夯住会将所有分布式请求都夯住，服务器端线程资源被占用不放，导致整个集群请求阻塞，甚至集群被拖垮。</p>
-</li>
-</ol>
-<p>从这两个角度考虑，所有数据库都不喜欢swap还是很有道理的！</p>
-<h3 id="swap关闭重启命令"><a href="#swap关闭重启命令" class="headerlink" title="swap关闭重启命令"></a>swap关闭重启命令</h3><p>对swap分区进行关闭重启，可清空swap虚拟内存数据<br>root用户下</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">swapoff a 关闭swap分区</span><br><span class="line">swapon a 开启swap分区</span><br></pre></td></tr></table></figure>
+        <p>给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的中位数。</p>
+<p>输入：nums1 = [1,2], nums2 = [3,4]<br>输出：2.50000<br>解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5</p>
+<h3 id="普通解法"><a href="#普通解法" class="headerlink" title="普通解法"></a>普通解法</h3><p>合并两个数组，进行排序，然后判断长度奇数，偶数<br>1.奇数则取中间那个<br>2.偶数则取中间两个的和除以2</p>
+<h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def findMedianSortedArrays(self, <span class="attr">nums1</span>: List[int], <span class="attr">nums2</span>: List[int]) -&gt; float:</span><br><span class="line">        nums1.extend(nums2)</span><br><span class="line">        nums1.sort()</span><br><span class="line">        n = len(nums1)</span><br><span class="line">        <span class="keyword">if</span> n%<span class="number">2</span> != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> nums1[int((n - <span class="number">1</span>)/<span class="number">2</span>)]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> (nums1[int(n/<span class="number">2</span>) - <span class="number">1</span>] + nums1[int(n/<span class="number">2</span>)])/<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>时间复杂度是 O(m+n)，空间复杂度是 O(m+n)</p>
+<h3 id="优化：二分查找"><a href="#优化：二分查找" class="headerlink" title="优化：二分查找"></a>优化：二分查找</h3><p>不需要合并两个数组，再去找中位数的位置，两个有序数组，可根据下标，直接去找中位数的位置</p>
+<p>当 m+n 是奇数时，中位数是两个有序数组中的第 (m+n)/2 个元素，当 m+n 是偶数时，中位数是两个有序数组中的第 (m+n)/2 个元素和第 (m+n)/2+1 个元素的平均值。因此，这道题可以转化成寻找两个有序数组中的第 k 小的数，其中 k 为 (m+n)/2或 (m+n)/2+1。</p>
+<p>判断2个有序数组的长度和 m+n<br>长度和为奇数：k=((m+n) +1)/2,第k个数为中位数<br>长度和为偶数：k1=(m+n)/2，k2=(m+n)/2 + 1，这两个数的平均值为中位数</p>
+<p>都是有序数组，就是找第k小的数，或者找第k，与第k+1小的数</p>
+
     </div>
 
     
@@ -290,7 +285,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://zypuu.com/2020/08/15/%E5%85%B3%E4%BA%8ELinux%20swap%E5%88%86%E5%8C%BA%E7%9B%B8%E5%85%B3%E5%A4%84%E7%90%86/" title="关于Linux swap分区相关处理">http://zypuu.com/2020/08/15/关于Linux swap分区相关处理/</a>
+    <a href="http://zypuu.com/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" title="两个有序数组的中位数">http://zypuu.com/2020/12/22/两个有序数组的中位数/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -301,7 +296,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linux%E5%91%BD%E4%BB%A4/" rel="tag"><i class="fa fa-tag"></i> Linux命令</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
           </div>
 
         
@@ -310,13 +305,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/20/%E5%AD%97%E5%85%B8%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E5%80%BCdefault/" rel="prev" title="字典设置默认值 defaultdict">
-      <i class="fa fa-chevron-left"></i> 字典设置默认值 defaultdict
+    <a href="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/" rel="prev" title="GO的基本结构：int，字符串，结构体，指针">
+      <i class="fa fa-chevron-left"></i> GO的基本结构：int，字符串，结构体，指针
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/" rel="next" title="关于Linux buff/cache缓存处理">
-      关于Linux buff/cache缓存处理 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -376,7 +368,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFswap%E5%88%86%E5%8C%BA"><span class="nav-number">1.</span> <span class="nav-text">什么是swap分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#swap%E5%AF%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">2.</span> <span class="nav-text">swap对数据库的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#swap%E5%85%B3%E9%97%AD%E9%87%8D%E5%90%AF%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">swap关闭重启命令</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E8%A7%A3%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">普通解法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">1.1.</span> <span class="nav-text">python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%EF%BC%9A%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">2.</span> <span class="nav-text">优化：二分查找</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
