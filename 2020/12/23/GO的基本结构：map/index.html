@@ -22,18 +22,22 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="Give it a try, whispered the HEART">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ALL-Nothing">
-<meta property="og:url" content="http://zypuu.com/tags/web-Django/index.html">
+  <meta name="description" content="解析go语言，go的基本类型 map">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO的基本结构：map">
+<meta property="og:url" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="Give it a try, whispered the HEART">
+<meta property="og:description" content="解析go语言，go的基本类型 map">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png">
+<meta property="article:published_time" content="2020-12-23T08:14:22.000Z">
+<meta property="article:modified_time" content="2020-12-24T04:07:48.944Z">
 <meta property="article:author" content="ZYP">
-<meta property="article:tag" content="Python GO">
+<meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png">
 
-<link rel="canonical" href="http://zypuu.com/tags/web-Django/">
+<link rel="canonical" href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/">
 
 
 <script id="page-configurations">
@@ -41,12 +45,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Tag: web,Django | ALL-Nothing</title>
+  <title>GO的基本结构：map | ALL-Nothing</title>
   
 
 
@@ -184,111 +188,145 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">web,Django
-          <small>Tag</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ZYP">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ALL-Nothing">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO的基本结构：map
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-23 16:14:22" itemprop="dateCreated datePublished" datetime="2020-12-23T16:14:22+08:00">2020-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-24 12:07:48" itemprop="dateModified" datetime="2020-12-24T12:07:48+08:00">2020-12-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+            <div class="post-description">解析go语言，go的基本类型 map</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2018</span>
+        <h2 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h2><p>Go中的map在底层是用哈希表实现的，可以在 $GOROOT/src/pkg/runtime/hashmap.goc 找到它的实现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct Hmap</span><br><span class="line">&#123;</span><br><span class="line">    uint8   B;    <span class="comment">// 可以容纳2^B个项</span></span><br><span class="line">    uint16  bucketsize;   <span class="comment">// 每个桶的大小</span></span><br><span class="line"></span><br><span class="line">    byte    *buckets;     <span class="comment">// 2^B个Buckets的数组</span></span><br><span class="line">    byte    *oldbuckets;  <span class="comment">// 前一个buckets，只有当正在扩容时才不为空</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这个hash结构使用的是一个可扩展哈希的算法，由hash值mod当前hash表大小决定某一个值属于哪个桶，而hash表大小是2的指数，即上面结构体中的2^B。每次扩容，会增大到上次大小的两倍。结构体中有一个buckets和一个oldbuckets是用来实现增量扩容的。正常情况下直接使用buckets，而oldbuckets为空。如果当前哈希表正在扩容中，则oldbuckets不为空，并且buckets大小是oldbuckets大小的两倍</p>
+<p>桶Bucket的结构如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Bucket</span><br><span class="line">&#123;</span><br><span class="line">    uint8  tophash[BUCKETSIZE]; <span class="comment">// hash值的高8位....低位从bucket的array定位到bucket</span></span><br><span class="line">    Bucket *overflow;           <span class="comment">// 溢出桶链表，如果有</span></span><br><span class="line">    byte   data[<span class="number">1</span>];             <span class="comment">// BUCKETSIZE keys followed by BUCKETSIZE values</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>BUCKETSIZE是定义的8，每个桶bucket最多存放8个kv对，多于8个，会申请一个新的bucket，并将它与之前的bucket链起来</p>
+<h2 id="map的增量扩容"><a href="#map的增量扩容" class="headerlink" title="map的增量扩容"></a>map的增量扩容</h2><p>oldtable 旧的hash表，newtable，扩容后新的hash表</p>
+<p>1.根据结构设置，哈希表的大小是2^B，扩容之后的大小为2^(B+1)，每次扩容都变为原来大小的两倍，简化运算</p>
+<p>2.会建立一个新的2倍大小的hash表，将旧的buckets搬到新表</p>
+<p>3.一般旧表hash值不等于新表hash，需要重新计算hash到新表，旧的表的buckets不会删除，加一个已删除标记</p>
+<p>4.增量扩容，不会一次完成，每次搬移1-2个键值对，由于这个工作是逐渐完成的，这样就会导致一部分数据在old table中，一部分在new table中，所以对于hashtable的insert,remove,lookup操作的处理逻辑产生影响。只有当所有的bucket都从旧表移到新表之后，才会将oldbucket释放掉</p>
+<p>PS： 为什么增量？为了缩短map容器的响应时间，元素很多的话，不增量就会卡住，响应时间过长</p>
+<p>5.扩容因子：如果grow的太频繁，会造成空间的利用率很低，如果很久才grow，会形成很多的overflow buckets，查找的效率也会下降。</p>
+<p>作者测试：6.5适中，table中元素的个数大于table中能容纳的元素的个数</p>
+<h2 id="map的查找过程"><a href="#map的查找过程" class="headerlink" title="map的查找过程"></a>map的查找过程</h2><p>kv的hash存储及查找：<br>1、将key的类型选用hash算法得到key的hash值<br>2、hash值的的低位，作为buckets数组的index索引，用于找到key所在的bucket数组<br>3、tophash[BUCKETSIZE]，hash的高8位存储到tophash，tophash在bucket结构里<br>（注意，这里高8位不是用来当作key/value在bucket内部的offset的，而是作为一个主键，在查找时对tophash数组的每一项进行顺序匹配的）<br>4、流程：通过key取value<br>先找oldtable，旧的hash表，如果hash表已经被添加删除标记，则去新的找<br>先比较key的hash值高8位在tophash[i]值是否相等，顺序比较，得到i<br>找到key的hash低位对应的bucket<br>如果相等则再比较bucket的第i个的key与所给的key是否相等</p>
+<p>如果没有，则在overflow里继续寻找，桶链表</p>
+<p><img src="/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png" alt="1"></p>
+<p>存储过程中，key放在一起。value放在一起，方便字节对齐（底层cpu访问数据效率）避免浪费存储空间</p>
+<h2 id="map的插入过程"><a href="#map的插入过程" class="headerlink" title="map的插入过程"></a>map的插入过程</h2><h2 id="map的删除过程"><a href="#map的删除过程" class="headerlink" title="map的删除过程"></a>map的删除过程</h2><h2 id="map的性能思考，调优"><a href="#map的性能思考，调优" class="headerlink" title="map的性能思考，调优"></a>map的性能思考，调优</h2>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-06-11T19:38:20+08:00"
-              content="2018-06-11">
-          06-11
-        </time>
-      </div>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>ZYP
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/" title="GO的基本结构：map">http://zypuu.com/2020/12/23/GO的基本结构：map/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/" itemprop="url">
-            <span itemprop="name">DJANGO框架如何实现用户多认证方式登录与第三方授权登录</span>
-          </a>
-      </div>
 
-    </header>
-  </article>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
+          </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-06-02T09:49:38+08:00"
-              content="2018-06-02">
-          06-02
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/06/02/RestFul%E8%AE%BE%E8%AE%A1%E8%A7%84%E5%88%99/" itemprop="url">
-            <span itemprop="name">RestFul设计规则</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-05-24T17:46:10+08:00"
-              content="2018-05-24">
-          05-24
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/05/24/%E5%AE%9E%E7%8E%B0Django%E6%A1%86%E6%9E%B6%E9%82%AE%E7%AE%B1%E9%AA%8C%E8%AF%81%E5%8A%9F%E8%83%BD/" itemprop="url">
-            <span itemprop="name">实现Django框架邮箱验证功能</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-04-25T19:15:15+08:00"
-              content="2018-04-25">
-          04-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/04/25/Django%E8%A7%86%E5%9B%BE%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" itemprop="url">
-            <span itemprop="name">Django视图使用说明</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="prev" title="两个有序数组的中位数">
+      <i class="fa fa-chevron-left"></i> 两个有序数组的中位数
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
   
-  
-
   
 
 
@@ -342,6 +380,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">基本数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E5%A2%9E%E9%87%8F%E6%89%A9%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">map的增量扩容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">map的查找过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%8F%92%E5%85%A5%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">map的插入过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E5%88%A0%E9%99%A4%E8%BF%87%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">map的删除过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%80%A7%E8%83%BD%E6%80%9D%E8%80%83%EF%BC%8C%E8%B0%83%E4%BC%98"><span class="nav-number">6.</span> <span class="nav-text">map的性能思考，调优</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
