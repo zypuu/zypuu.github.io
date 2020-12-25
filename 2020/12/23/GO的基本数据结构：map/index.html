@@ -24,20 +24,20 @@
 
   <meta name="description" content="解析go语言，go的基本类型 map">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GO的基本结构：map">
-<meta property="og:url" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/index.html">
+<meta property="og:title" content="GO的基本数据结构：map">
+<meta property="og:url" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
 <meta property="og:description" content="解析go语言，go的基本类型 map">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png">
+<meta property="og:image" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png">
 <meta property="article:published_time" content="2020-12-23T08:14:22.000Z">
-<meta property="article:modified_time" content="2020-12-24T08:15:22.957Z">
+<meta property="article:modified_time" content="2020-12-24T08:26:01.674Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png">
+<meta name="twitter:image" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png">
 
-<link rel="canonical" href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/">
+<link rel="canonical" href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/">
 
 
 <script id="page-configurations">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>GO的基本结构：map | ALL-Nothing</title>
+  <title>GO的基本数据结构：map | ALL-Nothing</title>
   
 
 
@@ -195,7 +195,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -208,7 +208,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          GO的基本结构：map
+          GO的基本数据结构：map
         </h1>
 
         <div class="post-meta">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-24 16:15:22" itemprop="dateModified" datetime="2020-12-24T16:15:22+08:00">2020-12-24</time>
+                <time title="Modified: 2020-12-24 16:26:01" itemprop="dateModified" datetime="2020-12-24T16:26:01+08:00">2020-12-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -280,7 +280,7 @@
 <p>作者测试：6.5适中，table中元素的个数大于table中能容纳的元素的个数</p>
 <h2 id="map的查找过程"><a href="#map的查找过程" class="headerlink" title="map的查找过程"></a>map的查找过程</h2><p>kv的hash存储及查找：<br>1、将key的类型选用hash算法得到key的hash值<br>2、hash值的的低位，作为buckets数组的index索引，用于找到key所在的bucket数组<br>3、tophash[BUCKETSIZE]，hash的高8位存储到tophash，tophash在bucket结构里<br>（注意，这里高8位不是用来当作key/value在bucket内部的offset的，而是作为一个主键，在查找时对tophash数组的每一项进行顺序匹配的）<br>4、流程：通过key取value<br>先找oldtable，旧的hash表，如果hash表已经被添加删除标记，则去新的找<br>先比较key的hash值高8位在tophash[i]值是否相等，顺序比较，得到i<br>找到key的hash低位对应的bucket<br>如果相等则再比较bucket的第i个的key与所给的key是否相等</p>
 <p>如果没有，则在overflow里继续寻找，桶链表</p>
-<p><img src="/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png" alt="1"></p>
+<p><img src="/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png" alt="1"></p>
 <p>存储过程中，key放在一起。value放在一起，方便字节对齐（底层cpu访问数据效率）避免浪费存储空间</p>
 <h2 id="map的插入过程"><a href="#map的插入过程" class="headerlink" title="map的插入过程"></a>map的插入过程</h2><p>1.根据key计算hash，根据低位找对对应的buckets数组<br>2.根据table中元素的个数，判断是否grow table。<br>3.如果在扩容中：<br>    oldbucket是被冻结的，查找时会在oldbucket中查找，但不会在oldbucket中插入数据。如果在oldbucket是找到了相应的key，做法是将它迁移到新bucket后加入evalucated标记<br>4.在bucket中，查找空闲的位置，如果已经存在需要插入的key，更新其对应的value。<br>5.如果对应的bucket已经full，重新申请新的bucket作为overbucket。<br>6.将key/value pair插入到bucket中</p>
 <p>PS：插入是数据追加方式：<br>    先找到对应的key，则更新对应的value并结束遍历<br>    先找到对应的空位，则直接在这个位置插入，后面的都会覆盖并结束遍历，因为是顺序遍历，buckets数组后面的会被覆盖掉<br>    然后就是只要在某个bucket中找到第一个空位，就会将key/value插入到这个位置。也就是位置位于bucket前面的会覆盖后面的(类似于存储系统设计中做删除时的常用的技巧之一，直接用新数据追加方式写，新版本数据覆盖老版本数据)</p>
@@ -313,7 +313,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9Amap/" title="GO的基本结构：map">http://zypuu.com/2020/12/23/GO的基本结构：map/</a>
+    <a href="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/" title="GO的基本数据结构：map">http://zypuu.com/2020/12/23/GO的基本数据结构：map/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -336,7 +336,10 @@
     <a href="/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="prev" title="两个有序数组的中位数">
       <i class="fa fa-chevron-left"></i> 两个有序数组的中位数
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/24/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Anil,%E6%8C%87%E9%92%88,%E5%80%BC,%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/" rel="next" title="GO基本数据结构：nil,指针,值,引用类型">
+      GO基本数据结构：nil,指针,值,引用类型 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -412,7 +415,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -473,12 +476,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">72k</span>
+    <span title="Symbols count total">73k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:06</span>
+    <span title="Reading time total">1:07</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
