@@ -31,7 +31,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://zypuu.com/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png">
 <meta property="article:published_time" content="2020-12-21T09:20:22.000Z">
-<meta property="article:modified_time" content="2020-12-21T09:31:42.754Z">
+<meta property="article:modified_time" content="2020-12-27T03:08:14.380Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -217,10 +217,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-12-21 17:20:22 / Modified: 17:31:42" itemprop="dateCreated datePublished" datetime="2020-12-21T17:20:22+08:00">2020-12-21</time>
+              <time title="Created: 2020-12-21 17:20:22" itemprop="dateCreated datePublished" datetime="2020-12-21T17:20:22+08:00">2020-12-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-27 11:08:14" itemprop="dateModified" datetime="2020-12-27T11:08:14+08:00">2020-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -237,7 +243,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>252</span>
+              <span>738</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -259,6 +265,24 @@
       
         <p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
 <p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<h2 id="new与make"><a href="#new与make" class="headerlink" title="new与make"></a>new与make</h2><h3 id="new"><a href="#new" class="headerlink" title="new"></a>new</h3><p>new 可以开辟一个内存，然后返回这个内存的地址。</p>
+<p>简单类型还可以初始化零值，int，string</p>
+<p>复杂类型也可以开辟内存，初始化的是nil</p>
+<p>nil的指针赋值会存在问题</p>
+<p>声明一个大小为5的数组，go会自动为数组的item初始化为零值，数组可以通过索引读取和赋值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">arr[<span class="number">0</span>], arr[<span class="number">1</span>] = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;1, 2, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果声明的是一个数组指针，即一个指针的类型是数组</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil)</span></span><br></pre></td></tr></table></figure>
+<p>初始化的值是nil，nil是不能赋值的</p>
+<p>我们可以new一块内存地址出来，赋给指针，这个指针取值就可以赋值了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil) </span></span><br><span class="line"></span><br><span class="line">arrPot = <span class="keyword">new</span>([<span class="number">5</span>]int)</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">(*arrPot)[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;11, 0, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><p>array是虽然是复合类型，但不是引用类型。go中的引用类似是slice，map等</p>
+<p>声明一个map类型的变量，map不像array那样声明之后可以初始化成零值。go会给引用类型初始化为nil，nil是不能直接赋值的</p>
+<p>map不能用new去申请内存，用make，make不仅可以开辟一个内存，还能给这个内存的类型初始化其零值，同时返回这个内存实例</p>
+<p>make 也可以申请slice，channel</p>
+<p>申请slice： 三个参数，第一个基本结构类型，第二个长度，第三个容量<br>申请map：两个参数， 第一个基本结构，第二个容量、长度</p>
+<p>初始化需要提前申请好，防止发生扩容</p>
 
     </div>
 
@@ -360,6 +384,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#new%E4%B8%8Emake"><span class="nav-number">1.</span> <span class="nav-text">new与make</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new"><span class="nav-number">1.1.</span> <span class="nav-text">new</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#make"><span class="nav-number">1.2.</span> <span class="nav-text">make</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -375,7 +400,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -436,7 +461,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">73k</span>
+    <span title="Symbols count total">74k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-25T03:05:11.992Z</updated>
+  <updated>2020-12-27T04:55:38.775Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GO里的go关键字</title>
+    <link href="http://zypuu.com/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/"/>
+    <id>http://zypuu.com/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/</id>
+    <published>2020-12-27T03:30:22.000Z</published>
+    <updated>2020-12-27T04:55:38.775Z</updated>
+    
+    <content type="html"><![CDATA[<p>go f(x, y, z)会启动一个新的goroutine运行函数f(x, y, z)。函数f，变量x、y、z的值是在原goroutine计算的，只有函数f的执行是在新的goroutine中的</p><p>新的goroutine不能和当前go线程用同一个栈，否则会相互覆盖。</p><p>所以对go关键字的调用协议与普通函数调用是不同的</p><p>普通函数的调用协议</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> CALL    f(SB)</span><br></pre></td></tr></table></figure><p>将参数 1，2，3进栈，然后调用函数f</p><p>go 关键字调用函数</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> PUSHQ   $f(SB)</span><br><span class="line"> PUSHQ   $<span class="number">12</span></span><br><span class="line"> CALL    runtime.newproc(SB)</span><br><span class="line"> POPQ    AX</span><br><span class="line"> POPQ    AX</span><br></pre></td></tr></table></figure><p>前半部分一样，将参数1，2，3进栈，同时也将函数f进栈，12也进栈，12是函数参数的大小</p><p>调用runtime.newproc函数</p><p>runtime.newproc函数接受的参数分别是：参数大小，新的goroutine是要运行的函数，函数的n个参数</p><p>runtime.newproc函数中</p><p>1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数<br>2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内<br>3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。</p>]]></content>
+    
+    
+    <summary type="html">解析go语言，go关键字</summary>
+    
+    
+    
+    <category term="GO" scheme="http://zypuu.com/categories/GO/"/>
+    
+    
+    <category term="GO" scheme="http://zypuu.com/tags/GO/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GO自定义Error方法</title>
+    <link href="http://zypuu.com/2020/12/27/GO%E8%87%AA%E5%AE%9A%E4%B9%89Error%E6%96%B9%E6%B3%95/"/>
+    <id>http://zypuu.com/2020/12/27/GO%E8%87%AA%E5%AE%9A%E4%B9%89Error%E6%96%B9%E6%B3%95/</id>
+    <published>2020-12-27T03:10:22.000Z</published>
+    <updated>2020-12-27T03:19:13.245Z</updated>
+    
+    <content type="html"><![CDATA[<p>通过interface定义</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type error interface &#123;</span><br><span class="line">    <span class="built_in">Error</span>() string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>自定义error</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">type <span class="built_in">Error</span> struct &#123;</span><br><span class="line">    errCode uint8</span><br><span class="line">&#125;</span><br><span class="line">func (e *<span class="built_in">Error</span>) <span class="built_in">Error</span>() string &#123;</span><br><span class="line">        <span class="keyword">switch</span> e.errCode &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;file not found&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;time out&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;permission denied&quot;</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;unknown error&quot;</span></span><br><span class="line">         &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">解析go语言，自定义error的方法，用于业务使用</summary>
+    
+    
+    
+    <category term="GO" scheme="http://zypuu.com/categories/GO/"/>
+    
+    
+    <category term="GO" scheme="http://zypuu.com/tags/GO/"/>
+    
+  </entry>
   
   <entry>
     <title>GO基本数据结构：nil,指针,值,引用类型</title>
@@ -126,9 +168,9 @@
     <link href="http://zypuu.com/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
     <id>http://zypuu.com/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
     <published>2020-12-21T09:20:22.000Z</published>
-    <updated>2020-12-21T09:31:42.754Z</updated>
+    <updated>2020-12-27T03:08:14.380Z</updated>
     
-    <content type="html"><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p><p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>]]></content>
+    <content type="html"><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p><p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p><h2 id="new与make"><a href="#new与make" class="headerlink" title="new与make"></a>new与make</h2><h3 id="new"><a href="#new" class="headerlink" title="new"></a>new</h3><p>new 可以开辟一个内存，然后返回这个内存的地址。</p><p>简单类型还可以初始化零值，int，string</p><p>复杂类型也可以开辟内存，初始化的是nil</p><p>nil的指针赋值会存在问题</p><p>声明一个大小为5的数组，go会自动为数组的item初始化为零值，数组可以通过索引读取和赋值。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">arr[<span class="number">0</span>], arr[<span class="number">1</span>] = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;1, 2, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure><p>如果声明的是一个数组指针，即一个指针的类型是数组</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil)</span></span><br></pre></td></tr></table></figure><p>初始化的值是nil，nil是不能赋值的</p><p>我们可以new一块内存地址出来，赋给指针，这个指针取值就可以赋值了</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil) </span></span><br><span class="line"></span><br><span class="line">arrPot = <span class="keyword">new</span>([<span class="number">5</span>]int)</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">(*arrPot)[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;11, 0, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure><h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><p>array是虽然是复合类型，但不是引用类型。go中的引用类似是slice，map等</p><p>声明一个map类型的变量，map不像array那样声明之后可以初始化成零值。go会给引用类型初始化为nil，nil是不能直接赋值的</p><p>map不能用new去申请内存，用make，make不仅可以开辟一个内存，还能给这个内存的类型初始化其零值，同时返回这个内存实例</p><p>make 也可以申请slice，channel</p><p>申请slice： 三个参数，第一个基本结构类型，第二个长度，第三个容量<br>申请map：两个参数， 第一个基本结构，第二个容量、长度</p><p>初始化需要提前申请好，防止发生扩容</p>]]></content>
     
     
     <summary type="html">解析go语言</summary>
@@ -391,48 +433,6 @@
     
     
     <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>时间复杂度与空间复杂度</title>
-    <link href="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/"/>
-    <id>http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/</id>
-    <published>2020-12-08T10:14:00.000Z</published>
-    <updated>2020-12-09T02:57:33.281Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>算法：解决特定问题的步骤的描述<br>特性：<br>—输入：有零个输入或者多个输<br>—输出：只有一个或者多个输出<br>—有穷型性：算法在执行有限个步骤时，会自动结束而不会陷入无限循环里面<br>—确定性：算法的每一步都有确定的含义而不会出现二义性<br>—可行性：算法的每一步都可以通过有限次数完成。</p><p>要求：<br>正确性、可读性、健壮性、时间效率高而且空间使用率低、简单性。<br>算法的复杂度分为时间复杂度和空间复杂度。</p><h2 id="时间复杂度Big-O-Notation"><a href="#时间复杂度Big-O-Notation" class="headerlink" title="时间复杂度Big O Notation"></a>时间复杂度Big O Notation</h2><p>时间复杂度实际上是一个函数，代表基本操作重复执行的次数，进而分析函数虽变量的变化来确定数量级，数量级用O表示</p><p>「 大O符号表示法 」，即 T(n) = O(f(n))</p><p>其中f(n) 表示每行代码执行次数之和，而 O 表示正比例关系，这个公式的全称是：算法的渐进时间复杂度</p><p>常见的时间复杂度量级有：</p><p>常数阶O(1)<br>对数阶O(logN)<br>线性阶O(n)<br>线性对数阶O(nlogN)<br>平方阶O(n²)<br>立方阶O(n³)<br>K次方阶O(n^k)<br>指数阶(2^n)</p><p>PS： 并列运行的为同级复杂度</p><p><img src="/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/1.png" alt="1"></p><h2 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h2><p>是对一个算法在运行过程中临时占用存储空间的度量，一个算法在计算机存储器上所占用的存储空间包括存储算法本身所占用的空间，算数和输入输出所占用的存储空间以及临时占用存储空间三个部分。</p><p>算法的输入输出数据所占用的存储空间是由待解决的问题来决定的，通过参数表由调用函数而来，它随本算法的不同而改变，存储算法本身所占用的存储空间有算法的书写长短成正比。算法在运行过程中占用的临时空间由不同的算法决定。</p><p>1、数组</p><p>2、递归深度</p>]]></content>
-    
-    
-    <summary type="html">算法基础，关于时间复杂度与空间复杂度的理解</summary>
-    
-    
-    
-    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于Linux buff/cache缓存处理</title>
-    <link href="http://zypuu.com/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/"/>
-    <id>http://zypuu.com/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/</id>
-    <published>2020-09-12T07:35:15.000Z</published>
-    <updated>2020-12-02T05:55:29.357Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="buff-cache"><a href="#buff-cache" class="headerlink" title="buff/cache"></a>buff/cache</h3><p>buffer/cache 一般用于磁盘或文件的缓存，一些shared memory 也会放在这里，一般情况下大部分都是可以回收的，在一些较新版本的Linux 中，free 命令会有一个available 的列，它表示在计算了可回收的buffer/cache的情况下可用的内存</p><p>Linux内存回收机制比较复杂，但一般来说会在内存不足的情况下主动去释放cache，在/proc/meminfo 里可以看到相对详细的数据，包括哪些内存是可以回收的，哪些是不能回收的。如果你通过命令这种方法主动去清理的话，如果内存中有一些没有落盘的数据，会在这个时候去写回。如果这个过程顺利进行，就不会有数据的丢失或损坏，但是下次你要使用这些文件，又需要重新从磁盘读到内存，所以大多数情况下没有正面意义，反而会降低效率。</p><h3 id="buff-cache占用过大，清理"><a href="#buff-cache占用过大，清理" class="headerlink" title="buff/cache占用过大，清理"></a>buff/cache占用过大，清理</h3><p>在Linux下经常会遇到buff/cache内存占用过多问题，尤其是使用云主机的时候最严重，由于很多是虚拟内存，因此如果buff/cache占用过大的，free空闲内存就很少，影响使用；</p><p>可以使用<code>free -m</code>查看<br><img src="/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/1.png" alt="1"></p><p>通常内存关系是：</p><p>普通机器：total=used+free</p><p>虚拟机器：total=used+free+buff/cache</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="number">1</span> &gt; <span class="regexp">/proc/</span>sys/vm/drop_caches</span><br><span class="line">echo <span class="number">2</span> &gt; <span class="regexp">/proc/</span>sys/vm/drop_caches</span><br><span class="line">echo <span class="number">3</span> &gt; <span class="regexp">/proc/</span>sys/vm/drop_caches</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">linux相关基础，linux开发环境下开发使用</summary>
-    
-    
-    
-    <category term="Linux" scheme="http://zypuu.com/categories/Linux/"/>
-    
-    
-    <category term="Linux命令" scheme="http://zypuu.com/tags/Linux%E5%91%BD%E4%BB%A4/"/>
     
   </entry>
   
