@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2020-12-28T11:45:26.405Z</updated>
+  <updated>2020-12-29T07:25:39.664Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>有效括号</title>
+    <link href="http://zypuu.com/2020/12/29/%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/"/>
+    <id>http://zypuu.com/2020/12/29/%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/</id>
+    <published>2020-12-29T07:16:00.000Z</published>
+    <updated>2020-12-29T07:25:39.664Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串，判断字符串是否有效。</p><p>有效字符串需满足：</p><p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。<br>注意空字符串可被认为是有效字符串。</p><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def isValid(self, <span class="attr">s</span>: str) -&gt; bool:</span><br><span class="line">        <span class="keyword">if</span> s == <span class="string">&quot;&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        <span class="keyword">if</span> len(s) % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> False</span><br><span class="line">        a = [<span class="string">&quot;?&quot;</span>]</span><br><span class="line">        dic = &#123;<span class="string">&quot;)&quot;</span>: <span class="string">&quot;(&quot;</span>, <span class="string">&quot;]&quot;</span>: <span class="string">&quot;[&quot;</span>, <span class="string">&quot;&#125;&quot;</span>: <span class="string">&quot;&#123;&quot;</span>, <span class="string">&quot;?&quot;</span>: <span class="string">&quot;?&quot;</span>&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> i == <span class="string">&quot;(&quot;</span> or i == <span class="string">&quot;[&quot;</span> or i == <span class="string">&quot;&#123;&quot;</span>:</span><br><span class="line">                a.append(i)</span><br><span class="line">            elif a.pop() != dic[i]:</span><br><span class="line">                <span class="keyword">return</span> False</span><br><span class="line">        <span class="keyword">if</span> len(a) != <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> False</span><br><span class="line">        <span class="keyword">return</span> True</span><br></pre></td></tr></table></figure><p>时间复杂度：O(n)，其中 n 是字符串 s 的长度。</p><p>空间复杂度：O(n+∣Σ∣)，其中Σ 表示字符集，本题中字符串只包含 6 种括号，∣Σ∣=6。栈中的字符数量为 O(n)，而哈希映射使用的空间为 O(∣Σ∣)，相加即可得到总空间复杂度。</p>]]></content>
+    
+    
+    <summary type="html">有效括号，栈的思路。入栈，出栈</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GO的程序启动</title>
+    <link href="http://zypuu.com/2020/12/29/GO%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8/"/>
+    <id>http://zypuu.com/2020/12/29/GO%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8/</id>
+    <published>2020-12-29T02:12:20.000Z</published>
+    <updated>2020-12-29T03:25:11.774Z</updated>
+    
+    <content type="html"><![CDATA[<p>启动流程大致如下：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">_rt0_amd64_darwin   # 通过参数argc和argv等，确定栈的位置，得到寄存器</span><br><span class="line"></span><br><span class="line">main  # 跳转到本文件main，继续执行</span><br><span class="line"></span><br><span class="line">_rt0_amd64  # 设置好m-&gt;g0的栈,将当前的SP设置为stackbase,将SP往下大约64K的地方设置为stackguard,然后会获取处理器信息,然后设置本地线程存储</span><br><span class="line"></span><br><span class="line">runtime.check # 检测像int8,int16,float等是否是预期的大小，检测cas操作是否正常</span><br><span class="line"></span><br><span class="line">runtime.args # 去 stack 里读取参数和环境变量，执行文件的绝对路径初始化</span><br><span class="line"></span><br><span class="line">runtime.osinit # 初始化OS:获取CPU数量和内存页大小初始化</span><br><span class="line"></span><br><span class="line">runtime.hashinit # 使用读/dev/urandom的方式从内核获得随机数种子</span><br><span class="line"></span><br><span class="line">runtime.schedinit # 初始化调度，命令行参数、环境变量、gc、栈空间、内存管理、所有P实例、HASH算法等初始化</span><br><span class="line"></span><br><span class="line">runtime.newproc # 创建一个goruntine并执行，执行函数为 runtime.main</span><br><span class="line"></span><br><span class="line">runtime.mstart # 启动这个m，即m0，里面会调用schedule函数进入调度状态</span><br><span class="line"></span><br><span class="line">main.main # 用户的main函数</span><br><span class="line"></span><br><span class="line">runtime.exit</span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="本地线程存储"><a href="#本地线程存储" class="headerlink" title="本地线程存储"></a>本地线程存储</h2><p>每个goroutine都有自己的控制信息，这些信息是存放在一个结构体G中</p><p>有一个全局变量g是结构体G的指针，我们希望只有唯一的全局变量g，保证全局唯一，而不是g0，g1，g2</p><p>每个线程访问它，得到自己线程的G，这种情况下就需要本地线程存储。</p><p>g确实是一个全局变量，却在不同线程有多份不同的副本。每个goroutine去访问g时，都是对应到自己线程的这一份副本</p><h2 id="调度器初始化"><a href="#调度器初始化" class="headerlink" title="调度器初始化"></a>调度器初始化</h2><p>注释写在代码里，大概流程如下：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">schedinit</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line"><span class="comment">// raceinit must be the first call to race detector.</span></span><br><span class="line"><span class="comment">// In particular, it must be done before mallocinit below calls racemapshadow.</span></span><br><span class="line"><span class="comment">// 从TLS中获取g实例</span></span><br><span class="line">    _g_ := getg()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">        _g_.racectx, raceprocctx0 = raceinit()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置全局线程数上限</span></span><br><span class="line">    sched.maxmcount = <span class="number">10000</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化一系列函数所在的PC计数器，用于traceback</span></span><br><span class="line">    tracebackinit()</span><br><span class="line">    <span class="comment">// 貌似是验证链接器符号的正确性</span></span><br><span class="line">    moduledataverify()</span><br><span class="line">    <span class="comment">// 栈的初始化</span></span><br><span class="line">    stackinit()</span><br><span class="line">    <span class="comment">// 内存分配器初始化</span></span><br><span class="line">    mallocinit()</span><br><span class="line">    mcommoninit(_g_.m)</span><br><span class="line">    <span class="comment">// 初始化AES HASH算法</span></span><br><span class="line">    alginit()       <span class="comment">// maps must not be used before this call</span></span><br><span class="line">    modulesinit()   <span class="comment">// provides activeModules</span></span><br><span class="line">    typelinksinit() <span class="comment">// uses maps, activeModules</span></span><br><span class="line">    itabsinit()     <span class="comment">// uses activeModules</span></span><br><span class="line"></span><br><span class="line">    msigsave(_g_.m)</span><br><span class="line">    initSigmask = _g_.m.sigmask</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取命令行参数</span></span><br><span class="line">    <span class="comment">// 例如: ./$GOPATH/test/main test1 test2</span></span><br><span class="line">    <span class="comment">// 执行goargs得到runtime.argslice = []string len: 3, cap: 3, [&quot;main&quot;,&quot;test1&quot;,&quot;test2&quot;]</span></span><br><span class="line">    goargs()</span><br><span class="line">    <span class="comment">// 获取所有的环境变量</span></span><br><span class="line">    goenvs()</span><br><span class="line">    parsedebugvars()</span><br><span class="line">    <span class="comment">// gc初始化</span></span><br><span class="line">    gcinit()</span><br><span class="line"></span><br><span class="line">    sched.lastpoll = uint64(nanotime())</span><br><span class="line"></span><br><span class="line">    <span class="comment">// P个数检查</span></span><br><span class="line">    procs := ncpu</span><br><span class="line">    <span class="keyword">if</span> n, <span class="attr">ok</span> := atoi32(gogetenv(<span class="string">&quot;GOMAXPROCS&quot;</span>)); ok &amp;&amp; n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        procs = n</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> procs &gt; _MaxGomaxprocs &#123;</span><br><span class="line">        procs = _MaxGomaxprocs</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 所有P的初始化</span></span><br><span class="line">    <span class="keyword">if</span> procresize(procs) != nil &#123;</span><br><span class="line">        <span class="keyword">throw</span>(<span class="string">&quot;unknown runnable goroutine during bootstrap&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> buildVersion == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// Condition should never trigger. This code just serves</span></span><br><span class="line">        <span class="comment">// to ensure runtime·buildVersion is kept in the resulting binary.</span></span><br><span class="line">        buildVersion = <span class="string">&quot;unknown&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">解析go语言，go的程序启动流程</summary>
+    
+    
+    
+    <category term="GO" scheme="http://zypuu.com/categories/GO/"/>
+    
+    
+    <category term="GO" scheme="http://zypuu.com/tags/GO/"/>
+    
+  </entry>
   
   <entry>
     <title>GO的闭包</title>
@@ -384,48 +426,6 @@
     
     
     <summary type="html">关于二叉树的前序遍历方法</summary>
-    
-    
-    
-    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数组、链表和跳表</title>
-    <link href="http://zypuu.com/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/"/>
-    <id>http://zypuu.com/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/</id>
-    <published>2020-12-10T07:31:00.000Z</published>
-    <updated>2020-12-10T07:56:07.309Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>Array底层硬件实现<br>在申请一个数组时计算机会在内存空间中开辟一段连续的地址，每个地址都可以通过内存管理器进行访问，访问第一个元素或中间的任何一个元素时间复杂度都是一样的都为O(1)。它可以进行随机地访问任何一个元素，所有它的访问时间非常快这是数组的特性之一。</p><p>Array增加删除元素<br>在对一个数组的中间位置增加一个元素时，需要把此下标以及该下标之后的元素向后移动一个位置。因此数组的插入操作的时间复杂度为O(n)。<br>删除一个数组的某个元素时，和数组添加元素类似，先把此元素删除，再把此元素之后的元素向前移动。</p><p>时间复杂度</p><p><img src="/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/1.png" alt="1"></p><p>空间复杂度</p><p>O(n)</p><h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>元素定义好之后，有所谓的value和next，next指向下一个元素的引用。</p><p>单向链表：只有一个next指针，就叫做单链表。</p><p>双向链表：往前指一个就叫做它的先前指针，叫做prev，或者是previous，叫做双向链表。头指针一般用head表示，尾指针一般用tail表示。</p><p>循环链表：如果最后一个元素的指针指回到head，就叫做循环链表。</p><p>链表增加节点，前继节点的next指向新节点，新元素的next指向之前的下一个节点。</p><p>链表删除节点：就是增加节点的逆操作，就是把前驱节点的next打掉，移到后继节点去。</p><p><img src="/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/5.png" alt="5"></p><p>时间复杂度</p><p><img src="/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/2.png" alt="2"></p><p>空间复杂度</p><p>O(n)</p><h2 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h2><p>链表在增加删除都很快，都是O(1)操作</p><p>但是查询很慢，是O(n)那么如何给链表的查询加速呢</p><p>升维</p><p>增加多级索引</p><p><img src="/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/3.png" alt="3"></p><p>由于节点的增删改查，会导致索引不工整，维护成本相对较高。</p><p>在redis里面，就是使用的跳表。</p><p>时间复杂度</p><p><img src="/2020/12/10/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/4.png" alt="4"></p><p>索引的高度：logn，每层索引遍历的结点个数：3</p><p>在跳表中查询任意数据的时间复杂度就是 O(logn)</p><p>空间复杂度</p><p>O(n)</p><p>每层节点，每两个节点抽1个 n/2, 每3个节点抽一个 3/n</p>]]></content>
-    
-    
-    <summary type="html">简单概念及其各个操作的时间复杂度</summary>
-    
-    
-    
-    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>盛水容器问题</title>
-    <link href="http://zypuu.com/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/"/>
-    <id>http://zypuu.com/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/</id>
-    <published>2020-12-10T02:36:00.000Z</published>
-    <updated>2020-12-10T06:59:08.800Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给你 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。</p><p>说明：你不能倾斜容器。<br><img src="/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/1.png" alt="1"></p><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>设两个坐标a,b,分别从列表的起始端和结束端向中间移动，起始面积为0，每移动一次，即得到新的面积，与上一次移动的面积进行比较，取最大值，移动到ab相等时结束移动，如果a板高于b板，则以b板算面积，算完进行比较然后，缩减b的长度，a板小于b板，则以a板算面积，进行比较，增加a。最后a&gt;=b跳出循环</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">func maxArea(height []int) int &#123;</span><br><span class="line">    a, b, <span class="attr">res</span> := <span class="number">0</span>, len(height)-<span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> a &gt;= b &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> height[a] &gt; height[b]&#123;</span><br><span class="line">            <span class="keyword">if</span>  height[b]*(b-a) &gt; res &#123;</span><br><span class="line">                res = height[b]*(b-a)</span><br><span class="line">            &#125;</span><br><span class="line">            b--</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>  height[a]*(b-a) &gt; res &#123;</span><br><span class="line">                res = height[a]*(b-a)</span><br><span class="line">            &#125;</span><br><span class="line">            a++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">计算可以盛最多的水，即最大面积</summary>
     
     
     
