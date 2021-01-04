@@ -30,7 +30,7 @@
 <meta property="og:description" content="解析go语言，go的连续栈，go协程，栈空间不足的处理，自动增长">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-28T02:38:20.000Z">
-<meta property="article:modified_time" content="2021-01-04T06:33:19.435Z">
+<meta property="article:modified_time" content="2021-01-04T07:16:59.433Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-04 14:33:19" itemprop="dateModified" datetime="2021-01-04T14:33:19+08:00">2021-01-04</time>
+                <time title="Modified: 2021-01-04 15:16:59" itemprop="dateModified" datetime="2021-01-04T15:16:59+08:00">2021-01-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,7 +265,7 @@
 <p>所以栈的空间是随着需要自动增长的，每个goroutine开始只分配很小的栈空间</p>
 <p>所以开了千万个goroutine也不会耗尽内存</p>
 <p>continuous stack</p>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>1.调用栈默认大小是4K（1.7修改为2K），最大栈1G，超出将panic<br>2.每次执行函数调用时，runtime就会进行检测，当前栈的大小不够用，会触发中断<br>3.runtime会保存此时函数运行的上下文<br>4.分配一个新的足够大的栈空间，将旧栈的内容拷贝到新栈中，并做一些设置，使得当函数恢复运行时，函数会在新分配的栈中继续执行</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>1.调用栈默认大小是4K（1.7修改为2K），最大栈1G，超出将panic<br>2.每次执行函数调用时，runtime就会进行检测，当前栈的大小不够用，会触发中断<br>3.runtime会保存此时函数运行的上下文<br>4.分配一个新的足够大的栈空间，进行2倍指数扩容将旧栈的内容拷贝到新栈中，并做一些设置，使得当函数恢复运行时，函数会在新分配的栈中继续执行</p>
 <h3 id="捕获栈空间不足，实行中断"><a href="#捕获栈空间不足，实行中断" class="headerlink" title="捕获栈空间不足，实行中断"></a>捕获栈空间不足，实行中断</h3><p>1.比较栈指针寄存器和G结构体的stackguard<br>2.SP大于g-&gt;stackguard，runtime.morestack(保存M，连接旧栈新栈)，runtime.newstack(新栈)</p>
 <p>每个goroutine对应一个结构体G，大致相当于进程控制块的概念<br>结构体中存了stackbase和stackguard，用于确定这个goroutine使用的栈空间信息<br>如果栈指针寄存器(SP)值超越了stackguard就需要扩展栈空间</p>
 <p>汇编如下：</p>
@@ -401,7 +401,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -462,12 +462,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">77k</span>
+    <span title="Symbols count total">78k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:10</span>
+    <span title="Reading time total">1:11</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
