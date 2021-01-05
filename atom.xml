@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2021-01-05T08:09:51.578Z</updated>
+  <updated>2021-01-05T10:34:19.508Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>较大分组位置</title>
+    <link href="http://zypuu.com/2021/01/05/%E8%BE%83%E5%A4%A7%E5%88%86%E7%BB%84%E4%BD%8D%E7%BD%AE/"/>
+    <id>http://zypuu.com/2021/01/05/%E8%BE%83%E5%A4%A7%E5%88%86%E7%BB%84%E4%BD%8D%E7%BD%AE/</id>
+    <published>2021-01-05T09:52:00.000Z</published>
+    <updated>2021-01-05T10:34:19.508Z</updated>
+    
+    <content type="html"><![CDATA[<p>在一个由小写字母构成的字符串 s 中，包含由一些连续的相同字符所构成的分组。</p><p>例如，在字符串 s = “abbxxxxzyy” 中，就含有 “a”, “bb”, “xxxx”, “z” 和 “yy” 这样的一些分组。</p><p>分组可以用区间 [start, end] 表示，其中 start 和 end 分别表示该分组的起始和终止位置的下标。上例中的 “xxxx” 分组用区间表示为 [3,6] 。</p><p>我们称所有包含大于或等于三个连续字符的分组为 较大分组 。</p><p>找到每一个 较大分组 的区间，按起始位置下标递增顺序排序后，返回结果</p><h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def largeGroupPositions(self, <span class="attr">s</span>: str) -&gt; List[List[int]]:</span><br><span class="line">        res = []</span><br><span class="line">        num = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> index, i <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            a = s[index + <span class="number">1</span>] <span class="keyword">if</span> index + <span class="number">1</span> &lt; len(s) <span class="keyword">else</span> <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">if</span> s[index] == a:</span><br><span class="line">                num += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> num &gt;= <span class="number">3</span>:</span><br><span class="line">                    res.append([index - num + <span class="number">1</span>, index])</span><br><span class="line">                num = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure><p>时间复杂度：O(n)，其中 nn 是字符串的长度。我们只需要遍历一次该数组。</p><p>空间复杂度：O(1)。我们只需要常数的空间来保存若干变量，注意返回值不计入空间复杂度。</p>]]></content>
+    
+    
+    <summary type="html">较大分组位置</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>GO的协程：goroutine</title>
@@ -412,27 +433,6 @@
     
     
     <category term="git" scheme="http://zypuu.com/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>树，二叉树，二叉搜索树</title>
-    <link href="http://zypuu.com/2020/12/15/%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/"/>
-    <id>http://zypuu.com/2020/12/15/%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</id>
-    <published>2020-12-15T09:17:00.000Z</published>
-    <updated>2020-12-18T09:00:48.162Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><p>树有多个节点(node)，用以储存元素。某些节点之间存在一定的关系，用连线表示，连线称为边(edge)。边的上端节点称为父节点，下端称为子节点。树像是一个不断分叉的树根</p><p><img src="/2020/12/15/%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/1.png" alt="1"></p><p>树的深度为层次数</p><ol><li><p>树是元素的集合。</p></li><li><p>该集合可以为空。这时树中没有元素，我们称树为空树 (empty tree)。</p></li><li><p>如果该集合不为空，那么该集合有一个根节点，以及0个或者多个子树。根节点与它的子树的根节点用一个边(edge)相连</p></li></ol><p>树的实现：<br>每个节点储存元素和多个指向子节点的指针。然而，子节点数目是不确定的。一个父节点可能有大量的子节点，而另一个父节点可能只有一个子节点，而树的增删节点操作会让子节点的数目发生进一步的变化。这种不确定性就可能带来大量的内存相关操作，并且容易造成内存的浪费</p><h2 id="二叉树与二叉搜索树"><a href="#二叉树与二叉搜索树" class="headerlink" title="二叉树与二叉搜索树"></a>二叉树与二叉搜索树</h2><p>二叉树(binary)是一种特殊的树。二叉树的每个节点最多只能有2个子节点</p><p>由于二叉树的子节点数目确定，所以可以直接采用上图方式在内存中实现。每个节点有一个左子节点(left children)和右子节点(right children)。左子节点是左子树的根节点，右子节点是右子树的根节点。</p><p>如果我们给二叉树加一个额外的条件，就可以得到一种被称作二叉搜索树(binary search tree)的特殊二叉树。二叉搜索树要求：每个节点都不比它左子树的任意元素小，而且不比它的右子树的任意元素大。</p><p>二叉搜索树可以方便的实现搜索算法。在搜索元素x的时候，我们可以将x和根节点比较:</p><ol><li><p>如果x等于根节点，那么找到x，停止搜索 (终止条件)</p></li><li><p>如果x小于根节点，那么搜索左子树</p></li><li><p>如果x大于根节点，那么搜索右子树</p></li></ol><p>二叉搜索树所需要进行的操作次数最多与树的深度相等。n个节点的二叉搜索树的深度最多为n，最少为log(n)</p><h2 id="树模板"><a href="#树模板" class="headerlink" title="树模板"></a>树模板</h2><h3 id="python"><a href="#python" class="headerlink" title="python"></a>python</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class TreeNode:</span><br><span class="line">    def __init__(self, val=<span class="number">0</span>, left=None, right=None):</span><br><span class="line">        self.val = val</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br></pre></td></tr></table></figure><h3 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type TreeNode struct &#123;</span><br><span class="line">      Val int</span><br><span class="line">      Left *TreeNode</span><br><span class="line">      Right *TreeNode</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">树相关的基本概念，以及python，go下的树模板</summary>
-    
-    
-    
-    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
