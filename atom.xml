@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2021-01-05T10:34:19.508Z</updated>
+  <updated>2021-01-06T12:51:16.597Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GO的内存分配</title>
+    <link href="http://zypuu.com/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/"/>
+    <id>http://zypuu.com/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/</id>
+    <published>2021-01-06T05:48:22.000Z</published>
+    <updated>2021-01-06T12:51:16.597Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go tool compile -S main.go</span><br></pre></td></tr></table></figure><p>通过以上查看汇编代码可以看到内存申请情况，runtime.newobject是用于申请内存的内建函数，newobject是mallocgc的代理，mallocgc是管理堆内存的函数。Go分配内存有两种策略：小块内存申请和大块内存申请</p><h2 id="内存管理基本结构"><a href="#内存管理基本结构" class="headerlink" title="内存管理基本结构"></a>内存管理基本结构</h2><p>golang的内存管理如下：</p><p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/1.png" alt="1"></p><h3 id="MSpan"><a href="#MSpan" class="headerlink" title="MSpan"></a>MSpan</h3><p>内存管理的基本单位是MSpan。MSpan是一个表示若干连续内存页（8KB）的数据结构</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct MSpan</span><br><span class="line">&#123;</span><br><span class="line">    PageID    start;        <span class="comment">// starting page number</span></span><br><span class="line">    uintptr    npages;        <span class="comment">// number of pages in span</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>基地址+(页号* 页大小)，就可以定位到这个MSpan的实际的地址空间<br>PS：连续页，PageID是起始id，npages是数量</p><p>每个 mspan按照它自身的属性 SizeClass的大小分割成若干个 object，每个 object可存储一个对象</p><p>Size_Class = Span_Class / 2</p><p>这是因为其实每个 SizeClass有两个 mspan，也就是有两个 SpanClass。其中一个分配给含有指针的对象，另一个分配给不含有指针的对象，每个等级SizeClass会存在两份mspan链表：一个链表用于存储内部不包含指针的对象，另一个链表用于存储内部包含指针的对象。这么的好处是垃圾回收时更高效，因为不需要扫描不包含指针的那个mspan链表</p><p>mspan按大小被划分为大约67个等级的object，大小从8字节到32K字节不等，不同等级存储不同大小的object内存块</p><p>比如 SizeClass等于3， object大小就是32B。 32B大小的object可以存储对象大小范围在17B到32B的对象。而对于微小对象（小于16B），分配器会将其进行合并，将几个对象分配到同一个 object中</p><p>最大的数是32768，也就是32KB，超过此大小就是大对象了，要直接从mheap堆上分配</p><h3 id="MHeap分配堆"><a href="#MHeap分配堆" class="headerlink" title="MHeap分配堆"></a>MHeap分配堆</h3><p>代表Go程序持有的所有堆空间，Go程序使用一个 mheap的全局对象 mheap来管理堆内存</p><p>MHeap层次用于直接分配较大(&gt;32kB)的内存空间，以及给MCentral和MCache等下层提供空间</p><p>mheap主要用于大对象的内存分配，以及管理未切割的 mspan，用于给 mcentral切割成小对象</p><p>mheap中含有所有规格的 mcentral，所以，当一个 mcache从 mcentral申请 mspan时，只需要在独立的 mcentral中使用锁，并不会影响申请其他规格的 mspan</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">//path: /usr/local/go/src/runtime/mheap.go</span></span><br><span class="line">type mheap struct &#123;</span><br><span class="line">lock mutex</span><br><span class="line"><span class="comment">// spans: 指向mspans区域，用于映射mspan和page的关系</span></span><br><span class="line">spans []*mspan</span><br><span class="line"><span class="comment">// 指向bitmap首地址，bitmap是从高地址向低地址增长的</span></span><br><span class="line">bitmap uintptr</span><br><span class="line"><span class="comment">// 指示arena区首地址</span></span><br><span class="line">arena_start uintptr</span><br><span class="line"><span class="comment">// 指示arena区已使用地址位置</span></span><br><span class="line">arena_used uintptr</span><br><span class="line"><span class="comment">// 指示arena区末地址</span></span><br><span class="line">arena_end uintptr</span><br><span class="line">central [<span class="number">67</span>*<span class="number">2</span>]struct &#123;</span><br><span class="line">mcentral mcentral</span><br><span class="line">pad [sys.CacheLineSize - unsafe.Sizeof(mcentral&#123;&#125;)%sys.CacheLineSize]byte</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="MCentral"><a href="#MCentral" class="headerlink" title="MCentral"></a>MCentral</h3><p>为所有 mcache提供切分好的 mspan资源。每个 central保存一种特定大小的全局 mspan列表，包括已分配出去的和未分配出去的。 每个 mcentral对应一种 mspan，而 mspan的种类导致它分割的 object大小不同。当工作线程的 mcache中没有合适（也就是特定大小的）的 mspan时就会从 mcentral获取</p><p>MCentral被所有的工作线程共同享有，存在多个Goroutine竞争的情况，因此会消耗锁资源</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct MCentral</span><br><span class="line">&#123;</span><br><span class="line">    Lock;</span><br><span class="line">    int32 sizeclass;</span><br><span class="line">    MSpan nonempty;</span><br><span class="line">    MSpan empty;</span><br><span class="line">    int32 nfree;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>每个维护了两张全局的mspan链表。一张链表为non-empty类型，包含了可供分配的mspan（由于一个span可能包含多个object，只要有一个或一个以上的object可供分配即表示该mspan可供分配），一张为empty类型，包含已分配完毕的mspan</p><p>1.获取 加锁；从 nonempty链表找到一个可用的 mspan；并将其从 nonempty链表删除；将取出的 mspan加入到 empty链表；将 mspan返回给工作线程；解锁。<br>2.归还 加锁；将 mspan从 empty链表删除；将 mspan加入到 nonempty链表；解锁</p><p>PS：当Go执行垃圾回收时，如果span中的内存块被标记为可供分配，span会重新加入到non-empty链表中</p><p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/3.png" alt="3"></p><p>当mcentral中也没有可供分配的span时，Go会从堆上申请新的span并将其放入mcentral中进行切分</p><h3 id="MCache本地小块内存"><a href="#MCache本地小块内存" class="headerlink" title="MCache本地小块内存"></a>MCache本地小块内存</h3><p>对于32KB以下的小块内存申请，Go会从本地缓存mcache中获取内存。</p><p>每一个M都有一个自己的局部内存缓存MCache，这样分配小对象的时候直接从MCache中分配，就不用加锁了，这是Go能够在多线程环境中高效地进行内存分配的重要原因</p><p>MCache是mspan切分后的列表，包含object的列表，提供可使用的内存，2倍的object列表，上面mspan已经提到过</p><p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/2.png" alt="2"></p><p>mcache在初始化的时候是没有任何 mspan资源的，在使用过程中会动态地从 mcentral申请，之后会缓存下来。当对象小于等于32KB大小时，使用 mcache的相应规格的 mspan进行分配。</p><p>如果mcache上没有空闲的内存块可供分配该怎么办，则进入下一级mcentral</p>]]></content>
+    
+    
+    <summary type="html">解析go语言，go的内存分配</summary>
+    
+    
+    
+    <category term="GO" scheme="http://zypuu.com/categories/GO/"/>
+    
+    
+    <category term="GO" scheme="http://zypuu.com/tags/GO/"/>
+    
+  </entry>
   
   <entry>
     <title>较大分组位置</title>
@@ -412,27 +433,6 @@
     
     
     <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git工作流</title>
-    <link href="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/"/>
-    <id>http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/</id>
-    <published>2020-12-15T10:08:05.305Z</published>
-    <updated>2020-12-16T11:31:28.220Z</updated>
-    
-    <content type="html"><![CDATA[<p>Git工作流：为工作中团队成员遵守的一种代码管理方案，在Git中有以下几种工作流方案作为方案指导。</p><h2 id="集中式工作流"><a href="#集中式工作流" class="headerlink" title="集中式工作流"></a>集中式工作流</h2><p>这种工作方式跟svn类似，它只有一个master分支，开发者会先把远程的仓库克隆到本地，之后的修 改和提交都在本地操作，直到在某个合适的时间点将本地的代码合入到远程master。这种工作流比 较适合小团队，因为小团队可能不会太多的协作和合流的动作。</p><h2 id="功能分支工作流"><a href="#功能分支工作流" class="headerlink" title="功能分支工作流"></a>功能分支工作流</h2><p>这种工作流关注功能开发，不直接往master提交代码保证它是稳定并且干净的，而是从master拉 取feature分支进行功能开发，团队成员根据分工拉取不同的功能分支来进行不同的功能开发，这样 就可以完全隔离开每个人的工作。当功能开发完成后，会向master分支发起Pull Request，只有审 核通过的代码才真正允许合入master，这样就加强了团队成员之间的代码交流。</p><h2 id="Gitflow工作流"><a href="#Gitflow工作流" class="headerlink" title="Gitflow工作流"></a>Gitflow工作流</h2><p>相对复杂一点，但它非常适合用来管理大型项目的发布和维护，贯穿整个开发周期，master和develop分支是一直存在的，master分支可以被视为稳定的分支， 而develop分支是相对稳定的分支，特性开发会在feature分支上进行，发布会在release分支上 进行，而bug修复则会在hotfix分支上进行</p><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><h4 id="两个分支，master，develop分支"><a href="#两个分支，master，develop分支" class="headerlink" title="两个分支，master，develop分支"></a>两个分支，master，develop分支</h4><p>相对使用仅有的一个master分支，Gitflow工作流使用2个分支来记录项目的历史。 master分支存储了正式发布的历史，而develop分支作为功能的集成分支。 这样也方便master分支上的所有提交分配一个版本号。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png" alt="1"></p><h4 id="每个人开发的功能分支"><a href="#每个人开发的功能分支" class="headerlink" title="每个人开发的功能分支"></a>每个人开发的功能分支</h4><p>每个新功能位于一个自己的分支，这样可以push到中央仓库以备份和协作。 但功能分支不是从master分支上拉出新分支，而是使用develop分支作为父分支。 当新功能完成时，合并回develop分支。 新功能提交应该从不直接与master分支交互。 从各种含义和目的上来看，功能分支加上develop分支就是功能分支工作流的用法。但Gitflow工作流没有在这里止步。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/2.png" alt="2"></p><h4 id="develop和master中间的发布分支"><a href="#develop和master中间的发布分支" class="headerlink" title="develop和master中间的发布分支"></a>develop和master中间的发布分支</h4><p>一旦develop分支上有了做一次发布（或者说快到了既定的发布日）的足够功能，就从develop分支上checkout一个发布分支。 新建的分支用于开始发布循环，所以从这个时间点开始之后新的功能不能再加到这个分支上—— 这个分支只应该做Bug修复、文档生成和其它面向发布任务。 一旦对外发布的工作都完成了， 发布分支合并到master分支并分配一个版本号打好Tag。 另外，这些从新建发布分支以来的做的修改要合并回develop分支。</p><p>使用一个用于发布准备的专门分支，使得一个团队可以在完善当前的发布版本的同时，另一个团队可以继续开发下个版本的功能。 这也打造定义良好的开发阶段。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/3.png" alt="3"></p><h4 id="修复分支"><a href="#修复分支" class="headerlink" title="修复分支"></a>修复分支</h4><p>维护分支或说是热修复（hotfix）分支用于生成快速给产品发布版本（production releases）打补丁， 这是唯一可以直接从master分支fork出来的分支。 修复完成，修改应该马上合并回master分支和dev elop分支（当前的发布分支），master分支应该用新的版本号打好Tag。</p><p>为Bug修复使用专门分支，让团队可以处理掉问题而不用打断其它工作或是等待下一个发布循环。 你可以把维护分支想成是一个直接在master分支上处理的临时发布。</p><p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/4.png" alt="4"></p><h2 id="Forking工作流"><a href="#Forking工作流" class="headerlink" title="Forking工作流"></a>Forking工作流</h2><p>Forking工作流对于开源项目贡献者一定不陌生了，它有一个公开的中央仓库，其他贡献 者可以Fork（克隆）这个仓库作为你自己的私有仓库，开源项目维护者可以直接往中央仓库 push代码，而代码贡献者只能将代码push到自己的私有仓库，只有项目维护者接受代码贡献 者往中央仓库发起的pull request才会真正合入。</p>]]></content>
-    
-    
-    <summary type="html">git几种工作流，flow工作流</summary>
-    
-    
-    
-    <category term="Git代码管理" scheme="http://zypuu.com/categories/Git%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86/"/>
-    
-    
-    <category term="git" scheme="http://zypuu.com/tags/git/"/>
     
   </entry>
   
