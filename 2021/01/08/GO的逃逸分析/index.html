@@ -30,7 +30,7 @@
 <meta property="og:description" content="解析go语言，go的逃逸分析，变量内存分配">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-08T01:46:22.000Z">
-<meta property="article:modified_time" content="2021-01-11T12:42:09.445Z">
+<meta property="article:modified_time" content="2021-01-11T12:57:35.539Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-11 20:42:09" itemprop="dateModified" datetime="2021-01-11T20:42:09+08:00">2021-01-11</time>
+                <time title="Modified: 2021-01-11 20:57:35" itemprop="dateModified" datetime="2021-01-11T20:57:35+08:00">2021-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.9k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -297,6 +297,7 @@
 <p>PS：不要以为使用了堆内存就一定会导致性能低下，使用栈内存会带来性能优势。因为实际项目中，系统的性能瓶颈一般都不会出现在内存分配上。千万不要盲目优化，找到系统瓶颈，用数据驱动优化。</p>
 <h3 id="逃逸分析缺陷问题"><a href="#逃逸分析缺陷问题" class="headerlink" title="逃逸分析缺陷问题"></a>逃逸分析缺陷问题</h3><p>编译器有时会将不需要使用堆空间的变量，也逃逸掉。这里是容易出现性能问题的大坑</p>
 <p>多级间接赋值容易导致逃逸</p>
+<p>这里的多级间接指的是，对某个引用类对象中的引用类成员进行赋值。Go 语言中的引用类数据类型有 func, interface, slice, map, chan, * Type(指针)</p>
 <p>公式 Data.Field = Value，<br>如果 Data, Field 都是引用类的数据类型，<br>则会导致 Value 逃逸。这里的等号 = 不单单只赋值，也表示参数传递</p>
 <p>例子：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[]interface&#123;&#125;: data[<span class="number">0</span>] = <span class="number">100</span> 会导致 <span class="number">100</span> 逃逸</span><br><span class="line"></span><br><span class="line">map[string]interface&#123;&#125;: data[<span class="string">&quot;key&quot;</span>] = <span class="string">&quot;value&quot;</span> 会导致 <span class="string">&quot;value&quot;</span> 逃逸</span><br><span class="line"></span><br><span class="line">map[interface&#123;&#125;]interface&#123;&#125;: data[<span class="string">&quot;key&quot;</span>] = <span class="string">&quot;value&quot;</span> 会导致 key 和 value 都逃逸</span><br><span class="line"></span><br><span class="line">map[string][]string: data[<span class="string">&quot;key&quot;</span>] = []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 会导致切片逃逸</span><br><span class="line"></span><br><span class="line">map[string]*int: 赋值时 *int 会 逃逸</span><br><span class="line"></span><br><span class="line">[]*int: data[<span class="number">0</span>] = &amp;i 会使 i 逃逸</span><br><span class="line"></span><br><span class="line">func(*int): data(&amp;i) 会使 i 逃逸</span><br><span class="line"></span><br><span class="line">func([]string): data([]&#123;<span class="string">&quot;hello&quot;</span>&#125;) 会使 []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 逃逸</span><br><span class="line"></span><br><span class="line">chan []string: data &lt;- []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 会使 []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 逃逸</span><br></pre></td></tr></table></figure>
