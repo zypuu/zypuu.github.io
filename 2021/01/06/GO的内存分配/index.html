@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://zypuu.com/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/2.png">
 <meta property="og:image" content="http://zypuu.com/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/4.png">
 <meta property="article:published_time" content="2021-01-06T05:48:22.000Z">
-<meta property="article:modified_time" content="2021-01-07T09:48:13.915Z">
+<meta property="article:modified_time" content="2021-01-11T12:51:19.384Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-07 17:48:13" itemprop="dateModified" datetime="2021-01-07T17:48:13+08:00">2021-01-07</time>
+                <time title="Modified: 2021-01-11 20:51:19" itemprop="dateModified" datetime="2021-01-11T20:51:19+08:00">2021-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,14 +246,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.5k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
+              <span>3 mins.</span>
             </span>
             <div class="post-description">解析go语言，go的内存分配</div>
 
@@ -277,8 +277,15 @@
 <p>Size_Class = Span_Class / 2</p>
 <p>这是因为其实每个 SizeClass有两个 mspan，也就是有两个 SpanClass。其中一个分配给含有指针的对象，另一个分配给不含有指针的对象，每个等级SizeClass会存在两份mspan链表：一个链表用于存储内部不包含指针的对象，另一个链表用于存储内部包含指针的对象。这么的好处是垃圾回收时更高效，因为不需要扫描不包含指针的那个mspan链表</p>
 <p>mspan按大小被划分为大约67个等级的object，大小从8字节到32K字节不等，不同等级存储不同大小的object内存块</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _NumSizeClasses = <span class="number">67</span></span><br><span class="line"><span class="keyword">var</span> class_to_size = [_NumSizeClasses]uint16&#123;<span class="number">0</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>, <span class="number">48</span>, <span class="number">64</span>, <span class="number">80</span>, <span class="number">96</span>, <span class="number">112</span>, <span class="number">128</span>, <span class="number">144</span>, <span class="number">160</span>, <span class="number">176</span>, <span class="number">192</span>, <span class="number">208</span>, <span class="number">224</span>, <span class="number">240</span>, <span class="number">256</span>, <span class="number">288</span>, <span class="number">320</span>, <span class="number">352</span>, <span class="number">384</span>, <span class="number">416</span>, <span class="number">448</span>, <span class="number">480</span>, <span class="number">512</span>, <span class="number">576</span>, <span class="number">640</span>, <span class="number">704</span>, <span class="number">768</span>, <span class="number">896</span>, <span class="number">1024</span>, <span class="number">1152</span>, <span class="number">1280</span>, <span class="number">1408</span>, <span class="number">1536</span>,<span class="number">1792</span>, <span class="number">2048</span>, <span class="number">2304</span>, <span class="number">2688</span>, <span class="number">3072</span>, <span class="number">3200</span>, <span class="number">3456</span>, <span class="number">4096</span>, <span class="number">4864</span>, <span class="number">5376</span>, <span class="number">6144</span>, <span class="number">6528</span>, <span class="number">6784</span>, <span class="number">6912</span>, <span class="number">8192</span>, <span class="number">9472</span>, <span class="number">9728</span>, <span class="number">10240</span>, <span class="number">10880</span>, <span class="number">12288</span>, <span class="number">13568</span>, <span class="number">14336</span>, <span class="number">16384</span>, <span class="number">18432</span>, <span class="number">19072</span>, <span class="number">20480</span>, <span class="number">21760</span>, <span class="number">24576</span>, <span class="number">27264</span>, <span class="number">28672</span>, <span class="number">32768</span>&#125;</span><br></pre></td></tr></table></figure>
+
 <p>比如 SizeClass等于3， object大小就是32B。 32B大小的object可以存储对象大小范围在17B到32B的对象。而对于微小对象（小于16B），分配器会将其进行合并，将几个对象分配到同一个 object中</p>
 <p>最大的数是32768，也就是32KB，超过此大小就是大对象了，要直接从mheap堆上分配</p>
+<p>对于mspan来说，它的 SizeClass会决定它所能分到的页数，这也是写死在代码里的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// path: /usr/local/go/src/runtime/sizeclasses.go</span></span><br><span class="line"><span class="keyword">const</span> _NumSizeClasses = <span class="number">67</span></span><br><span class="line"><span class="keyword">var</span> class_to_allocnpages = [_NumSizeClasses]uint8&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">4</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>比如当我们要申请一个 object大小为 32B的 mspan的时候，在classtosize里对应的索引是3，而索引3在 class_to_allocnpages数组里对应的页数就是1，即为8KB</p>
+<p>一个 mspan的 SizeClass等于10，根据前面的 class_to_size数组，得出这个 msapn分割的 object大小是144B，算出可分配的对象个数是 8KB/144B=56.89个，取整56个，所以会有一些内存浪费掉了，Go的源码里有所有 SizeClass的 mspan浪费的内存的大小；再根据 class_to_allocnpages数组，得到这个 mspan只由1个 page组成；假设这个 mspan是分配给无指针对象的，那么 spanClass等于20</p>
 <h3 id="MHeap分配堆"><a href="#MHeap分配堆" class="headerlink" title="MHeap分配堆"></a>MHeap分配堆</h3><p>代表Go程序持有的所有堆空间，Go程序使用一个 mheap的全局对象 mheap来管理堆内存</p>
 <p>MHeap层次用于直接分配较大(&gt;32kB)的内存空间，以及给MCentral和MCache等下层提供空间</p>
 <p>mheap主要用于大对象的内存分配，以及管理未切割的 mspan，用于给 mcentral切割成小对象</p>
