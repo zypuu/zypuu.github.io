@@ -22,20 +22,20 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="给定排序数组，原地删除重复元素">
+  <meta name="description" content="解析go语言，go的垃圾回收">
 <meta property="og:type" content="article">
-<meta property="og:title" content="删除排序数组中的重复项">
-<meta property="og:url" content="http://zypuu.com/2020/12/09/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/index.html">
+<meta property="og:title" content="GO的垃圾回收">
+<meta property="og:url" content="http://zypuu.com/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="给定排序数组，原地删除重复元素">
+<meta property="og:description" content="解析go语言，go的垃圾回收">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-12-09T07:40:00.000Z">
-<meta property="article:modified_time" content="2020-12-09T10:16:45.961Z">
+<meta property="article:published_time" content="2021-01-12T10:07:22.000Z">
+<meta property="article:modified_time" content="2021-01-12T12:48:44.335Z">
 <meta property="article:author" content="ZYP">
-<meta property="article:tag" content="算法">
+<meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://zypuu.com/2020/12/09/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/">
+<link rel="canonical" href="http://zypuu.com/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>删除排序数组中的重复项 | ALL-Nothing</title>
+  <title>GO的垃圾回收 | ALL-Nothing</title>
   
 
 
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/09/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -206,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          删除排序数组中的重复项
+          GO的垃圾回收
         </h1>
 
         <div class="post-meta">
@@ -217,7 +217,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-12-09 15:40:00 / Modified: 18:16:45" itemprop="dateCreated datePublished" datetime="2020-12-09T15:40:00+08:00">2020-12-09</time>
+              <time title="Created: 2021-01-12 18:07:22 / Modified: 20:48:44" itemprop="dateCreated datePublished" datetime="2021-01-12T18:07:22+08:00">2021-01-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -225,7 +225,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
+                  <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
                 </span>
             </span>
 
@@ -235,16 +235,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>360</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
+              <span>2 mins.</span>
             </span>
-            <div class="post-description">给定排序数组，原地删除重复元素</div>
+            <div class="post-description">解析go语言，go的垃圾回收</div>
 
         </div>
       </header>
@@ -255,19 +255,62 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给定一个排序数组，你需要在 原地 删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。</p>
-<p>不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。</p>
-<p>给定 nums = [0,0,1,1,1,2,2,3,3,4],</p>
-<p>函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。</p>
-<p>你不需要考虑数组中超出新长度后面的元素。</p>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>首先注意数组是有序的，那么重复的元素一定会相邻。</p>
-<p>要求删除重复元素，实际上就是将不重复的元素移到数组的左侧。</p>
-<p>考虑用 2 个指针，一个在前记作a，一个在后记作 b，算法流程如下：</p>
-<p>比较 a 和 b 位置的元素是否相等。</p>
-<p>如果相等，b 后移 1 位<br>如果不相等，将 a 位置的元素复制到 a+1 位置上，a 后移一位，b 后移 1 位<br>重复上述过程，直到 b 等于数组长度。</p>
-<p>返回 a + 1，即为新数组长度。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func removeDuplicates(nums []int) int &#123;</span><br><span class="line">    <span class="keyword">if</span> len(nums) == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    a, <span class="attr">b</span> := <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> ;b &lt; len(nums);b++ &#123;</span><br><span class="line">        <span class="keyword">if</span> b == <span class="function"><span class="title">len</span>(<span class="params">nums</span>)</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> nums[b]!=nums[a] &#123;</span><br><span class="line">            nums[a+<span class="number">1</span>] = nums[b]</span><br><span class="line">            a++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a+<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+        <h2 id="垃圾回收GC"><a href="#垃圾回收GC" class="headerlink" title="垃圾回收GC"></a>垃圾回收GC</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>程序创建对象等引用类型实体时会在虚拟内存中分配给它们一块内存空间，如果该内存空间不再被任何引用变量引用时就成为需要被回收的垃圾</p>
+<p>对于一个运行较长时间的程序，如果使用完内存资源后没有及时释放就会造成内存泄漏甚至系统错误</p>
+<p>如果我们在不该释放内存的时候释放内存，那么仍然在使用这块内存的指针就会变成野指针wild pointer，使用该指针对内存进行读写是未定义的行为</p>
+<h3 id="GC性能指标"><a href="#GC性能指标" class="headerlink" title="GC性能指标"></a>GC性能指标</h3><h4 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h4><p>是指单位时间内是有多少时间是用来运行用户代码的。GC占用的时间过多，就会导致吞吐量较低</p>
+<h4 id="最大暂停时间STW"><a href="#最大暂停时间STW" class="headerlink" title="最大暂停时间STW"></a>最大暂停时间STW</h4><p>STW stop the world</p>
+<p>基本上所有的垃圾回收算法，都会在执行GC的过程中，暂停用户代码。如果暂停时间过长，必然会影响用户体验，尤其是那些交互性较强的应用</p>
+<h4 id="访问局部性"><a href="#访问局部性" class="headerlink" title="访问局部性"></a>访问局部性</h4><p>具有引用关系的对象之间很可能存在连续访问的情况。因此，把具有引用关系的对象安排在堆中较劲的位置，可以充分利用内存访问局部性。有的GC算法会根据引用关系重排对象，比如复制算法。</p>
+<h4 id="堆使用效率"><a href="#堆使用效率" class="headerlink" title="堆使用效率"></a>堆使用效率</h4><p>影响堆使用效率的主要有两个因素，一个是对象头部大小，一个是堆的用法。</p>
+<p>1.一般来说，堆的头部越大，存储的信息越多，那么GC的效率就会越高，吞吐量什么的也会有更佳的表现。但是，我们必须明白，对象头越小越好</p>
+<p>2.不同的算法对于堆的不同用法，也会导致堆使用效率差距非常大。比如复制算法，用户应用只能使用一般的堆大小</p>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>1.无内存泄漏：垃圾回收器最基本的目标就是减少防止程序员未及时释放导致的内存泄漏，垃圾回收器会识别并清理内存中的垃圾</p>
+<p>2.自动回收无用内存：垃圾回收器作为独立的子任务，不需要程序员显式调用即可自动清理内存垃圾</p>
+<p>3.内存整理：如果只是简单回收无用内存，那么堆上的内存空间会存在较多碎片而无法满足分配较大对象的需求，因此垃圾回收器需要重整内存空间，提高内存利用率</p>
+<h2 id="常见算法"><a href="#常见算法" class="headerlink" title="常见算法"></a>常见算法</h2><h3 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h3><p>引用计数Reference counting<br>会为每个对象维护一个计数器，当该对象被其他对象引用时加一，引用失效时减一，当引用次数归零后即可回收对象</p>
+<p>python就是引用计数</p>
+<p>优点：<br>1.原理和实现都比较简单</p>
+<p>2.回收的即时性：当对象的引用计数为0时立即回收，不像其他GC机制需要等待特定时机再回收，提高了内存的利用率</p>
+<p>3.不需要暂停应用即可完成回收</p>
+<p>缺点：</p>
+<p>1.无法解决循环引用的回收问题：当ObjA引用了ObjB，ObjB也引用ObjA时，这两个对象的引用次数使用大于0，从而占用的内存无法被回收</p>
+<p>2.时间和空间成本较高：一方面是因为每个对象需要额外的空间存储引用计数器变量，另一方面是在栈上的赋值时修改引用次数时间成本较高（原本只需要修改寄存器中的值，现在计数器需要不断更新因此不是只读的，需要额外的原子操作来保证线程安全</p>
+<p>3.引用计数是一种摊销算法，会将内存的回收分摊到整个程序的运行过程，但是当销毁一个很大的树形结构时无法保证响应时间</p>
+<h3 id="追踪回收式"><a href="#追踪回收式" class="headerlink" title="追踪回收式"></a>追踪回收式</h3><p>判断哪些对象存活，然后将其余的所有对象作为垃圾进行回收。追踪回收本身包括<br>标记-清除 Mark-Sweep<br>标记-复制 Mark-Copy<br>标记-整理 Mark-Compact<br>三种回收算法</p>
+<p>同引用计数法相比<br>优点：</p>
+<p>1.解决了循环引用对象的回收问题</p>
+<p>2.占用空间更少</p>
+<p>缺点：</p>
+<p>1.同引用计数相比无法立刻识别出垃圾对象，需要依赖GC线程</p>
+<p>2.算法在标记时必须暂停整个程序，即Stop The World, STW，否则其他线程的代码会修改对象状态从而回收不该回收的对象</p>
+<h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><p>上面说的三种算法都是通过可达性分析算法，先进行可达性标记，标记对象是否可达</p>
+<p>GC ROOT： 当前时刻存活的对象<br>GC会收集那些不是GC Roots且没有被GC Roots引用的对象<br>包括：</p>
+<p>1.全局对象、栈上的对象（函数参数与内部变量）</p>
+<p>2.与上面对象通过引用链相连的对象</p>
+<p>对于“不可达”的对象，我们可以认为该对象为垃圾对象并回收对应的内存空间</p>
+<h4 id="标记-清除-Mark-Sweep"><a href="#标记-清除-Mark-Sweep" class="headerlink" title="标记-清除 Mark-Sweep"></a>标记-清除 Mark-Sweep</h4><p>标记：记录需要回收的垃圾对象</p>
+<p>清除：在标记完成后回收垃圾对象的内存空间</p>
+<p>优点：</p>
+<p>1.算法吞吐量高：用户代码时间/总时间高</p>
+<p>2.空间利用率：同标记-复制相比不需要额外空间复制对象，也不需要像引用计数算法为每个对象设置引用计数器</p>
+<p>缺点：</p>
+<p>1.清除后会产生大量的内存碎片空间，导致程序在运行时可能没法为较大的对象分配内存空间，导致提前GC</p>
+<h4 id="标记-复制-Mark-Copy"><a href="#标记-复制-Mark-Copy" class="headerlink" title="标记-复制 Mark-Copy"></a>标记-复制 Mark-Copy</h4><p>将内存分成大小相同的两块，当某一块的内存使用完了之后就将使用中的对象挨个复制到另一块内存中，最后将当前内存恢复未使用的状态</p>
+<p>优点：</p>
+<p>1.标记-清除法需要在清除阶段对大量垃圾对象进行扫描，标记-复制则只需要从GC Root对象出发，将“可到达”的对象复制到另一块内存后直接清理当前这块的内存，因此提升了垃圾回收的效率</p>
+<p>PS：清除，是扫描所有垃圾，标记垃圾，回收，复制是只扫描GC ROOT对象</p>
+<p>2.解决了内存碎片化的问题，防止分配较大连续空间时的提前GC问题</p>
+<p>缺点：</p>
+<p>1.同标记-清除法相比，在“可达”对象占比较高的情况下有复制对象的开销</p>
+<p>2.内存利用率较低，相当于可利用的内存仅有一半</p>
+<h4 id="标记-整理-Mark-Compact"><a href="#标记-整理-Mark-Compact" class="headerlink" title="标记-整理 Mark-Compact"></a>标记-整理 Mark-Compact</h4><p>标记出所有“可达”的对象，然后将存活的对象移动到内存空间的一端，最后清理掉端边界以外的内存</p>
+<p>优点：</p>
+<p>1.避免了内存碎片化的问题</p>
+<p>2.在对象存活率较高的情况下，标记-整理算法由于不需要复制对象效率更高，因此更加适合老年代算法</p>
+<p>缺点：</p>
+<p>1.整理过程较为复杂，需要多次遍历内存导致STW时间比标记-清除算法更长</p>
+<h4 id="三色标记法"><a href="#三色标记法" class="headerlink" title="三色标记法"></a>三色标记法</h4>
     </div>
 
     
@@ -282,7 +325,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://zypuu.com/2020/12/09/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/" title="删除排序数组中的重复项">http://zypuu.com/2020/12/09/删除排序数组中的重复项/</a>
+    <a href="http://zypuu.com/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="GO的垃圾回收">http://zypuu.com/2021/01/12/GO的垃圾回收/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -293,7 +336,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/GO/" rel="tag"><i class="fa fa-tag"></i> GO</a>
           </div>
 
         
@@ -302,13 +345,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/09/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/" rel="prev" title="斐波那契数列">
-      <i class="fa fa-chevron-left"></i> 斐波那契数列
+    <a href="/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/" rel="prev" title="GO的逃逸分析">
+      <i class="fa fa-chevron-left"></i> GO的逃逸分析
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/10/%E7%9B%9B%E6%B0%B4%E5%AE%B9%E5%99%A8%E9%97%AE%E9%A2%98/" rel="next" title="盛水容器问题">
-      盛水容器问题 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -368,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6GC"><span class="nav-number">1.</span> <span class="nav-text">垃圾回收GC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">GC性能指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%9E%E5%90%90%E9%87%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">吞吐量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E6%9A%82%E5%81%9C%E6%97%B6%E9%97%B4STW"><span class="nav-number">1.2.2.</span> <span class="nav-text">最大暂停时间STW</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%B1%80%E9%83%A8%E6%80%A7"><span class="nav-number">1.2.3.</span> <span class="nav-text">访问局部性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A0%86%E4%BD%BF%E7%94%A8%E6%95%88%E7%8E%87"><span class="nav-number">1.2.4.</span> <span class="nav-text">堆使用效率</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87"><span class="nav-number">1.3.</span> <span class="nav-text">目标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">常见算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">引用计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%BD%E8%B8%AA%E5%9B%9E%E6%94%B6%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">追踪回收式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.1.</span> <span class="nav-text">可达性分析算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4-Mark-Sweep"><span class="nav-number">2.2.2.</span> <span class="nav-text">标记-清除 Mark-Sweep</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0-%E5%A4%8D%E5%88%B6-Mark-Copy"><span class="nav-number">2.2.3.</span> <span class="nav-text">标记-复制 Mark-Copy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86-Mark-Compact"><span class="nav-number">2.2.4.</span> <span class="nav-text">标记-整理 Mark-Compact</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B3%95"><span class="nav-number">2.2.5.</span> <span class="nav-text">三色标记法</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
