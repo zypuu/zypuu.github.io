@@ -30,7 +30,7 @@
 <meta property="og:description" content="解析go语言，go的基本数据结构 channel">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-14T09:09:00.000Z">
-<meta property="article:modified_time" content="2021-01-18T10:09:08.485Z">
+<meta property="article:modified_time" content="2021-01-18T12:23:58.015Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-18 18:09:08" itemprop="dateModified" datetime="2021-01-18T18:09:08+08:00">2021-01-18</time>
+                <time title="Modified: 2021-01-18 20:23:58" itemprop="dateModified" datetime="2021-01-18T20:23:58+08:00">2021-01-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,14 +241,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.9k</span>
+              <span>5.8k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
+              <span>5 mins.</span>
             </span>
             <div class="post-description">解析go语言，go的基本数据结构 channel</div>
 
@@ -364,7 +364,69 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ch1 := make(chan int, <span class="number">10</span>)</span><br><span class="line">ch2 := make(chan&lt;- int, <span class="number">10</span>)</span><br><span class="line">ch3 := make(<span class="xml">&lt;-chan int, 10)</span></span><br><span class="line"><span class="xml">close(ch1)</span></span><br><span class="line"><span class="xml">close(ch2)</span></span><br><span class="line"><span class="xml">close(ch3)</span></span><br></pre></td></tr></table></figure>
 <p>关闭 channel3将panic cannot close receive-only channel</p>
 <p>channel 应该由发送的一方执行，由接收 channel 的一方关闭</p>
-<h2 id="channel原理"><a href="#channel原理" class="headerlink" title="channel原理"></a>channel原理</h2>
+<h2 id="channel原理"><a href="#channel原理" class="headerlink" title="channel原理"></a>channel原理</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>src/runtime/chan.go里</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">type hchan struct &#123;</span><br><span class="line">    qcount   uint           <span class="comment">// total data in the queue</span></span><br><span class="line">    dataqsiz uint           <span class="comment">// size of the circular queue</span></span><br><span class="line">    buf      unsafe.Pointer <span class="comment">// points to an array of dataqsiz elements</span></span><br><span class="line">    elemsize uint16</span><br><span class="line">    closed   uint32</span><br><span class="line">    elemtype *_type <span class="comment">// element type</span></span><br><span class="line">    sendx    uint   <span class="comment">// send index</span></span><br><span class="line">    recvx    uint   <span class="comment">// receive index</span></span><br><span class="line">    recvq    waitq  <span class="comment">// list of recv waiters</span></span><br><span class="line">    sendq    waitq  <span class="comment">// list of send waiters</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// lock protects all fields in hchan, as well as several</span></span><br><span class="line">    <span class="comment">// fields in sudogs blocked on this channel.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Do not change another G&#x27;s status while holding this lock</span></span><br><span class="line">    <span class="comment">// (in particular, do not ready a G), as this can deadlock</span></span><br><span class="line">    <span class="comment">// with stack shrinking.</span></span><br><span class="line">    lock mutex</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>make的时候，会申请一块内存，创建一个hchan结构体，返回执行该内存的指针，所以获取的的ch变量本身就是一个指针，在函数之间传递的时候是同一个channel</p>
+<p>核心的部分是存放channel数据的环形队列，由qcount和elemsize分别指定了队列的容量和当前使用量</p>
+<p>如果是带缓冲区的chan，则缓冲区数据实际上是紧接着Hchan结构体中分配的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c = (Hchan*)runtime.mal(n + hint*elem-&gt;size);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用两个list保存像该chan发送和从该chan接收数据的goroutine，还有一个mutex来保证操作这些结构的安全</p>
+<p>recvq和sendq两个链表，一个是因读这个通道而导致阻塞的goroutine，另一个是因为写这个通道而阻塞的goroutine。如果一个goroutine阻塞于channel了，那么它就被挂在recvq或sendq中</p>
+<p>队列中的每个成员是一个SudoG结构体变量</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct    SudoG</span><br><span class="line">&#123;</span><br><span class="line">    G*    g;        <span class="comment">// g and selgen constitute</span></span><br><span class="line">    uint32    selgen;        <span class="comment">// a weak pointer to g</span></span><br><span class="line">    SudoG*    link;</span><br><span class="line">    int64    releasetime;</span><br><span class="line">    byte*    elem;        <span class="comment">// data element</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>结构中主要的就是一个g和一个elem</p>
+<p>elem用于存储goroutine的数据</p>
+<p>读通道时，数据会从Hchan的队列中拷贝到SudoG的elem域</p>
+<p>写通道时，数据则是由SudoG的elem域拷贝到Hchan的队列中</p>
+<h3 id="读写操作"><a href="#读写操作" class="headerlink" title="读写操作"></a>读写操作</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c &lt;- v</span><br><span class="line"><span class="keyword">void</span> runtime·chansend(ChanType *t, Hchan *c, byte *ep, bool *pres, <span class="keyword">void</span> *pc)</span><br></pre></td></tr></table></figure>
+<p>c就是channel<br>ep是取变量v的地址<br>pres 用于select操作中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">G1： c &lt;- task</span><br><span class="line">G2： task := <span class="xml">&lt;- ch</span></span><br></pre></td></tr></table></figure>
+
+<p>G1是写入,发送者<br>G2是读取，接收者</p>
+<p>流程：</p>
+<p>写：</p>
+<p>1.初始的时候hchan结构体的buf为空，sendx和recvx都为0</p>
+<p>2.G1向ch里发送数据的时候，会首先对buf加锁</p>
+<p>3.将要发送的数据copy到buf里，并增加sendx的值</p>
+<p>4.最后释放buf的锁</p>
+<p>读：</p>
+<p>1.G2消费的时候首先对buf加锁</p>
+<p>2.然后将buf里的数据copy到task变量对应的内存里，增加recvx</p>
+<p>3.最后释放锁</p>
+<p>PS：整个过程，G1和G2没有共享的内存，底层通过hchan结构体的buf，使用copy内存的方式进行通信，最后达到了共享内存的目的</p>
+<p>G2的消费速度应该是慢于G1的，所以buf的数据会越来越多，这个时候G1再向ch里发送数据，这个时候G1就会阻塞</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>channel会区分是同步还是异步。</p>
+<p>同步是指chan是不带缓冲区的，因此可能写阻塞，而异步是指chan带缓冲区，只有缓冲区满才阻塞</p>
+<p>写阻塞：</p>
+<p>1.G1向buf已经满了的ch发送数据的时候，当runtine检测到对应的hchan的buf已经满</p>
+<p>2.会通知调度器，调度器会将G1的状态设置为waiting</p>
+<p>3.移除与线程M的联系，然后从P的runqueue中选择一个goroutine在线程M中执行</p>
+<p>4.G1就是阻塞状态，但是不是操作系统的线程阻塞</p>
+<p>5.G1变为waiting状态后，会创建一个代表自己的sudog的结构，然后放到sendq这个list中</p>
+<p>6.sudog结构中保存了channel相关的变量的指针</p>
+<p>PS： 如果该Goroutine是sender，那么保存的是待发送数据的变量的地址，如果是receiver则为接收数据的变量的地址，之所以是地址，前面我们提到在传输数据的时候使用的是copy的方式</p>
+<p>7.G2从ch中接收一个数据时，会通知调度器，设置G1的状态为runnable，然后将加入P的runqueue里，等待线程执行</p>
+<h3 id="空通道"><a href="#空通道" class="headerlink" title="空通道"></a>空通道</h3><p>G2先运行，读阻塞：</p>
+<p>1.G2会从一个empty的channel里取数据，这个时候G2就会阻塞</p>
+<p>2.G2也会创建一个sudog结构体，保存接收数据的变量的地址，但是该sudog结构体是放到了recvq列表里</p>
+<p>3.当G1向ch发送数据的时候，runtime并没有对hchan结构体题的buf进行加锁，而是直接将G1里的发送到ch的数据copy到了G2 sudog里对应的elem指向的内存地址</p>
+<p>PS：读一个关闭的通道，永远不会阻塞，会返回一个通道数据类型的零值。这个实现也很简单，将零值复制到调用函数的参数ep中。写一个关闭的通道，则会panic。关闭一个空通道，也会导致panic</p>
+<h3 id="select实现"><a href="#select实现" class="headerlink" title="select实现"></a>select实现</h3><p>select-case中的chan操作编译成了if-else</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select &#123;</span><br><span class="line"><span class="keyword">case</span> v = <span class="xml">&lt;-c:</span></span><br><span class="line"><span class="xml">        ...foo</span></span><br><span class="line"><span class="xml">default:</span></span><br><span class="line"><span class="xml">        ...bar</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>会被编译为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="function"><span class="title">selectnbrecv</span>(<span class="params">&amp;v, c</span>)</span> &#123;</span><br><span class="line">        ...foo</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ...bar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>selectnbrecv函数调用runtime.chanrecv函数，只不过设置了一个参数，告诉当runtime.chanrecv函数，当不能完成操作时不要阻塞，而是返回失败</p>
+<p>select操作其实都仅仅是被换成了if-else判断，底层调用的不阻塞的通道操作函数</p>
+<h4 id="select随机性"><a href="#select随机性" class="headerlink" title="select随机性"></a>select随机性</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct    Scase</span><br><span class="line">&#123;</span><br><span class="line">    SudoG    sg;            <span class="comment">// must be first member (cast to Scase)</span></span><br><span class="line">    Hchan*    chan;        <span class="comment">// chan</span></span><br><span class="line">    byte*    pc;            <span class="comment">// return pc</span></span><br><span class="line">    uint16    kind;</span><br><span class="line">    uint16    so;            <span class="comment">// vararg of selected bool</span></span><br><span class="line">    bool*    receivedp;    <span class="comment">// pointer to received bool (recv2)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct    Select</span><br><span class="line">&#123;</span><br><span class="line">    uint16    tcase;            <span class="comment">// 总的scase[]数量</span></span><br><span class="line">    uint16    ncase;            <span class="comment">// 当前填充了的scase[]数量</span></span><br><span class="line">    uint16*    pollorder;        <span class="comment">// case的poll次序</span></span><br><span class="line">    Hchan**    lockorder;        <span class="comment">// channel的锁住的次序</span></span><br><span class="line">    Scase    scase[<span class="number">1</span>];        <span class="comment">// 每个case会在结构体里有一个Scase，顺序是按出现的次序</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>1.每个select都对应一个Select结构体</p>
+<p>2.在Select数据结构中有个Scase数组，记录下了每一个case，而Scase中包含了Hchan。</p>
+<p>3.然后pollorder数组将元素随机排列，将Scase乱序</p>
+
     </div>
 
     
@@ -462,7 +524,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">channel实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#channel%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">channel状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel%E4%B8%8E%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲channel与非缓冲channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.1.</span> <span class="nav-text">非缓冲channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.2.</span> <span class="nav-text">缓冲channel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine%E6%B3%84%E9%9C%B2"><span class="nav-number">1.3.</span> <span class="nav-text">goroutine泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cap%E5%92%8Clen"><span class="nav-number">1.4.</span> <span class="nav-text">cap和len</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#range"><span class="nav-number">1.5.</span> <span class="nav-text">range</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-number">1.6.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.7.</span> <span class="nav-text">并发循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-gorountine-%E9%80%80%E5%87%BA"><span class="nav-number">1.8.</span> <span class="nav-text">关于 gorountine 退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close%E5%85%B3%E9%97%AD"><span class="nav-number">1.9.</span> <span class="nav-text">close关闭</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">channel原理</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">channel实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#channel%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">channel状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel%E4%B8%8E%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲channel与非缓冲channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.1.</span> <span class="nav-text">非缓冲channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.2.</span> <span class="nav-text">缓冲channel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine%E6%B3%84%E9%9C%B2"><span class="nav-number">1.3.</span> <span class="nav-text">goroutine泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cap%E5%92%8Clen"><span class="nav-number">1.4.</span> <span class="nav-text">cap和len</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#range"><span class="nav-number">1.5.</span> <span class="nav-text">range</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-number">1.6.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.7.</span> <span class="nav-text">并发循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-gorountine-%E9%80%80%E5%87%BA"><span class="nav-number">1.8.</span> <span class="nav-text">关于 gorountine 退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close%E5%85%B3%E9%97%AD"><span class="nav-number">1.9.</span> <span class="nav-text">close关闭</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">channel原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">读写操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E"><span class="nav-number">2.3.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E9%80%9A%E9%81%93"><span class="nav-number">2.4.</span> <span class="nav-text">空通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.5.</span> <span class="nav-text">select实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#select%E9%9A%8F%E6%9C%BA%E6%80%A7"><span class="nav-number">2.5.1.</span> <span class="nav-text">select随机性</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -539,12 +601,12 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">100k</span>
+    <span title="Symbols count total">101k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:31</span>
+    <span title="Reading time total">1:32</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
