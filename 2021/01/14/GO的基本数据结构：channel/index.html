@@ -30,7 +30,7 @@
 <meta property="og:description" content="解析go语言，go的基本数据结构 channel">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-14T09:09:00.000Z">
-<meta property="article:modified_time" content="2021-01-18T12:23:58.015Z">
+<meta property="article:modified_time" content="2021-01-20T03:01:21.556Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-18 20:23:58" itemprop="dateModified" datetime="2021-01-18T20:23:58+08:00">2021-01-18</time>
+                <time title="Modified: 2021-01-20 11:01:21" itemprop="dateModified" datetime="2021-01-20T11:01:21+08:00">2021-01-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,14 +241,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>5.8k</span>
+              <span>6.1k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>5 mins.</span>
+              <span>6 mins.</span>
             </span>
             <div class="post-description">解析go语言，go的基本数据结构 channel</div>
 
@@ -426,6 +426,15 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
 <p>1.每个select都对应一个Select结构体</p>
 <p>2.在Select数据结构中有个Scase数组，记录下了每一个case，而Scase中包含了Hchan。</p>
 <p>3.然后pollorder数组将元素随机排列，将Scase乱序</p>
+<h2 id="CSP模型"><a href="#CSP模型" class="headerlink" title="CSP模型"></a>CSP模型</h2><p>用于描述两个独立的并发实体通过共享的通讯 channel(管道)进行通信的并发模型</p>
+<p>golang 通过goroutine和channel实现</p>
+<p>Goroutine 是实际并发执行的实体，底层是使用协程(coroutine)实现并发，coroutine是一种运行在用户态的用户线程</p>
+<p>1.用户空间 避免了内核态和用户态的切换导致的成本</p>
+<p>2.可以由语言和框架层进行调度</p>
+<p>3.更小的栈空间允许创建大量的实例</p>
+<p>channel 是被单独创建并且可以在进程之间传递，它的通信模式类似于 boss-worker 模式的</p>
+<p>一个实体通过将消息发送到channel 中，然后又监听这个 channel 的实体处理，两个实体之间是匿名的，这个就实现实体中间的解耦</p>
+<p>其中 channel 是同步的一个消息被发送到 channel 中，最终是一定要被另外的实体消费掉的，在实现原理上其实是一个阻塞的消息队列</p>
 
     </div>
 
@@ -524,7 +533,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">channel实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#channel%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">channel状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel%E4%B8%8E%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲channel与非缓冲channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.1.</span> <span class="nav-text">非缓冲channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.2.</span> <span class="nav-text">缓冲channel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine%E6%B3%84%E9%9C%B2"><span class="nav-number">1.3.</span> <span class="nav-text">goroutine泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cap%E5%92%8Clen"><span class="nav-number">1.4.</span> <span class="nav-text">cap和len</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#range"><span class="nav-number">1.5.</span> <span class="nav-text">range</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-number">1.6.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.7.</span> <span class="nav-text">并发循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-gorountine-%E9%80%80%E5%87%BA"><span class="nav-number">1.8.</span> <span class="nav-text">关于 gorountine 退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close%E5%85%B3%E9%97%AD"><span class="nav-number">1.9.</span> <span class="nav-text">close关闭</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">channel原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">读写操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E"><span class="nav-number">2.3.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E9%80%9A%E9%81%93"><span class="nav-number">2.4.</span> <span class="nav-text">空通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.5.</span> <span class="nav-text">select实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#select%E9%9A%8F%E6%9C%BA%E6%80%A7"><span class="nav-number">2.5.1.</span> <span class="nav-text">select随机性</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">channel实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#channel%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">channel状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel%E4%B8%8E%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲channel与非缓冲channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.1.</span> <span class="nav-text">非缓冲channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.2.</span> <span class="nav-text">缓冲channel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine%E6%B3%84%E9%9C%B2"><span class="nav-number">1.3.</span> <span class="nav-text">goroutine泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cap%E5%92%8Clen"><span class="nav-number">1.4.</span> <span class="nav-text">cap和len</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#range"><span class="nav-number">1.5.</span> <span class="nav-text">range</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-number">1.6.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.7.</span> <span class="nav-text">并发循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-gorountine-%E9%80%80%E5%87%BA"><span class="nav-number">1.8.</span> <span class="nav-text">关于 gorountine 退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close%E5%85%B3%E9%97%AD"><span class="nav-number">1.9.</span> <span class="nav-text">close关闭</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">channel原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">读写操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E"><span class="nav-number">2.3.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E9%80%9A%E9%81%93"><span class="nav-number">2.4.</span> <span class="nav-text">空通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.5.</span> <span class="nav-text">select实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#select%E9%9A%8F%E6%9C%BA%E6%80%A7"><span class="nav-number">2.5.1.</span> <span class="nav-text">select随机性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSP%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">CSP模型</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -601,12 +610,12 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">101k</span>
+    <span title="Symbols count total">102k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:32</span>
+    <span title="Reading time total">1:33</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
