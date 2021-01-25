@@ -30,7 +30,7 @@
 <meta property="og:description" content="较大分组位置">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-05T09:52:00.000Z">
-<meta property="article:modified_time" content="2021-01-05T10:34:19.508Z">
+<meta property="article:modified_time" content="2021-01-25T12:59:31.839Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -215,10 +215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-01-05 17:52:00 / Modified: 18:34:19" itemprop="dateCreated datePublished" datetime="2021-01-05T17:52:00+08:00">2021-01-05</time>
+              <time title="Created: 2021-01-05 17:52:00" itemprop="dateCreated datePublished" datetime="2021-01-05T17:52:00+08:00">2021-01-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-01-25 20:59:31" itemprop="dateModified" datetime="2021-01-25T20:59:31+08:00">2021-01-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>312</span>
+              <span>460</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -260,11 +266,15 @@
 <p>分组可以用区间 [start, end] 表示，其中 start 和 end 分别表示该分组的起始和终止位置的下标。上例中的 “xxxx” 分组用区间表示为 [3,6] 。</p>
 <p>我们称所有包含大于或等于三个连续字符的分组为 较大分组 。</p>
 <p>找到每一个 较大分组 的区间，按起始位置下标递增顺序排序后，返回结果</p>
-<h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def largeGroupPositions(self, <span class="attr">s</span>: str) -&gt; List[List[int]]:</span><br><span class="line">        res = []</span><br><span class="line">        num = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> index, i <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            a = s[index + <span class="number">1</span>] <span class="keyword">if</span> index + <span class="number">1</span> &lt; len(s) <span class="keyword">else</span> <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">if</span> s[index] == a:</span><br><span class="line">                num += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> num &gt;= <span class="number">3</span>:</span><br><span class="line">                    res.append([index - num + <span class="number">1</span>, index])</span><br><span class="line">                num = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def largeGroupPositions(self, <span class="attr">s</span>: str) -&gt; List[List[int]]:</span><br><span class="line">        res = []</span><br><span class="line">        num = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> index, i <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            a = s[index + <span class="number">1</span>] <span class="keyword">if</span> index + <span class="number">1</span> &lt; len(s) <span class="keyword">else</span> <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">if</span> s[index] == a:</span><br><span class="line">                num += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> num &gt;= <span class="number">3</span>:</span><br><span class="line">                    res.append([index - num + <span class="number">1</span>, index])</span><br><span class="line">                num = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
 
-<p>时间复杂度：O(n)，其中 nn 是字符串的长度。我们只需要遍历一次该数组。</p>
+<h4 id="go"><a href="#go" class="headerlink" title="go"></a>go</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">func largeGroupPositions(s string) [][]int &#123;</span><br><span class="line">    num := <span class="number">1</span></span><br><span class="line">    <span class="keyword">var</span> res [][]int</span><br><span class="line">    <span class="keyword">for</span> index, <span class="attr">i</span> := range s &#123;</span><br><span class="line">        <span class="keyword">var</span> next string</span><br><span class="line">        <span class="keyword">if</span> index + <span class="number">1</span> &lt; <span class="function"><span class="title">len</span>(<span class="params">s</span>)</span> &#123;</span><br><span class="line">            next = string(s[index + <span class="number">1</span>])</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> string(i) == next &#123;</span><br><span class="line">            num += <span class="number">1</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> num &gt;= <span class="number">3</span> &#123;</span><br><span class="line">                res = append(res, []int&#123;index - num + <span class="number">1</span>, index&#125;)</span><br><span class="line">            &#125;</span><br><span class="line">            num = <span class="number">1</span></span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>时间复杂度：O(n)，其中 n 是字符串的长度。我们只需要遍历一次该数组。</p>
 <p>空间复杂度：O(1)。我们只需要常数的空间来保存若干变量，注意返回值不计入空间复杂度。</p>
-
+<h3 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h3><p>通过两个指针指向窗口的首端和尾端。<br>通过尾端的不断确定相同元素，进行窗口尾端向右移动。<br>如果尾端元素与首端元素不同，则说明达到窗口的最大值，则查看窗口内元素是否达到3，如果达到3则记录。最后将窗口首端直接移动到与尾端相同位置(有KMP记忆的思想)。<br>当两个指针都达到末端则结束</p>
+<h4 id="go-1"><a href="#go-1" class="headerlink" title="go"></a>go</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">func largeGroupPositions(s string) [][]int &#123;</span><br><span class="line">    cur, <span class="attr">next</span> := <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> res [][]int</span><br><span class="line">    <span class="keyword">if</span> len(s) &lt;= <span class="number">2</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> next &gt;= <span class="function"><span class="title">len</span>(<span class="params">s</span>)</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>  next &lt; <span class="function"><span class="title">len</span>(<span class="params">s</span>)</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> s[cur] == s[next] &#123;</span><br><span class="line">                    next++</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> next - cur &gt;= <span class="number">3</span> &#123;</span><br><span class="line">            res = append(res, []int&#123;cur, next-<span class="number">1</span>&#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        cur = next      </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -365,7 +375,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.</span> <span class="nav-text">for循环</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.</span> <span class="nav-text">for循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">1.0.1.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go"><span class="nav-number">1.0.2.</span> <span class="nav-text">go</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="nav-number">1.1.</span> <span class="nav-text">滑动窗口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-1"><span class="nav-number">1.1.1.</span> <span class="nav-text">go</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -442,7 +452,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">106k</span>
+    <span title="Symbols count total">107k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

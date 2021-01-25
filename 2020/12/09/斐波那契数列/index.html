@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://zypuu.com/2020/12/09/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/2.png">
 <meta property="og:image" content="http://zypuu.com/2020/12/09/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/3.png">
 <meta property="article:published_time" content="2020-12-09T03:10:00.000Z">
-<meta property="article:modified_time" content="2020-12-22T12:49:16.882Z">
+<meta property="article:modified_time" content="2021-01-25T06:38:54.587Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -227,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-22 20:49:16" itemprop="dateModified" datetime="2020-12-22T20:49:16+08:00">2020-12-22</time>
+                <time title="Modified: 2021-01-25 14:38:54" itemprop="dateModified" datetime="2021-01-25T14:38:54+08:00">2021-01-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -282,13 +282,13 @@
 <p>用常数作辅助中间变量，时间复杂度为O(n),空间复杂度为(1)</p>
 <p>该方法适用于n比较小的时候，n比较大的时候，复杂度就会比较高</p>
 <h3 id="递归方法"><a href="#递归方法" class="headerlink" title="递归方法"></a>递归方法</h3><h4 id="直接递归"><a href="#直接递归" class="headerlink" title="直接递归"></a>直接递归</h4><p>直接利用斐波那契公式即可</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func Fib(i int) int &#123;</span><br><span class="line">	<span class="keyword">if</span> i &lt; <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> i</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Fib(i-<span class="number">1</span>) + Fib(i-<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func Fib(i int) int &#123;</span><br><span class="line">	<span class="keyword">if</span> i &lt;= <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> i</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Fib(i-<span class="number">1</span>) + Fib(i-<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>递归方法虽然可以得到斐波那契数列，但是分析它的时间复杂度，</p>
 <p>画出递归树(状态树)</p>
 <p><img src="/2020/12/09/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/1.png" alt="1"></p>
 <p>直接递归的时间复杂度是2^n次方<br>空间复杂度为递归深度是O(n)<br>可以发现有很多重复的计算部分，有些结果不只计算了一次</p>
 <h4 id="记忆化递归"><a href="#记忆化递归" class="headerlink" title="记忆化递归"></a>记忆化递归</h4><p>将中间结果进行缓存,可以加速程序执行</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = map[int]int&#123;<span class="number">1</span>:<span class="number">1</span>,<span class="number">2</span>:<span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line">func Fib(n int, c map[int]int) int &#123;</span><br><span class="line">  <span class="keyword">if</span> _, <span class="attr">ok</span> := a[n]; !ok &#123;</span><br><span class="line">    a[n] = Fib(n-<span class="number">1</span>, a) + Fib(n-<span class="number">2</span>, a)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a[n]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = map[int]int&#123;<span class="number">1</span>:<span class="number">1</span>,<span class="number">2</span>:<span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line">func Fib(n int, a map[int]int) int &#123;</span><br><span class="line">  <span class="keyword">if</span> _, <span class="attr">ok</span> := a[n]; !ok &#123;</span><br><span class="line">    a[n] = Fib(n-<span class="number">1</span>, a) + Fib(n-<span class="number">2</span>, a)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a[n]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>申请了一块长度为n的map<br>所以<br>时间复杂度:O(n)<br>空间复杂度:O(n)<br>相比直接递归，缩短了程序执行时间</p>
 <h2 id="最小花费爬楼梯"><a href="#最小花费爬楼梯" class="headerlink" title="最小花费爬楼梯"></a>最小花费爬楼梯</h2><p>数组的每个索引作为一个阶梯，第 i个阶梯对应着一个非负数的体力花费值 cost<a href="%E7%B4%A2%E5%BC%95%E4%BB%8E0%E5%BC%80%E5%A7%8B">i</a>。</p>
 <p>每当你爬上一个阶梯你都要花费对应的体力花费值，然后你可以选择继续爬一个阶梯或者爬两个阶梯。</p>
@@ -497,7 +497,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">106k</span>
+    <span title="Symbols count total">107k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
