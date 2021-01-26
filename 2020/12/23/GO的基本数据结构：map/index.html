@@ -31,7 +31,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://zypuu.com/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png">
 <meta property="article:published_time" content="2020-12-23T08:14:22.000Z">
-<meta property="article:modified_time" content="2020-12-24T08:26:01.674Z">
+<meta property="article:modified_time" content="2021-01-26T07:54:42.671Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-24 16:26:01" itemprop="dateModified" datetime="2020-12-24T16:26:01+08:00">2020-12-24</time>
+                <time title="Modified: 2021-01-26 15:54:42" itemprop="dateModified" datetime="2021-01-26T15:54:42+08:00">2021-01-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,7 +243,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.3k</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -298,7 +298,15 @@
 <p>PS：用 map 做缓存，而每次更新只是部分更新，更新的 key 如果偏差比较大，有可能会有内存逐渐增长而不释放的问题</p>
 <h2 id="map的性能思考，调优"><a href="#map的性能思考，调优" class="headerlink" title="map的性能思考，调优"></a>map的性能思考，调优</h2><p>1.hashmap中存的是buckets数组，而不是指针，存数组的好处：可以一次性分配更多内存，减少分配次数，避免多次gc<br>缺点就是，扩容时会对整个数组的值拷贝，而不是指针，代价相比指针较大</p>
 <p>2.bucket的kv优化，如果kv小于128字节，则存的是kv值，否则kv就是指向真实kv数据的指针</p>
+<h2 id="map的并发安全"><a href="#map的并发安全" class="headerlink" title="map的并发安全"></a>map的并发安全</h2><p>map的相关操作并不是协程安全的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">c := make(map[string]string)</span><br><span class="line">wg := sync.WaitGroup&#123;&#125;</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">    wg.Add(<span class="number">1</span>)</span><br><span class="line">    go <span class="function"><span class="title">func</span>(<span class="params">n int</span>)</span> &#123;</span><br><span class="line">        k, <span class="attr">v</span> := strconv.Itoa(n), strconv.Itoa(n)</span><br><span class="line">        c[k] = v</span><br><span class="line">        wg.Done()</span><br><span class="line">    &#125;(i)</span><br><span class="line">&#125;</span><br><span class="line">wg.Wait()</span><br><span class="line">fmt.Println(c)</span><br></pre></td></tr></table></figure>
 
+<p>以上操作会触发协程安全错误</p>
+<p>加锁</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">c := make(map[string]string)</span><br><span class="line">wg := sync.WaitGroup&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> lock sync.Mutex</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">    wg.Add(<span class="number">1</span>)</span><br><span class="line">    go <span class="function"><span class="title">func</span>(<span class="params">n int</span>)</span> &#123;</span><br><span class="line">        k, <span class="attr">v</span> := strconv.Itoa(n), strconv.Itoa(n)</span><br><span class="line">        lock.Lock()</span><br><span class="line">        c[k] = v</span><br><span class="line">        lock.Unlock()</span><br><span class="line">        wg.Done()</span><br><span class="line">    &#125;(i)</span><br><span class="line">&#125;</span><br><span class="line">wg.Wait()</span><br><span class="line">fmt.Println(c)</span><br></pre></td></tr></table></figure>
+
+<p>sync.Map官方包</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> m sync.Map</span><br><span class="line"></span><br><span class="line"><span class="comment">//写</span></span><br><span class="line">m.Store(<span class="string">&quot;foo&quot;</span>, <span class="string">&quot;hello world&quot;</span>)</span><br><span class="line">m.Store(<span class="string">&quot;slice&quot;</span>, []int&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;)</span><br><span class="line">m.Store(<span class="string">&quot;int&quot;</span>, <span class="number">123</span>)</span><br><span class="line"><span class="comment">//读</span></span><br><span class="line">m.Load(<span class="string">&quot;foo&quot;</span>)</span><br><span class="line">m.Load(<span class="string">&quot;slice&quot;</span>)</span><br><span class="line">m.Load(<span class="string">&quot;int&quot;</span>)</span><br><span class="line"><span class="comment">//删</span></span><br><span class="line">m.Delete(<span class="string">&quot;int&quot;</span>)</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -399,7 +407,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">基本数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E5%A2%9E%E9%87%8F%E6%89%A9%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">map的增量扩容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">map的查找过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%8F%92%E5%85%A5%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">map的插入过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E5%88%A0%E9%99%A4%E8%BF%87%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">map的删除过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%85%E7%A9%BAmap"><span class="nav-number">5.1.</span> <span class="nav-text">清空map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%80%A7%E8%83%BD%E6%80%9D%E8%80%83%EF%BC%8C%E8%B0%83%E4%BC%98"><span class="nav-number">6.</span> <span class="nav-text">map的性能思考，调优</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">基本数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E5%A2%9E%E9%87%8F%E6%89%A9%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">map的增量扩容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">map的查找过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%8F%92%E5%85%A5%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">map的插入过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E5%88%A0%E9%99%A4%E8%BF%87%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">map的删除过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%85%E7%A9%BAmap"><span class="nav-number">5.1.</span> <span class="nav-text">清空map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E6%80%A7%E8%83%BD%E6%80%9D%E8%80%83%EF%BC%8C%E8%B0%83%E4%BC%98"><span class="nav-number">6.</span> <span class="nav-text">map的性能思考，调优</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E7%9A%84%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8"><span class="nav-number">7.</span> <span class="nav-text">map的并发安全</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -476,12 +484,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">107k</span>
+    <span title="Symbols count total">111k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:38</span>
+    <span title="Reading time total">1:40</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
