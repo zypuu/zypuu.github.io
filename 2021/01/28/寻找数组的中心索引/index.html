@@ -22,22 +22,20 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="算法基础，关于时间复杂度与空间复杂度的理解">
+  <meta name="description" content="寻找数组的中心索引，求和">
 <meta property="og:type" content="article">
-<meta property="og:title" content="时间复杂度与空间复杂度">
-<meta property="og:url" content="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/index.html">
+<meta property="og:title" content="寻找数组的中心索引">
+<meta property="og:url" content="http://zypuu.com/2021/01/28/%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="算法基础，关于时间复杂度与空间复杂度的理解">
+<meta property="og:description" content="寻找数组的中心索引，求和">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/1.png">
-<meta property="article:published_time" content="2020-12-08T10:14:00.000Z">
-<meta property="article:modified_time" content="2020-12-09T02:57:33.281Z">
+<meta property="article:published_time" content="2021-01-28T10:03:00.000Z">
+<meta property="article:modified_time" content="2021-01-28T10:15:54.047Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/1.png">
 
-<link rel="canonical" href="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+<link rel="canonical" href="http://zypuu.com/2021/01/28/%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/">
 
 
 <script id="page-configurations">
@@ -50,7 +48,7 @@
   };
 </script>
 
-  <title>时间复杂度与空间复杂度 | ALL-Nothing</title>
+  <title>寻找数组的中心索引 | ALL-Nothing</title>
   
 
 
@@ -195,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2021/01/28/%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -208,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          时间复杂度与空间复杂度
+          寻找数组的中心索引
         </h1>
 
         <div class="post-meta">
@@ -217,16 +215,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-12-08 18:14:00" itemprop="dateCreated datePublished" datetime="2020-12-08T18:14:00+08:00">2020-12-08</time>
+              <time title="Created: 2021-01-28 18:03:00 / Modified: 18:15:54" itemprop="dateCreated datePublished" datetime="2021-01-28T18:03:00+08:00">2021-01-28</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-09 10:57:33" itemprop="dateModified" datetime="2020-12-09T10:57:33+08:00">2020-12-09</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -243,7 +235,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>632</span>
+              <span>178</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -252,7 +244,7 @@
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
-            <div class="post-description">算法基础，关于时间复杂度与空间复杂度的理解</div>
+            <div class="post-description">寻找数组的中心索引，求和</div>
 
         </div>
       </header>
@@ -263,20 +255,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>算法：解决特定问题的步骤的描述<br>特性：<br>—输入：有零个输入或者多个输<br>—输出：只有一个或者多个输出<br>—有穷型性：算法在执行有限个步骤时，会自动结束而不会陷入无限循环里面<br>—确定性：算法的每一步都有确定的含义而不会出现二义性<br>—可行性：算法的每一步都可以通过有限次数完成。</p>
-<p>要求：<br>正确性、可读性、健壮性、时间效率高而且空间使用率低、简单性。<br>算法的复杂度分为时间复杂度和空间复杂度。</p>
-<h2 id="时间复杂度Big-O-Notation"><a href="#时间复杂度Big-O-Notation" class="headerlink" title="时间复杂度Big O Notation"></a>时间复杂度Big O Notation</h2><p>时间复杂度实际上是一个函数，代表基本操作重复执行的次数，进而分析函数虽变量的变化来确定数量级，数量级用O表示</p>
-<p>「 大O符号表示法 」，即 T(n) = O(f(n))</p>
-<p>其中f(n) 表示每行代码执行次数之和，而 O 表示正比例关系，这个公式的全称是：算法的渐进时间复杂度</p>
-<p>常见的时间复杂度量级有：</p>
-<p>常数阶O(1)<br>对数阶O(logN)<br>线性阶O(n)<br>线性对数阶O(nlogN)<br>平方阶O(n²)<br>立方阶O(n³)<br>K次方阶O(n^k)<br>指数阶(2^n)</p>
-<p>PS： 并列运行的为同级复杂度</p>
-<p><img src="/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/1.png" alt="1"></p>
-<h2 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h2><p>是对一个算法在运行过程中临时占用存储空间的度量，一个算法在计算机存储器上所占用的存储空间包括存储算法本身所占用的空间，算数和输入输出所占用的存储空间以及临时占用存储空间三个部分。</p>
-<p>算法的输入输出数据所占用的存储空间是由待解决的问题来决定的，通过参数表由调用函数而来，它随本算法的不同而改变，存储算法本身所占用的存储空间有算法的书写长短成正比。算法在运行过程中占用的临时空间由不同的算法决定。</p>
-<p>1、数组</p>
-<p>2、递归深度</p>
+        <p>给你一个整数数组 nums，请编写一个能够返回数组 “中心索引” 的方法。</p>
+<p>数组 中心索引 是数组的一个索引，其左侧所有元素相加的和等于右侧所有元素相加的和。</p>
+<p>如果数组不存在中心索引，返回 -1 。如果数组有多个中心索引，应该返回最靠近左边的那一个。</p>
+<p>注意：中心索引可能出现在数组的两端。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">input = [<span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">res = <span class="number">3</span></span><br></pre></td></tr></table></figure>
 
+<p>直接遍历解法，两边求和</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">func pivotIndex(nums []int) int &#123;</span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;len(nums);i++ &#123;</span><br><span class="line">        leftRes, <span class="attr">rightRes</span> := <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> i &gt; <span class="number">0</span>&#123;</span><br><span class="line">            <span class="keyword">for</span> _, <span class="attr">j</span> := range nums[:i] &#123;</span><br><span class="line">                leftRes += j</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> i &lt; len(nums) - <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> _, <span class="attr">k</span> := range nums[i:] &#123;</span><br><span class="line">                rightRes += k</span><br><span class="line">            &#125;</span><br><span class="line">            rightRes -= nums[i]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> leftRes == rightRes &#123;</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优化：总和是不变的，先求一遍总和，然后只求一边的和，得到另一边的和</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">func pivotIndex(nums []int) int &#123;</span><br><span class="line">    sum := <span class="number">0</span></span><br><span class="line">    <span class="comment">// 先算总和</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;len(nums);i++ &#123;</span><br><span class="line">        sum += nums[i]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    leftRes := <span class="number">0</span></span><br><span class="line">    <span class="comment">// 循环遍历求左边的和</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;len(nums);i++ &#123;</span><br><span class="line">    	<span class="comment">// 不计算当前值</span></span><br><span class="line">        <span class="keyword">if</span>  i &gt; <span class="number">0</span> &#123;</span><br><span class="line">            leftRes += nums[i-<span class="number">1</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 计算右边的和时候减去当前值</span></span><br><span class="line">        <span class="keyword">if</span> leftRes == sum - leftRes - nums[i] &#123;</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -291,7 +280,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://zypuu.com/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" title="时间复杂度与空间复杂度">http://zypuu.com/2020/12/08/时间复杂度与空间复杂度/</a>
+    <a href="http://zypuu.com/2021/01/28/%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/" title="寻找数组的中心索引">http://zypuu.com/2021/01/28/寻找数组的中心索引/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -311,13 +300,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/" rel="prev" title="关于Linux buff/cache缓存处理">
-      <i class="fa fa-chevron-left"></i> 关于Linux buff/cache缓存处理
+    <a href="/2021/01/28/%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/" rel="prev" title="两两交换链表中的节点">
+      <i class="fa fa-chevron-left"></i> 两两交换链表中的节点
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/09/%E6%B1%82%E5%92%8C%E8%AE%A1%E7%AE%97%E7%B4%AF%E5%8A%A0/" rel="next" title="求和计算累加">
-      求和计算累加 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -377,7 +363,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6Big-O-Notation"><span class="nav-number">2.</span> <span class="nav-text">时间复杂度Big O Notation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">3.</span> <span class="nav-text">空间复杂度</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
