@@ -22,20 +22,20 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="python实现冒泡排序，Bubble Sort">
+  <meta name="description" content="最小栈">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于Python的冒泡排序">
-<meta property="og:url" content="http://zypuu.com/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:title" content="最小栈">
+<meta property="og:url" content="http://zypuu.com/2021/02/01/%E6%9C%80%E5%B0%8F%E6%A0%88/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="python实现冒泡排序，Bubble Sort">
+<meta property="og:description" content="最小栈">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2018-06-26T12:21:03.000Z">
-<meta property="article:modified_time" content="2020-12-08T10:15:52.142Z">
+<meta property="article:published_time" content="2021-02-01T08:48:00.000Z">
+<meta property="article:modified_time" content="2021-02-01T09:10:33.715Z">
 <meta property="article:author" content="ZYP">
-<meta property="article:tag" content="排序">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://zypuu.com/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+<link rel="canonical" href="http://zypuu.com/2021/02/01/%E6%9C%80%E5%B0%8F%E6%A0%88/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>关于Python的冒泡排序 | ALL-Nothing</title>
+  <title>最小栈 | ALL-Nothing</title>
   
 
 
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2021/02/01/%E6%9C%80%E5%B0%8F%E6%A0%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -206,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于Python的冒泡排序
+          最小栈
         </h1>
 
         <div class="post-meta">
@@ -215,16 +215,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2018-06-26 20:21:03" itemprop="dateCreated datePublished" datetime="2018-06-26T20:21:03+08:00">2018-06-26</time>
+              <time title="Created: 2021-02-01 16:48:00 / Modified: 17:10:33" itemprop="dateCreated datePublished" datetime="2021-02-01T16:48:00+08:00">2021-02-01</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-08 18:15:52" itemprop="dateModified" datetime="2020-12-08T18:15:52+08:00">2020-12-08</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -241,7 +235,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>396</span>
+              <span>181</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -250,7 +244,7 @@
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
-            <div class="post-description">python实现冒泡排序，Bubble Sort</div>
+            <div class="post-description">最小栈</div>
 
         </div>
       </header>
@@ -261,17 +255,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>冒泡排序的思想: 每次比较两个相邻的元素, 如果他们的顺序错误就把他们交换位置。<br>比如有五个数: 12, 35, 99, 18, 76, 从大到小排序, 对相邻的两位进行比较</p>
-<p>第一趟:<br>第一次比较: 35, 12, 99, 18, 76<br>第二次比较: 35, 99, 12, 18, 76<br>第三次比较: 35, 99, 18, 12, 76<br>第四次比较: 35, 99, 18, 76, 12<br>经过第一趟比较后, 五个数中最小的数已经在最后面了, 接下来只比较前四个数, 依次类推</p>
-<p>第二趟<br>99, 35, 76, 18, 12<br>第三趟<br>99, 76, 35, 18, 12<br>第四趟<br>99, 76, 35, 18, 12<br>比较完成<br>冒泡排序原理: 每一趟只能将一个数归位, 如果有n个数进行排序,只需将n-1个数归位, 也就是说要进行n-1趟操作(已经归位的数不用再比较)</p>
-<h2 id="代码实现一"><a href="#代码实现一" class="headerlink" title="代码实现一"></a>代码实现一</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">l1 = [<span class="number">8</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">l2=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> l1[j]&lt;l1[j-<span class="number">1</span>]:</span><br><span class="line">            l1[j],l1[j-<span class="number">1</span>]=l1[j-<span class="number">1</span>],l1[j]</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    l2.append(l1[k])</span><br><span class="line">print(l2)</span><br></pre></td></tr></table></figure>
-<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><ol>
-<li>第一层循环可不用循环所有元素。</li>
-</ol>
-<p>2.两层循环变量与第一层的循环变量相关联。</p>
-<p>3.第二层循环，最终必须循环集合内所有元素。</p>
-<h2 id="代码实现二"><a href="#代码实现二" class="headerlink" title="代码实现二"></a>代码实现二</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">l1 = [<span class="number">8</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">l2=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)-<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> l1[j]&lt;l1[j-<span class="number">1</span>]:</span><br><span class="line">            l1[j],l1[j-<span class="number">1</span>]=l1[j-<span class="number">1</span>],l1[j]</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>,len(l1)):</span><br><span class="line">    l2.append(l1[k])</span><br><span class="line">print(l2)</span><br></pre></td></tr></table></figure>
+        <p>设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。</p>
+<p>push(x) —— 将元素 x 推入栈中。<br>pop() —— 删除栈顶的元素。<br>top() —— 获取栈顶元素。<br>getMin() —— 检索栈中的最小元素。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">type MinStack struct &#123;</span><br><span class="line">    Val        []int</span><br><span class="line">    Min        int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** initialize your data structure here. */</span></span><br><span class="line">func Constructor() MinStack &#123;</span><br><span class="line">    <span class="keyword">return</span> MinStack&#123;<span class="attr">Val</span>: []int&#123;&#125;, <span class="attr">Min</span>: <span class="number">0</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) <span class="function"><span class="title">Push</span>(<span class="params">x int</span>)</span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> x &lt; <span class="built_in">this</span>.GetMin() || len(<span class="built_in">this</span>.Val) == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.Min = x</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">this</span>.Val = append(<span class="built_in">this</span>.Val, x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) <span class="function"><span class="title">Pop</span>(<span class="params"></span>)</span>  &#123;</span><br><span class="line">    top := <span class="built_in">this</span>.Top()</span><br><span class="line">    <span class="built_in">this</span>.Val = <span class="built_in">this</span>.Val[:len(<span class="built_in">this</span>.Val)-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> top &gt; <span class="built_in">this</span>.Min &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">this</span>.Min = <span class="built_in">this</span>.Top()</span><br><span class="line">    <span class="keyword">for</span> _, <span class="attr">v</span> := range <span class="built_in">this</span>.Val &#123;</span><br><span class="line">        <span class="keyword">if</span> v &lt; <span class="built_in">this</span>.Min &#123;</span><br><span class="line">            <span class="built_in">this</span>.Min = v</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) Top() int &#123;</span><br><span class="line">    <span class="keyword">if</span> len(<span class="built_in">this</span>.Val) &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.Val[len(<span class="built_in">this</span>.Val)-<span class="number">1</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) GetMin() int &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.Min</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your MinStack object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * obj := Constructor();</span></span><br><span class="line"><span class="comment"> * obj.Push(x);</span></span><br><span class="line"><span class="comment"> * obj.Pop();</span></span><br><span class="line"><span class="comment"> * param_3 := obj.Top();</span></span><br><span class="line"><span class="comment"> * param_4 := obj.GetMin();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 
+<p>维护一个最小值变量，min，push和pop的时候更新min，获取直接返回，但是pop的复杂度不为O(1)了</p>
+<p>优化： 空间换时间，每个元素都维护一个最小值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">type MinStack struct &#123;</span><br><span class="line">    s []Node</span><br><span class="line">&#125;</span><br><span class="line">type Node struct &#123;</span><br><span class="line">	d int <span class="comment">//data</span></span><br><span class="line">	m int <span class="comment">//current min</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 维护两个结构体，一个栈，一个值，每个值都加上当前最小值这个元素</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** initialize your data structure here. */</span></span><br><span class="line">func Constructor() MinStack &#123;</span><br><span class="line">   <span class="keyword">return</span> MinStack&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) <span class="function"><span class="title">Push</span>(<span class="params">x int</span>)</span>  &#123;</span><br><span class="line">	<span class="comment">// 设置最小值</span></span><br><span class="line">	d := Node&#123;<span class="attr">d</span>:x,<span class="attr">m</span>:x&#125;</span><br><span class="line">	<span class="comment">// 如果当前栈里有值了，则进行最小值比较，更新最小值</span></span><br><span class="line">	<span class="comment">// 也就是说新加入的元素，栈顶元素保存的最小值就是当前最小的</span></span><br><span class="line">	<span class="keyword">if</span> len(<span class="built_in">this</span>.s)&gt;<span class="number">0</span> &amp;&amp;<span class="built_in">this</span>.s[len(<span class="built_in">this</span>.s)-<span class="number">1</span>].m&lt; x&#123;</span><br><span class="line">		d.m=<span class="built_in">this</span>.s[len(<span class="built_in">this</span>.s)-<span class="number">1</span>].m</span><br><span class="line">	&#125;</span><br><span class="line">     <span class="built_in">this</span>.s = append(<span class="built_in">this</span>.s,d)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) <span class="function"><span class="title">Pop</span>(<span class="params"></span>)</span>  &#123;</span><br><span class="line">	<span class="built_in">this</span>.s = <span class="built_in">this</span>.s[:len(<span class="built_in">this</span>.s)-<span class="number">1</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) Top() int &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">this</span>.s[len(<span class="built_in">this</span>.s)-<span class="number">1</span>].d</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (<span class="built_in">this</span> *MinStack) GetMin() int &#123;</span><br><span class="line">	<span class="comment">// 获取最小值只需要返回栈顶保存的最小值</span></span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">this</span>.s[len(<span class="built_in">this</span>.s)-<span class="number">1</span>].m</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -286,7 +276,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://zypuu.com/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" title="关于Python的冒泡排序">http://zypuu.com/2018/06/26/关于Python的冒泡排序/</a>
+    <a href="http://zypuu.com/2021/02/01/%E6%9C%80%E5%B0%8F%E6%A0%88/" title="最小栈">http://zypuu.com/2021/02/01/最小栈/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/theme-next-three" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -297,7 +287,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag"><i class="fa fa-tag"></i> 排序</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
           </div>
 
         
@@ -306,13 +296,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" rel="prev" title="关于Python的快速排序">
-      <i class="fa fa-chevron-left"></i> 关于Python的快速排序
+    <a href="/2021/02/01/%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9A%84%E4%BA%A4%E9%9B%86/" rel="prev" title="两个数组的交集">
+      <i class="fa fa-chevron-left"></i> 两个数组的交集
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2018/07/02/CKEditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/" rel="next" title="CKEditor富文本编辑器">
-      CKEditor富文本编辑器 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -372,7 +359,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E4%B8%80"><span class="nav-number">2.</span> <span class="nav-text">代码实现一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">注意点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E4%BA%8C"><span class="nav-number">4.</span> <span class="nav-text">代码实现二</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
