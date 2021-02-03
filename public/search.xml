@@ -309,6 +309,37 @@
       </tags>
   </entry>
   <entry>
+    <title>GO的make和new的区别</title>
+    <url>/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
+<p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<h2 id="new与make"><a href="#new与make" class="headerlink" title="new与make"></a>new与make</h2><h3 id="new"><a href="#new" class="headerlink" title="new"></a>new</h3><p>new 可以开辟一个内存，然后返回这个内存的地址。</p>
+<p>简单类型还可以初始化零值，int，string</p>
+<p>复杂类型也可以开辟内存，初始化的是nil</p>
+<p>nil的指针赋值会存在问题</p>
+<p>声明一个大小为5的数组，go会自动为数组的item初始化为零值，数组可以通过索引读取和赋值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">arr[<span class="number">0</span>], arr[<span class="number">1</span>] = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;1, 2, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果声明的是一个数组指针，即一个指针的类型是数组</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil)</span></span><br></pre></td></tr></table></figure>
+<p>初始化的值是nil，nil是不能赋值的</p>
+<p>我们可以new一块内存地址出来，赋给指针，这个指针取值就可以赋值了</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil) </span></span><br><span class="line"></span><br><span class="line">arrPot = <span class="keyword">new</span>([<span class="number">5</span>]int)</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">(*arrPot)[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;11, 0, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><p>array是虽然是复合类型，但不是引用类型。go中的引用类似是slice，map等</p>
+<p>声明一个map类型的变量，map不像array那样声明之后可以初始化成零值。go会给引用类型初始化为nil，nil是不能直接赋值的</p>
+<p>map不能用new去申请内存，用make，make不仅可以开辟一个内存，还能给这个内存的类型初始化其零值，同时返回这个内存实例</p>
+<p>make 也可以申请slice，channel</p>
+<p>申请slice： 三个参数，第一个基本结构类型，第二个长度，第三个容量<br>申请map：两个参数， 第一个基本结构，第二个容量、长度</p>
+<p>初始化需要提前申请好，防止发生扩容</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GO的context</title>
     <url>/2021/01/21/GO%E7%9A%84context/</url>
     <content><![CDATA[<h2 id="场景问题"><a href="#场景问题" class="headerlink" title="场景问题"></a>场景问题</h2><p>通过done channel 可以用于协程间通信，由主协程告知子协程取消，结束，终止任务等</p>
@@ -377,37 +408,6 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc) &#123;</span><br><span class="line">    <span class="keyword">return</span> WithDeadline(parent, time.Now().Add(timeout))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2>]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO的make和new的区别</title>
-    <url>/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
-<p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
-<h2 id="new与make"><a href="#new与make" class="headerlink" title="new与make"></a>new与make</h2><h3 id="new"><a href="#new" class="headerlink" title="new"></a>new</h3><p>new 可以开辟一个内存，然后返回这个内存的地址。</p>
-<p>简单类型还可以初始化零值，int，string</p>
-<p>复杂类型也可以开辟内存，初始化的是nil</p>
-<p>nil的指针赋值会存在问题</p>
-<p>声明一个大小为5的数组，go会自动为数组的item初始化为零值，数组可以通过索引读取和赋值。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">arr[<span class="number">0</span>], arr[<span class="number">1</span>] = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;1, 2, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果声明的是一个数组指针，即一个指针的类型是数组</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil)</span></span><br></pre></td></tr></table></figure>
-<p>初始化的值是nil，nil是不能赋值的</p>
-<p>我们可以new一块内存地址出来，赋给指针，这个指针取值就可以赋值了</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil) </span></span><br><span class="line"></span><br><span class="line">arrPot = <span class="keyword">new</span>([<span class="number">5</span>]int)</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">(*arrPot)[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;11, 0, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
-<h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><p>array是虽然是复合类型，但不是引用类型。go中的引用类似是slice，map等</p>
-<p>声明一个map类型的变量，map不像array那样声明之后可以初始化成零值。go会给引用类型初始化为nil，nil是不能直接赋值的</p>
-<p>map不能用new去申请内存，用make，make不仅可以开辟一个内存，还能给这个内存的类型初始化其零值，同时返回这个内存实例</p>
-<p>make 也可以申请slice，channel</p>
-<p>申请slice： 三个参数，第一个基本结构类型，第二个长度，第三个容量<br>申请map：两个参数， 第一个基本结构，第二个容量、长度</p>
-<p>初始化需要提前申请好，防止发生扩容</p>
-]]></content>
       <categories>
         <category>GO</category>
       </categories>
@@ -586,6 +586,9 @@
 <p><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/2.png" alt="2"></p>
 <p>因为string类型是不可变的，对于多字符串共享同一个存储数据是安全的。切分操作str[i:j]会得到一个新的2字长结构，一个可能不同的但仍指向同一个字节序列(即上文说的存储数据)的指针和长度数据。</p>
 <p>这意味着字符串切分可以在不涉及内存分配或复制操作。这使得字符串切分的效率等同于传递下标</p>
+<h3 id="string的遍历"><a href="#string的遍历" class="headerlink" title="string的遍历"></a>string的遍历</h3><p>要么string打印，要么fmt格式化输出，得到字符串，不然得到的是byte类型</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">fmt.Println(<span class="string">&quot;方法一  格式化打印&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch1</span> := range str &#123;</span><br><span class="line">      fmt.Printf(<span class="string">&quot;%q&quot;</span>,ch1) <span class="comment">//单引号围绕的字符字面值，由go语法安全的转义</span></span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(<span class="string">&quot;方法二  转化输出格式&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch2</span> := range str &#123;</span><br><span class="line">      fmt.Println(string(ch2))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h3 id="strings包常用操作"><a href="#strings包常用操作" class="headerlink" title="strings包常用操作"></a>strings包常用操作</h3><h4 id="Count-s-string-str-string-int"><a href="#Count-s-string-str-string-int" class="headerlink" title="Count(s string, str string) int"></a>Count(s string, str string) int</h4><p>计算字符串str在s中的非重叠个数。如果str为空串则返回s中的字符（非字节）个数+1。</p>
 <h4 id="Index-s-string-str-string-int"><a href="#Index-s-string-str-string-int" class="headerlink" title="Index(s string, str string) int"></a>Index(s string, str string) int</h4><p>返回子串str在字符串s中第一次出现的位置。如果找不到则返回-1；如果str为空，则返回0。</p>
 <h4 id="LastIndex-s-string-str-string-int"><a href="#LastIndex-s-string-str-string-int" class="headerlink" title="LastIndex(s string, str string) int"></a>LastIndex(s string, str string) int</h4><p>返回子串str在字符串s中最后一次出现的位置。如果找不到则返回-1；如果str为空则返回字符串s的长度。</p>
