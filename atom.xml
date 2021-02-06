@@ -6,7 +6,7 @@
   <link href="http://zypuu.com/atom.xml" rel="self"/>
   
   <link href="http://zypuu.com/"/>
-  <updated>2021-02-04T09:06:08.771Z</updated>
+  <updated>2021-02-06T01:49:46.634Z</updated>
   <id>http://zypuu.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>二叉树的最大深度</title>
+    <link href="http://zypuu.com/2021/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/"/>
+    <id>http://zypuu.com/2021/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/</id>
+    <published>2021-02-06T00:45:00.000Z</published>
+    <updated>2021-02-06T01:49:46.634Z</updated>
+    
+    <content type="html"><![CDATA[<p>给定一个二叉树，找出其最大深度。</p><p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。</p><p>说明: 叶子节点是指没有子节点的节点</p><h3 id="深度优先"><a href="#深度优先" class="headerlink" title="深度优先"></a>深度优先</h3><p>递归方式</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func maxDepth(root *TreeNode) int &#123;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max(maxDepth(root.Left), maxDepth(root.Right)) + <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func max(a, b int) int &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>通过递归的方式，深度优先搜索，如果知道了左子树，右子树的最大深度，l,r</p><p>则树的最大深度是max(l,r)+1</p><p>时间on<br>空间o高度</p><h3 id="广度优先"><a href="#广度优先" class="headerlink" title="广度优先"></a>广度优先</h3><p>遍历方式</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">func maxDepth(root *TreeNode) int &#123;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 队列，并加入第一个节点</span></span><br><span class="line">    queue := []*TreeNode&#123;&#125;</span><br><span class="line">    queue = append(queue, root)</span><br><span class="line">    ans := <span class="number">0</span></span><br><span class="line">    <span class="comment">// 遍历队列</span></span><br><span class="line">    <span class="keyword">for</span> len(queue) &gt; <span class="number">0</span> &#123;</span><br><span class="line">    <span class="comment">// 获取当前队列长度，第一层是1</span></span><br><span class="line">        sz := len(queue)</span><br><span class="line">        <span class="comment">// 遍历，出队，长度减1，第一层遍历完，结果加一</span></span><br><span class="line">        <span class="keyword">for</span> sz &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="comment">// 将树的每一层，都放进队列</span></span><br><span class="line">            node := queue[<span class="number">0</span>]</span><br><span class="line">            <span class="comment">// 队列先进先出</span></span><br><span class="line">            queue = queue[<span class="number">1</span>:]</span><br><span class="line">            <span class="comment">// 将队列的左右儿子加入，也就是下一层</span></span><br><span class="line">            <span class="keyword">if</span> node.Left != nil &#123;</span><br><span class="line">                queue = append(queue, node.Left)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> node.Right != nil &#123;</span><br><span class="line">                queue = append(queue, node.Right)</span><br><span class="line">            &#125;</span><br><span class="line">            sz--</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 结果加一，上一层遍历完，sz=0，队列加入了下一层的值，继续遍历下一层</span></span><br><span class="line">        ans++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">关于二叉树的最大深度</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>栈和队列</title>
@@ -412,27 +433,6 @@
     
     
     <category term="GO" scheme="http://zypuu.com/tags/GO/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>有效括号</title>
-    <link href="http://zypuu.com/2020/12/29/%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/"/>
-    <id>http://zypuu.com/2020/12/29/%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/</id>
-    <published>2020-12-29T07:16:00.000Z</published>
-    <updated>2020-12-29T07:25:39.664Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串，判断字符串是否有效。</p><p>有效字符串需满足：</p><p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。<br>注意空字符串可被认为是有效字符串。</p><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def isValid(self, <span class="attr">s</span>: str) -&gt; bool:</span><br><span class="line">        <span class="keyword">if</span> s == <span class="string">&quot;&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        <span class="keyword">if</span> len(s) % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> False</span><br><span class="line">        a = [<span class="string">&quot;?&quot;</span>]</span><br><span class="line">        dic = &#123;<span class="string">&quot;)&quot;</span>: <span class="string">&quot;(&quot;</span>, <span class="string">&quot;]&quot;</span>: <span class="string">&quot;[&quot;</span>, <span class="string">&quot;&#125;&quot;</span>: <span class="string">&quot;&#123;&quot;</span>, <span class="string">&quot;?&quot;</span>: <span class="string">&quot;?&quot;</span>&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> i == <span class="string">&quot;(&quot;</span> or i == <span class="string">&quot;[&quot;</span> or i == <span class="string">&quot;&#123;&quot;</span>:</span><br><span class="line">                a.append(i)</span><br><span class="line">            elif a.pop() != dic[i]:</span><br><span class="line">                <span class="keyword">return</span> False</span><br><span class="line">        <span class="keyword">if</span> len(a) != <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> False</span><br><span class="line">        <span class="keyword">return</span> True</span><br></pre></td></tr></table></figure><p>时间复杂度：O(n)，其中 n 是字符串 s 的长度。</p><p>空间复杂度：O(n+∣Σ∣)，其中Σ 表示字符集，本题中字符串只包含 6 种括号，∣Σ∣=6。栈中的字符数量为 O(n)，而哈希映射使用的空间为 O(∣Σ∣)，相加即可得到总空间复杂度。</p>]]></content>
-    
-    
-    <summary type="html">有效括号，栈的思路。入栈，出栈</summary>
-    
-    
-    
-    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
