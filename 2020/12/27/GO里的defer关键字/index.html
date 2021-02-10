@@ -30,7 +30,7 @@
 <meta property="og:description" content="解析go语言，defer关键字">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-27T05:26:22.000Z">
-<meta property="article:modified_time" content="2020-12-28T02:15:53.217Z">
+<meta property="article:modified_time" content="2021-02-10T12:32:51.112Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-28 10:15:53" itemprop="dateModified" datetime="2020-12-28T10:15:53+08:00">2020-12-28</time>
+                <time title="Modified: 2021-02-10 20:32:51" itemprop="dateModified" datetime="2021-02-10T20:32:51+08:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>533</span>
+              <span>560</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -295,6 +295,8 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 	call runtime.deferreturn，</span><br><span class="line">add xx SP</span><br><span class="line"><span class="keyword">return</span></span><br></pre></td></tr></table></figure>
 
 <p>goroutine的控制结构中，有一张表记录defer，调用runtime.deferproc时会将需要defer的表达式记录在表中，而在调用runtime.deferreturn的时候，则会依次从defer表中出栈并执行</p>
+<h2 id="for循环的defer"><a href="#for循环的defer" class="headerlink" title="for循环的defer"></a>for循环的defer</h2><p>不建议这么使用</p>
+<p>defer 先进后出</p>
 
     </div>
 
@@ -396,7 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#defer%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="nav-number">1.</span> <span class="nav-text">defer使用注意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#defer%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">defer的实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#defer%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="nav-number">1.</span> <span class="nav-text">defer使用注意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#defer%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">defer的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF%E7%9A%84defer"><span class="nav-number">3.</span> <span class="nav-text">for循环的defer</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
