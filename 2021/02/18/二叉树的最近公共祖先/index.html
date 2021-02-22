@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="关于二叉树的最近公共祖先">
+  <meta name="description" content="关于二叉树的最近公共祖先，回溯">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二叉树的最近公共祖先">
 <meta property="og:url" content="http://zypuu.com/2021/02/18/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="关于二叉树的最近公共祖先">
+<meta property="og:description" content="关于二叉树的最近公共祖先，回溯">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-02-18T08:35:00.000Z">
-<meta property="article:modified_time" content="2021-02-18T09:22:27.123Z">
+<meta property="article:modified_time" content="2021-02-20T10:14:24.212Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -215,10 +215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-02-18 16:35:00 / Modified: 17:22:27" itemprop="dateCreated datePublished" datetime="2021-02-18T16:35:00+08:00">2021-02-18</time>
+              <time title="Created: 2021-02-18 16:35:00" itemprop="dateCreated datePublished" datetime="2021-02-18T16:35:00+08:00">2021-02-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-20 18:14:24" itemprop="dateModified" datetime="2021-02-20T18:14:24+08:00">2021-02-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,7 +241,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>228</span>
+              <span>218</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -244,7 +250,7 @@
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
-            <div class="post-description">关于二叉树的最近公共祖先</div>
+            <div class="post-description">关于二叉树的最近公共祖先，回溯</div>
 
         </div>
       </header>
@@ -257,11 +263,14 @@
       
         <p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
 <p>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。</p>
-<p>思路：<br>递归：<br>1.若root中只包含p则返回p<br>2.若root中只包含q则返回q<br>3.若root中不包含p也不包含q则返回NULL<br>5.若root中同时包含p和q，则返回root（此时root为最近公共祖先</p>
-<h4 id="GO"><a href="#GO" class="headerlink" title="GO"></a>GO</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode &#123;</span><br><span class="line">	<span class="comment">// 不同层</span></span><br><span class="line">	<span class="keyword">if</span> root == nil || p == root || q == root &#123;</span><br><span class="line">		<span class="keyword">return</span> root</span><br><span class="line">	&#125;</span><br><span class="line">	left := lowestCommonAncestor(root.Left, p, q)</span><br><span class="line">	right := lowestCommonAncestor(root.Right, p, q)</span><br><span class="line">	<span class="comment">// 同层，都不为空，向上返回</span></span><br><span class="line">	<span class="keyword">if</span> left == nil &#123;</span><br><span class="line">		<span class="keyword">return</span> right</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> right == nil &#123;</span><br><span class="line">		<span class="keyword">return</span> left</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="递归回溯"><a href="#递归回溯" class="headerlink" title="递归回溯"></a>递归回溯</h4><p>1.若root中只包含p则返回p<br>2.若root中只包含q则返回q<br>3.若root中不包含p也不包含q则返回NULL<br>5.若root中同时包含p和q，则返回root（此时root为最近公共祖先）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode &#123;</span><br><span class="line">	<span class="comment">// 不同层</span></span><br><span class="line">	<span class="keyword">if</span> root == nil || p == root || q == root &#123;</span><br><span class="line">		<span class="keyword">return</span> root</span><br><span class="line">	&#125;</span><br><span class="line">	left := lowestCommonAncestor(root.Left, p, q)</span><br><span class="line">	right := lowestCommonAncestor(root.Right, p, q)</span><br><span class="line">	<span class="comment">// 同层，都不为空，向上返回</span></span><br><span class="line">	<span class="keyword">if</span> left == nil &#123;</span><br><span class="line">		<span class="keyword">return</span> right</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> right == nil &#123;</span><br><span class="line">		<span class="keyword">return</span> left</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>for循环，记录父节点</p>
-<h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode &#123;</span><br><span class="line">	<span class="comment">// 父节点路径</span></span><br><span class="line">    parent := map[int]*TreeNode&#123;&#125;</span><br><span class="line">    <span class="comment">// 访问路径</span></span><br><span class="line">    visited := map[int]bool&#123;&#125;</span><br><span class="line">    <span class="comment">// 遍历树</span></span><br><span class="line">    <span class="keyword">var</span> dfs func(*TreeNode)</span><br><span class="line">    dfs = <span class="function"><span class="title">func</span>(<span class="params">r *TreeNode</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> r == nil &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 只看左右节点，因为只记录父节点</span></span><br><span class="line">        <span class="keyword">if</span> r.Left != nil &#123;</span><br><span class="line">            parent[r.Left.Val] = r</span><br><span class="line">            dfs(r.Left)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> r.Right != nil &#123;</span><br><span class="line">            parent[r.Right.Val] = r</span><br><span class="line">            dfs(r.Right)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(root)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 记录节点的访问路径，从下向上</span></span><br><span class="line">    <span class="keyword">for</span> p != nil &#123;</span><br><span class="line">        visited[p.Val] = <span class="literal">true</span></span><br><span class="line">        p = parent[p.Val]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 看另一节点是否有相同值，有则返回就是结果</span></span><br><span class="line">    <span class="keyword">for</span> q != nil &#123;</span><br><span class="line">        <span class="keyword">if</span> visited[q.Val] &#123;</span><br><span class="line">            <span class="keyword">return</span> q</span><br><span class="line">        &#125;</span><br><span class="line">        q = parent[q.Val]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h4><p>记录父节点</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode &#123;</span><br><span class="line">	<span class="comment">// 父节点路径</span></span><br><span class="line">    parent := map[int]*TreeNode&#123;&#125;</span><br><span class="line">    <span class="comment">// 访问路径</span></span><br><span class="line">    visited := map[int]bool&#123;&#125;</span><br><span class="line">    <span class="comment">// 遍历树</span></span><br><span class="line">    <span class="keyword">var</span> dfs func(*TreeNode)</span><br><span class="line">    dfs = <span class="function"><span class="title">func</span>(<span class="params">r *TreeNode</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> r == nil &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 只看左右节点，因为只记录父节点</span></span><br><span class="line">        <span class="keyword">if</span> r.Left != nil &#123;</span><br><span class="line">            parent[r.Left.Val] = r</span><br><span class="line">            dfs(r.Left)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> r.Right != nil &#123;</span><br><span class="line">            parent[r.Right.Val] = r</span><br><span class="line">            dfs(r.Right)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(root)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 记录节点的访问路径，从下向上</span></span><br><span class="line">    <span class="keyword">for</span> p != nil &#123;</span><br><span class="line">        visited[p.Val] = <span class="literal">true</span></span><br><span class="line">        p = parent[p.Val]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 看另一节点是否有相同值，有则返回就是结果</span></span><br><span class="line">    <span class="keyword">for</span> q != nil &#123;</span><br><span class="line">        <span class="keyword">if</span> visited[q.Val] &#123;</span><br><span class="line">            <span class="keyword">return</span> q</span><br><span class="line">        &#125;</span><br><span class="line">        q = parent[q.Val]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -299,7 +308,10 @@
     <a href="/2021/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/" rel="prev" title="二叉树的最大深度">
       <i class="fa fa-chevron-left"></i> 二叉树的最大深度
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/18/%E7%BB%84%E5%90%88/" rel="next" title="组合">
+      组合 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -359,7 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#GO"><span class="nav-number">1.</span> <span class="nav-text">GO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">2.</span> <span class="nav-text">python</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E5%9B%9E%E6%BA%AF"><span class="nav-number">1.</span> <span class="nav-text">递归回溯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="nav-number">2.</span> <span class="nav-text">for循环</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -375,7 +387,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">95</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -436,12 +448,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">116k</span>
+    <span title="Symbols count total">117k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:46</span>
+    <span title="Reading time total">1:47</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
