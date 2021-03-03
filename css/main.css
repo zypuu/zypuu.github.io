@@ -1220,7 +1220,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #2ff7c2;
+  background: #ff776c;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1539,7 +1539,7 @@ pre .javascript .function {
   background: #222;
   bottom: -100px;
   box-sizing: border-box;
-  color: #f0eeff;
+  color: #66b56f;
   cursor: pointer;
   right: 30px;
   opacity: 1;
