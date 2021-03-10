@@ -50,6 +50,43 @@
       </tags>
   </entry>
   <entry>
+    <title>Cors跨域技术应用</title>
+    <url>/2018/04/22/Cors%E8%B7%A8%E5%9F%9F%E6%8A%80%E6%9C%AF%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="CORS简介"><a href="#CORS简介" class="headerlink" title="CORS简介"></a>CORS简介</h2><p>CORS全称是”跨域资源共享”（Cross-origin resource sharing）。</p>
+<p>它允许浏览器向跨源服务器，发出Request请求，从而克服了AJAX只能同源使用的限制。</p>
+<p>CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。</p>
+<p>整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
+<p>因此，实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。</p>
+<h2 id="简单请求与非简单请求"><a href="#简单请求与非简单请求" class="headerlink" title="简单请求与非简单请求"></a>简单请求与非简单请求</h2><h3 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h3><h4 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h4><p>满足以下条件，就属于简单请求：<br>（1) 请求方法是以下三种方法之一：<br>HEAD<br>GET<br>POST<br>（2）HTTP的头信息不超出以下几种字段：</p>
+<p>Accept<br>Accept-Language<br>Content-Language<br>Last-Event-ID<br>Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain</p>
+<h4 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h4><p>对于简单请求，浏览器直接发出CORS请求。具体来说，就是在头信息之中，增加一个Origin字段。<br>例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">GET /cors HTTP/<span class="number">1.1</span></span><br><span class="line">Origin: http:<span class="comment">//api.bob.com</span></span><br><span class="line">Host: api.alice.com</span><br><span class="line">Accept-Language: en-US</span><br><span class="line">Connection: keep-alive</span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span>...</span><br></pre></td></tr></table></figure>
+<p>上面的头信息中，Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。<br>如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http:<span class="comment">//api.bob.com</span></span><br><span class="line"># 该字段是必须的。它的值要么是请求时Origin字段的值，要么是一个*，表示接受任意域名的请求。</span><br><span class="line">Access-Control-Allow-Credentials: <span class="literal">true</span></span><br><span class="line"># 该字段可选。它的值是一个布尔值，表示是否允许发送Cookie</span><br><span class="line">#另一方面，开发者必须在AJAX请求中打开withCredentials属性。</span><br><span class="line">Access-Control-Expose-Headers: FooBar</span><br><span class="line"># XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定</span><br><span class="line">Content-Type: text/html; charset=utf-<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h3><h4 id="条件-1"><a href="#条件-1" class="headerlink" title="条件"></a>条件</h4><p>非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。</p>
+<h4 id="处理流程-1"><a href="#处理流程-1" class="headerlink" title="处理流程"></a>处理流程</h4><p>非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为”预检”请求（preflight）。</p>
+<p>浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。<br>例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">OPTIONS /cors HTTP/<span class="number">1.1</span></span><br><span class="line">Origin: http:<span class="comment">//api.bob.com</span></span><br><span class="line">Access-Control-Request-Method: PUT</span><br><span class="line">Access-Control-Request-Headers: X-Custom-Header</span><br><span class="line">Host: api.alice.com</span><br><span class="line">Accept-Language: en-US</span><br><span class="line">Connection: keep-alive</span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span>..</span><br></pre></td></tr></table></figure>
+
+<p>“预检”请求用的请求方法是OPTIONS，表示这个请求是用来询问的。头信息里面，关键字段是Origin，表示请求来自哪个源。</p>
+<h3 id="Django代码实现"><a href="#Django代码实现" class="headerlink" title="Django代码实现"></a>Django代码实现</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install django-cors-headers</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加应用"><a href="#添加应用" class="headerlink" title="添加应用"></a>添加应用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">INSTALLED_APPS = (</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;corsheaders&#x27;</span>,</span><br><span class="line">    ...</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="中间层设置"><a href="#中间层设置" class="headerlink" title="中间层设置"></a>中间层设置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    <span class="string">&#x27;corsheaders.middleware.CorsMiddleware&#x27;</span>,</span><br><span class="line">    ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加白名单"><a href="#添加白名单" class="headerlink" title="添加白名单"></a>添加白名单</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># CORS</span><br><span class="line">CORS_ORIGIN_WHITELIST = (</span><br><span class="line">    <span class="string">&#x27;127.0.0.1:8080&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;localhost:8080&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;www.meiduo.site:8080&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;api.meiduo.site:8000&#x27;</span></span><br><span class="line">)</span><br><span class="line">CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie</span><br></pre></td></tr></table></figure>
+<p>凡是出现在白名单中的域名，都可以访问后端接口<br>CORS_ALLOW_CREDENTIALS 指明在跨域访问中，后端是否支持对cookie的操作。</p>
+]]></content>
+      <categories>
+        <category>web开发</category>
+      </categories>
+      <tags>
+        <tag>cors跨域</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>配置缓存</title>
     <url>/2018/04/20/Django%E5%BA%94%E7%94%A8%E7%BC%93%E5%AD%98/</url>
     <content><![CDATA[<h2 id="Django配置缓存"><a href="#Django配置缓存" class="headerlink" title="Django配置缓存"></a>Django配置缓存</h2><p>在Django REST framework中使用缓存，可以通过drf-extensions扩展来实现。使用文档<a href="http://chibisov.github.io/drf-extensions/docs/#caching">点这里</a></p>
@@ -166,6 +203,66 @@
       </categories>
       <tags>
         <tag>web,Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Elasticsearch的使用</title>
+    <url>/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h2><p>ES=elaticsearch简写， Elasticsearch是一个开源的高扩展的分布式全文检索引擎，它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。<br>Elasticsearch也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。</p>
+<h2 id="ES工作原理"><a href="#ES工作原理" class="headerlink" title="ES工作原理"></a>ES工作原理</h2><p>当ElasticSearch的节点启动后，它会利用多播(multicast)(或者单播，如果用户更改了配置)寻找集群中的其它节点，并与之建立连接。这个过程如下图所示：<br><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/1.jpg" alt="1"></p>
+<h2 id="ES核心概念"><a href="#ES核心概念" class="headerlink" title="ES核心概念"></a>ES核心概念</h2><h3 id="Cluster：集群"><a href="#Cluster：集群" class="headerlink" title="Cluster：集群"></a>Cluster：集群</h3><p>ES可以作为一个独立的单个搜索服务器。不过，为了处理大型数据集，实现容错和高可用性，ES可以运行在许多互相合作的服务器上。这些服务器的集合称为集群。</p>
+<h3 id="Node：节点"><a href="#Node：节点" class="headerlink" title="Node：节点"></a>Node：节点</h3><p>形成集群的每个服务器称为节点。</p>
+<h3 id="Shard：分片"><a href="#Shard：分片" class="headerlink" title="Shard：分片"></a>Shard：分片</h3><p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。<br>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的。</p>
+<h3 id="Replia：副本"><a href="#Replia：副本" class="headerlink" title="Replia：副本"></a>Replia：副本</h3><p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+<h3 id="全文检索"><a href="#全文检索" class="headerlink" title="全文检索"></a>全文检索</h3><p>全文检索就是对一篇文章进行索引，可以根据关键字搜索，类似于mysql里的like语句。<br>全文索引就是把内容根据词的意义进行分词，然后分别创建索引，例如”你们的激情是因为什么事情来的” 可能会被分词成：“你们“，”激情“，“什么事情“，”来“ 等token，这样当你搜索“你们” 或者 “激情” 都会把这句搜出来。</p>
+<h2 id="ES数据架构的主要概念（与关系数据库Mysql对比）"><a href="#ES数据架构的主要概念（与关系数据库Mysql对比）" class="headerlink" title="ES数据架构的主要概念（与关系数据库Mysql对比）"></a>ES数据架构的主要概念（与关系数据库Mysql对比）</h2><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/2.jpg" class>
+<p>（1）关系型数据库中的数据库（DataBase），等价于ES中的索引（Index）<br>（2）一个数据库下面有N张表（Table），等价于1个索引Index下面有N多类型（Type），<br>（3）一个数据库表（Table）下的数据由多行（ROW）多列（column，属性）组成，等价于1个Type由多个文档（Document）和多Field组成。<br>（4）在一个关系型数据库里面，schema定义了表、每个表的字段，还有表和字段之间的关系。 与之对应的，在ES中：Mapping定义索引下的Type的字段处理规则，即索引如何建立、索引类型、是否保存原始索引JSON文档、是否压缩原始JSON文档、是否需要分词处理、如何进行分词处理等。<br>（5）在数据库中的增insert、删delete、改update、查search操作等价于ES中的增PUT/POST、删Delete、改_update、查GET.</p>
+<h2 id="简单使用ES"><a href="#简单使用ES" class="headerlink" title="简单使用ES"></a>简单使用ES</h2><h3 id="使用Docker安装Elasticsearch及其扩展"><a href="#使用Docker安装Elasticsearch及其扩展" class="headerlink" title="使用Docker安装Elasticsearch及其扩展"></a>使用Docker安装Elasticsearch及其扩展</h3><p>获取镜像，可以通过网络pull</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker image pull delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+<p>修改elasticsearch的配置文件 elasticsearc-2.4.6/config/elasticsearch.yml第54行，更改ip地址为本机ip地址</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">network.host: 自己机器的IP地址</span><br></pre></td></tr></table></figure>
+<p>创建docker容器运行</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker run -dti --network=host --name=elasticsearch -v /home/python/elasticsearch-<span class="number">2.4</span><span class="number">.6</span>/config:<span class="regexp">/usr/</span>share/elasticsearch/config delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用haystack对接Elasticsearch"><a href="#使用haystack对接Elasticsearch" class="headerlink" title="使用haystack对接Elasticsearch"></a>使用haystack对接Elasticsearch</h3><p>Haystack为Django提供了模块化的搜索。它的特点是统一的，熟悉的API，可以让你在不修改代码的情况下使用不同的搜索后端（比如 Solr, Elasticsearch, Whoosh, Xapian 等等）。</p>
+<p>这里通过使用haystack来调用Elasticsearch搜索引擎。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-haystack</span><br><span class="line">pip install elasticsearch==<span class="number">2.4</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<p>drf-haystack是为了在REST framework中使用haystack而进行的封装（如果在Django中使用haystack，则安装django-haystack即可）。</p>
+<h4 id="注册应用"><a href="#注册应用" class="headerlink" title="注册应用"></a>注册应用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;haystack&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># Haystack</span><br><span class="line">HAYSTACK_CONNECTIONS = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine&#x27;</span>,</span><br><span class="line">        # 端口号固定为9200</span><br><span class="line">        <span class="string">&#x27;URL&#x27;</span>: <span class="string">&#x27;http://es的IP:9200/&#x27;</span>,</span><br><span class="line">        # 指定elasticsearch建立的索引库的名称</span><br><span class="line">        <span class="string">&#x27;INDEX_NAME&#x27;</span>: <span class="string">&#x27;名称自定&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 当添加、修改、删除数据时，自动生成索引</span><br><span class="line">HAYSTACK_SIGNAL_PROCESSOR = <span class="string">&#x27;haystack.signals.RealtimeSignalProcessor&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<p>HAYSTACK_SIGNAL_PROCESSOR 的配置保证了在Django运行起来后，有新的数据产生时，haystack仍然可以让Elasticsearch实时生成新数据的索引</p>
+<h4 id="创建索引类"><a href="#创建索引类" class="headerlink" title="创建索引类"></a>创建索引类</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> haystack <span class="keyword">import</span> indexes</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> SKU</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class SKUIndex(indexes.SearchIndex, indexes.Indexable):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引数据模型类</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    text = indexes.CharField(<span class="built_in">document</span>=True, use_template=True)</span><br><span class="line"></span><br><span class="line">    def get_model(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回建立索引的模型类&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> SKU</span><br><span class="line"></span><br><span class="line">    def index_queryset(self, using=None):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回要建立索引的数据查询集&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.get_model().objects.filter(is_launched=True)</span><br></pre></td></tr></table></figure>
+<p>在SKUIndex建立的字段，都可以借助haystack由elasticsearch搜索引擎查询。</p>
+<p>其中text字段我们声明为document=True，表名该字段是主要进行关键字查询的字段， 该字段的索引值可以由多个数据库模型类字段组成，具体由哪些模型类字段组成，我们用use_template=True表示后续通过模板来指明。</p>
+<p>在REST framework中，索引类的字段会作为查询结果返回数据的来源。</p>
+<h4 id="在templates目录中创建text字段使用的模板文件"><a href="#在templates目录中创建text字段使用的模板文件" class="headerlink" title="在templates目录中创建text字段使用的模板文件"></a>在templates目录中创建text字段使用的模板文件</h4><p>具体在templates/search/indexes/goods/sku_text.txt文件中定义</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;&#123; object.name &#125;&#125;</span><br><span class="line">&#123;&#123; object.caption &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>此模板指明当将关键词通过text参数名传递时，可以通过sku的name、caption、id来进行关键字索引查询。</p>
+<h4 id="手动生成初始索引"><a href="#手动生成初始索引" class="headerlink" title="手动生成初始索引"></a>手动生成初始索引</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">python manage.py rebuild_index</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建序列化器"><a href="#创建序列化器" class="headerlink" title="创建序列化器"></a>创建序列化器</h4><p>在goods/serializers.py中创建haystack序列化器</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.serializers <span class="keyword">import</span> HaystackSerializer</span><br><span class="line"><span class="keyword">from</span> .search_indexes <span class="keyword">import</span> SKUIndex</span><br><span class="line"></span><br><span class="line">class SKUIndexSerializer(HaystackSerializer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引结果数据序列化器</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    object = SKUSerializer(read_only=True)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        index_classes = [SKUIndex]</span><br><span class="line">        fields = (</span><br><span class="line">            &#x27;text&#x27;,  # 用于接收查询关键字</span><br><span class="line">            &#x27;object&#x27;  # 用于返回查询结果</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<p>下面的搜索视图使用SKUIndexSerializer序列化器用来检查前端传入的参数text，并且检索出数据后再使用这个序列化器返回给前端；</p>
+<p>SKUIndexSerializer序列化器中的object字段是用来向前端返回数据时序列化的字段。</p>
+<p>Haystack通过Elasticsearch检索出匹配关键词的搜索结果后，还会在数据库中取出完整的数据库模型类对象，放到搜索结果的object属性中，并将结果通过SKUIndexSerializer序列化器进行序列化。所以我们可以通过声明搜索结果的object字段以SKUSerializer序列化的形式进行处理，明确要返回的搜索结果中每个数据对象包含哪些字段。</p>
+<h4 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h4><p>在goods/views.py中创建视图</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.viewsets <span class="keyword">import</span> HaystackViewSet</span><br><span class="line"><span class="keyword">from</span> .serializers <span class="keyword">import</span> SKUIndexSerializer</span><br><span class="line"></span><br><span class="line">class SKUSearchViewSet(HaystackViewSet):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU搜索</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    index_models = [SKU]</span><br><span class="line"></span><br><span class="line">    serializer_class = SKUIndexSerializer</span><br></pre></td></tr></table></figure>
+<p>注意：<br>该视图会返回搜索结果的列表数据，所以可以为视图增加REST framework的分页功能。<br>我们在实现商品列表页面时已经定义了全局的分页配置，所以此搜索视图会使用全局的分页配置。</p>
+<h4 id="定义路由"><a href="#定义路由" class="headerlink" title="定义路由"></a>定义路由</h4><p>在goods/urls.py中通过REST framework的router来定义路由</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.routers <span class="keyword">import</span> DefaultRouter</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">router = DefaultRouter()</span><br><span class="line">router.register(<span class="string">&#x27;skus/search&#x27;</span>, views.SKUSearchViewSet, base_name=<span class="string">&#x27;skus_search&#x27;</span>)</span><br><span class="line"></span><br><span class="line">urlpatterns += router.urls</span><br></pre></td></tr></table></figure>
+
+<h4 id="bug说明"><a href="#bug说明" class="headerlink" title="bug说明"></a>bug说明</h4><p>如果在配置完haystack并启动程序后，出现如下异常，是因为drf-haystack还没有适配最新版本的REST framework框架</p>
+<img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/3.jpg" class>
+<p>可以通过修改REST framework框架代码，补充_get_count函数定义即可</p>
+<p>文件路径 虚拟环境下的 lib/python3.6/site-packages/rest_framework/pagination.py</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def _get_count(queryset):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    Determine an object count, supporting either querysets or regular lists.</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> queryset.count()</span><br><span class="line">    except (AttributeError, <span class="built_in">TypeError</span>):</span><br><span class="line">        <span class="keyword">return</span> len(queryset)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>web开发</category>
+      </categories>
+      <tags>
+        <tag>web,search</tag>
       </tags>
   </entry>
   <entry>
@@ -288,43 +385,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Cors跨域技术应用</title>
-    <url>/2018/04/22/Cors%E8%B7%A8%E5%9F%9F%E6%8A%80%E6%9C%AF%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="CORS简介"><a href="#CORS简介" class="headerlink" title="CORS简介"></a>CORS简介</h2><p>CORS全称是”跨域资源共享”（Cross-origin resource sharing）。</p>
-<p>它允许浏览器向跨源服务器，发出Request请求，从而克服了AJAX只能同源使用的限制。</p>
-<p>CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。</p>
-<p>整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
-<p>因此，实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。</p>
-<h2 id="简单请求与非简单请求"><a href="#简单请求与非简单请求" class="headerlink" title="简单请求与非简单请求"></a>简单请求与非简单请求</h2><h3 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h3><h4 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h4><p>满足以下条件，就属于简单请求：<br>（1) 请求方法是以下三种方法之一：<br>HEAD<br>GET<br>POST<br>（2）HTTP的头信息不超出以下几种字段：</p>
-<p>Accept<br>Accept-Language<br>Content-Language<br>Last-Event-ID<br>Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain</p>
-<h4 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h4><p>对于简单请求，浏览器直接发出CORS请求。具体来说，就是在头信息之中，增加一个Origin字段。<br>例：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">GET /cors HTTP/<span class="number">1.1</span></span><br><span class="line">Origin: http:<span class="comment">//api.bob.com</span></span><br><span class="line">Host: api.alice.com</span><br><span class="line">Accept-Language: en-US</span><br><span class="line">Connection: keep-alive</span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span>...</span><br></pre></td></tr></table></figure>
-<p>上面的头信息中，Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。<br>如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http:<span class="comment">//api.bob.com</span></span><br><span class="line"># 该字段是必须的。它的值要么是请求时Origin字段的值，要么是一个*，表示接受任意域名的请求。</span><br><span class="line">Access-Control-Allow-Credentials: <span class="literal">true</span></span><br><span class="line"># 该字段可选。它的值是一个布尔值，表示是否允许发送Cookie</span><br><span class="line">#另一方面，开发者必须在AJAX请求中打开withCredentials属性。</span><br><span class="line">Access-Control-Expose-Headers: FooBar</span><br><span class="line"># XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定</span><br><span class="line">Content-Type: text/html; charset=utf-<span class="number">8</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h3><h4 id="条件-1"><a href="#条件-1" class="headerlink" title="条件"></a>条件</h4><p>非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。</p>
-<h4 id="处理流程-1"><a href="#处理流程-1" class="headerlink" title="处理流程"></a>处理流程</h4><p>非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为”预检”请求（preflight）。</p>
-<p>浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。<br>例：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">OPTIONS /cors HTTP/<span class="number">1.1</span></span><br><span class="line">Origin: http:<span class="comment">//api.bob.com</span></span><br><span class="line">Access-Control-Request-Method: PUT</span><br><span class="line">Access-Control-Request-Headers: X-Custom-Header</span><br><span class="line">Host: api.alice.com</span><br><span class="line">Accept-Language: en-US</span><br><span class="line">Connection: keep-alive</span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span>..</span><br></pre></td></tr></table></figure>
-
-<p>“预检”请求用的请求方法是OPTIONS，表示这个请求是用来询问的。头信息里面，关键字段是Origin，表示请求来自哪个源。</p>
-<h3 id="Django代码实现"><a href="#Django代码实现" class="headerlink" title="Django代码实现"></a>Django代码实现</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install django-cors-headers</span><br></pre></td></tr></table></figure>
-
-<h4 id="添加应用"><a href="#添加应用" class="headerlink" title="添加应用"></a>添加应用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">INSTALLED_APPS = (</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;corsheaders&#x27;</span>,</span><br><span class="line">    ...</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<h4 id="中间层设置"><a href="#中间层设置" class="headerlink" title="中间层设置"></a>中间层设置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    <span class="string">&#x27;corsheaders.middleware.CorsMiddleware&#x27;</span>,</span><br><span class="line">    ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<h4 id="添加白名单"><a href="#添加白名单" class="headerlink" title="添加白名单"></a>添加白名单</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># CORS</span><br><span class="line">CORS_ORIGIN_WHITELIST = (</span><br><span class="line">    <span class="string">&#x27;127.0.0.1:8080&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;localhost:8080&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;www.meiduo.site:8080&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;api.meiduo.site:8000&#x27;</span></span><br><span class="line">)</span><br><span class="line">CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie</span><br></pre></td></tr></table></figure>
-<p>凡是出现在白名单中的域名，都可以访问后端接口<br>CORS_ALLOW_CREDENTIALS 指明在跨域访问中，后端是否支持对cookie的操作。</p>
-]]></content>
-      <categories>
-        <category>web开发</category>
-      </categories>
-      <tags>
-        <tag>cors跨域</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>GO的make和new的区别</title>
     <url>/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
@@ -356,63 +416,72 @@
       </tags>
   </entry>
   <entry>
-    <title>Elasticsearch的使用</title>
-    <url>/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h2><p>ES=elaticsearch简写， Elasticsearch是一个开源的高扩展的分布式全文检索引擎，它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。<br>Elasticsearch也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。</p>
-<h2 id="ES工作原理"><a href="#ES工作原理" class="headerlink" title="ES工作原理"></a>ES工作原理</h2><p>当ElasticSearch的节点启动后，它会利用多播(multicast)(或者单播，如果用户更改了配置)寻找集群中的其它节点，并与之建立连接。这个过程如下图所示：<br><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/1.jpg" alt="1"></p>
-<h2 id="ES核心概念"><a href="#ES核心概念" class="headerlink" title="ES核心概念"></a>ES核心概念</h2><h3 id="Cluster：集群"><a href="#Cluster：集群" class="headerlink" title="Cluster：集群"></a>Cluster：集群</h3><p>ES可以作为一个独立的单个搜索服务器。不过，为了处理大型数据集，实现容错和高可用性，ES可以运行在许多互相合作的服务器上。这些服务器的集合称为集群。</p>
-<h3 id="Node：节点"><a href="#Node：节点" class="headerlink" title="Node：节点"></a>Node：节点</h3><p>形成集群的每个服务器称为节点。</p>
-<h3 id="Shard：分片"><a href="#Shard：分片" class="headerlink" title="Shard：分片"></a>Shard：分片</h3><p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。<br>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的。</p>
-<h3 id="Replia：副本"><a href="#Replia：副本" class="headerlink" title="Replia：副本"></a>Replia：副本</h3><p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
-<h3 id="全文检索"><a href="#全文检索" class="headerlink" title="全文检索"></a>全文检索</h3><p>全文检索就是对一篇文章进行索引，可以根据关键字搜索，类似于mysql里的like语句。<br>全文索引就是把内容根据词的意义进行分词，然后分别创建索引，例如”你们的激情是因为什么事情来的” 可能会被分词成：“你们“，”激情“，“什么事情“，”来“ 等token，这样当你搜索“你们” 或者 “激情” 都会把这句搜出来。</p>
-<h2 id="ES数据架构的主要概念（与关系数据库Mysql对比）"><a href="#ES数据架构的主要概念（与关系数据库Mysql对比）" class="headerlink" title="ES数据架构的主要概念（与关系数据库Mysql对比）"></a>ES数据架构的主要概念（与关系数据库Mysql对比）</h2><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/2.jpg" class>
-<p>（1）关系型数据库中的数据库（DataBase），等价于ES中的索引（Index）<br>（2）一个数据库下面有N张表（Table），等价于1个索引Index下面有N多类型（Type），<br>（3）一个数据库表（Table）下的数据由多行（ROW）多列（column，属性）组成，等价于1个Type由多个文档（Document）和多Field组成。<br>（4）在一个关系型数据库里面，schema定义了表、每个表的字段，还有表和字段之间的关系。 与之对应的，在ES中：Mapping定义索引下的Type的字段处理规则，即索引如何建立、索引类型、是否保存原始索引JSON文档、是否压缩原始JSON文档、是否需要分词处理、如何进行分词处理等。<br>（5）在数据库中的增insert、删delete、改update、查search操作等价于ES中的增PUT/POST、删Delete、改_update、查GET.</p>
-<h2 id="简单使用ES"><a href="#简单使用ES" class="headerlink" title="简单使用ES"></a>简单使用ES</h2><h3 id="使用Docker安装Elasticsearch及其扩展"><a href="#使用Docker安装Elasticsearch及其扩展" class="headerlink" title="使用Docker安装Elasticsearch及其扩展"></a>使用Docker安装Elasticsearch及其扩展</h3><p>获取镜像，可以通过网络pull</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker image pull delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
-<p>修改elasticsearch的配置文件 elasticsearc-2.4.6/config/elasticsearch.yml第54行，更改ip地址为本机ip地址</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">network.host: 自己机器的IP地址</span><br></pre></td></tr></table></figure>
-<p>创建docker容器运行</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker run -dti --network=host --name=elasticsearch -v /home/python/elasticsearch-<span class="number">2.4</span><span class="number">.6</span>/config:<span class="regexp">/usr/</span>share/elasticsearch/config delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+    <title>GO的内存分配</title>
+    <url>/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/</url>
+    <content><![CDATA[<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">go tool compile -S main.go</span><br></pre></td></tr></table></figure>
+<p>通过以上查看汇编代码可以看到内存申请情况，runtime.newobject是用于申请内存的内建函数，newobject是mallocgc的代理，mallocgc是管理堆内存的函数。Go分配内存有两种策略：小块内存申请和大块内存申请</p>
+<h2 id="内存管理基本结构"><a href="#内存管理基本结构" class="headerlink" title="内存管理基本结构"></a>内存管理基本结构</h2><p>golang的内存管理如下：</p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/1.png" alt="1"></p>
+<h3 id="MSpan"><a href="#MSpan" class="headerlink" title="MSpan"></a>MSpan</h3><p>内存管理的基本单位是MSpan。MSpan是一个表示若干连续内存页（8KB）的数据结构</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">struct MSpan</span><br><span class="line">&#123;</span><br><span class="line">    PageID    start;        <span class="comment">// starting page number</span></span><br><span class="line">    uintptr    npages;        <span class="comment">// number of pages in span</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>基地址+(页号* 页大小)，就可以定位到这个MSpan的实际的地址空间<br>PS：连续页，PageID是起始id，npages是数量</p>
+<p>每个 mspan按照它自身的属性 SizeClass的大小分割成若干个 object，每个 object可存储一个对象</p>
+<p>Size_Class = Span_Class / 2</p>
+<p>这是因为其实每个 SizeClass有两个 mspan，也就是有两个 SpanClass。其中一个分配给含有指针的对象，另一个分配给不含有指针的对象，每个等级SizeClass会存在两份mspan链表：一个链表用于存储内部不包含指针的对象，另一个链表用于存储内部包含指针的对象。这么的好处是垃圾回收时更高效，因为不需要扫描不包含指针的那个mspan链表</p>
+<p>mspan按大小被划分为大约67个等级的object，大小从8字节到32K字节不等，不同等级存储不同大小的object内存块</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> _NumSizeClasses = <span class="number">67</span></span><br><span class="line"><span class="keyword">var</span> class_to_size = [_NumSizeClasses]uint16&#123;<span class="number">0</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>, <span class="number">48</span>, <span class="number">64</span>, <span class="number">80</span>, <span class="number">96</span>, <span class="number">112</span>, <span class="number">128</span>, <span class="number">144</span>, <span class="number">160</span>, <span class="number">176</span>, <span class="number">192</span>, <span class="number">208</span>, <span class="number">224</span>, <span class="number">240</span>, <span class="number">256</span>, <span class="number">288</span>, <span class="number">320</span>, <span class="number">352</span>, <span class="number">384</span>, <span class="number">416</span>, <span class="number">448</span>, <span class="number">480</span>, <span class="number">512</span>, <span class="number">576</span>, <span class="number">640</span>, <span class="number">704</span>, <span class="number">768</span>, <span class="number">896</span>, <span class="number">1024</span>, <span class="number">1152</span>, <span class="number">1280</span>, <span class="number">1408</span>, <span class="number">1536</span>,<span class="number">1792</span>, <span class="number">2048</span>, <span class="number">2304</span>, <span class="number">2688</span>, <span class="number">3072</span>, <span class="number">3200</span>, <span class="number">3456</span>, <span class="number">4096</span>, <span class="number">4864</span>, <span class="number">5376</span>, <span class="number">6144</span>, <span class="number">6528</span>, <span class="number">6784</span>, <span class="number">6912</span>, <span class="number">8192</span>, <span class="number">9472</span>, <span class="number">9728</span>, <span class="number">10240</span>, <span class="number">10880</span>, <span class="number">12288</span>, <span class="number">13568</span>, <span class="number">14336</span>, <span class="number">16384</span>, <span class="number">18432</span>, <span class="number">19072</span>, <span class="number">20480</span>, <span class="number">21760</span>, <span class="number">24576</span>, <span class="number">27264</span>, <span class="number">28672</span>, <span class="number">32768</span>&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="使用haystack对接Elasticsearch"><a href="#使用haystack对接Elasticsearch" class="headerlink" title="使用haystack对接Elasticsearch"></a>使用haystack对接Elasticsearch</h3><p>Haystack为Django提供了模块化的搜索。它的特点是统一的，熟悉的API，可以让你在不修改代码的情况下使用不同的搜索后端（比如 Solr, Elasticsearch, Whoosh, Xapian 等等）。</p>
-<p>这里通过使用haystack来调用Elasticsearch搜索引擎。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-haystack</span><br><span class="line">pip install elasticsearch==<span class="number">2.4</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
-<p>drf-haystack是为了在REST framework中使用haystack而进行的封装（如果在Django中使用haystack，则安装django-haystack即可）。</p>
-<h4 id="注册应用"><a href="#注册应用" class="headerlink" title="注册应用"></a>注册应用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;haystack&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>比如 SizeClass等于3， object大小就是32B。 32B大小的object可以存储对象大小范围在17B到32B的对象。而对于微小对象（小于16B），分配器会将其进行合并，将几个对象分配到同一个 object中</p>
+<p>最大的数是32768，也就是32KB，超过此大小就是大对象了，要直接从mheap堆上分配</p>
+<p>对于mspan来说，它的 SizeClass会决定它所能分到的页数，这也是写死在代码里的：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// path: /usr/local/go/src/runtime/sizeclasses.go</span></span><br><span class="line"><span class="keyword">const</span> _NumSizeClasses = <span class="number">67</span></span><br><span class="line"><span class="keyword">var</span> class_to_allocnpages = [_NumSizeClasses]uint8&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">4</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># Haystack</span><br><span class="line">HAYSTACK_CONNECTIONS = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine&#x27;</span>,</span><br><span class="line">        # 端口号固定为9200</span><br><span class="line">        <span class="string">&#x27;URL&#x27;</span>: <span class="string">&#x27;http://es的IP:9200/&#x27;</span>,</span><br><span class="line">        # 指定elasticsearch建立的索引库的名称</span><br><span class="line">        <span class="string">&#x27;INDEX_NAME&#x27;</span>: <span class="string">&#x27;名称自定&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 当添加、修改、删除数据时，自动生成索引</span><br><span class="line">HAYSTACK_SIGNAL_PROCESSOR = <span class="string">&#x27;haystack.signals.RealtimeSignalProcessor&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>注意：</p>
-<p>HAYSTACK_SIGNAL_PROCESSOR 的配置保证了在Django运行起来后，有新的数据产生时，haystack仍然可以让Elasticsearch实时生成新数据的索引</p>
-<h4 id="创建索引类"><a href="#创建索引类" class="headerlink" title="创建索引类"></a>创建索引类</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> haystack <span class="keyword">import</span> indexes</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> SKU</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class SKUIndex(indexes.SearchIndex, indexes.Indexable):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引数据模型类</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    text = indexes.CharField(<span class="built_in">document</span>=True, use_template=True)</span><br><span class="line"></span><br><span class="line">    def get_model(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回建立索引的模型类&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> SKU</span><br><span class="line"></span><br><span class="line">    def index_queryset(self, using=None):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回要建立索引的数据查询集&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.get_model().objects.filter(is_launched=True)</span><br></pre></td></tr></table></figure>
-<p>在SKUIndex建立的字段，都可以借助haystack由elasticsearch搜索引擎查询。</p>
-<p>其中text字段我们声明为document=True，表名该字段是主要进行关键字查询的字段， 该字段的索引值可以由多个数据库模型类字段组成，具体由哪些模型类字段组成，我们用use_template=True表示后续通过模板来指明。</p>
-<p>在REST framework中，索引类的字段会作为查询结果返回数据的来源。</p>
-<h4 id="在templates目录中创建text字段使用的模板文件"><a href="#在templates目录中创建text字段使用的模板文件" class="headerlink" title="在templates目录中创建text字段使用的模板文件"></a>在templates目录中创建text字段使用的模板文件</h4><p>具体在templates/search/indexes/goods/sku_text.txt文件中定义</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;&#123; object.name &#125;&#125;</span><br><span class="line">&#123;&#123; object.caption &#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>此模板指明当将关键词通过text参数名传递时，可以通过sku的name、caption、id来进行关键字索引查询。</p>
-<h4 id="手动生成初始索引"><a href="#手动生成初始索引" class="headerlink" title="手动生成初始索引"></a>手动生成初始索引</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">python manage.py rebuild_index</span><br></pre></td></tr></table></figure>
+<p>比如当我们要申请一个 object大小为 32B的 mspan的时候，在classtosize里对应的索引是3，而索引3在 class_to_allocnpages数组里对应的页数就是1，即为8KB</p>
+<p>一个 mspan的 SizeClass等于10，根据前面的 class_to_size数组，得出这个 msapn分割的 object大小是144B，算出可分配的对象个数是 8KB/144B=56.89个，取整56个，所以会有一些内存浪费掉了，Go的源码里有所有 SizeClass的 mspan浪费的内存的大小；再根据 class_to_allocnpages数组，得到这个 mspan只由1个 page组成；假设这个 mspan是分配给无指针对象的，那么 spanClass等于20</p>
+<h3 id="MHeap分配堆"><a href="#MHeap分配堆" class="headerlink" title="MHeap分配堆"></a>MHeap分配堆</h3><p>代表Go程序持有的所有堆空间，Go程序使用一个 mheap的全局对象 mheap来管理堆内存</p>
+<p>MHeap层次用于直接分配较大(&gt;32kB)的内存空间，以及给MCentral和MCache等下层提供空间</p>
+<p>mheap主要用于大对象的内存分配，以及管理未切割的 mspan，用于给 mcentral切割成小对象</p>
+<p>mheap中含有所有规格的 mcentral，所以，当一个 mcache从 mcentral申请 mspan时，只需要在独立的 mcentral中使用锁，并不会影响申请其他规格的 mspan</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">  <span class="comment">//path: /usr/local/go/src/runtime/mheap.go</span></span><br><span class="line">type mheap struct &#123;</span><br><span class="line">	lock mutex</span><br><span class="line">	<span class="comment">// spans: 指向mspans区域，用于映射mspan和page的关系</span></span><br><span class="line">	spans []*mspan</span><br><span class="line">	<span class="comment">// 指向bitmap首地址，bitmap是从高地址向低地址增长的</span></span><br><span class="line">	bitmap uintptr</span><br><span class="line">	<span class="comment">// 指示arena区首地址</span></span><br><span class="line">	arena_start uintptr</span><br><span class="line">	<span class="comment">// 指示arena区已使用地址位置</span></span><br><span class="line">	arena_used uintptr</span><br><span class="line">	<span class="comment">// 指示arena区末地址</span></span><br><span class="line">	arena_end uintptr</span><br><span class="line">	central [<span class="number">67</span>*<span class="number">2</span>]struct &#123;</span><br><span class="line">		mcentral mcentral</span><br><span class="line">		pad [sys.CacheLineSize - unsafe.Sizeof(mcentral&#123;&#125;)%sys.CacheLineSize]byte</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="创建序列化器"><a href="#创建序列化器" class="headerlink" title="创建序列化器"></a>创建序列化器</h4><p>在goods/serializers.py中创建haystack序列化器</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.serializers <span class="keyword">import</span> HaystackSerializer</span><br><span class="line"><span class="keyword">from</span> .search_indexes <span class="keyword">import</span> SKUIndex</span><br><span class="line"></span><br><span class="line">class SKUIndexSerializer(HaystackSerializer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引结果数据序列化器</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    object = SKUSerializer(read_only=True)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        index_classes = [SKUIndex]</span><br><span class="line">        fields = (</span><br><span class="line">            &#x27;text&#x27;,  # 用于接收查询关键字</span><br><span class="line">            &#x27;object&#x27;  # 用于返回查询结果</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
-<p>下面的搜索视图使用SKUIndexSerializer序列化器用来检查前端传入的参数text，并且检索出数据后再使用这个序列化器返回给前端；</p>
-<p>SKUIndexSerializer序列化器中的object字段是用来向前端返回数据时序列化的字段。</p>
-<p>Haystack通过Elasticsearch检索出匹配关键词的搜索结果后，还会在数据库中取出完整的数据库模型类对象，放到搜索结果的object属性中，并将结果通过SKUIndexSerializer序列化器进行序列化。所以我们可以通过声明搜索结果的object字段以SKUSerializer序列化的形式进行处理，明确要返回的搜索结果中每个数据对象包含哪些字段。</p>
-<h4 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h4><p>在goods/views.py中创建视图</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.viewsets <span class="keyword">import</span> HaystackViewSet</span><br><span class="line"><span class="keyword">from</span> .serializers <span class="keyword">import</span> SKUIndexSerializer</span><br><span class="line"></span><br><span class="line">class SKUSearchViewSet(HaystackViewSet):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU搜索</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    index_models = [SKU]</span><br><span class="line"></span><br><span class="line">    serializer_class = SKUIndexSerializer</span><br></pre></td></tr></table></figure>
-<p>注意：<br>该视图会返回搜索结果的列表数据，所以可以为视图增加REST framework的分页功能。<br>我们在实现商品列表页面时已经定义了全局的分页配置，所以此搜索视图会使用全局的分页配置。</p>
-<h4 id="定义路由"><a href="#定义路由" class="headerlink" title="定义路由"></a>定义路由</h4><p>在goods/urls.py中通过REST framework的router来定义路由</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.routers <span class="keyword">import</span> DefaultRouter</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">router = DefaultRouter()</span><br><span class="line">router.register(<span class="string">&#x27;skus/search&#x27;</span>, views.SKUSearchViewSet, base_name=<span class="string">&#x27;skus_search&#x27;</span>)</span><br><span class="line"></span><br><span class="line">urlpatterns += router.urls</span><br></pre></td></tr></table></figure>
+<h3 id="MCentral"><a href="#MCentral" class="headerlink" title="MCentral"></a>MCentral</h3><p>为所有 mcache提供切分好的 mspan资源。每个 central保存一种特定大小的全局 mspan列表，包括已分配出去的和未分配出去的。 每个 mcentral对应一种 mspan，而 mspan的种类导致它分割的 object大小不同。当工作线程的 mcache中没有合适（也就是特定大小的）的 mspan时就会从 mcentral获取</p>
+<p>MCentral被所有的工作线程共同享有，存在多个Goroutine竞争的情况，因此会消耗锁资源</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">struct MCentral</span><br><span class="line">&#123;</span><br><span class="line">    Lock;</span><br><span class="line">    int32 sizeclass;</span><br><span class="line">    MSpan nonempty;</span><br><span class="line">    MSpan empty;</span><br><span class="line">    int32 nfree;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<h4 id="bug说明"><a href="#bug说明" class="headerlink" title="bug说明"></a>bug说明</h4><p>如果在配置完haystack并启动程序后，出现如下异常，是因为drf-haystack还没有适配最新版本的REST framework框架</p>
-<img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/3.jpg" class>
-<p>可以通过修改REST framework框架代码，补充_get_count函数定义即可</p>
-<p>文件路径 虚拟环境下的 lib/python3.6/site-packages/rest_framework/pagination.py</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def _get_count(queryset):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    Determine an object count, supporting either querysets or regular lists.</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> queryset.count()</span><br><span class="line">    except (AttributeError, <span class="built_in">TypeError</span>):</span><br><span class="line">        <span class="keyword">return</span> len(queryset)</span><br></pre></td></tr></table></figure>]]></content>
+<p>每个维护了两张全局的mspan链表。一张链表为non-empty类型，包含了可供分配的mspan（由于一个span可能包含多个object，只要有一个或一个以上的object可供分配即表示该mspan可供分配），一张为empty类型，包含已分配完毕的mspan</p>
+<p>1.获取 加锁；从 nonempty链表找到一个可用的 mspan；并将其从 nonempty链表删除；将取出的 mspan加入到 empty链表；将 mspan返回给工作线程；解锁。<br>2.归还 加锁；将 mspan从 empty链表删除；将 mspan加入到 nonempty链表；解锁</p>
+<p>PS：当Go执行垃圾回收时，如果span中的内存块被标记为可供分配，span会重新加入到non-empty链表中</p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/3.png" alt="3"></p>
+<p>当mcentral中也没有可供分配的span时，Go会从堆上申请新的span并将其放入mcentral中进行切分</p>
+<h3 id="MCache本地小块内存"><a href="#MCache本地小块内存" class="headerlink" title="MCache本地小块内存"></a>MCache本地小块内存</h3><p>对于32KB以下的小块内存申请，Go会从本地缓存mcache中获取内存。</p>
+<p>每一个M都有一个自己的局部内存缓存MCache，这样分配小对象的时候直接从MCache中分配，就不用加锁了，这是Go能够在多线程环境中高效地进行内存分配的重要原因</p>
+<p>MCache是mspan切分后的列表，包含object的列表，提供可使用的内存，2倍的object列表，上面mspan已经提到过</p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/2.png" alt="2"></p>
+<p>mcache在初始化的时候是没有任何 mspan资源的，在使用过程中会动态地从 mcentral申请，之后会缓存下来。当对象小于等于32KB大小时，使用 mcache的相应规格的 mspan进行分配。</p>
+<p>如果mcache上没有空闲的内存块可供分配该怎么办，则进入下一级mcentral</p>
+<h3 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h3><p>堆在必要时向操作系统申请内存。它会申请一块大内存，被称为arena，在64位系统下为64MB，其它大部分系统为4MB，申请的内存同样用span管理， 1M打底</p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/4.png" alt="4"></p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/5.png" alt="5"></p>
+<p>arena：堆区，运行时该区域每8KB会被划分成一个页，存储了所有在堆上初始化的对象</p>
+<p>bitmap：标识arena中哪些地址保存了对象，bitmap中一个字节的内存对应arena区域中4个指针大小的内存，并标记了是否包含指针和是否扫描的信息（一个指针大小为8B，因此bitmap的大小为512GB/(4* 8)=16GB）</p>
+<p>spans：存放mspan的指针，其中每个mspan会包含多个页，spans中一个指针（8B）表示arena中某一个page（8KB），因此spans的大小为512GB/(1024)=512MB</p>
+<h2 id="内存分配流程"><a href="#内存分配流程" class="headerlink" title="内存分配流程"></a>内存分配流程</h2><p>Go的内存分配器在分配对象时，根据对象的大小，分成三类：小对象（小于等于16B）、一般对象（大于16B，小于等于32KB）、大对象（大于32KB）</p>
+<p>1.&gt;32KB 的对象，直接从mheap上分配</p>
+<p>2.&lt;=16B 的对象使用mcache的tiny分配器分配</p>
+<p>3.(16B,32KB] 的对象，首先计算对象的规格大小，然后使用mcache中相应规格大小的mspan分配</p>
+<p>4.如果mcache没有相应规格大小的mspan，则向mcentral申请</p>
+<p>5.如果mcentral没有相应规格大小的mspan，则向mheap申请</p>
+<p>6.如果mheap中也没有合适大小的mspan，则向操作系统申请</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1.Go在程序启动时，会向操作系统申请一大块内存，之后自行管理（仅仅是虚拟的地址空间，并不会真正分配内存）。</p>
+<p>2.Go内存管理的基本单元是mspan，它由若干个页组成，每种mspan可以分配特定大小的object。</p>
+<p>3.mcache, mcentral, mheap是Go内存管理的三大组件，层层递进。<br>mcache管理线程在本地缓存的mspan；<br>mcentral管理全局的mspan供所有线程使用；<br>mheap管理Go的所有动态分配内存。</p>
+<p>4.极小对象会分配在一个object中，以节省资源，使用tiny分配器分配内存；一般小对象通过mspan分配内存；大对象则直接由mheap分配内存</p>
+]]></content>
       <categories>
-        <category>web开发</category>
+        <category>GO</category>
       </categories>
       <tags>
-        <tag>web,search</tag>
+        <tag>GO</tag>
       </tags>
   </entry>
   <entry>
@@ -497,75 +566,6 @@
 <h2 id="goroutine与python-yield"><a href="#goroutine与python-yield" class="headerlink" title="goroutine与python yield"></a>goroutine与python yield</h2><p>1.创建成本：Go 原生支持协程，通过 go func() 就可以创建一个 goroutine。Python 可以通过 gevent.spawn 来新建一个 coroutine，需要第三方库来支持。</p>
 <p>2.Goroutine 之间的通信更简单，通过 channel call 即可实现，上下文切换透明（只有少部分需要自己注意 Gosched）。Python 需要 yield 来传递数据和切换上下文（通过一些库封装后对调用者来说也是透明的，比如：gevent/tornado）。</p>
 <p>3.Python coroutine 只会使用一个线程，所以只能利用单核。Goroutine 可以被多个线程调度，可以利用多核</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO的内存分配</title>
-    <url>/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/</url>
-    <content><![CDATA[<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">go tool compile -S main.go</span><br></pre></td></tr></table></figure>
-<p>通过以上查看汇编代码可以看到内存申请情况，runtime.newobject是用于申请内存的内建函数，newobject是mallocgc的代理，mallocgc是管理堆内存的函数。Go分配内存有两种策略：小块内存申请和大块内存申请</p>
-<h2 id="内存管理基本结构"><a href="#内存管理基本结构" class="headerlink" title="内存管理基本结构"></a>内存管理基本结构</h2><p>golang的内存管理如下：</p>
-<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/1.png" alt="1"></p>
-<h3 id="MSpan"><a href="#MSpan" class="headerlink" title="MSpan"></a>MSpan</h3><p>内存管理的基本单位是MSpan。MSpan是一个表示若干连续内存页（8KB）的数据结构</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">struct MSpan</span><br><span class="line">&#123;</span><br><span class="line">    PageID    start;        <span class="comment">// starting page number</span></span><br><span class="line">    uintptr    npages;        <span class="comment">// number of pages in span</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>基地址+(页号* 页大小)，就可以定位到这个MSpan的实际的地址空间<br>PS：连续页，PageID是起始id，npages是数量</p>
-<p>每个 mspan按照它自身的属性 SizeClass的大小分割成若干个 object，每个 object可存储一个对象</p>
-<p>Size_Class = Span_Class / 2</p>
-<p>这是因为其实每个 SizeClass有两个 mspan，也就是有两个 SpanClass。其中一个分配给含有指针的对象，另一个分配给不含有指针的对象，每个等级SizeClass会存在两份mspan链表：一个链表用于存储内部不包含指针的对象，另一个链表用于存储内部包含指针的对象。这么的好处是垃圾回收时更高效，因为不需要扫描不包含指针的那个mspan链表</p>
-<p>mspan按大小被划分为大约67个等级的object，大小从8字节到32K字节不等，不同等级存储不同大小的object内存块</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> _NumSizeClasses = <span class="number">67</span></span><br><span class="line"><span class="keyword">var</span> class_to_size = [_NumSizeClasses]uint16&#123;<span class="number">0</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>, <span class="number">48</span>, <span class="number">64</span>, <span class="number">80</span>, <span class="number">96</span>, <span class="number">112</span>, <span class="number">128</span>, <span class="number">144</span>, <span class="number">160</span>, <span class="number">176</span>, <span class="number">192</span>, <span class="number">208</span>, <span class="number">224</span>, <span class="number">240</span>, <span class="number">256</span>, <span class="number">288</span>, <span class="number">320</span>, <span class="number">352</span>, <span class="number">384</span>, <span class="number">416</span>, <span class="number">448</span>, <span class="number">480</span>, <span class="number">512</span>, <span class="number">576</span>, <span class="number">640</span>, <span class="number">704</span>, <span class="number">768</span>, <span class="number">896</span>, <span class="number">1024</span>, <span class="number">1152</span>, <span class="number">1280</span>, <span class="number">1408</span>, <span class="number">1536</span>,<span class="number">1792</span>, <span class="number">2048</span>, <span class="number">2304</span>, <span class="number">2688</span>, <span class="number">3072</span>, <span class="number">3200</span>, <span class="number">3456</span>, <span class="number">4096</span>, <span class="number">4864</span>, <span class="number">5376</span>, <span class="number">6144</span>, <span class="number">6528</span>, <span class="number">6784</span>, <span class="number">6912</span>, <span class="number">8192</span>, <span class="number">9472</span>, <span class="number">9728</span>, <span class="number">10240</span>, <span class="number">10880</span>, <span class="number">12288</span>, <span class="number">13568</span>, <span class="number">14336</span>, <span class="number">16384</span>, <span class="number">18432</span>, <span class="number">19072</span>, <span class="number">20480</span>, <span class="number">21760</span>, <span class="number">24576</span>, <span class="number">27264</span>, <span class="number">28672</span>, <span class="number">32768</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>比如 SizeClass等于3， object大小就是32B。 32B大小的object可以存储对象大小范围在17B到32B的对象。而对于微小对象（小于16B），分配器会将其进行合并，将几个对象分配到同一个 object中</p>
-<p>最大的数是32768，也就是32KB，超过此大小就是大对象了，要直接从mheap堆上分配</p>
-<p>对于mspan来说，它的 SizeClass会决定它所能分到的页数，这也是写死在代码里的：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// path: /usr/local/go/src/runtime/sizeclasses.go</span></span><br><span class="line"><span class="keyword">const</span> _NumSizeClasses = <span class="number">67</span></span><br><span class="line"><span class="keyword">var</span> class_to_allocnpages = [_NumSizeClasses]uint8&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">4</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>比如当我们要申请一个 object大小为 32B的 mspan的时候，在classtosize里对应的索引是3，而索引3在 class_to_allocnpages数组里对应的页数就是1，即为8KB</p>
-<p>一个 mspan的 SizeClass等于10，根据前面的 class_to_size数组，得出这个 msapn分割的 object大小是144B，算出可分配的对象个数是 8KB/144B=56.89个，取整56个，所以会有一些内存浪费掉了，Go的源码里有所有 SizeClass的 mspan浪费的内存的大小；再根据 class_to_allocnpages数组，得到这个 mspan只由1个 page组成；假设这个 mspan是分配给无指针对象的，那么 spanClass等于20</p>
-<h3 id="MHeap分配堆"><a href="#MHeap分配堆" class="headerlink" title="MHeap分配堆"></a>MHeap分配堆</h3><p>代表Go程序持有的所有堆空间，Go程序使用一个 mheap的全局对象 mheap来管理堆内存</p>
-<p>MHeap层次用于直接分配较大(&gt;32kB)的内存空间，以及给MCentral和MCache等下层提供空间</p>
-<p>mheap主要用于大对象的内存分配，以及管理未切割的 mspan，用于给 mcentral切割成小对象</p>
-<p>mheap中含有所有规格的 mcentral，所以，当一个 mcache从 mcentral申请 mspan时，只需要在独立的 mcentral中使用锁，并不会影响申请其他规格的 mspan</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">  <span class="comment">//path: /usr/local/go/src/runtime/mheap.go</span></span><br><span class="line">type mheap struct &#123;</span><br><span class="line">	lock mutex</span><br><span class="line">	<span class="comment">// spans: 指向mspans区域，用于映射mspan和page的关系</span></span><br><span class="line">	spans []*mspan</span><br><span class="line">	<span class="comment">// 指向bitmap首地址，bitmap是从高地址向低地址增长的</span></span><br><span class="line">	bitmap uintptr</span><br><span class="line">	<span class="comment">// 指示arena区首地址</span></span><br><span class="line">	arena_start uintptr</span><br><span class="line">	<span class="comment">// 指示arena区已使用地址位置</span></span><br><span class="line">	arena_used uintptr</span><br><span class="line">	<span class="comment">// 指示arena区末地址</span></span><br><span class="line">	arena_end uintptr</span><br><span class="line">	central [<span class="number">67</span>*<span class="number">2</span>]struct &#123;</span><br><span class="line">		mcentral mcentral</span><br><span class="line">		pad [sys.CacheLineSize - unsafe.Sizeof(mcentral&#123;&#125;)%sys.CacheLineSize]byte</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="MCentral"><a href="#MCentral" class="headerlink" title="MCentral"></a>MCentral</h3><p>为所有 mcache提供切分好的 mspan资源。每个 central保存一种特定大小的全局 mspan列表，包括已分配出去的和未分配出去的。 每个 mcentral对应一种 mspan，而 mspan的种类导致它分割的 object大小不同。当工作线程的 mcache中没有合适（也就是特定大小的）的 mspan时就会从 mcentral获取</p>
-<p>MCentral被所有的工作线程共同享有，存在多个Goroutine竞争的情况，因此会消耗锁资源</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">struct MCentral</span><br><span class="line">&#123;</span><br><span class="line">    Lock;</span><br><span class="line">    int32 sizeclass;</span><br><span class="line">    MSpan nonempty;</span><br><span class="line">    MSpan empty;</span><br><span class="line">    int32 nfree;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>每个维护了两张全局的mspan链表。一张链表为non-empty类型，包含了可供分配的mspan（由于一个span可能包含多个object，只要有一个或一个以上的object可供分配即表示该mspan可供分配），一张为empty类型，包含已分配完毕的mspan</p>
-<p>1.获取 加锁；从 nonempty链表找到一个可用的 mspan；并将其从 nonempty链表删除；将取出的 mspan加入到 empty链表；将 mspan返回给工作线程；解锁。<br>2.归还 加锁；将 mspan从 empty链表删除；将 mspan加入到 nonempty链表；解锁</p>
-<p>PS：当Go执行垃圾回收时，如果span中的内存块被标记为可供分配，span会重新加入到non-empty链表中</p>
-<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/3.png" alt="3"></p>
-<p>当mcentral中也没有可供分配的span时，Go会从堆上申请新的span并将其放入mcentral中进行切分</p>
-<h3 id="MCache本地小块内存"><a href="#MCache本地小块内存" class="headerlink" title="MCache本地小块内存"></a>MCache本地小块内存</h3><p>对于32KB以下的小块内存申请，Go会从本地缓存mcache中获取内存。</p>
-<p>每一个M都有一个自己的局部内存缓存MCache，这样分配小对象的时候直接从MCache中分配，就不用加锁了，这是Go能够在多线程环境中高效地进行内存分配的重要原因</p>
-<p>MCache是mspan切分后的列表，包含object的列表，提供可使用的内存，2倍的object列表，上面mspan已经提到过</p>
-<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/2.png" alt="2"></p>
-<p>mcache在初始化的时候是没有任何 mspan资源的，在使用过程中会动态地从 mcentral申请，之后会缓存下来。当对象小于等于32KB大小时，使用 mcache的相应规格的 mspan进行分配。</p>
-<p>如果mcache上没有空闲的内存块可供分配该怎么办，则进入下一级mcentral</p>
-<h3 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h3><p>堆在必要时向操作系统申请内存。它会申请一块大内存，被称为arena，在64位系统下为64MB，其它大部分系统为4MB，申请的内存同样用span管理， 1M打底</p>
-<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/4.png" alt="4"></p>
-<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/5.png" alt="5"></p>
-<p>arena：堆区，运行时该区域每8KB会被划分成一个页，存储了所有在堆上初始化的对象</p>
-<p>bitmap：标识arena中哪些地址保存了对象，bitmap中一个字节的内存对应arena区域中4个指针大小的内存，并标记了是否包含指针和是否扫描的信息（一个指针大小为8B，因此bitmap的大小为512GB/(4* 8)=16GB）</p>
-<p>spans：存放mspan的指针，其中每个mspan会包含多个页，spans中一个指针（8B）表示arena中某一个page（8KB），因此spans的大小为512GB/(1024)=512MB</p>
-<h2 id="内存分配流程"><a href="#内存分配流程" class="headerlink" title="内存分配流程"></a>内存分配流程</h2><p>Go的内存分配器在分配对象时，根据对象的大小，分成三类：小对象（小于等于16B）、一般对象（大于16B，小于等于32KB）、大对象（大于32KB）</p>
-<p>1.&gt;32KB 的对象，直接从mheap上分配</p>
-<p>2.&lt;=16B 的对象使用mcache的tiny分配器分配</p>
-<p>3.(16B,32KB] 的对象，首先计算对象的规格大小，然后使用mcache中相应规格大小的mspan分配</p>
-<p>4.如果mcache没有相应规格大小的mspan，则向mcentral申请</p>
-<p>5.如果mcentral没有相应规格大小的mspan，则向mheap申请</p>
-<p>6.如果mheap中也没有合适大小的mspan，则向操作系统申请</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1.Go在程序启动时，会向操作系统申请一大块内存，之后自行管理（仅仅是虚拟的地址空间，并不会真正分配内存）。</p>
-<p>2.Go内存管理的基本单元是mspan，它由若干个页组成，每种mspan可以分配特定大小的object。</p>
-<p>3.mcache, mcentral, mheap是Go内存管理的三大组件，层层递进。<br>mcache管理线程在本地缓存的mspan；<br>mcentral管理全局的mspan供所有线程使用；<br>mheap管理Go的所有动态分配内存。</p>
-<p>4.极小对象会分配在一个object中，以节省资源，使用tiny分配器分配内存；一般小对象通过mspan分配内存；大对象则直接由mheap分配内存</p>
 ]]></content>
       <categories>
         <category>GO</category>
@@ -1035,6 +1035,21 @@
       </tags>
   </entry>
   <entry>
+    <title>GO自定义Error方法</title>
+    <url>/2020/12/27/GO%E8%87%AA%E5%AE%9A%E4%B9%89Error%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>通过interface定义</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">type error interface &#123;</span><br><span class="line">    <span class="built_in">Error</span>() string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自定义error</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">type <span class="built_in">Error</span> struct &#123;</span><br><span class="line">    errCode uint8</span><br><span class="line">&#125;</span><br><span class="line">func (e *<span class="built_in">Error</span>) <span class="built_in">Error</span>() string &#123;</span><br><span class="line">        <span class="keyword">switch</span> e.errCode &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;file not found&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;time out&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;permission denied&quot;</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;unknown error&quot;</span></span><br><span class="line">         &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GO里的defer关键字</title>
     <url>/2020/12/27/GO%E9%87%8C%E7%9A%84defer%E5%85%B3%E9%94%AE%E5%AD%97/</url>
     <content><![CDATA[<p>defer用于资源的释放，会在函数返回之前进行调用</p>
@@ -1082,13 +1097,23 @@
       </tags>
   </entry>
   <entry>
-    <title>GO自定义Error方法</title>
-    <url>/2020/12/27/GO%E8%87%AA%E5%AE%9A%E4%B9%89Error%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>通过interface定义</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">type error interface &#123;</span><br><span class="line">    <span class="built_in">Error</span>() string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>GO里的go关键字</title>
+    <url>/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/</url>
+    <content><![CDATA[<p>go f(x, y, z)会启动一个新的goroutine运行函数f(x, y, z)。函数f，变量x、y、z的值是在原goroutine计算的，只有函数f的执行是在新的goroutine中的</p>
+<p>新的goroutine不能和当前go线程用同一个栈，否则会相互覆盖。</p>
+<p>所以对go关键字的调用协议与普通函数调用是不同的</p>
+<p>普通函数的调用协议</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> CALL    f(SB)</span><br></pre></td></tr></table></figure>
 
-<p>自定义error</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">type <span class="built_in">Error</span> struct &#123;</span><br><span class="line">    errCode uint8</span><br><span class="line">&#125;</span><br><span class="line">func (e *<span class="built_in">Error</span>) <span class="built_in">Error</span>() string &#123;</span><br><span class="line">        <span class="keyword">switch</span> e.errCode &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;file not found&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;time out&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;permission denied&quot;</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;unknown error&quot;</span></span><br><span class="line">         &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<p>将参数 1，2，3进栈，然后调用函数f</p>
+<p>go 关键字调用函数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> PUSHQ   $f(SB)</span><br><span class="line"> PUSHQ   $<span class="number">12</span></span><br><span class="line"> CALL    runtime.newproc(SB)</span><br><span class="line"> POPQ    AX</span><br><span class="line"> POPQ    AX</span><br></pre></td></tr></table></figure>
+<p>前半部分一样，将参数1，2，3进栈，同时也将函数f进栈，12也进栈，12是函数参数的大小</p>
+<p>调用runtime.newproc函数</p>
+<p>runtime.newproc函数接受的参数分别是：参数大小，新的goroutine是要运行的函数，函数的n个参数</p>
+<p>runtime.newproc函数中</p>
+<p>1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数<br>2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内<br>3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。</p>
+]]></content>
       <categories>
         <category>GO</category>
       </categories>
@@ -1196,65 +1221,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Git撤销回滚</title>
-    <url>/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/</url>
-    <content><![CDATA[<p>了解git如何撤销回滚，先了解git的工作流</p>
-<h2 id="git工作流"><a href="#git工作流" class="headerlink" title="git工作流"></a>git工作流</h2><p>完成一次完整的本地分支git提交工作，分为三个区域</p>
-<p>工作区：即自己当前分支所修改的代码，git add xx 之前的！不包括 git add xx 和 git commit xxx 之后的。</p>
-<p>暂存区：已经 git add xxx 进去，且未 git commit xxx 的。</p>
-<p>本地分支：已经git commit -m xxx 提交到本地分支的。</p>
-<p> <img src="/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/1.png" alt="1"></p>
-<p>代码回滚</p>
-<p>在上传代码到远程仓库的时候，不免会出现问题，任何过程都有可能要回滚代码</p>
-<h2 id="如何回滚"><a href="#如何回滚" class="headerlink" title="如何回滚"></a>如何回滚</h2><p>分为以下几种场景</p>
-<h3 id="工作区的代码"><a href="#工作区的代码" class="headerlink" title="工作区的代码"></a>工作区的代码</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git checkout ./a.txt   # 丢弃某个文件，或者</span><br><span class="line">git checkout ./       # 丢弃全部</span><br></pre></td></tr></table></figure>
-<p>注意：git checkout – . 丢弃全部，也包括：新增的文件会被删除、删除的文件会恢复回来、修改的文件会回去。这几个前提都说的是，回到暂存区之前的样子。对之前保存在暂存区里的代码不会有任何影响。对commit提交到本地分支的代码就更没影响了。当然，如果你之前压根都没有暂存或commit，那就是回到你上次pull下来的样子了</p>
-<h3 id="代码git-add到缓存区，并未commit提交"><a href="#代码git-add到缓存区，并未commit提交" class="headerlink" title="代码git add到缓存区，并未commit提交"></a>代码git add到缓存区，并未commit提交</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset HEAD .  或者</span><br><span class="line">git reset HEAD a.txt</span><br></pre></td></tr></table></figure>
-
-<p>这个命令仅改变暂存区，并不改变工作区，这意味着在无任何其他操作的情况下，工作区中的实际文件同该命令运行之前无任何变化</p>
-<h3 id="git-commit到本地分支、但没有git-push到远程"><a href="#git-commit到本地分支、但没有git-push到远程" class="headerlink" title="git commit到本地分支、但没有git push到远程"></a>git commit到本地分支、但没有git push到远程</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;  # 回到其中你想要的某个版</span><br><span class="line">或者</span><br><span class="line">git reset --hard HEAD^  # 回到最新的一次提交</span><br><span class="line">或者</span><br><span class="line">git reset HEAD^  # 此时代码保留，回到 git add 之前</span><br></pre></td></tr></table></figure>
-
-<h3 id="git-push把修改提交到远程仓库"><a href="#git-push把修改提交到远程仓库" class="headerlink" title="git push把修改提交到远程仓库"></a>git push把修改提交到远程仓库</h3><p>reset和revert两种方式</p>
-<h4 id="通过git-reset是直接删除指定的commit"><a href="#通过git-reset是直接删除指定的commit" class="headerlink" title="通过git reset是直接删除指定的commit"></a>通过git reset是直接删除指定的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;</span><br><span class="line">git push origin HEAD --force # 强制提交一次，之前错误的提交就从远程仓库删除</span><br></pre></td></tr></table></figure>
-<h4 id="通过git-revert是用一次新的commit来回滚之前的commit"><a href="#通过git-revert是用一次新的commit来回滚之前的commit" class="headerlink" title="通过git revert是用一次新的commit来回滚之前的commit"></a>通过git revert是用一次新的commit来回滚之前的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git revert &lt;commit_id&gt;  # 撤销指定的版本，撤销也会作为一次提交进行保存</span><br></pre></td></tr></table></figure>
-
-
-
-
-]]></content>
-      <categories>
-        <category>Git代码管理</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO里的go关键字</title>
-    <url>/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/</url>
-    <content><![CDATA[<p>go f(x, y, z)会启动一个新的goroutine运行函数f(x, y, z)。函数f，变量x、y、z的值是在原goroutine计算的，只有函数f的执行是在新的goroutine中的</p>
-<p>新的goroutine不能和当前go线程用同一个栈，否则会相互覆盖。</p>
-<p>所以对go关键字的调用协议与普通函数调用是不同的</p>
-<p>普通函数的调用协议</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> CALL    f(SB)</span><br></pre></td></tr></table></figure>
-
-<p>将参数 1，2，3进栈，然后调用函数f</p>
-<p>go 关键字调用函数</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> PUSHQ   $f(SB)</span><br><span class="line"> PUSHQ   $<span class="number">12</span></span><br><span class="line"> CALL    runtime.newproc(SB)</span><br><span class="line"> POPQ    AX</span><br><span class="line"> POPQ    AX</span><br></pre></td></tr></table></figure>
-<p>前半部分一样，将参数1，2，3进栈，同时也将函数f进栈，12也进栈，12是函数参数的大小</p>
-<p>调用runtime.newproc函数</p>
-<p>runtime.newproc函数接受的参数分别是：参数大小，新的goroutine是要运行的函数，函数的n个参数</p>
-<p>runtime.newproc函数中</p>
-<p>1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数<br>2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内<br>3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git常用命令及分支</title>
     <url>/2018/05/21/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E5%88%86%E6%94%AF/</url>
     <content><![CDATA[<h2 id="git分支"><a href="#git分支" class="headerlink" title="git分支"></a>git分支</h2><p><img src="/2018/05/21/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E5%88%86%E6%94%AF/1.jpg" alt="1"><br>从上图可以看到主要包含下面几个分支：</p>
@@ -1304,6 +1270,40 @@
       </tags>
   </entry>
   <entry>
+    <title>Git撤销回滚</title>
+    <url>/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/</url>
+    <content><![CDATA[<p>了解git如何撤销回滚，先了解git的工作流</p>
+<h2 id="git工作流"><a href="#git工作流" class="headerlink" title="git工作流"></a>git工作流</h2><p>完成一次完整的本地分支git提交工作，分为三个区域</p>
+<p>工作区：即自己当前分支所修改的代码，git add xx 之前的！不包括 git add xx 和 git commit xxx 之后的。</p>
+<p>暂存区：已经 git add xxx 进去，且未 git commit xxx 的。</p>
+<p>本地分支：已经git commit -m xxx 提交到本地分支的。</p>
+<p> <img src="/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/1.png" alt="1"></p>
+<p>代码回滚</p>
+<p>在上传代码到远程仓库的时候，不免会出现问题，任何过程都有可能要回滚代码</p>
+<h2 id="如何回滚"><a href="#如何回滚" class="headerlink" title="如何回滚"></a>如何回滚</h2><p>分为以下几种场景</p>
+<h3 id="工作区的代码"><a href="#工作区的代码" class="headerlink" title="工作区的代码"></a>工作区的代码</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git checkout ./a.txt   # 丢弃某个文件，或者</span><br><span class="line">git checkout ./       # 丢弃全部</span><br></pre></td></tr></table></figure>
+<p>注意：git checkout – . 丢弃全部，也包括：新增的文件会被删除、删除的文件会恢复回来、修改的文件会回去。这几个前提都说的是，回到暂存区之前的样子。对之前保存在暂存区里的代码不会有任何影响。对commit提交到本地分支的代码就更没影响了。当然，如果你之前压根都没有暂存或commit，那就是回到你上次pull下来的样子了</p>
+<h3 id="代码git-add到缓存区，并未commit提交"><a href="#代码git-add到缓存区，并未commit提交" class="headerlink" title="代码git add到缓存区，并未commit提交"></a>代码git add到缓存区，并未commit提交</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset HEAD .  或者</span><br><span class="line">git reset HEAD a.txt</span><br></pre></td></tr></table></figure>
+
+<p>这个命令仅改变暂存区，并不改变工作区，这意味着在无任何其他操作的情况下，工作区中的实际文件同该命令运行之前无任何变化</p>
+<h3 id="git-commit到本地分支、但没有git-push到远程"><a href="#git-commit到本地分支、但没有git-push到远程" class="headerlink" title="git commit到本地分支、但没有git push到远程"></a>git commit到本地分支、但没有git push到远程</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;  # 回到其中你想要的某个版</span><br><span class="line">或者</span><br><span class="line">git reset --hard HEAD^  # 回到最新的一次提交</span><br><span class="line">或者</span><br><span class="line">git reset HEAD^  # 此时代码保留，回到 git add 之前</span><br></pre></td></tr></table></figure>
+
+<h3 id="git-push把修改提交到远程仓库"><a href="#git-push把修改提交到远程仓库" class="headerlink" title="git push把修改提交到远程仓库"></a>git push把修改提交到远程仓库</h3><p>reset和revert两种方式</p>
+<h4 id="通过git-reset是直接删除指定的commit"><a href="#通过git-reset是直接删除指定的commit" class="headerlink" title="通过git reset是直接删除指定的commit"></a>通过git reset是直接删除指定的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;</span><br><span class="line">git push origin HEAD --force # 强制提交一次，之前错误的提交就从远程仓库删除</span><br></pre></td></tr></table></figure>
+<h4 id="通过git-revert是用一次新的commit来回滚之前的commit"><a href="#通过git-revert是用一次新的commit来回滚之前的commit" class="headerlink" title="通过git revert是用一次新的commit来回滚之前的commit"></a>通过git revert是用一次新的commit来回滚之前的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git revert &lt;commit_id&gt;  # 撤销指定的版本，撤销也会作为一次提交进行保存</span><br></pre></td></tr></table></figure>
+
+
+
+
+]]></content>
+      <categories>
+        <category>Git代码管理</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git查看文件历史</title>
     <url>/2019/03/04/Git%E6%9F%A5%E7%9C%8B%E8%AE%B0%E5%BD%95%E7%9B%B8%E5%85%B3/</url>
     <content><![CDATA[<h4 id="显示commit历史，以及每次commit发生变更的文件"><a href="#显示commit历史，以及每次commit发生变更的文件" class="headerlink" title="显示commit历史，以及每次commit发生变更的文件"></a>显示commit历史，以及每次commit发生变更的文件</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log --stat</span><br></pre></td></tr></table></figure>
@@ -1344,6 +1344,55 @@
 
 <h4 id="从本地master拉取代码更新当前分支：branch-一般为master"><a href="#从本地master拉取代码更新当前分支：branch-一般为master" class="headerlink" title="从本地master拉取代码更新当前分支：branch 一般为master"></a>从本地master拉取代码更新当前分支：branch 一般为master</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git rebase [branch]</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>Git代码管理</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git的reset与revert的区别</title>
+    <url>/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="git的head理解"><a href="#git的head理解" class="headerlink" title="git的head理解"></a>git的head理解</h2><p>使用git的每次提交，Git都会自动把它们串成一条时间线，这条时间线就是一个分支。如果没有新建分支，那么只有一条时间线，即只有一个分支，在Git里，这个分支叫主分支，即master分支。有一个HEAD指针指向当前分支（只有一个分支的情况下会指向master，而master是指向最新提交）</p>
+<h2 id="reset操作"><a href="#reset操作" class="headerlink" title="reset操作"></a>reset操作</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>git reset的作用是修改HEAD的位置，即将HEAD指向的位置改变为之前存在的某个版本</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<p>reset之后，目标版本之后的版本会被删除，更新为reset的版本</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/2.png" alt="2"></p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>如果想恢复到之前某个提交的版本，且那个版本之后提交的版本我们都不要了，就可以用这种方法</p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示，选择要回退的commit ID</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/3.png" alt="3"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
+
+<p>然后提交更改</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+<p>PS： “git push”会报错，因为我们本地库HEAD指向的版本比远程库的要旧</p>
+<p>强推则回退成功</p>
+<h2 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p> git revert是用于“反做”某一个版本，以达到撤销该版本的修改的目的。比如，我们commit了三个版本（版本一、版本二、 版本三），突然发现版本二不行（如：有bug），想要撤销版本二，但又不想影响撤销版本三的提交，就可以用 git revert 命令来反做版本二，生成新的版本四，这个版本四里会保留版本三的东西，但撤销了版本二的东西</p>
+<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/4.png" alt="4"></p>
+<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/5.png" alt="5"></p>
+<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>如果我们想撤销之前的某一版本，但是又想保留该目标版本后面的版本，记录下这整个版本变动流程，就可以用这种方法。</p>
+<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+
+<p>选择要反做的版本号，撤销该版本的修改</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git revert -n 版本号</span><br></pre></td></tr></table></figure>
+
+<p>PS： 这里可能会出现冲突，那么需要手动修改冲突的文件。而且要git add 文件名。</p>
+<p>提交反做的内容</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;新提交说明&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这时可以git log查看本地的版本信息，会发现新增一个版本</p>
+<p>git push推上去</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<p>反做成功</p>
+<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><p>reset： 回滚“到”某个版本</p>
+<p>revert： 回滚某个版本</p>
 ]]></content>
       <categories>
         <category>Git代码管理</category>
@@ -1588,6 +1637,32 @@
       </tags>
   </entry>
   <entry>
+    <title>Python连接Mysql</title>
+    <url>/2018/05/07/Python%E8%BF%9E%E6%8E%A5Mysql/</url>
+    <content><![CDATA[<p>通过python操作mysql，面向对象的编程思想</p>
+<h2 id="导入包"><a href="#导入包" class="headerlink" title="导入包"></a>导入包</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pymysql <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
+<h2 id="面向对象封装"><a href="#面向对象封装" class="headerlink" title="面向对象封装"></a>面向对象封装</h2><h3 id="init初始化方法"><a href="#init初始化方法" class="headerlink" title="init初始化方法"></a>init初始化方法</h3><p>创建连接，建立游标对象</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class JD(object):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        # 　1创建链接对象</span><br><span class="line">        self.conn = connect(host=<span class="string">&#x27;主机名&#x27;</span>, port=<span class="number">3306</span>, database=<span class="string">&#x27;数据库名&#x27;</span>, user=<span class="string">&#x27;账户名&#x27;</span>, password=<span class="string">&#x27;密码&#x27;</span>,charset=<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        # 2 创建游标对象</span><br><span class="line">        self.cs = self.conn.cursor()</span><br></pre></td></tr></table></figure>
+
+<h3 id="del方法"><a href="#del方法" class="headerlink" title="del方法"></a>del方法</h3><p>关闭游标，关闭连接</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def __del__(self):</span><br><span class="line">        # 5 关闭</span><br><span class="line">        self.cs.close()</span><br><span class="line">        self.conn.close()</span><br></pre></td></tr></table></figure>
+
+<h3 id="sql语句执行方法"><a href="#sql语句执行方法" class="headerlink" title="sql语句执行方法"></a>sql语句执行方法</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def my_execute_sql(self,sql):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;执行ｓｑｌ语句&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        self.cs.execute(sql)</span><br><span class="line"></span><br><span class="line">        # 4 获取数据</span><br><span class="line">        content = self.cs.fetchall()</span><br></pre></td></tr></table></figure>
+
+<h3 id="写sql语句"><a href="#写sql语句" class="headerlink" title="写sql语句"></a>写sql语句</h3><p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def show_all_goods(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;显示所有的商品信息&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        sql = <span class="string">&quot;select * from goods;&quot;</span></span><br><span class="line"></span><br><span class="line">        self.my_execute_sql(sql)</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def run(self):</span><br><span class="line">      self.show_all_goods()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>数据库,Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RestFul设计规则</title>
     <url>/2018/06/02/RestFul%E8%AE%BE%E8%AE%A1%E8%A7%84%E5%88%99/</url>
     <content><![CDATA[<h2 id="restful"><a href="#restful" class="headerlink" title="restful"></a>restful</h2><p>REST全称是Representational State Transfer，REST本身并没有创造新的技术、组件或服务，而隐藏在RESTful背后的理念就是使用Web的现有特征和能力， 更好地使用现有Web标准中的一些准则和约束。虽然REST本身受Web技术的影响很深， 但是理论上REST架构风格并不是绑定在HTTP上，只不过目前HTTP是唯一与REST相关的实例。 所以我们这里描述的REST也是通过HTTP实现的REST。</p>
@@ -1627,32 +1702,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python连接Mysql</title>
-    <url>/2018/05/07/Python%E8%BF%9E%E6%8E%A5Mysql/</url>
-    <content><![CDATA[<p>通过python操作mysql，面向对象的编程思想</p>
-<h2 id="导入包"><a href="#导入包" class="headerlink" title="导入包"></a>导入包</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pymysql <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
-<h2 id="面向对象封装"><a href="#面向对象封装" class="headerlink" title="面向对象封装"></a>面向对象封装</h2><h3 id="init初始化方法"><a href="#init初始化方法" class="headerlink" title="init初始化方法"></a>init初始化方法</h3><p>创建连接，建立游标对象</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class JD(object):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        # 　1创建链接对象</span><br><span class="line">        self.conn = connect(host=<span class="string">&#x27;主机名&#x27;</span>, port=<span class="number">3306</span>, database=<span class="string">&#x27;数据库名&#x27;</span>, user=<span class="string">&#x27;账户名&#x27;</span>, password=<span class="string">&#x27;密码&#x27;</span>,charset=<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        # 2 创建游标对象</span><br><span class="line">        self.cs = self.conn.cursor()</span><br></pre></td></tr></table></figure>
-
-<h3 id="del方法"><a href="#del方法" class="headerlink" title="del方法"></a>del方法</h3><p>关闭游标，关闭连接</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def __del__(self):</span><br><span class="line">        # 5 关闭</span><br><span class="line">        self.cs.close()</span><br><span class="line">        self.conn.close()</span><br></pre></td></tr></table></figure>
-
-<h3 id="sql语句执行方法"><a href="#sql语句执行方法" class="headerlink" title="sql语句执行方法"></a>sql语句执行方法</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def my_execute_sql(self,sql):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;执行ｓｑｌ语句&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        self.cs.execute(sql)</span><br><span class="line"></span><br><span class="line">        # 4 获取数据</span><br><span class="line">        content = self.cs.fetchall()</span><br></pre></td></tr></table></figure>
-
-<h3 id="写sql语句"><a href="#写sql语句" class="headerlink" title="写sql语句"></a>写sql语句</h3><p>例：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def show_all_goods(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;显示所有的商品信息&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        sql = <span class="string">&quot;select * from goods;&quot;</span></span><br><span class="line"></span><br><span class="line">        self.my_execute_sql(sql)</span><br></pre></td></tr></table></figure>
-
-<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def run(self):</span><br><span class="line">      self.show_all_goods()</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>数据库,Mysql</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>VMware的.vmdk文件只赠不减的处理方法</title>
     <url>/2019/11/14/VMware%E7%9A%84.vmdk%E6%96%87%E4%BB%B6%E5%8F%AA%E8%B5%A0%E4%B8%8D%E5%87%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>VMware虚拟机的虚拟磁盘的大小会随着使用时间不断变大，而且只赠不减。即使在虚拟系统中删除了磁盘中的文件，虚拟磁盘的大小仍然不会变小。</p>
@@ -1681,55 +1730,6 @@
       </categories>
       <tags>
         <tag>VMware</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git的reset与revert的区别</title>
-    <url>/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h2 id="git的head理解"><a href="#git的head理解" class="headerlink" title="git的head理解"></a>git的head理解</h2><p>使用git的每次提交，Git都会自动把它们串成一条时间线，这条时间线就是一个分支。如果没有新建分支，那么只有一条时间线，即只有一个分支，在Git里，这个分支叫主分支，即master分支。有一个HEAD指针指向当前分支（只有一个分支的情况下会指向master，而master是指向最新提交）</p>
-<h2 id="reset操作"><a href="#reset操作" class="headerlink" title="reset操作"></a>reset操作</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>git reset的作用是修改HEAD的位置，即将HEAD指向的位置改变为之前存在的某个版本</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
-<p>reset之后，目标版本之后的版本会被删除，更新为reset的版本</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/2.png" alt="2"></p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>如果想恢复到之前某个提交的版本，且那个版本之后提交的版本我们都不要了，就可以用这种方法</p>
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
-
-<p>如下图所示，选择要回退的commit ID</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/3.png" alt="3"></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
-
-<p>然后提交更改</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
-<p>PS： “git push”会报错，因为我们本地库HEAD指向的版本比远程库的要旧</p>
-<p>强推则回退成功</p>
-<h2 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p> git revert是用于“反做”某一个版本，以达到撤销该版本的修改的目的。比如，我们commit了三个版本（版本一、版本二、 版本三），突然发现版本二不行（如：有bug），想要撤销版本二，但又不想影响撤销版本三的提交，就可以用 git revert 命令来反做版本二，生成新的版本四，这个版本四里会保留版本三的东西，但撤销了版本二的东西</p>
-<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/4.png" alt="4"></p>
-<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/5.png" alt="5"></p>
-<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>如果我们想撤销之前的某一版本，但是又想保留该目标版本后面的版本，记录下这整个版本变动流程，就可以用这种方法。</p>
-<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
-
-<p>选择要反做的版本号，撤销该版本的修改</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git revert -n 版本号</span><br></pre></td></tr></table></figure>
-
-<p>PS： 这里可能会出现冲突，那么需要手动修改冲突的文件。而且要git add 文件名。</p>
-<p>提交反做的内容</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;新提交说明&quot;</span> </span><br></pre></td></tr></table></figure>
-
-<p>这时可以git log查看本地的版本信息，会发现新增一个版本</p>
-<p>git push推上去</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
-
-<p>反做成功</p>
-<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><p>reset： 回滚“到”某个版本</p>
-<p>revert： 回滚某个版本</p>
-]]></content>
-      <categories>
-        <category>Git代码管理</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
       </tags>
   </entry>
   <entry>
