@@ -1097,6 +1097,31 @@
       </tags>
   </entry>
   <entry>
+    <title>GO里的go关键字</title>
+    <url>/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/</url>
+    <content><![CDATA[<p>go f(x, y, z)会启动一个新的goroutine运行函数f(x, y, z)。函数f，变量x、y、z的值是在原goroutine计算的，只有函数f的执行是在新的goroutine中的</p>
+<p>新的goroutine不能和当前go线程用同一个栈，否则会相互覆盖。</p>
+<p>所以对go关键字的调用协议与普通函数调用是不同的</p>
+<p>普通函数的调用协议</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> CALL    f(SB)</span><br></pre></td></tr></table></figure>
+
+<p>将参数 1，2，3进栈，然后调用函数f</p>
+<p>go 关键字调用函数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> PUSHQ   $f(SB)</span><br><span class="line"> PUSHQ   $<span class="number">12</span></span><br><span class="line"> CALL    runtime.newproc(SB)</span><br><span class="line"> POPQ    AX</span><br><span class="line"> POPQ    AX</span><br></pre></td></tr></table></figure>
+<p>前半部分一样，将参数1，2，3进栈，同时也将函数f进栈，12也进栈，12是函数参数的大小</p>
+<p>调用runtime.newproc函数</p>
+<p>runtime.newproc函数接受的参数分别是：参数大小，新的goroutine是要运行的函数，函数的n个参数</p>
+<p>runtime.newproc函数中</p>
+<p>1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数<br>2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内<br>3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git rebase 理解及使用</title>
     <url>/2020/06/17/Git%20rebase%E7%90%86%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="什么是git-rebase"><a href="#什么是git-rebase" class="headerlink" title="什么是git rebase"></a>什么是git rebase</h2><p>官方描述</p>
@@ -1167,31 +1192,6 @@
       </categories>
       <tags>
         <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO里的go关键字</title>
-    <url>/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/</url>
-    <content><![CDATA[<p>go f(x, y, z)会启动一个新的goroutine运行函数f(x, y, z)。函数f，变量x、y、z的值是在原goroutine计算的，只有函数f的执行是在新的goroutine中的</p>
-<p>新的goroutine不能和当前go线程用同一个栈，否则会相互覆盖。</p>
-<p>所以对go关键字的调用协议与普通函数调用是不同的</p>
-<p>普通函数的调用协议</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> CALL    f(SB)</span><br></pre></td></tr></table></figure>
-
-<p>将参数 1，2，3进栈，然后调用函数f</p>
-<p>go 关键字调用函数</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> PUSHQ   $f(SB)</span><br><span class="line"> PUSHQ   $<span class="number">12</span></span><br><span class="line"> CALL    runtime.newproc(SB)</span><br><span class="line"> POPQ    AX</span><br><span class="line"> POPQ    AX</span><br></pre></td></tr></table></figure>
-<p>前半部分一样，将参数1，2，3进栈，同时也将函数f进栈，12也进栈，12是函数参数的大小</p>
-<p>调用runtime.newproc函数</p>
-<p>runtime.newproc函数接受的参数分别是：参数大小，新的goroutine是要运行的函数，函数的n个参数</p>
-<p>runtime.newproc函数中</p>
-<p>1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数<br>2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内<br>3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
       </tags>
   </entry>
   <entry>
