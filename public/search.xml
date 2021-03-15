@@ -906,40 +906,6 @@
       </tags>
   </entry>
   <entry>
-    <title>GO的连续栈</title>
-    <url>/2020/12/28/GO%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%A0%88/</url>
-    <content><![CDATA[<p>Go语言支持goroutine，每个goroutine需要能够运行，所以它们都有自己的栈</p>
-<p>所以栈的空间是随着需要自动增长的，每个goroutine开始只分配很小的栈空间</p>
-<p>所以开了千万个goroutine也不会耗尽内存</p>
-<p>continuous stack</p>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>1.调用栈默认大小是4K（1.7修改为2K），最大栈1G，超出将panic<br>2.每次执行函数调用时，runtime就会进行检测，当前栈的大小不够用，会触发中断<br>3.runtime会保存此时函数运行的上下文<br>4.分配一个新的足够大的栈空间，进行2倍指数扩容将旧栈的内容拷贝到新栈中，并做一些设置，使得当函数恢复运行时，函数会在新分配的栈中继续执行</p>
-<h3 id="捕获栈空间不足，实行中断"><a href="#捕获栈空间不足，实行中断" class="headerlink" title="捕获栈空间不足，实行中断"></a>捕获栈空间不足，实行中断</h3><p>1.比较栈指针寄存器和G结构体的stackguard<br>2.SP大于g-&gt;stackguard，runtime.morestack(保存M，连接旧栈新栈)，runtime.newstack(新栈)</p>
-<p>每个goroutine对应一个结构体G，大致相当于进程控制块的概念<br>结构体中存了stackbase和stackguard，用于确定这个goroutine使用的栈空间信息<br>如果栈指针寄存器(SP)值超越了stackguard就需要扩展栈空间</p>
-<p>汇编如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    TEXT    <span class="string">&quot;&quot;</span>.main+<span class="number">0</span>(SB),$<span class="number">0</span>-<span class="number">0</span></span><br><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    MOVQ    (TLS),CX</span><br><span class="line"><span class="number">0x0009</span> <span class="number">00009</span> (test.go:<span class="number">3</span>)    CMPQ    SP,(CX)</span><br><span class="line"><span class="number">0x000c</span> <span class="number">00012</span> (test.go:<span class="number">3</span>)    JHI    ,<span class="number">21</span></span><br><span class="line"><span class="number">0x000e</span> <span class="number">00014</span> (test.go:<span class="number">3</span>)    CALL    ,runtime.morestack00_noctxt(SB)</span><br><span class="line"><span class="number">0x0013</span> <span class="number">00019</span> (test.go:<span class="number">3</span>)    JMP    ,<span class="number">0</span></span><br><span class="line"><span class="number">0x0015</span> <span class="number">00021</span> (test.go:<span class="number">3</span>)    NOP    ,</span><br></pre></td></tr></table></figure>
-<p>如果SP大于g-&gt;stackguard了，则会调用runtime.morestack函数.开始中断，新建栈空间</p>
-<p>runtime.morestack是用汇编实现的，做的事情大致是将一些信息存在M结构体中，这些信息包括当前栈桢，参数，当前函数调用，函数返回地址（两个返回地址，一个是runtime.morestack的函数地址，一个是f的返回地址）。通过这些信息可以把新栈和旧栈链起来</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> runtime.morestack() &#123;</span><br><span class="line">    <span class="keyword">if</span>(g == g0) &#123;</span><br><span class="line">        panic();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        m-&gt;morebuf.gobuf_pc = getCallerCallerPC();</span><br><span class="line">        <span class="keyword">void</span> *SP = getCallerSP();</span><br><span class="line">        m-&gt;morebuf.gobuf_sp = SP;</span><br><span class="line">        m-&gt;moreargp = SP;</span><br><span class="line">        m-&gt;morebuf.gobuf_g = g;</span><br><span class="line">        m-&gt;morepc = getCallerPC();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">void</span> *g0 = m-&gt;g0;</span><br><span class="line">        g = g0;</span><br><span class="line">        setSP(g0-&gt;g_sched.gobuf_sp);</span><br><span class="line">        runtime.newstack();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后调用runtime.newstack，建立新的栈空间</p>
-<p>PS：newstack是切换到m-&gt;g0的栈中去调用的。m-&gt;g0是调度器栈，go的运行时库的调度器使用的都是m-&gt;g0。</p>
-<h3 id="旧栈数据复制到新栈"><a href="#旧栈数据复制到新栈" class="headerlink" title="旧栈数据复制到新栈"></a>旧栈数据复制到新栈</h3><p>1.runtime.morestack会调用于runtime.newstack<br>2.newstack：分配一个足够大的新的空间，将旧的栈中的数据复制到新的栈中</p>
-<p>复制数据的过程中要考虑指针失效问题</p>
-<p>某个指针引用旧栈的地址，搬到新栈后，旧栈会被释放，指针失效</p>
-<p>所以要修改指针地址：</p>
-<p>1.当前栈帧之前的每一个栈帧，对其中的每一个指针，检测指针指向的地址<br>2.如果指向地址是落在旧栈范围内的，则将它加上一个偏移使它指向新栈的相应地址。这个偏移值等于新栈基地址减旧栈基地址。</p>
-<p>恢复运行：<br>1.切换到当前g<br>2.runtime.oldstack从过去保存旧栈的信息拿到相关信息<br>3.runtime.gogo根据旧的信息恢复上下文，运行</p>
-<p>整个过程就完成了。</p>
-<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>1.比较SP与g的stackguard，SP大于g-&gt;stackguard，开始连续栈扩容<br>2.调用runtime.morestack，主要功能是保存当前的栈的一些信息<br>3.调用runtime.newstack，函数的主要功能是分配空间，装饰此空间，复制数据到新空间，修改指针<br>4.gogocall的方式切换到新分配的栈，获取旧的信息，恢复上下文，继续运行</p>
-<p>栈缩容：是在垃圾回收的里处理的，当检测到栈只使用了不到1/4时，栈缩小为原来的1/2</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>GO的逃逸分析</title>
     <url>/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<h2 id="关于堆栈及变量分配"><a href="#关于堆栈及变量分配" class="headerlink" title="关于堆栈及变量分配"></a>关于堆栈及变量分配</h2><p>在函数内部定义了一个局部变量，然后返回这个局部变量的地址（指针）。这些局部变量是在栈上分配的（静态内存分配），一旦函数执行完毕，变量占据的内存会被销毁，任何对这个返回值作的动作（如解引用），都将扰乱程序的运行，甚至导致程序直接崩溃</p>
@@ -1192,6 +1158,40 @@
       </categories>
       <tags>
         <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO的连续栈</title>
+    <url>/2020/12/28/GO%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%A0%88/</url>
+    <content><![CDATA[<p>Go语言支持goroutine，每个goroutine需要能够运行，所以它们都有自己的栈</p>
+<p>所以栈的空间是随着需要自动增长的，每个goroutine开始只分配很小的栈空间</p>
+<p>所以开了千万个goroutine也不会耗尽内存</p>
+<p>continuous stack</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>1.调用栈默认大小是4K（1.7修改为2K），最大栈1G，超出将panic<br>2.每次执行函数调用时，runtime就会进行检测，当前栈的大小不够用，会触发中断<br>3.runtime会保存此时函数运行的上下文<br>4.分配一个新的足够大的栈空间，进行2倍指数扩容将旧栈的内容拷贝到新栈中，并做一些设置，使得当函数恢复运行时，函数会在新分配的栈中继续执行</p>
+<h3 id="捕获栈空间不足，实行中断"><a href="#捕获栈空间不足，实行中断" class="headerlink" title="捕获栈空间不足，实行中断"></a>捕获栈空间不足，实行中断</h3><p>1.比较栈指针寄存器和G结构体的stackguard<br>2.SP大于g-&gt;stackguard，runtime.morestack(保存M，连接旧栈新栈)，runtime.newstack(新栈)</p>
+<p>每个goroutine对应一个结构体G，大致相当于进程控制块的概念<br>结构体中存了stackbase和stackguard，用于确定这个goroutine使用的栈空间信息<br>如果栈指针寄存器(SP)值超越了stackguard就需要扩展栈空间</p>
+<p>汇编如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    TEXT    <span class="string">&quot;&quot;</span>.main+<span class="number">0</span>(SB),$<span class="number">0</span>-<span class="number">0</span></span><br><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    MOVQ    (TLS),CX</span><br><span class="line"><span class="number">0x0009</span> <span class="number">00009</span> (test.go:<span class="number">3</span>)    CMPQ    SP,(CX)</span><br><span class="line"><span class="number">0x000c</span> <span class="number">00012</span> (test.go:<span class="number">3</span>)    JHI    ,<span class="number">21</span></span><br><span class="line"><span class="number">0x000e</span> <span class="number">00014</span> (test.go:<span class="number">3</span>)    CALL    ,runtime.morestack00_noctxt(SB)</span><br><span class="line"><span class="number">0x0013</span> <span class="number">00019</span> (test.go:<span class="number">3</span>)    JMP    ,<span class="number">0</span></span><br><span class="line"><span class="number">0x0015</span> <span class="number">00021</span> (test.go:<span class="number">3</span>)    NOP    ,</span><br></pre></td></tr></table></figure>
+<p>如果SP大于g-&gt;stackguard了，则会调用runtime.morestack函数.开始中断，新建栈空间</p>
+<p>runtime.morestack是用汇编实现的，做的事情大致是将一些信息存在M结构体中，这些信息包括当前栈桢，参数，当前函数调用，函数返回地址（两个返回地址，一个是runtime.morestack的函数地址，一个是f的返回地址）。通过这些信息可以把新栈和旧栈链起来</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> runtime.morestack() &#123;</span><br><span class="line">    <span class="keyword">if</span>(g == g0) &#123;</span><br><span class="line">        panic();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        m-&gt;morebuf.gobuf_pc = getCallerCallerPC();</span><br><span class="line">        <span class="keyword">void</span> *SP = getCallerSP();</span><br><span class="line">        m-&gt;morebuf.gobuf_sp = SP;</span><br><span class="line">        m-&gt;moreargp = SP;</span><br><span class="line">        m-&gt;morebuf.gobuf_g = g;</span><br><span class="line">        m-&gt;morepc = getCallerPC();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">void</span> *g0 = m-&gt;g0;</span><br><span class="line">        g = g0;</span><br><span class="line">        setSP(g0-&gt;g_sched.gobuf_sp);</span><br><span class="line">        runtime.newstack();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后调用runtime.newstack，建立新的栈空间</p>
+<p>PS：newstack是切换到m-&gt;g0的栈中去调用的。m-&gt;g0是调度器栈，go的运行时库的调度器使用的都是m-&gt;g0。</p>
+<h3 id="旧栈数据复制到新栈"><a href="#旧栈数据复制到新栈" class="headerlink" title="旧栈数据复制到新栈"></a>旧栈数据复制到新栈</h3><p>1.runtime.morestack会调用于runtime.newstack<br>2.newstack：分配一个足够大的新的空间，将旧的栈中的数据复制到新的栈中</p>
+<p>复制数据的过程中要考虑指针失效问题</p>
+<p>某个指针引用旧栈的地址，搬到新栈后，旧栈会被释放，指针失效</p>
+<p>所以要修改指针地址：</p>
+<p>1.当前栈帧之前的每一个栈帧，对其中的每一个指针，检测指针指向的地址<br>2.如果指向地址是落在旧栈范围内的，则将它加上一个偏移使它指向新栈的相应地址。这个偏移值等于新栈基地址减旧栈基地址。</p>
+<p>恢复运行：<br>1.切换到当前g<br>2.runtime.oldstack从过去保存旧栈的信息拿到相关信息<br>3.runtime.gogo根据旧的信息恢复上下文，运行</p>
+<p>整个过程就完成了。</p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>1.比较SP与g的stackguard，SP大于g-&gt;stackguard，开始连续栈扩容<br>2.调用runtime.morestack，主要功能是保存当前的栈的一些信息<br>3.调用runtime.newstack，函数的主要功能是分配空间，装饰此空间，复制数据到新空间，修改指针<br>4.gogocall的方式切换到新分配的栈，获取旧的信息，恢复上下文，继续运行</p>
+<p>栈缩容：是在垃圾回收的里处理的，当检测到栈只使用了不到1/4时，栈缩小为原来的1/2</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
       </tags>
   </entry>
   <entry>
