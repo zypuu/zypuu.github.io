@@ -38,6 +38,27 @@
   </entry>
   
   <entry>
+    <title>布隆过滤器</title>
+    <link href="http://zypuu.com/2021/03/31/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
+    <id>http://zypuu.com/2021/03/31/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</id>
+    <published>2021-03-31T09:09:00.000Z</published>
+    <updated>2021-03-31T09:41:55.370Z</updated>
+    
+    <content type="html"><![CDATA[<p>布隆过滤器是二进制向量数据结构，它具有很好的空间和时间效率，被用来检测一个元素是不是集合中的一个成员</p><p>判定可能已存在和绝对不存在两种情况。</p><p>如果检测结果为是，该元素不一定在集合中</p><p>但如果检测结果为否，该元素一定不在集合中</p><p>应用场景：</p><p>ip黑名单，爬虫url过滤， 垃圾邮件过滤，去重</p><p>实现步骤：</p><p>1、开辟一个长度为m的bit数组，可以用文件来实现</p><p>2、通过hash函数计算得到位置值，并将数组里对应的位置的二进制置为1</p><p>3、查找时，通养通过hash计算得到位置，该位置的如果都是1，可能存在，如果有0，则一定不存在</p><p>优点：</p><p>有很好的空间和时间效率</p><p>不需要存储元素本身，在某些对保密要求非常严格的场合有优势</p><p>存储空间和插入查询都是常数复杂度</p><p>缺点：</p><p>误判率会随元素的增加而增加</p><p>不能从布隆过滤器中删除元素</p><p>redis 4.0以上支持布隆过滤器</p>]]></content>
+    
+    
+    <summary type="html">布隆过滤器的应用</summary>
+    
+    
+    
+    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
     <title>关于HTTP网络通信相关</title>
     <link href="http://zypuu.com/2021/03/29/%E5%85%B3%E4%BA%8EHTTP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E7%9B%B8%E5%85%B3/"/>
     <id>http://zypuu.com/2021/03/29/%E5%85%B3%E4%BA%8EHTTP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E7%9B%B8%E5%85%B3/</id>
@@ -405,27 +426,6 @@
     
     
     <summary type="html">两个数组的交集</summary>
-    
-    
-    
-    <category term="数据算法" scheme="http://zypuu.com/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="算法" scheme="http://zypuu.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数组、链表和跳表</title>
-    <link href="http://zypuu.com/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/"/>
-    <id>http://zypuu.com/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/</id>
-    <published>2021-02-01T03:12:00.000Z</published>
-    <updated>2021-02-03T07:00:05.696Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p>线性表是最常用且最简单的一种数据结构，它是n个数据元素的有限序列。</p><p>实现线性表的方式一般有两种，一种是使用数组存储线性表的元素，即用一组连续的存储单元依次存储线性表的数据元素。另一种是使用链表存储线性表的元素，即用一组任意的存储单元存储线性表的数据元素（存储单元可以是连续的，也可以是不连续的）</p><h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>golang 数组  slice</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a []int</span><br></pre></td></tr></table></figure><p>每当申请数组时，计算机在内存中开辟了一段连续的地址，每一个地址直接可以通过内存管理器进行访问</p><p>所以无论访问哪个元素，时间复杂度是一样的，常数O(1)的</p><p>添加，删除时的操作，插入，删除元素都需要移动后面的元素，复杂度是O(n)</p><p>prepend: O(1), append: O(1), insert：O(n), del: O(n), lookup:O(1)</p><p>prepend正常情况下是O(n),可以特殊化到O(1)，申请稍大一些的内存空间，在前面预留一些，操作的时候把头下标前移一个位置即可</p><p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/1.png" alt="1"></p><p>空间复杂度</p><p>O(n)</p><h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>1.每个元素有Value、Next，next指向下一个元素</p><p>2.头指针用head表示，尾指针用tail表示</p><p>3.最后一个元素next指向空</p><p>4.增加或删除节点的话，没有引起整个链表的群移操作，也不需要复制元素，挪动元素到新的位置，所以它移动的效率和修改的操作效率非常高，复杂度为O(1)</p><p>5.这个结构导致了访问链表中的任何一个位置，操作就不再简单了，复杂度为O(n)</p><p>prepend: O(1), append: O(1), insert：O(1), del: O(1), lookup:O(n)</p><p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/5.png" alt="5"></p><p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/2.png" alt="2"></p><p>空间复杂度</p><p>O(n)</p><h4 id="单链表"><a href="#单链表" class="headerlink" title="单链表"></a>单链表</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ListNode ...</span></span><br><span class="line">type ListNode struct &#123;</span><br><span class="line">    Val int</span><br><span class="line">    Next *ListNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>由各个内存结构通过一个 Next 指针链接在一起组成，每一个内存结构都存在后继内存结构【链尾除外】，内存结构由数据域和 Next 指针域组成</p><p>1.Data 数据 + Next 指针，组成一个单链表的内存结构</p><p>2.第一个内存结构称为 链头，最后一个内存结构称为 链尾</p><p>3.链尾的 Next 指针设置为 NULL [指向空]</p><p>4.单链表的遍历方向单一【只能从链头一直遍历到链尾】</p><h4 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DNode ...</span></span><br><span class="line">type DNode struct &#123;</span><br><span class="line">data interface&#123;&#125;</span><br><span class="line">prev *DNode</span><br><span class="line">next *DNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>由各个内存结构通过指针 Next 和指针 Prev 链接在一起组成，每一个内存结构都存在前驱内存结构和后继内存结构【链头没有前驱，链尾没有后继】，内存结构由数据域、Prev 指针域和 Next 指针域组成</p><p>1.Data 数据 + Next 指针 + Prev 指针，组成一个双向链表的内存结构</p><p>2.第一个内存结构称为 链头，最后一个内存结构称为 链尾</p><p>3.链头的 Prev 指针设置为 NULL， 链尾的 Next 指针设置为 NULL</p><p>4.Prev 指向的内存结构称为 前驱， Next 指向的内存结构称为 后继</p><p>5.双向链表的遍历是双向的，即如果把从链头的 Next 一直到链尾的[NULL] 遍历方向定义为正向，那么从链尾的 Prev 一直到链头 [NULL ]遍历方向就是反向</p><h4 id="循环链表"><a href="#循环链表" class="headerlink" title="循环链表"></a>循环链表</h4><p>在单向链表和双向链表的基础上</p><p>单向循环链表 [Circular Linked List] : 由各个内存结构通过一个指针 Next 链接在一起组成，每一个内存结构都存在后继内存结构，内存结构由数据域和 Next 指针域组成。</p><p>双向循环链表 [Double Circular Linked List] : 由各个内存结构通过指针 Next 和指针 Prev 链接在一起组成，每一个内存结构都存在前驱内存结构和后继内存结构，内存结构由数据域、Prev 指针域和 Next 指针域组成。</p><p>1.循环链表分为单向、双向两种</p><p>2.单向的实现就是在单链表的基础上，把链尾的 Next 指针直接指向链头，形成一个闭环</p><p>3.双向的实现就是在双向链表的基础上，把链尾的 Next 指针指向链头，再把链头的 Prev 指针指向链尾，形成一个闭环</p><p>4.循环链表没有链头和链尾的说法，因为是闭环的，所以每一个内存结构都可以充当链头和链尾</p><h2 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h2><p>链表在增加删除都很快，都是O(1)操作</p><p>但是查询很慢，是O(n)那么如何给链表的查询加速呢</p><p>升维</p><p>增加多级索引</p><p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/3.png" alt="3"></p><p>由于节点的增删改查，会导致索引不工整，维护成本相对较高。</p><p>在redis里面，就是使用的跳表。</p><p>时间复杂度</p><p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/4.png" alt="4"></p><p>索引的高度：logn，每层索引遍历的结点个数：3</p><p>在跳表中查询任意数据的时间复杂度就是 O(logn)</p><p>空间复杂度</p><p>O(n)</p><p>每层节点，每两个节点抽1个 n/2, 每3个节点抽一个 3/n</p>]]></content>
-    
-    
-    <summary type="html">数组，链表，跳表，时间复杂度，空间复杂度</summary>
     
     
     
