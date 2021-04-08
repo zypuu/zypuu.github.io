@@ -118,37 +118,6 @@
       </tags>
   </entry>
   <entry>
-    <title>配置缓存</title>
-    <url>/2018/04/20/Django%E5%BA%94%E7%94%A8%E7%BC%93%E5%AD%98/</url>
-    <content><![CDATA[<h2 id="Django配置缓存"><a href="#Django配置缓存" class="headerlink" title="Django配置缓存"></a>Django配置缓存</h2><p>在Django REST framework中使用缓存，可以通过drf-extensions扩展来实现。使用文档<a href="http://chibisov.github.io/drf-extensions/docs/#caching">点这里</a></p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-extensions</span><br></pre></td></tr></table></figure>
-
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="直接添加装饰器"><a href="#直接添加装饰器" class="headerlink" title="直接添加装饰器"></a>直接添加装饰器</h4><p>首先导入工具</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework_extensions.cache.decorators <span class="keyword">import</span> cache_response</span><br></pre></td></tr></table></figure>
-<p>即在视图类里面的方法前添加装饰器</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class CityView(views.APIView):</span><br><span class="line">    @cache_response()</span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
-<p>cache_response可以添加两个参数</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">@cache_response(timeout=<span class="number">60</span>*<span class="number">60</span>, cache=<span class="string">&#x27;default&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>timeout : 缓存的过期时间<br>cache=’default’ ：django的缓存后端，即在settings中的cache配置</p>
-<p>如果不写参数，则使用默认值，默认值在配置中添加代码：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用扩展类继承"><a href="#使用扩展类继承" class="headerlink" title="使用扩展类继承"></a>使用扩展类继承</h4><p>除了直接添加装饰器的方法，也可以使用drf-extensions提供的扩展类</p>
-<p>drf-extensions提供了三种扩展类<br>导入工具：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">rest_framework_extensions.cache.mixins</span><br></pre></td></tr></table></figure>
-<p>三个扩展类都在里面。</p>
-<p> 1.ListCacheResponseMixin<br> 用于缓存列表数据类的视图，配合ListModelMixin扩展类使用<br> 2. RetrieveCacheResponseMixin<br>用于缓存返回单一数据的视图，与RetrieveModelMixin扩展类配合使用<br> 3. CacheResponseMixin<br> 为视图集同时补充List和Retrieve两种缓存，与ListModelMixin和RetrieveModelMixin一起配合使用。</p>
-<p>使用方法直接视图类继承即可。<br>在settings中添加配置，即可设置过期时间与cache</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>web开发</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Django视图使用说明</title>
     <url>/2018/04/25/Django%E8%A7%86%E5%9B%BE%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/</url>
     <content><![CDATA[<h2 id="两个基类"><a href="#两个基类" class="headerlink" title="两个基类"></a>两个基类</h2><h3 id="APIView"><a href="#APIView" class="headerlink" title="APIView"></a>APIView</h3><p>APIView是django rest_framework提供的所有视图的基类，继承自django的view父类。<br>导入：</p>
@@ -234,6 +203,37 @@
       </categories>
       <tags>
         <tag>web,Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>配置缓存</title>
+    <url>/2018/04/20/Django%E5%BA%94%E7%94%A8%E7%BC%93%E5%AD%98/</url>
+    <content><![CDATA[<h2 id="Django配置缓存"><a href="#Django配置缓存" class="headerlink" title="Django配置缓存"></a>Django配置缓存</h2><p>在Django REST framework中使用缓存，可以通过drf-extensions扩展来实现。使用文档<a href="http://chibisov.github.io/drf-extensions/docs/#caching">点这里</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-extensions</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="直接添加装饰器"><a href="#直接添加装饰器" class="headerlink" title="直接添加装饰器"></a>直接添加装饰器</h4><p>首先导入工具</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework_extensions.cache.decorators <span class="keyword">import</span> cache_response</span><br></pre></td></tr></table></figure>
+<p>即在视图类里面的方法前添加装饰器</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class CityView(views.APIView):</span><br><span class="line">    @cache_response()</span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+<p>cache_response可以添加两个参数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">@cache_response(timeout=<span class="number">60</span>*<span class="number">60</span>, cache=<span class="string">&#x27;default&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>timeout : 缓存的过期时间<br>cache=’default’ ：django的缓存后端，即在settings中的cache配置</p>
+<p>如果不写参数，则使用默认值，默认值在配置中添加代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用扩展类继承"><a href="#使用扩展类继承" class="headerlink" title="使用扩展类继承"></a>使用扩展类继承</h4><p>除了直接添加装饰器的方法，也可以使用drf-extensions提供的扩展类</p>
+<p>drf-extensions提供了三种扩展类<br>导入工具：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">rest_framework_extensions.cache.mixins</span><br></pre></td></tr></table></figure>
+<p>三个扩展类都在里面。</p>
+<p> 1.ListCacheResponseMixin<br> 用于缓存列表数据类的视图，配合ListModelMixin扩展类使用<br> 2. RetrieveCacheResponseMixin<br>用于缓存返回单一数据的视图，与RetrieveModelMixin扩展类配合使用<br> 3. CacheResponseMixin<br> 为视图集同时补充List和Retrieve两种缓存，与ListModelMixin和RetrieveModelMixin一起配合使用。</p>
+<p>使用方法直接视图类继承即可。<br>在settings中添加配置，即可设置过期时间与cache</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>web开发</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
       </tags>
   </entry>
   <entry>
