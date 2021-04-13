@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://zypuu.com/2021/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/2.png">
 <meta property="og:image" content="http://zypuu.com/2021/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/3.png">
 <meta property="article:published_time" content="2021-03-31T11:15:15.000Z">
-<meta property="article:modified_time" content="2021-03-31T07:18:57.899Z">
+<meta property="article:modified_time" content="2021-04-12T10:30:43.068Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -191,10 +191,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-03-31 19:15:15 / Modified: 15:18:57" itemprop="dateCreated datePublished" datetime="2021-03-31T19:15:15+08:00">2021-03-31</time>
+              <time title="Created: 2021-03-31 19:15:15" itemprop="dateCreated datePublished" datetime="2021-03-31T19:15:15+08:00">2021-03-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-12 18:30:43" itemprop="dateModified" datetime="2021-04-12T18:30:43+08:00">2021-04-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -211,7 +217,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.4k</span>
+              <span>3.7k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -240,7 +246,9 @@
 <p>关闭一些不需要的服务以及端口号</p>
 <h3 id="linux常用命令"><a href="#linux常用命令" class="headerlink" title="linux常用命令"></a>linux常用命令</h3><p>cd， pwd， ls， ll(更详细) -a，touch创建文件，mkdir 创建目录， cat 查看日志文件， more分页查看， less可定位到最后一页</p>
 <p>tail -f， cp复制，mv移动， rm 删除，grep 字符串模糊搜索， find查找文件， | 管道命令， tar解压缩， ps -ef -aux查看系统进程</p>
-<p>netstat 显示网络状态， ping 测试连通， top查看正在执行的进程， free查看内存相关</p>
+<p>netstat 显示网络状态， ping 测试连通， top查看正在执行的进程， free查看内存相关， sar -n DEV 显示网口统计数据（吞吐率，PPS）</p>
+<p>sar -n TCP 显示tcp统计数据 netstat -nlp socket信息  ss -ltnp socket信息   ss -s连接数 netstat -s 查连接数</p>
+<p>ping 查看连通性和延时  kill -1 查看所有信号  kill -9 杀死进程</p>
 <h3 id="linux调整优先级"><a href="#linux调整优先级" class="headerlink" title="linux调整优先级"></a>linux调整优先级</h3><p>ps -ef， top查看进程信息，PR值和NI值</p>
 <p>NI是优先级，用户态的概念，PR是内核态的优先级，一般情况下，PR=NI+20, 如果一个进程的优先级PR是20， 那么它的NI(nice)值就是20-20=0</p>
 <p>可以通过改变NI来改变PR</p>
@@ -304,6 +312,9 @@
 <p>python的协程源于yield指令</p>
 <p>yield item 用于产出一个值，反馈给next()的调用方法<br>让出处理机，暂停执行生成器，让调用方继续工作，直到需要使用另一个值时再调用next()<br>协程式对线程的调度，yield类似惰性求职方式可以视为一种流程控制工具，实现协作式多任务，python3.5引入了async/await表达式，使得协程证实在语言层面得到支持和优化，大大简化之前的yield写法。线程正式在语言层面得到支持和优化。线程是内核进行抢占式调度的，这样就确保每个线程都有执行的机会。而coroutine运行在同一个线程中，有语言层面运行时中的EventLoop（事件循环）来进行调度。在python中协程的调度是非抢占式的，也就是说一个协程必须主动让出执行机会，其他协程才有机会运行。让出执行的关键字 await， 如果一个协程阻塞了，持续不让出CPU处理机，那么整个线程就卡住了，没有任何并发。</p>
 <p>goalng协程模型</p>
+<h3 id="cpu的使用率与负载"><a href="#cpu的使用率与负载" class="headerlink" title="cpu的使用率与负载"></a>cpu的使用率与负载</h3><p>local average，平均负载，1分钟，5分钟，15分钟</p>
+<p>负载高利用率低：说明io密集型任务，，任务较多，查看是否有p+状态的进程，睡眠不可终止的进程，重启，恢复依赖资源</p>
+<p>负载低利用率高：说明任务执行时间长，根据任务看代码， top操作</p>
 
     </div>
 
@@ -387,7 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">linux进程间的通信方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E7%9A%84%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.</span> <span class="nav-text">linux的硬链接和软连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E8%B0%83%E4%BC%98%E7%9B%B8%E5%85%B3"><span class="nav-number">3.</span> <span class="nav-text">linux调优相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">linux常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E8%B0%83%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">5.</span> <span class="nav-text">linux调整优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-%E5%86%85%E6%A0%B8%E6%80%81%EF%BC%8C%E7%94%A8%E6%88%B7%E6%80%81"><span class="nav-number">6.</span> <span class="nav-text">linux 内核态，用户态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B"><span class="nav-number">7.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E4%BA%94%E4%B8%AA%E7%8A%B6%E6%80%81"><span class="nav-number">7.1.</span> <span class="nav-text">进程五个状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6"><span class="nav-number">7.2.</span> <span class="nav-text">进程的调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">7.3.</span> <span class="nav-text">进程切换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">7.4.</span> <span class="nav-text">调度算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%AD%BB%E9%94%81"><span class="nav-number">7.5.</span> <span class="nav-text">进程死锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%94%81"><span class="nav-number">8.1.</span> <span class="nav-text">线程锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">9.</span> <span class="nav-text">进程与线程的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B"><span class="nav-number">10.</span> <span class="nav-text">协程</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">linux进程间的通信方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E7%9A%84%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.</span> <span class="nav-text">linux的硬链接和软连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E8%B0%83%E4%BC%98%E7%9B%B8%E5%85%B3"><span class="nav-number">3.</span> <span class="nav-text">linux调优相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">linux常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E8%B0%83%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">5.</span> <span class="nav-text">linux调整优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-%E5%86%85%E6%A0%B8%E6%80%81%EF%BC%8C%E7%94%A8%E6%88%B7%E6%80%81"><span class="nav-number">6.</span> <span class="nav-text">linux 内核态，用户态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B"><span class="nav-number">7.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E4%BA%94%E4%B8%AA%E7%8A%B6%E6%80%81"><span class="nav-number">7.1.</span> <span class="nav-text">进程五个状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6"><span class="nav-number">7.2.</span> <span class="nav-text">进程的调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">7.3.</span> <span class="nav-text">进程切换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">7.4.</span> <span class="nav-text">调度算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%AD%BB%E9%94%81"><span class="nav-number">7.5.</span> <span class="nav-text">进程死锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%94%81"><span class="nav-number">8.1.</span> <span class="nav-text">线程锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">9.</span> <span class="nav-text">进程与线程的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B"><span class="nav-number">10.</span> <span class="nav-text">协程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cpu%E7%9A%84%E4%BD%BF%E7%94%A8%E7%8E%87%E4%B8%8E%E8%B4%9F%E8%BD%BD"><span class="nav-number">11.</span> <span class="nav-text">cpu的使用率与负载</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -460,12 +471,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">162k</span>
+    <span title="Symbols count total">166k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:27</span>
+    <span title="Reading time total">2:31</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
