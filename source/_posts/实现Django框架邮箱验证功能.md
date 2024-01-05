@@ -74,7 +74,7 @@ class SaveEmail(UpdateAPIView):
         serializer = TJWSSerializer(settings.SECRET_KEY, expires_in=constants.VERIFY_EMAIL_TOKEN_EXPIRES)
         data = {'user_id': self.id, 'email': self.email}
         token = serializer.dumps(data).decode()
-        verify_url = 'http://www.meiduo.site:8080/success_verify_email.html?token=' + token
+        verify_url = 'http://域名/success_verify_email.html?token=' + token
         # 返回生成的地址
         return verify_url
 ```

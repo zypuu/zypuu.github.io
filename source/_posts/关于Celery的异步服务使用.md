@@ -26,7 +26,7 @@ Celery是一个专注于实时处理和任务调度的分布式任务队列。�
 ### Celery架构
 
 
-{% asset_img 1.jpg  %}
+![1](1.jpg)
 Celery Beat：任务调度器，Beat进程会读取配置文件的内容，周期性地将配置中到期需要执行的任务发送给任务队列。
 Result Backend：任务处理完后保存状态信息和结果，以供查询。Celery默认已支持Redis、RabbitMQ、MongoDB、Django ORM、SQLAlchemy等方式，当然Redis应该是最佳选择。
 

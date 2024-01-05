@@ -238,7 +238,7 @@ token = serializers.CharField(label='登录状态token', read_only=True)  # 增�
 #### 登录功能中使用JWT返回指定字段
 将上面的jwt应用于登录认证时，登录成功后，发现api接口只返回了jwt的token，如图所示
 
-{% asset_img 1.jpg  %}
+![1](1.jpg)
 如果想将用户的其他字段比如用户名，怎么返回呢
 jwt配合django的内部框架提供了登录验证功能，在Django框架中直接使用jwt的登录验证视图函数obtain_jwt_token
 
@@ -271,7 +271,7 @@ def jwt_response_payload_handler(token, user=None, request=None):
 
 然后重新运行即可，效果如下
 
-{% asset_img 2.jpg  %}
+![2](2.jpg)
 
 ### jwt的优点
 1.因为json的通用性，所以JWT是可以进行跨语言支持的，像JAVA,JavaScript,NodeJS,PHP等很多语言都可以使用。

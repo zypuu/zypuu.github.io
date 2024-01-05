@@ -19,7 +19,7 @@ FastDFS 系统有三个角色：跟踪服务器(Tracker Server)、存储服务�
 　　Storage Server：存储服务器，主要提供容量和备份服务；以 group 为单位，每个 group 内可以有多台 storage server，数据互为备份。
 
 　　Client：客户端，上传下载数据的服务器，也就是我们自己的项目所部署在的服务器。
- {% asset_img 1.jpg  %}
+![1](1.jpg)
 服务端两个角色:
 
 Tracker: 管理集群，tracker 也可以实现集群。每个 tracker 节点地位平等。收集 Storage 集群的状态。
@@ -33,13 +33,13 @@ Storage: 实际保存文件， Storage 分为多个组，每个组之间保存�
 FastDFS向使用者提供基本文件访问接口，比如upload、download、append、delete等，以客户端库的方式提供给用户使用。
 
 Storage Server会定期的向Tracker Server发送自己的存储信息。当Tracker Server Cluster中的Tracker Server不止一个时，各个Tracker之间的关系是对等的，所以客户端上传时可以选择任意一个Tracker。
-{% asset_img 2.jpg  %}
+![2](2.jpg)
 当Tracker收到客户端上传文件的请求时，会为该文件分配一个可以存储文件的group，当选定了group后就要决定给客户端分配group中的哪一个storage server。当分配好storage server后，客户端向storage发送写文件请求，storage将会为文件分配一个数据存储目录。然后为文件分配一个fileid，最后根据以上的信息生成文件名存储文件。
 
 ### 文件名组成
 
 文件名如下：
-{% asset_img 3.jpg  %}
+![3](3.jpg)
 组名：文件上传后所在的 storage 组名称，在文件上传成功后有 storage 服务器返回， 需要客户端自行保存。
 虚拟磁盘路径：storage 配置的虚拟路径，与磁盘选项 store_path对应。如果配置了 store_path0 则是 M00，如果配置了 store_path1 则是 M01，以此类推。
 数据两级目录：storage 服务器在每个虚拟磁盘路径下创建的两级目录，用于存储数据 文件。

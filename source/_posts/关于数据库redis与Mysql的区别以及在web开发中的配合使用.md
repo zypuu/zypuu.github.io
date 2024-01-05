@@ -36,14 +36,14 @@ MySQL和NoSQL都有各自的特点和使用的应用场景，两者的紧密结�
 
 #### 缓存
 
-{% asset_img 1.jpg  %}
+![1](1.jpg)
 
 页面缓存经常用在CMS(content manage system)内存管理系统里面。
 数据缓存经常会用在页面的具体数据里面。
 #### Redis缓存原理
 采用redis nosql数据库作为Mysql数据库的缓存，在查找的时候，首先查找redis缓存，如果找到则返回结果；如果在redis中没有找到，那么查找Mysql数据库，找到的花则返回结果并且更新redis；如果没有找到则返回空。
 
-{% asset_img 2.jpg  %}
+![2](2.jpg)
 
 对于写入：用户增删改数据库，先访问mysql，mysql再把数据更新到redis。
 

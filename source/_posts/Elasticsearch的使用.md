@@ -12,7 +12,7 @@ ES=elaticsearch简写， Elasticsearch是一个开源的高扩展的分布式全
 Elasticsearch也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。
 ## ES工作原理
 当ElasticSearch的节点启动后，它会利用多播(multicast)(或者单播，如果用户更改了配置)寻找集群中的其它节点，并与之建立连接。这个过程如下图所示： 
-{% asset_img 1.jpg  %}
+![1](1.jpg)
 ## ES核心概念
 
 ### Cluster：集群

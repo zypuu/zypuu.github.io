@@ -18,7 +18,7 @@ rest_framework.views.APIView
 APIView相对于View封装了drf的request对象，response对象，异常捕获功能以及身份认证，权限检查，流量控制等功能。
 
 提供的属性：
-authentication_classes 列表或元祖，身份认证类
+authentication_classes 列表或元祖，身份认证类，可重写。
 permissoin_classes 列表或元祖，权限检查类
 throttle_classes 列表或元祖，流量控制类
 

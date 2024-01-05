@@ -85,5 +85,3 @@ REST_FRAMEWORK_EXTENSIONS = {
     'DEFAULT_USE_CACHE': 'default',
 }
 ```
-
-## Flask配置缓存
