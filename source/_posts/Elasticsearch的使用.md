@@ -1,8 +1,8 @@
 ---
 title: Elasticsearch的使用
 date: 2018-08-01 20:02:55
-tags: web,search
-categories: web开发
+tags: Elasticsearch
+categories: 数据库
 comments: true
 description: Elasticsearch的初步介绍，以及简单使用。
 ---
