@@ -20,25 +20,24 @@
     var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="git几种工作流，flow工作流">
+  <meta name="description" content="消息队列不同场景的消息处理，如何保证消息准确。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git工作流">
-<meta property="og:url" content="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html">
+<meta property="og:title" content="消息队列的消息处理">
+<meta property="og:url" content="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="git几种工作流，flow工作流">
+<meta property="og:description" content="消息队列不同场景的消息处理，如何保证消息准确。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png">
-<meta property="og:image" content="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/2.png">
-<meta property="og:image" content="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/3.png">
-<meta property="og:image" content="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/4.png">
-<meta property="article:published_time" content="2020-12-15T10:08:05.305Z">
-<meta property="article:modified_time" content="2020-12-16T11:31:28.220Z">
+<meta property="og:image" content="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/1.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/2.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/3.jpg">
+<meta property="article:published_time" content="2023-01-04T03:26:47.000Z">
+<meta property="article:modified_time" content="2024-01-04T08:21:04.731Z">
 <meta property="article:author" content="ZYP">
-<meta property="article:tag" content="git">
+<meta property="article:tag" content="消息队列">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png">
+<meta name="twitter:image" content="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/1.jpg">
 
-<link rel="canonical" href="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+<link rel="canonical" href="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/">
 
 
 <script id="page-configurations">
@@ -51,7 +50,7 @@
   };
 </script>
 
-  <title>Git工作流 | ALL-Nothing</title>
+  <title>消息队列的消息处理 | ALL-Nothing</title>
   
 
 
@@ -170,7 +169,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -183,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Git工作流
+          消息队列的消息处理
         </h1>
 
         <div class="post-meta">
@@ -193,14 +192,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-12-15 18:08:05" itemprop="dateCreated datePublished" datetime="2020-12-15T18:08:05+08:00">2020-12-15</time>
+              <time title="Created: 2023-01-04 11:26:47" itemprop="dateCreated datePublished" datetime="2023-01-04T11:26:47+08:00">2023-01-04</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-16 19:31:28" itemprop="dateModified" datetime="2020-12-16T19:31:28+08:00">2020-12-16</time>
+                <time title="Modified: 2024-01-04 16:21:04" itemprop="dateModified" datetime="2024-01-04T16:21:04+08:00">2024-01-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -208,7 +207,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">Git代码管理</span></a>
+                  <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">消息队列</span></a>
                 </span>
             </span>
 
@@ -227,7 +226,7 @@
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
-            <div class="post-description">git几种工作流，flow工作流</div>
+            <div class="post-description">消息队列不同场景的消息处理，如何保证消息准确。</div>
 
         </div>
       </header>
@@ -238,21 +237,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Git工作流：为工作中团队成员遵守的一种代码管理方案，在Git中有以下几种工作流方案作为方案指导。</p>
-<h2 id="集中式工作流"><a href="#集中式工作流" class="headerlink" title="集中式工作流"></a>集中式工作流</h2><p>这种工作方式跟svn类似，它只有一个master分支，开发者会先把远程的仓库克隆到本地，之后的修 改和提交都在本地操作，直到在某个合适的时间点将本地的代码合入到远程master。这种工作流比 较适合小团队，因为小团队可能不会太多的协作和合流的动作。</p>
-<h2 id="功能分支工作流"><a href="#功能分支工作流" class="headerlink" title="功能分支工作流"></a>功能分支工作流</h2><p>这种工作流关注功能开发，不直接往master提交代码保证它是稳定并且干净的，而是从master拉 取feature分支进行功能开发，团队成员根据分工拉取不同的功能分支来进行不同的功能开发，这样 就可以完全隔离开每个人的工作。当功能开发完成后，会向master分支发起Pull Request，只有审 核通过的代码才真正允许合入master，这样就加强了团队成员之间的代码交流。</p>
-<h2 id="Gitflow工作流"><a href="#Gitflow工作流" class="headerlink" title="Gitflow工作流"></a>Gitflow工作流</h2><p>相对复杂一点，但它非常适合用来管理大型项目的发布和维护，贯穿整个开发周期，master和develop分支是一直存在的，master分支可以被视为稳定的分支， 而develop分支是相对稳定的分支，特性开发会在feature分支上进行，发布会在release分支上 进行，而bug修复则会在hotfix分支上进行</p>
-<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><h4 id="两个分支，master，develop分支"><a href="#两个分支，master，develop分支" class="headerlink" title="两个分支，master，develop分支"></a>两个分支，master，develop分支</h4><p>相对使用仅有的一个master分支，Gitflow工作流使用2个分支来记录项目的历史。 master分支存储了正式发布的历史，而develop分支作为功能的集成分支。 这样也方便master分支上的所有提交分配一个版本号。</p>
-<p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png" alt="1"></p>
-<h4 id="每个人开发的功能分支"><a href="#每个人开发的功能分支" class="headerlink" title="每个人开发的功能分支"></a>每个人开发的功能分支</h4><p>每个新功能位于一个自己的分支，这样可以push到中央仓库以备份和协作。 但功能分支不是从master分支上拉出新分支，而是使用develop分支作为父分支。 当新功能完成时，合并回develop分支。 新功能提交应该从不直接与master分支交互。 从各种含义和目的上来看，功能分支加上develop分支就是功能分支工作流的用法。但Gitflow工作流没有在这里止步。</p>
-<p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/2.png" alt="2"></p>
-<h4 id="develop和master中间的发布分支"><a href="#develop和master中间的发布分支" class="headerlink" title="develop和master中间的发布分支"></a>develop和master中间的发布分支</h4><p>一旦develop分支上有了做一次发布（或者说快到了既定的发布日）的足够功能，就从develop分支上checkout一个发布分支。 新建的分支用于开始发布循环，所以从这个时间点开始之后新的功能不能再加到这个分支上—— 这个分支只应该做Bug修复、文档生成和其它面向发布任务。 一旦对外发布的工作都完成了， 发布分支合并到master分支并分配一个版本号打好Tag。 另外，这些从新建发布分支以来的做的修改要合并回develop分支。</p>
-<p>使用一个用于发布准备的专门分支，使得一个团队可以在完善当前的发布版本的同时，另一个团队可以继续开发下个版本的功能。 这也打造定义良好的开发阶段。</p>
-<p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/3.png" alt="3"></p>
-<h4 id="修复分支"><a href="#修复分支" class="headerlink" title="修复分支"></a>修复分支</h4><p>维护分支或说是热修复（hotfix）分支用于生成快速给产品发布版本（production releases）打补丁， 这是唯一可以直接从master分支fork出来的分支。 修复完成，修改应该马上合并回master分支和dev elop分支（当前的发布分支），master分支应该用新的版本号打好Tag。</p>
-<p>为Bug修复使用专门分支，让团队可以处理掉问题而不用打断其它工作或是等待下一个发布循环。 你可以把维护分支想成是一个直接在master分支上处理的临时发布。</p>
-<p><img src="/2020/12/15/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/4.png" alt="4"></p>
-<h2 id="Forking工作流"><a href="#Forking工作流" class="headerlink" title="Forking工作流"></a>Forking工作流</h2><p>Forking工作流对于开源项目贡献者一定不陌生了，它有一个公开的中央仓库，其他贡献 者可以Fork（克隆）这个仓库作为你自己的私有仓库，开源项目维护者可以直接往中央仓库 push代码，而代码贡献者只能将代码push到自己的私有仓库，只有项目维护者接受代码贡献 者往中央仓库发起的pull request才会真正合入。</p>
+        <h3 id="消息处理阶段"><a href="#消息处理阶段" class="headerlink" title="消息处理阶段"></a>消息处理阶段</h3><p>一共有三个阶段，分别是生产消息、存储消息和消费消息</p>
+<img src="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/1.jpg" class>
+
+<h3 id="如何保证消息不丢失"><a href="#如何保证消息不丢失" class="headerlink" title="如何保证消息不丢失"></a>如何保证消息不丢失</h3><h4 id="生产消息"><a href="#生产消息" class="headerlink" title="生产消息"></a>生产消息</h4><p>生产者发送消息至 Broker ，需要处理 Broker 的响应，不论是同步还是异步发送消息，同步和异步回调都需要做好 try-catch ，妥善的处理响应，如果 Broker 返回写入失败等错误消息，需要重试发送。当多次发送失败需要作报警，日志记录等。<br>这样就能保证在生产消息阶段消息不会丢失。</p>
+<h4 id="存储消息"><a href="#存储消息" class="headerlink" title="存储消息"></a>存储消息</h4><p>存储消息阶段需要在消息刷盘之后再给生产者响应，假设消息写入缓存中就返回响应，那么机器突然断电这消息就没了，而生产者以为已经发送成功了。<br>如果 Broker 是集群部署，有多副本机制，即消息不仅仅要写入当前 Broker ,还需要写入副本机中。那配置成至少写入两台机子后再给生产者响应。这样基本上就能保证存储的可靠了。</p>
+<h4 id="消费消息"><a href="#消费消息" class="headerlink" title="消费消息"></a>消费消息</h4><p>应该在消费者真正执行完业务逻辑之后，再发送给 Broker 消费成功，这才是真正的消费成功。<br>所以只要我们在消息业务逻辑处理完成之后再给 Broker 响应，那么消费阶段消息就不会丢失</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>消息可靠性增强，性能就会下降，等待消息刷盘、多副本同步后返回都会影响性能。<br>要看业务逻辑</p>
+<h3 id="如何保证消息不重复"><a href="#如何保证消息不重复" class="headerlink" title="如何保证消息不重复"></a>如何保证消息不重复</h3><h4 id="什么情况下会出现重复消息"><a href="#什么情况下会出现重复消息" class="headerlink" title="什么情况下会出现重复消息"></a>什么情况下会出现重复消息</h4><p>1、业务方因为网络抖动，发过来的消息，就是重复的，会要求处理重复<br>2、为了保证消息可靠性，我们的基本需求是消息至少得发到Broker 上，那就得等 Broker 的响应，那么就可能存在 Broker 已经写入了，当时响应由于网络原因生产者没有收到，然后生产者又重发了一次，此时消息就重复了<br>3、消费者消费的时候，假设我们消费者拿到消息消费了，业务逻辑已经走完了，事务提交了，此时需要更新 Consumer offset 了，然后这个消费者挂了，另一个消费者顶上，此时 Consumer offset 还没更新，于是又拿到刚才那条消息，业务又被执行了一遍。于是消息又重复</p>
+<p>正常业务而言消息重复是不可避免的，因此我们只能从另一个角度来解决重复消息的问题。<br>关键点就是幂等。既然我们不能防止重复消息的产生，那么我们只能在业务上处理重复消息所带来的影响</p>
+<h4 id="幂等消息处理"><a href="#幂等消息处理" class="headerlink" title="幂等消息处理"></a>幂等消息处理</h4><p>保证同样的参数多次调用同一个接口和调用一次产生的结果是一致的，看具体的业务细节</p>
+<h3 id="如何保证消息有序"><a href="#如何保证消息有序" class="headerlink" title="如何保证消息有序"></a>如何保证消息有序</h3><h4 id="全局有序"><a href="#全局有序" class="headerlink" title="全局有序"></a>全局有序</h4><p>如果要保证消息的全局有序，首先只能由一个生产者往 Topic 发送消息，并且一个 Topic 内部只能有一个队列（分区）。消费者也必须是单线程消费这个队列。这样的消息就是全局有序的</p>
+<img src="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/2.jpg" class>
+<p>但是这样就会导致消费进程变慢，一般来说我们不需要全局有序，只需要保证部分有序即可</p>
+<h4 id="部分有序"><a href="#部分有序" class="headerlink" title="部分有序"></a>部分有序</h4><p>部分有序我们就可以将 Topic 内部划分成我们需要的队列数，把消息通过特定的策略发往固定的队列中，然后每个队列对应一个单线程处理的消费者。这样即完成了部分有序的需求，又可以通过队列数量的并发来提高消息处理效率</p>
+<img src="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/3.jpg" class>
+
+<h3 id="如何保证消息不堆积"><a href="#如何保证消息不堆积" class="headerlink" title="如何保证消息不堆积"></a>如何保证消息不堆积</h3><p>消息的堆积往往是因为生产者的生产速度与消费者的消费速度不匹配。有可能是因为消息消费失败反复重试造成的，也有可能就是消费者消费能力弱，渐渐地消息就积压了。<br>因此我们需要先定位消费慢的原因，如果是 bug 则处理 bug ，如果是因为本身消费能力较弱，我们可以优化下消费逻辑，比如之前是一条一条消息消费处理的，这次我们批量处理，比如数据库的插入，一条一条插和批量插效率是不一样的。<br>假如逻辑我们已经都优化了，但还是慢，那就得考虑水平扩容了，增加 Topic 的队列数和消费者数量，注意队列数一定要增加，不然新增加的消费者是没东西消费的。一个Topic中，一个队列只会分配给一个消费者。<br>当然你消费者内部是单线程还是多线程消费那看具体场景。不过要注意上面提高的消息丢失的问题，如果你是将接受到的消息写入内存队列之后，然后就返回响应给 Broker ，然后多线程向内存队列消费消息，假设此时消费者宕机了，内存队列里面还未消费的消息也就丢了。</p>
 
     </div>
 
@@ -262,7 +263,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/git/" rel="tag"># git</a>
+              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag"># 消息队列</a>
           </div>
 
         
@@ -271,12 +272,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/15/%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" rel="prev" title="树，二叉树，二叉搜索树专题">
-      <i class="fa fa-chevron-left"></i> 树，二叉树，二叉搜索树专题
+    <a href="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/" rel="prev" title="消息队列的推拉模式">
+      <i class="fa fa-chevron-left"></i> 消息队列的推拉模式
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/" rel="next" title="N叉树的前序遍历">
-      N叉树的前序遍历 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="next" title="消息队列的一些基本总结">
+      消息队列的一些基本总结 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -336,7 +337,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">集中式工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%88%86%E6%94%AF%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">2.</span> <span class="nav-text">功能分支工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gitflow%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">3.</span> <span class="nav-text">Gitflow工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%88%86%E6%94%AF%EF%BC%8Cmaster%EF%BC%8Cdevelop%E5%88%86%E6%94%AF"><span class="nav-number">3.1.1.</span> <span class="nav-text">两个分支，master，develop分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%8F%E4%B8%AA%E4%BA%BA%E5%BC%80%E5%8F%91%E7%9A%84%E5%8A%9F%E8%83%BD%E5%88%86%E6%94%AF"><span class="nav-number">3.1.2.</span> <span class="nav-text">每个人开发的功能分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#develop%E5%92%8Cmaster%E4%B8%AD%E9%97%B4%E7%9A%84%E5%8F%91%E5%B8%83%E5%88%86%E6%94%AF"><span class="nav-number">3.1.3.</span> <span class="nav-text">develop和master中间的发布分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E5%88%86%E6%94%AF"><span class="nav-number">3.1.4.</span> <span class="nav-text">修复分支</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Forking%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">Forking工作流</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E9%98%B6%E6%AE%B5"><span class="nav-number">1.</span> <span class="nav-text">消息处理阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E4%B8%A2%E5%A4%B1"><span class="nav-number">2.</span> <span class="nav-text">如何保证消息不丢失</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E6%B6%88%E6%81%AF"><span class="nav-number">2.1.</span> <span class="nav-text">生产消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%B6%88%E6%81%AF"><span class="nav-number">2.2.</span> <span class="nav-text">存储消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E8%B4%B9%E6%B6%88%E6%81%AF"><span class="nav-number">2.3.</span> <span class="nav-text">消费消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">2.4.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E9%87%8D%E5%A4%8D"><span class="nav-number">3.</span> <span class="nav-text">如何保证消息不重复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E5%87%BA%E7%8E%B0%E9%87%8D%E5%A4%8D%E6%B6%88%E6%81%AF"><span class="nav-number">3.1.</span> <span class="nav-text">什么情况下会出现重复消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%82%E7%AD%89%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">幂等消息处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%9C%89%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">如何保证消息有序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%9C%89%E5%BA%8F"><span class="nav-number">4.1.</span> <span class="nav-text">全局有序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E6%9C%89%E5%BA%8F"><span class="nav-number">4.2.</span> <span class="nav-text">部分有序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E5%A0%86%E7%A7%AF"><span class="nav-number">5.</span> <span class="nav-text">如何保证消息不堆积</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -352,20 +353,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">116</span>
+          <span class="site-state-item-count">120</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -400,7 +401,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -409,12 +410,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">171k</span>
+    <span title="Symbols count total">174k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:35</span>
+    <span title="Reading time total">2:39</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
