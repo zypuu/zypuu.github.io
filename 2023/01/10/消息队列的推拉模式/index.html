@@ -23,17 +23,17 @@
   <meta name="description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息队列的推拉模式">
-<meta property="og:url" content="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:url" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
 <meta property="og:description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-04T03:26:47.000Z">
-<meta property="article:modified_time" content="2024-01-04T09:39:48.503Z">
+<meta property="article:published_time" content="2023-01-10T10:26:00.000Z">
+<meta property="article:modified_time" content="2024-01-31T07:16:32.972Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="消息队列">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
+<link rel="canonical" href="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -165,7 +165,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -188,14 +188,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-01-04 11:26:47" itemprop="dateCreated datePublished" datetime="2023-01-04T11:26:47+08:00">2023-01-04</time>
+              <time title="Created: 2023-01-10 18:26:00" itemprop="dateCreated datePublished" datetime="2023-01-10T18:26:00+08:00">2023-01-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-01-04 17:39:48" itemprop="dateModified" datetime="2024-01-04T17:39:48+08:00">2024-01-04</time>
+                <time title="Modified: 2024-01-31 15:16:32" itemprop="dateModified" datetime="2024-01-31T15:16:32+08:00">2024-01-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,7 +213,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.2k</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -240,11 +240,14 @@
 <h4 id="劣势："><a href="#劣势：" class="headerlink" title="劣势："></a>劣势：</h4><p>推送速率难以适应消费速率，推模式的目标就是以最快的速度推送消息，当生产者往 Broker 发送消息的速率大于消费者消费消息的速率时，消费者服务就容易崩溃，并且不同的消费者的消费速率还不一样，身为 Broker 很难平衡每个消费者的推送速率，如果要实现自适应的推送速率那就需要在推送的时候消费者告诉 Broker ，然后 Broker 需要维护每个消费者的状态进行推送速率的变更。<br>这其实就增加了 Broker 自身的复杂度。</p>
 <p>所以说推模式难以根据消费者的状态控制推送速率，适用于消息量不大、消费能力强要求实时性高的场景</p>
 <h3 id="拉模式"><a href="#拉模式" class="headerlink" title="拉模式"></a>拉模式</h3><p>拉模式指的是 Consumer 主动向 Broker 请求拉取消息，即 Broker 被动的发送消息给 Consumer</p>
-<h4 id="优势：-1"><a href="#优势：-1" class="headerlink" title="优势："></a>优势：</h4><p>1、拉模式主动权就在消费者身上，消费者可以根据自身的情况来发起拉取消息的请求。假设当前消费者觉得自己消费不过来了，它可以根据一定的策略停止拉取，或者间隔拉取<br>2、 Broker 就相对轻松，它只管存生产者发来的消息，至于消费的时候自然由消费者主动发<br>起，不需要关注消息的消费<br>3、根据消费者的消费能力，可以参考消费者请求的信息来决定缓存多少消息之后批量发送</p>
-<h4 id="劣势：-1"><a href="#劣势：-1" class="headerlink" title="劣势："></a>劣势：</h4><p>1、消息延迟，消费者去拉取消息，但是消费者怎么知道消息到了呢？所以它只能不断地拉取，但是<br>又不能很频繁地请求，太频繁了就变成消费者在攻击 Broker 。因此需要降低请求的频率，比如隔个<br>2 秒请求一次，你看着消息就很有可能延迟 2 秒<br>2、消息忙请求，忙请求就是比如消息隔了几个小时才有，那么在几个小时之内消费者的请求都是无效的</p>
+<h4 id="优势：-1"><a href="#优势：-1" class="headerlink" title="优势："></a>优势：</h4><p>1、拉模式主动权就在消费者身上，消费者可以根据自身的情况来发起拉取消息的请求。假设当前消费者觉得自己消费不过来了，它可以根据一定的策略停止拉取，或者间隔拉取<br>2、 Broker 就相对轻松，它只管存生产者发来的消息，至于消费的时候自然由消费者主动发起，不需要关注消息的消费<br>3、根据消费者的消费能力，可以参考消费者请求的信息来决定缓存多少消息之后批量发送</p>
+<h4 id="劣势：-1"><a href="#劣势：-1" class="headerlink" title="劣势："></a>劣势：</h4><p>1、消息延迟，消费者去拉取消息，但是消费者怎么知道消息到了呢？所以它只能不断地拉取，但是又不能很频繁地请求，太频繁了就变成消费者在攻击 Broker 。因此需要降低请求的频率，比如隔个2 秒请求一次，你看着消息就很有可能延迟 2 秒<br>2、消息忙请求，忙请求就是比如消息隔了几个小时才有，那么在几个小时之内消费者的请求都是无效的</p>
 <p>我个人觉得拉模式更加的合适，因为现在的消息队列都有持久化消息的需求，也就是说本身它就有个存储功能，它的使命就是接受消息，保存好消息使得消费者可以消费消息即可。<br>虽说一般而言 Broker 不会成为瓶颈，因为消费端有业务消耗比较慢，但是 Broker 毕竟是一个中心点，能轻量就尽量轻量</p>
-<h2 id="RocketMq和kafka的处理"><a href="#RocketMq和kafka的处理" class="headerlink" title="RocketMq和kafka的处理"></a>RocketMq和kafka的处理</h2><p>RocketMQ 和 Kafka 都选择了拉模式，通过长轮询来减轻拉模式的劣势影响<br>基于推模式的消息队列如 ActiveMQ。</p>
-<h3 id="RocketMQ-中的长轮询"><a href="#RocketMQ-中的长轮询" class="headerlink" title="RocketMQ 中的长轮询"></a>RocketMQ 中的长轮询</h3><h3 id="Kafka的长轮询"><a href="#Kafka的长轮询" class="headerlink" title="Kafka的长轮询"></a>Kafka的长轮询</h3>
+<h2 id="RocketMq和kafka的处理"><a href="#RocketMq和kafka的处理" class="headerlink" title="RocketMq和kafka的处理"></a>RocketMq和kafka的处理</h2><p>RocketMQ 和 Kafka 都选择了拉模式，通过长轮询来减轻拉模式的劣势影响</p>
+<p>基于推模式的消息队列如 ActiveMQ。</p>
+<h3 id="RocketMQ-中的长轮询"><a href="#RocketMQ-中的长轮询" class="headerlink" title="RocketMQ 中的长轮询"></a>RocketMQ 中的长轮询</h3><p>RocketMQ 中的 PushConsumer 其实是披着拉模式的方法，<strong>只是看起来像推模式而已</strong>。</p>
+<p>因为 RocketMQ 在被背后偷偷的帮我们去 Broker 请求数据了</p>
+<h3 id="Kafka的长轮询"><a href="#Kafka的长轮询" class="headerlink" title="Kafka的长轮询"></a>Kafka的长轮询</h3>
     </div>
 
     
@@ -262,12 +265,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="prev" title="Git工作流">
-      <i class="fa fa-chevron-left"></i> Git工作流
+    <a href="/2023/01/06/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/" rel="prev" title="消息队列的消息处理">
+      <i class="fa fa-chevron-left"></i> 消息队列的消息处理
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%80%BB%E7%BB%93/" rel="next" title="消息队列的一些基本总结">
-      消息队列的一些基本总结 <i class="fa fa-chevron-right"></i>
+    <a href="/2024/01/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" rel="next" title="计算机硬件组成">
+      计算机硬件组成 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -343,7 +346,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -400,12 +403,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">200k</span>
+    <span title="Symbols count total">206k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:02</span>
+    <span title="Reading time total">3:07</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
