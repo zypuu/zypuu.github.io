@@ -23,28 +23,28 @@
   <meta name="description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息队列的推拉模式">
-<meta property="og:url" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:url" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="ALL-Nothing">
 <meta property="og:description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg">
-<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg">
-<meta property="article:published_time" content="2023-01-10T10:26:00.000Z">
-<meta property="article:modified_time" content="2024-02-05T03:39:11.508Z">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg">
+<meta property="article:published_time" content="2023-03-10T10:26:00.000Z">
+<meta property="article:modified_time" content="2024-02-05T06:12:08.391Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="消息队列">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
+<meta name="twitter:image" content="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
 
-<link rel="canonical" href="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
+<link rel="canonical" href="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -176,7 +176,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -199,14 +199,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-01-10 18:26:00" itemprop="dateCreated datePublished" datetime="2023-01-10T18:26:00+08:00">2023-01-10</time>
+              <time title="Created: 2023-03-10 18:26:00" itemprop="dateCreated datePublished" datetime="2023-03-10T18:26:00+08:00">2023-03-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-05 11:39:11" itemprop="dateModified" datetime="2024-02-05T11:39:11+08:00">2024-02-05</time>
+                <time title="Modified: 2024-02-05 14:12:08" itemprop="dateModified" datetime="2024-02-05T14:12:08+08:00">2024-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,21 +259,21 @@
 <h3 id="RocketMQ-中的长轮询"><a href="#RocketMQ-中的长轮询" class="headerlink" title="RocketMQ 中的长轮询"></a>RocketMQ 中的长轮询</h3><p>RocketMQ 中的 PushConsumer 其实是披着拉模式的方法，<strong>只是看起来像推模式而已</strong>。</p>
 <p>因为 RocketMQ 在被背后偷偷的帮我们去 Broker 请求数据了</p>
 <p>如图所示：</p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg" alt="1"></p>
 <p>后台会有个 RebalanceService 线程，这个线程会根据 topic 的队列数量和当前消费组的消费者个数做</p>
 <p>负载均衡，每个队列产生的 pullRequest 放入阻塞队列 pullRequestQueue 中。然后又有个</p>
 <p>PullMessageService 线程不断的从阻塞队列 pullRequestQueue 中获取 pullRequest，然后通过网络</p>
 <p>请求 broker，这样实现的准实时拉取消息</p>
 <p>然后 Broker 的 PullMessageProcessor 里面的 processRequest 方法是用来处理拉消息请求的，有消</p>
 <p>息就直接返回，如果没有消息怎么办呢</p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg" alt="1"></p>
 <p>suspendPullRequest 方法</p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg" alt="1"></p>
 <p>而 PullRequestHoldService 这个线程会每 5 秒从 pullRequestTable 取PullRequest请求，然后看看待</p>
 <p>拉取消息请求的偏移量是否小于当前消费队列最大偏移量，如果条件成立则说明有新消息了，则会调用</p>
 <p>notifyMessageArriving ，最终调用 PullMessageProcessor 的 executeRequestWhenWakeup() 方法</p>
 <p>重新尝试处理这个消息的请求，也就是再来一次，整个长轮询的时间默认 30 秒。</p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg" alt="1"></p>
 <p>简单的说就是 5 秒会检查一次消息时候到了，如果到了则调用 processRequest 再处理一次</p>
 <p>但是这样看起来并不太实时，所以还有个 ReputMessageService 线程，这个线程用来不断地从 commitLog 中解析数据并分发请求，构建出 ConsumeQueue 和 IndexFile 两种类型的数据，<strong>并且也会有唤醒请求的操作，来弥补每</strong> <strong>5s</strong>一次这么慢的延迟，就是消息写入并且会调用 pullRequestHoldService#notifyMessageArriving</p>
 <p>最终的流程就如上面的流程图所示</p>
@@ -282,17 +282,17 @@
 <p>话马上返回消息，如果没有的话消费者等着直到超时，然后再次发起拉消息请求。</p>
 <p>并且 Broker 也得配合，如果消费者请求过来，有消息肯定马上返回，没有消息那就建立一个延迟操</p>
 <p>作，等条件满足了再返回。</p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg" alt="1"></p>
 <p>消费者：</p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg" alt="1"></p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg" alt="1"></p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg" alt="1"></p>
 <p>最后<strong>调用的就是</strong> <strong>Kafka</strong> <strong>包装过的</strong> <strong>selector**</strong>，而最终会调用** <strong>Java nio</strong> <strong>的</strong> <strong>select(timeout)</strong></p>
 <p>Broker:</p>
 <p>就在 KafkaApis.scala 文件的 handle 方法下，handleFetchRequest 。</p>
 <p>这个方法进来后</p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg" alt="1"></p>
-<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg" alt="1"></p>
 <p>这个延迟操作都需要实现哪些方法，首先构建的延迟操作需要有检查机制，来查看</p>
 <p>消息是否已经到了，然后呢还得有个消息到了之后该执行的方法，还需要有执行完毕之后该干啥的方</p>
 <p>法，当然还得有个超时之后得干啥的方法。</p>
@@ -330,8 +330,8 @@
       <i class="fa fa-chevron-left"></i> 消息队列的消息处理
     </a></div>
       <div class="post-nav-item">
-    <a href="/2024/01/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" rel="next" title="计算机硬件组成">
-      计算机硬件组成 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/" rel="next" title="消息队列的事务消息">
+      消息队列的事务消息 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -407,7 +407,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -464,12 +464,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">207k</span>
+    <span title="Symbols count total">212k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:09</span>
+    <span title="Reading time total">3:12</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
