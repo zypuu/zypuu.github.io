@@ -27,11 +27,22 @@
 <meta property="og:site_name" content="ALL-Nothing">
 <meta property="og:description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg">
+<meta property="og:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg">
 <meta property="article:published_time" content="2023-01-10T10:26:00.000Z">
-<meta property="article:modified_time" content="2024-01-31T07:16:32.972Z">
+<meta property="article:modified_time" content="2024-02-05T03:39:11.508Z">
 <meta property="article:author" content="ZYP">
 <meta property="article:tag" content="消息队列">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
 
 <link rel="canonical" href="http://zypuu.com/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
 
@@ -195,7 +206,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-01-31 15:16:32" itemprop="dateModified" datetime="2024-01-31T15:16:32+08:00">2024-01-31</time>
+                <time title="Modified: 2024-02-05 11:39:11" itemprop="dateModified" datetime="2024-02-05T11:39:11+08:00">2024-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,14 +224,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.3k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
+              <span>3 mins.</span>
             </span>
             <div class="post-description">消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。</div>
 
@@ -233,8 +244,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="推拉模式"><a href="#推拉模式" class="headerlink" title="推拉模式"></a>推拉模式</h2><p>论推拉模式的时候指的是 Comsumer 和 Broker 之间的交互。<br>默认的认为 Producer 与 Broker 之间就是推的方式，即 Producer 将消息推送给 Broker，而不是<br>Broker 主动去拉取消息</p>
-<p>如果需要 Broker 去拉取消息，那么 Producer 就必须在本地通过日志的形式保存消息来等待 Broker 的拉取，如果有很多生产者的话，那么消息的可靠性不仅仅靠 Broker 自身，还需要靠成百上<br>千的 Producer。</p>
+        <h2 id="推拉模式"><a href="#推拉模式" class="headerlink" title="推拉模式"></a>推拉模式</h2><p>推拉模式的时候指的是 Comsumer 和 Broker 之间的交互。<br>默认的认为 Producer 与 Broker 之间就是推的方式，即 Producer 将消息推送给 Broker，而不是Broker 主动去拉取消息</p>
+<p>如果需要 Broker 去拉取消息，那么 Producer 就必须在本地通过日志的形式保存消息来等待 Broker 的拉取，如果有很多生产者的话，那么消息的可靠性不仅仅靠 Broker 自身，还需要靠成百上千的 Producer。</p>
 <h3 id="推模式"><a href="#推模式" class="headerlink" title="推模式"></a>推模式</h3><p>推模式指的是消息从 Broker 推向 Consumer，即 Consumer 被动的接收消息，由 Broker 来主导消息的发送</p>
 <h4 id="优势："><a href="#优势：" class="headerlink" title="优势："></a>优势：</h4><p>1、消息实时性高， Broker 接受完消息之后可以立马推送给 Consumer。<br>2、对于消费者使用来说更简单，就等着，反正有消息来了就会推过来</p>
 <h4 id="劣势："><a href="#劣势：" class="headerlink" title="劣势："></a>劣势：</h4><p>推送速率难以适应消费速率，推模式的目标就是以最快的速度推送消息，当生产者往 Broker 发送消息的速率大于消费者消费消息的速率时，消费者服务就容易崩溃，并且不同的消费者的消费速率还不一样，身为 Broker 很难平衡每个消费者的推送速率，如果要实现自适应的推送速率那就需要在推送的时候消费者告诉 Broker ，然后 Broker 需要维护每个消费者的状态进行推送速率的变更。<br>这其实就增加了 Broker 自身的复杂度。</p>
@@ -247,7 +258,57 @@
 <p>基于推模式的消息队列如 ActiveMQ。</p>
 <h3 id="RocketMQ-中的长轮询"><a href="#RocketMQ-中的长轮询" class="headerlink" title="RocketMQ 中的长轮询"></a>RocketMQ 中的长轮询</h3><p>RocketMQ 中的 PushConsumer 其实是披着拉模式的方法，<strong>只是看起来像推模式而已</strong>。</p>
 <p>因为 RocketMQ 在被背后偷偷的帮我们去 Broker 请求数据了</p>
-<h3 id="Kafka的长轮询"><a href="#Kafka的长轮询" class="headerlink" title="Kafka的长轮询"></a>Kafka的长轮询</h3>
+<p>如图所示：</p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg" alt="1"></p>
+<p>后台会有个 RebalanceService 线程，这个线程会根据 topic 的队列数量和当前消费组的消费者个数做</p>
+<p>负载均衡，每个队列产生的 pullRequest 放入阻塞队列 pullRequestQueue 中。然后又有个</p>
+<p>PullMessageService 线程不断的从阻塞队列 pullRequestQueue 中获取 pullRequest，然后通过网络</p>
+<p>请求 broker，这样实现的准实时拉取消息</p>
+<p>然后 Broker 的 PullMessageProcessor 里面的 processRequest 方法是用来处理拉消息请求的，有消</p>
+<p>息就直接返回，如果没有消息怎么办呢</p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg" alt="1"></p>
+<p>suspendPullRequest 方法</p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg" alt="1"></p>
+<p>而 PullRequestHoldService 这个线程会每 5 秒从 pullRequestTable 取PullRequest请求，然后看看待</p>
+<p>拉取消息请求的偏移量是否小于当前消费队列最大偏移量，如果条件成立则说明有新消息了，则会调用</p>
+<p>notifyMessageArriving ，最终调用 PullMessageProcessor 的 executeRequestWhenWakeup() 方法</p>
+<p>重新尝试处理这个消息的请求，也就是再来一次，整个长轮询的时间默认 30 秒。</p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg" alt="1"></p>
+<p>简单的说就是 5 秒会检查一次消息时候到了，如果到了则调用 processRequest 再处理一次</p>
+<p>但是这样看起来并不太实时，所以还有个 ReputMessageService 线程，这个线程用来不断地从 commitLog 中解析数据并分发请求，构建出 ConsumeQueue 和 IndexFile 两种类型的数据，<strong>并且也会有唤醒请求的操作，来弥补每</strong> <strong>5s</strong>一次这么慢的延迟，就是消息写入并且会调用 pullRequestHoldService#notifyMessageArriving</p>
+<p>最终的流程就如上面的流程图所示</p>
+<h3 id="Kafka的长轮询"><a href="#Kafka的长轮询" class="headerlink" title="Kafka的长轮询"></a>Kafka的长轮询</h3><p>像 Kafka 在拉请求中有参数，可以使得消费者请求在 “长轮询” 中阻塞等待。</p>
+<p>简单的说就是消费者去 Broker 拉消息，定义了一个超时时间，也就是说消费者去请求消息，如果有的</p>
+<p>话马上返回消息，如果没有的话消费者等着直到超时，然后再次发起拉消息请求。</p>
+<p>并且 Broker 也得配合，如果消费者请求过来，有消息肯定马上返回，没有消息那就建立一个延迟操</p>
+<p>作，等条件满足了再返回。</p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg" alt="1"></p>
+<p>消费者：</p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg" alt="1"></p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg" alt="1"></p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg" alt="1"></p>
+<p>最后<strong>调用的就是</strong> <strong>Kafka</strong> <strong>包装过的</strong> <strong>selector**</strong>，而最终会调用** <strong>Java nio</strong> <strong>的</strong> <strong>select(timeout)</strong></p>
+<p>Broker:</p>
+<p>就在 KafkaApis.scala 文件的 handle 方法下，handleFetchRequest 。</p>
+<p>这个方法进来后</p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg" alt="1"></p>
+<p><img src="/2023/01/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg" alt="1"></p>
+<p>这个延迟操作都需要实现哪些方法，首先构建的延迟操作需要有检查机制，来查看</p>
+<p>消息是否已经到了，然后呢还得有个消息到了之后该执行的方法，还需要有执行完毕之后该干啥的方</p>
+<p>法，当然还得有个超时之后得干啥的方法。</p>
+<p>这几个方法其实对应的就是代码里的 DelayedFetch ，这个类继承了 DelayedOperation 内部有：</p>
+<p>isCompleted 检查条件是否满足的方法</p>
+<p>tryComplete 条件满足之后执行的方法</p>
+<p>onComplete 执行完毕之后调用的方法</p>
+<p>onExpiration 过期之后需要执行的方法</p>
+<p>判断是否过期就是由时间轮来推动判断的，但是总不能等过期的时候再去看消息到了没吧？</p>
+<p>这里 Kafka 和 RocketMQ 的机制一样，也会在消息写入的时候提醒这些延迟请求消息来了</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>可以看到 RocketMQ 和 Kafka 都是采用“长轮询”的机制，具体的做法都是通过消费者等待消息，当有</p>
+<p>消息的时候 Broker 会直接返回消息，如果没有消息都会采取延迟处理的策略，并且为了保证消息的及</p>
+<p>时性，在对应队列或者分区有新消息到来的时候都会提醒消息来了，及时返回消息。</p>
+<p>消费者和 Broker 相互配合，拉取消息请求不满足条件的时候 hold 住，避免了多次频繁的</p>
+<p>拉取动作，当消息一到就提醒返回。</p>
+
     </div>
 
     
@@ -330,7 +391,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">推拉模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">推模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A"><span class="nav-number">1.1.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">拉模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RocketMq%E5%92%8Ckafka%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">RocketMq和kafka的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RocketMQ-%E4%B8%AD%E7%9A%84%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="nav-number">2.1.</span> <span class="nav-text">RocketMQ 中的长轮询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka%E7%9A%84%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka的长轮询</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">推拉模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">推模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A"><span class="nav-number">1.1.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">拉模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RocketMq%E5%92%8Ckafka%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">RocketMq和kafka的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RocketMQ-%E4%B8%AD%E7%9A%84%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="nav-number">2.1.</span> <span class="nav-text">RocketMQ 中的长轮询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka%E7%9A%84%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka的长轮询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -403,12 +464,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">206k</span>
+    <span title="Symbols count total">207k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:07</span>
+    <span title="Reading time total">3:09</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
