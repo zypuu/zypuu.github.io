@@ -1,276 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            计算机网络
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
 
-<link rel="stylesheet" href="/css/main.css">
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
 
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"zypuu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
-  </script>
-
-  <meta name="description" content="计算机网络相关，osi七层模型，ip地址等">
-<meta property="og:type" content="article">
-<meta property="og:title" content="计算机网络">
-<meta property="og:url" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.html">
-<meta property="og:site_name" content="ALL-Nothing">
-<meta property="og:description" content="计算机网络相关，osi七层模型，ip地址等">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/1.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/4.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/5.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/6.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/7.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/8.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/9.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/10.jpg">
-<meta property="og:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/11.jpg">
-<meta property="article:published_time" content="2024-01-20T08:20:00.000Z">
-<meta property="article:modified_time" content="2024-01-20T02:36:13.527Z">
-<meta property="article:author" content="ZYP">
-<meta property="article:tag" content="计算机基础">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/1.jpg">
-
-<link rel="canonical" href="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'en'
-  };
-</script>
-
-  <title>计算机网络 | ALL-Nothing</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-<link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
 </head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">ALL-Nothing</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-  <a href="https://github.com/zypuu/zypuu.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
             
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://zypuu.com/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="ZYP">
-      <meta itemprop="description" content="Give it a try, whispered the HEART">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ALL-Nothing">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          计算机网络
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-01-20 16:20:00 / Modified: 10:36:13" itemprop="dateCreated datePublished" datetime="2024-01-20T16:20:00+08:00">2024-01-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>6 mins.</span>
-            </span>
-            <div class="post-description">计算机网络相关，osi七层模型，ip地址等</div>
-
+                <h1 class="header-subtitle">计算机网络</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2024-01-20
+                        </span>
+                        
+                            
+                                <span id="/2024/01/20/计算机网络/" class="leancloud_visitors" data-flag-title="计算机网络">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2024/01/20/计算机网络/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">计算机基础</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">计算机基础</span>
+                        
+                    
+                </div>
+            
         </div>
-      </header>
-
+    </div>
     
+</div>
+<div id="container">
     
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>计算机网络的功能： 数据通信 、资源共享 、管理集中化 、实现分布式处理 、<br>负 载均衡。<br>网络性能指标： 速率 、带宽(频带宽度或传送线路速率)、吞吐量 、时延 、往返时间 、利用<br>率。<br>网络非性能指标： 费用 、质量 、标准化 、可靠性 、可扩展性 、可升级性 、易管理性和可<br>维 护性。</p>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <p>计算机网络的功能： 数据通信 、资源共享 、管理集中化 、实现分布式处理 、<br>负 载均衡。<br>网络性能指标： 速率 、带宽(频带宽度或传送线路速率)、吞吐量 、时延 、往返时间 、利用<br>率。<br>网络非性能指标： 费用 、质量 、标准化 、可靠性 、可扩展性 、可升级性 、易管理性和可<br>维 护性。</p>
 <h2 id="拓扑分类"><a href="#拓扑分类" class="headerlink" title="拓扑分类"></a>拓扑分类</h2><h3 id="总线型拓扑"><a href="#总线型拓扑" class="headerlink" title="总线型拓扑"></a>总线型拓扑</h3><p>特点:采用总线的形式将所有计算机相连,信息只能在一条线路上传输。</p>
 <ul>
 <li>优点:成本低,实现简单。</li>
 <li>缺点:带宽低,延迟高,任何节点发生故障整条总线瘫痪。</li>
-<li>举例:一个简单的以太网线路就是总线型拓扑的一个例子 。所有计算机通过网线连接到交<br>换机的各个端口上,数据只能在这条总线上传输<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/1.jpg" alt="1"><h3 id="星型拓扑"><a href="#星型拓扑" class="headerlink" title="星型拓扑"></a>星型拓扑</h3></li>
+<li>举例:一个简单的以太网线路就是总线型拓扑的一个例子 。所有计算机通过网线连接到交<br>换机的各个端口上,数据只能在这条总线上传输<br><img src="/1.jpg" alt="1"><h3 id="星型拓扑"><a href="#星型拓扑" class="headerlink" title="星型拓扑"></a>星型拓扑</h3></li>
 <li>特点:通过一个中心交换机将计算机互联,形成星型网络。</li>
 <li>优点:容易扩展,集中管理。</li>
 <li>缺点: 中央交换机单点故障会瘫痪全网。</li>
-<li>举例:一个小型办公室的网络就可以采用星型拓扑 。计算机通过网线连接到中心的交换机<br>上,形成星型结构<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.jpg" alt="1"><h3 id="环型拓扑"><a href="#环型拓扑" class="headerlink" title="环型拓扑"></a>环型拓扑</h3></li>
+<li>举例:一个小型办公室的网络就可以采用星型拓扑 。计算机通过网线连接到中心的交换机<br>上,形成星型结构<br><img src="/2.jpg" alt="1"><h3 id="环型拓扑"><a href="#环型拓扑" class="headerlink" title="环型拓扑"></a>环型拓扑</h3></li>
 <li>特点:计算机按环形连接,信息只能前进或后退进行传输。</li>
 <li>优点:故障启闭容易诊断。</li>
-<li>缺点:数据传输效率低,扩展性差<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.jpg" alt="1"><h3 id="树型拓扑"><a href="#树型拓扑" class="headerlink" title="树型拓扑"></a>树型拓扑</h3></li>
+<li>缺点:数据传输效率低,扩展性差<br><img src="/3.jpg" alt="1"><h3 id="树型拓扑"><a href="#树型拓扑" class="headerlink" title="树型拓扑"></a>树型拓扑</h3></li>
 <li>特点:采用分级交换机进行分层管理的方式构建局域网。</li>
 <li>优点:易于管理和扩展,并行数据传输,性能高。</li>
 <li>缺点:增加层次会降低效率。</li>
-<li>举例:一个大型的企业网络可能采用树型拓扑 。计算机先连接到分支交换机上,<br>分 支交换机再连接到主干交换机上,实现分级管理<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/4.jpg" alt="1"><h3 id="分布式拓扑"><a href="#分布式拓扑" class="headerlink" title="分布式拓扑"></a>分布式拓扑</h3></li>
+<li>举例:一个大型的企业网络可能采用树型拓扑 。计算机先连接到分支交换机上,<br>分 支交换机再连接到主干交换机上,实现分级管理<br><img src="/4.jpg" alt="1"><h3 id="分布式拓扑"><a href="#分布式拓扑" class="headerlink" title="分布式拓扑"></a>分布式拓扑</h3></li>
 <li>特点:任何节点都能与其他节点互联,不存在集中交换。</li>
 <li>优点:无中心,任意节点故障不影响全网。</li>
 <li>缺点:管理复杂,成本高。</li>
-<li>举例: 比特币网络就是一个分布式拓扑的例子 。 网络中的每个节点都是对等的,<br>没 有中心机构 。任意两个节点都可以直接通信<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/5.jpg" alt="1"></li>
+<li>举例: 比特币网络就是一个分布式拓扑的例子 。 网络中的每个节点都是对等的,<br>没 有中心机构 。任意两个节点都可以直接通信<br><img src="/5.jpg" alt="1"></li>
 </ul>
 <h2 id="通信技术"><a href="#通信技术" class="headerlink" title="通信技术"></a>通信技术</h2><p>计算机网络是利用通信技术将数据从一个结点传送到另一结点的过程。<br>通信技术是计算机网络的基础。<br>信道可分为物理信道和逻辑信道。<br>物理信道由传输介质和设备组成， 根据传输介质的不同， 分为无线信道和有线信道。<br>逻辑信道是指在数据发送端和接收端之间存在的一条虚拟线路， 可以是有连接的或无连接的 。逻辑信道以物理信 道为载体。</p>
 <h3 id="数据传递"><a href="#数据传递" class="headerlink" title="数据传递"></a>数据传递</h3><p>如果同时传递多路数据就需要复用技术和多址技术 。复用技术是指在一条信道上同时传输多路数据的技术， 如<br>TDM时分复用 、FDM频分复用和CDM码分复用等 。多址技术是指在一条线上同时传输多个用户数据的技术， 在<br>接收端把多个用户的数据分离(TDMA时分多址 、FDMA频分多址和CDMA码分多址)。</p>
 <h3 id="5G"><a href="#5G" class="headerlink" title="5G"></a>5G</h3><p>作为新一代的移动通信技术， 5G特征体现在以下方面。<br>1） 实现可扩展的OFDM间隔参数配直<br>2） 灵活框架设计<br>3） 毫米波:频率大于24GHz以上的频段<br>4） 基于OFDM优化的波形和多址接入<br>5） OFDM加窗提高多路传输效率<br>6） 大规模MIMO:最多256根天线<br>7）频谱共享 8）先进的信道编码设计<br>5G网络的主要特征:服务化架构 、 网络切片。</p>
-<h2 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h2><p><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/6.jpg" alt="1"></p>
-<h3 id="局域网广域网协议"><a href="#局域网广域网协议" class="headerlink" title="局域网广域网协议"></a>局域网广域网协议</h3><p>以太网，计算机局域网组网技术<br>IEEE802.3<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/7.jpg" alt="1"></p>
+<h2 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h2><p><img src="/6.jpg" alt="1"></p>
+<h3 id="局域网广域网协议"><a href="#局域网广域网协议" class="headerlink" title="局域网广域网协议"></a>局域网广域网协议</h3><p>以太网，计算机局域网组网技术<br>IEEE802.3<br><img src="/7.jpg" alt="1"></p>
 <h3 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a>网络协议</h3><p>三要素，语法，语义，时序</p>
 <h4 id="网络层协议"><a href="#网络层协议" class="headerlink" title="网络层协议"></a>网络层协议</h4><p>◆IP:网络层最重要的核心协议，在源地址和目的地址之间传送数据报， 无连接 、不可靠。<br>◆ICMP:因特网控制报文协议， 用于在IP主机 、路由器之间传递控制消息 。控制消息是指网<br>络通不通 、主机是否可达 、路由是否可用等网络本身的消息。<br>◆ARP和RARP:地址解析协议，ARP是将IP地址转换为物理地址， RARP是将物理地址转换<br>为IP地址。<br>◆IGMP:网络组管理协议， 允许因特网中的计算机参加多播， 是计算机用做向相邻多目路由<br>器报告多目组成员的协议， 支持组播。</p>
 <h4 id="传输层协议"><a href="#传输层协议" class="headerlink" title="传输层协议"></a>传输层协议</h4><p>◆TCP:整个TCP/IP协议族中最重要的协议之一，在IP协议提供的不可靠数据数据基础上，<br>采 用了重发技术， 为应用程序提供了一个可靠的 、面向连接的 、全双工的数据传输服务 。一<br>般 用于传输数据量比较少， 且对可靠性要求高的场合。<br>◆UDP:是一种不可靠 、无连接的协议， 有助于提高传输速率， 一般用于传输数据量大，对<br>可 靠性要求不高， 但要求速度快的场合。</p>
 <h4 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h4><p>基于TCP的FTP、HTTP等都是可靠传输 。基于UDP的DHCP、DNS等都是不可靠<br>传输。<br>◆FTP:可靠的文件传输协议， 用于因特网上的控制文件的双向传输。<br>◆HTTP:超文本传输协议， 用于从WWW服务器传输超文本到本地浏览器的传输协议 。使用<br>SSL 加密后的安全网页协议为HTTPS。<br>◆SMTP和POP3:简单邮件传输协议， 是一组用于由源地址到目的地址传送邮件的规则， 邮件<br>报 文采用ASCII格式表示， SMTP是发送， POP3是接收<br>◆Telnet:远程连接协议， 是因特网远程登录服务的标准协议和主要方式。<br>◆TFTP:不可靠的 、开销不大的小文件传输协议。<br>◆SNMP:简单网络管理协议， 它主要用于网络设备与网络管理系统(NMS)之间进行监测与管理，<br>比如路由器和交换机设备通过SNMP定期向网络管理系统上报接口流量 、CPU利用率等性能指<br>标<br>◆DHCP:动态主机配置协议， 基于UDP,基于C/S模型， 为主机动态分配IP地址， 有三种方式：<br>固定分配、动态分配、 自动分配。<br>◆DNS:域名解析协议， 通过域名解析出IP地址。</p>
-<h4 id="端口对照"><a href="#端口对照" class="headerlink" title="端口对照"></a>端口对照</h4><p><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/8.jpg" alt="1"></p>
+<h4 id="端口对照"><a href="#端口对照" class="headerlink" title="端口对照"></a>端口对照</h4><p><img src="/8.jpg" alt="1"></p>
 <h2 id="交换技术"><a href="#交换技术" class="headerlink" title="交换技术"></a>交换技术</h2><p>交换机功能包括:<br>集线功能 。提供大量可供线缆连接的端口达到部署星状拓扑网络的目的。<br>中继功能 。在转发帧时重新产生不失真的电信号。<br>桥接功能 。在内置的端口上使用相同的转发和过滤逻辑。<br>隔离冲突域功能 。将部署好的局域网分为多个冲突域， 而每个冲突域都有自己独立的带宽， 以提高交换机整体宽带利用效率。<br>交换机的功能包括:<br>( 1)转发路径学习 。根据收到数据帧中的源MAC地址建立该地址同交换机端口的映射写入MAC地址表中。<br>(2)数据转发 。如果交换机根据数据帧中的目的MAC地址在建立好的MAC地址表中查询到了， 就向对应端口 进行转发。<br>(3)数据泛洪 。如果数据帧中的目的MAC地址不在MAC地址表中， 则向所有端口转发也就是泛洪 。广播帧和 组播帧向所有端口（不包括源端口） 进行转发。<br>(4)链路地址更新 。MAC地址表会每隔一定时间（如300s ） 更新一次</p>
 <h2 id="路由技术"><a href="#路由技术" class="headerlink" title="路由技术"></a>路由技术</h2><p>路由功能由路由器来提供， 具体包括:<br>(1)异种网络互连， 比如具有异种子网协议的网络互连:<br>(2)子网协议转换， 不同子网间包括局域网和广域网之间的协议转换:<br>(3)数据路由， 即将数据从一个网络依据路由规则转发到另一个网络:<br>(4)速率适配， 利用缓存和流控协议进行适配:<br>(5)隔离网络， 防止广播风暴,实现防火墙;<br>(6)报文分片和重组， 超过接口的MTU报文被分片， 到达目的地之后的报文被重组:<br>(7)备份 、流量控制， 如主备线路的切换和复杂流量控制等。<br>路由器工作在OSl七层协议中的第3层， 即网络层 。其主要任务是接收来源于一个网络接口的数据包， 通常 根据此数据包的目地址决定待转发的下一个地址（即下一跳地址) 。路由器中维持着数据转发所需的路由 表， 所有数据包的发送或转发都通过查找路由表来实现 。这个路由表可以静态配置， 也可以通过动态路由 协议自动生成。<br>一般来说， 路由协议可分为内部网关协议（IGP） 和外部网关协议(EGP）两类。<br>网络建设工程可分为网络规划 、 网络设计和网络实施三个环节。</p>
 <h2 id="传输介质"><a href="#传输介质" class="headerlink" title="传输介质"></a>传输介质</h2><h3 id="双绞线"><a href="#双绞线" class="headerlink" title="双绞线"></a>双绞线</h3><p>将多根铜线按规则缠绕在一起，能够减少干扰;分为无屏蔽双绞线UTP和屏蔽双<br>绞线STP，都是由一对铜线簇组成。也即我们常说的网线;双绞线的传输距离在100m以内</p>
@@ -287,235 +127,743 @@
 <p>串行传输:只有一根数据线，数据只能1bit挨个排队传送，适合低速设备、远距离的传送，<br>一般用于广域网中。<br>并行传输:有多根数据线，可以同时传输多个bit数据，适合高速设备的传送，常用语计<br>算机内部各硬件模块之间。</p>
 <h3 id="交换方式"><a href="#交换方式" class="headerlink" title="交换方式"></a>交换方式</h3><p>电路交换:通信一方进行呼叫，另一方接收后，在二者之间会建立一个专用电路，特点为面向连接、<br>实时性高、链路利用率低，一般用于语音视频通信。<br>报文交换:以报文为单位，存储转发模式，接收到数据后先存储，进行差错校验，没有错误则转发，<br>有错误则丢弃，因此会有延时，但可靠性高，是面向无连接的。<br>分组交换:以分组为单位，也是存储转发模式，因为分组的长度比报文小，所以时延小于报文交换，<br>又可分为三种方式:<br>• 数据报:是现在主流的交换方式，各个分组携带地址信息，自由的选择不同的路由路径传送到接<br>收方，接收方接收到分组后再根据地址信息重新组装成原数据，是面向无连接的，但是不可靠<br>的。<br>• 虚电路:发送方发送一个分组，接收方收到后二者之间就建立了一个虚拟的通信线路，二者之间<br>的分组数据交互都通过这条线路传送，在空闲的时候这条线路也可以传输其他数据，是面向连<br>接的，可靠的。<br>• 信元交换:异步传输模式ATM采用的交换方式，本质是按照虚电路方式进行转发，只不过信元是<br>固定长度的分组，共53B，其中5B为头部，48B为数据域，也是面向连接的，可靠的。</p>
 <h2 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h2><p>机器中存放的IP地址是32位的二进制代码，每隔8位插入一个空格，可提高可读性，为了便于<br>理解和设置，一般会采用点分十进制方法来表示:将32位二进制代码每8位二进制转换成十进制，<br>就变成了4个十进制数，而后在每个十进制数间隔中插入.</p>
-<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>分类IP地址:IP地址分四段，每段八位，共32位二进制数组成。在逻辑上，这32位IP地址分为网络号(带下划线的)和主机号，依据网络号位数的不同，可以将IP地址分为以下几类:<br>按照A类来分配IP地址，总计可以分配：2^24-2=16777214<br>B类的分配数为：2^16-2=65534<br>C类的分配数为：2^8-2=254<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/9.jpg" alt="1"></p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>分类IP地址:IP地址分四段，每段八位，共32位二进制数组成。在逻辑上，这32位IP地址分为网络号(带下划线的)和主机号，依据网络号位数的不同，可以将IP地址分为以下几类:<br>按照A类来分配IP地址，总计可以分配：2^24-2=16777214<br>B类的分配数为：2^16-2=65534<br>C类的分配数为：2^8-2=254<br><img src="/9.jpg" alt="1"></p>
 <p>无分类编址:即不按照ABC类规则，自动规定网络号，无分类编址格式为:IP地址/网络号，示<br>例:128.168.0.11/20表示的IP地址为128.168.0.11，其网络号占20位，因此主机号占32-20=12位，也可以划分子网。<br>特殊IP地址<br>公有地址:通过它直接访问因特网。是全网唯一的IP地址。<br>私有地址:属于非注册地址，专门为组织机构内部使用，不能直接访问因特网，</p>
 <h3 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h3><p>子网划分：一般公司在申请网络时，会直接获得一个范围很大的网络，如一个A类地址，因为主机数之间相差的太大了，不利于分配，我们一般采用子网划分的方法来划分网络，即自定义网络号位数，就能自定义主机号位数，就能根据主机个数来划分出最适合的方案，不会造成资源的浪费。<br>子网号：一般的IP地址按标准划分为A B C类后可以进行再一步的划分，将主机号多出的几位作为子网号，就可以划分出多个子网，比如只需要为30台主机分配ip地址，那么我们会申请C类的地址，C类地址是2^8次方个主机号，远远超过了30的需求，于是我们按照2^n-2=30来计算，n=5是最合适的，那么多于的那3位就是用来作为子网号，那么<br>子网就一共可以划分2^3=8个，按照IP地址组成为：网络号+子网号+主机号来算的话，那么就是网络号24+子网号3+主机号5.<br>网络号和子网号都为1,主机号都为0,这样的地址为子网掩码。如果把上面的例子拿来算子网掩码的话就是：24个1+3个1+5个0，得到的就是255.255.255.224要注意的是：子网号可以为全0和全1,主机号不能为全0或全1,因此，主机数需要-2,而子网数不用。<br>还可以聚合网络为超网，就是划分子网的逆过程，将网络号取出几位作为主机号，此时，<br>这个网络内的主机数量就变多了，成为一个更大的网络</p>
 <h3 id="IPV6"><a href="#IPV6" class="headerlink" title="IPV6"></a>IPV6</h3><p>IPV6主要是为了解决IPv4地址数不够用的情况而提出的设计方案，IPv6具有以下特性：<br>1、 IPv6地址长度为128位，而IPV4地址仅32位，空间增大了2^96倍；<br>2、 灵活的IP报文头部格式，使用一系列固定格式的扩展头部取代了IPv4中可变长度的选项字段。<br>3、 IPv6简化了报文头部格式，加快报文转发，提高了吞吐量；<br>4、提高安全性，身份认证和隐私权是IPv6的关键特性；<br>5、支持更多的服务类型；<br>6、允许协议继续演变，增加新的功能，使之适应未来技术的发展。</p>
 <h2 id="网络三层模型"><a href="#网络三层模型" class="headerlink" title="网络三层模型"></a>网络三层模型</h2><p>三层模型将网络划分为核心层、汇聚层和接入层：<br>1、核心层：提供不同区域之间的最佳路由和高速数据传送；<br>2、 汇聚层：将网络业务连接到接入层，并且实施与安全、流量、负载和路由相关的策略；<br>3、接入层：为用户提供了在本地网段访问应用系统的能力，还要解决相邻用户之间的互访需要，<br>接入层要负责一些用户信息(例如用户IP地址、MAC地址和访问日志等)的收集工作和用户管理<br>功能(包括认证和计费等)</p>
 <h2 id="网络规划与设计"><a href="#网络规划与设计" class="headerlink" title="网络规划与设计"></a>网络规划与设计</h2><p>建筑物综合布线系统PDS:<br>工作区子系统：实现工作区终端设备到水平子系统的信息插座之间的互联。<br>水平布线子系统：实现信息插座和管理子系统之间的连接。<br>管理子系统：连接各楼层水平布线子系统和垂直干缆线，负责连接控制其他子系统为连接其<br>他子系统提供连接手段<br>垂直干线子系统：实现各楼层设备间子系统之间的互连。<br>设备间子系统：实现中央主配线架与各种不同设备之间的连接。<br>建筑群子系统：各个建筑物通信系统之间的互联</p>
-<p><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/10.jpg" alt="1"></p>
+<p><img src="/10.jpg" alt="1"></p>
 <p>1、工作区子系统负责房间内部各个设备终端的互联。<br>2、水平和垂直子系统负责不同楼层和建筑内部的互联。<br>3、设备间子系统实现各种设备与交换机之间的互联。<br>4、管理子系统实现整个综合布线系统的管理。<br>5、建筑群子系统实现不同建筑物之间的互联。</p>
-<h2 id="磁盘冗余阵列"><a href="#磁盘冗余阵列" class="headerlink" title="磁盘冗余阵列"></a>磁盘冗余阵列</h2><p>RAID即磁盘冗余阵列技术，将数据分散存储在不同磁盘中，可并行读取，可冗余存储，提高磁<br>盘访问速度，保障数据安全性。<br>RAID0将数据分散的存储在不同磁盘中，磁盘利用率100%,访问速度最快，但是没有提供冗余<br>和错误修复技术；<br>RAID1在成对的独立磁盘上产生互为备份的数据，增加存储可靠性，可以纠错，但磁盘利用率<br>只有50%;<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/11.jpg" alt="1"></p>
+<h2 id="磁盘冗余阵列"><a href="#磁盘冗余阵列" class="headerlink" title="磁盘冗余阵列"></a>磁盘冗余阵列</h2><p>RAID即磁盘冗余阵列技术，将数据分散存储在不同磁盘中，可并行读取，可冗余存储，提高磁<br>盘访问速度，保障数据安全性。<br>RAID0将数据分散的存储在不同磁盘中，磁盘利用率100%,访问速度最快，但是没有提供冗余<br>和错误修复技术；<br>RAID1在成对的独立磁盘上产生互为备份的数据，增加存储可靠性，可以纠错，但磁盘利用率<br>只有50%;<br><img src="/11.jpg" alt="1"></p>
 <h2 id="网络存储技术"><a href="#网络存储技术" class="headerlink" title="网络存储技术"></a>网络存储技术</h2><p>1.直接附加存储(DAS):是指将存储设备通过SCSI接口直接连接到一台服务器上使用，其本身<br>是硬件的堆叠，存储操作依赖于服务器，不带有任何存储操作系统。<br>◆存在问题：在传递距离、连接数量、传输速率等方面都受到限制。容量难以扩展升级；数<br>据处理和传输能力降低；服务器异常会波及存储器。</p>
 <p>2.网络附加存储(NAS):通过网络接口与网络直接相连，由用户通过网络访问，有独立的存储<br>系统。如下图所示。NAS存储设备类似于一个专用的文件服务器，去掉了通用服务器大多数<br>计算功能，而仅仅提供文件系统功能。以数据为中心，将存储设备与服务器分离，其存储设<br>备在功能上完全独立于网络中的主服务器。客户机与存储设备之间的数据访问不再需要文件<br>服务器的干预，同时它允许客户机与存储设备之间进行直接的数据访问，所以不仅响应速度<br>快，而且数据传输速率也很高。<br>◆NAS的性能特点是进行小文件级的共享存取；支持即插即用；可以很经济的解决存储容量<br>不足的问题，但难以获得满意的性能。</p>
 <p>3.存储区域网(SAN):SAN是通过专用交换机将磁盘阵列与服务器连接起来的高速专用子网。<br>它没有采用文件共享存取方式，而是采用块(block)级别存储。SAN是通过专用高速网将一个<br>或多个网络存储设备和服务器连接起来的专用存储系统，其最大特点是将存储设备从传统的<br>以太网中分离了出来，成为独立的存储区域网络SAN的系统结构。根据数据传输过程采用的<br>协议，其技术划分为FCSAN(光纤通道)、IP SAN(IP网络)和IB SAN(无线带宽)技术。</p>
 
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
     </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" rel="tag"># 计算机基础</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/" rel="prev" title="嵌入式微处理">
-      <i class="fa fa-chevron-left"></i> 嵌入式微处理
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/01/20/%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B%E4%B8%8E%E5%A4%9A%E5%AA%92%E4%BD%93/" rel="next" title="系统工程与多媒体">
-      系统工程与多媒体 <i class="fa fa-chevron-right"></i>
-    </a></div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" target="_blank">计算机网络</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
     </div>
-      </footer>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="/category/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="/tag/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2024/01/20/%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B%E4%B8%8E%E5%A4%9A%E5%AA%92%E4%BD%93/" class="prev-prefix">« </a> 上一篇：    <a href="/2024/01/20/%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B%E4%B8%8E%E5%A4%9A%E5%AA%92%E4%BD%93/" title="发布于 2024-01-20 07:50">系统工程与多媒体</a>
+                        <br>
+                    
+                    
+                        <a href="/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/" class="next-prefix">» </a> 下一篇：    <a href="/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/" title="发布于 2024-01-20 10:36">嵌入式微处理</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
     
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
+ 
         </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">拓扑分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BA%BF%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.1.</span> <span class="nav-text">总线型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.2.</span> <span class="nav-text">星型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.3.</span> <span class="nav-text">环型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.4.</span> <span class="nav-text">树型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%8B%93%E6%89%91"><span class="nav-number">1.5.</span> <span class="nav-text">分布式拓扑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">通信技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92"><span class="nav-number">2.1.</span> <span class="nav-text">数据传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5G"><span class="nav-number">2.2.</span> <span class="nav-text">5G</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">OSI七层模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91%E5%B9%BF%E5%9F%9F%E7%BD%91%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.1.</span> <span class="nav-text">局域网广域网协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.</span> <span class="nav-text">网络协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.1.</span> <span class="nav-text">网络层协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.2.</span> <span class="nav-text">传输层协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.3.</span> <span class="nav-text">应用层协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%AF%B9%E7%85%A7"><span class="nav-number">3.2.4.</span> <span class="nav-text">端口对照</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF"><span class="nav-number">4.</span> <span class="nav-text">交换技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E6%8A%80%E6%9C%AF"><span class="nav-number">5.</span> <span class="nav-text">路由技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8"><span class="nav-number">6.</span> <span class="nav-text">传输介质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E7%BB%9E%E7%BA%BF"><span class="nav-number">6.1.</span> <span class="nav-text">双绞线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%BA%A4"><span class="nav-number">6.2.</span> <span class="nav-text">光纤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93"><span class="nav-number">6.3.</span> <span class="nav-text">无线信道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E6%96%B9%E5%90%91"><span class="nav-number">6.4.</span> <span class="nav-text">通信方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%96%B9%E5%BC%8F"><span class="nav-number">6.5.</span> <span class="nav-text">交换方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80"><span class="nav-number">7.</span> <span class="nav-text">IP地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">7.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">7.2.</span> <span class="nav-text">子网划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IPV6"><span class="nav-number">7.3.</span> <span class="nav-text">IPV6</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%89%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">8.</span> <span class="nav-text">网络三层模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%A7%84%E5%88%92%E4%B8%8E%E8%AE%BE%E8%AE%A1"><span class="nav-number">9.</span> <span class="nav-text">网络规划与设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%86%97%E4%BD%99%E9%98%B5%E5%88%97"><span class="nav-number">10.</span> <span class="nav-text">磁盘冗余阵列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">11.</span> <span class="nav-text">网络存储技术</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="ZYP"
-      src="/images/avatar.jpg">
-  <p class="site-author-name" itemprop="name">ZYP</p>
-  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+    
 </div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
         
-          <span class="site-state-item-count">135</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">13</span>
-        <span class="site-state-item-name">categories</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/zypuu/zypuu.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu&#x2F;zypuu.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
-
-
-
-      </div>
-
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/category" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                        <li class=""><a href="/friend" class="" target="_self"><span class="iconfont icon-link"></span>友情链接</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                
+                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">ZYP</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-    <span title="Symbols count total">217k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="Reading time total">3:18</span>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
 
-        
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
 
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
 
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
 
+        User             : "Live For Code",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://worstone.cn",
 
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
 
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
 
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
 
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
 
-      </div>
-    </footer>
-  </div>
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
 
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/category",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "友情链接",
+                    icon   : "icon-link",
+                    href   : "/friend",
+                    type   : "friend",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "知乎",
+                        icon   : "icon-zhihu",
+                        href   : "https://zhihu.com/people/worstone-29",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "微博",
+                        icon   : "icon-weibo",
+                        href   : "https://weibo.com/u/5749847477",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/first19326",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
   
-  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
 
-<script src="/js/utils.js"></script>
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
 
-<script src="/js/motion.js"></script>
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
 
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-</body>
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
