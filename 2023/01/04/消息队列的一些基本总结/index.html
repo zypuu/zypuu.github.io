@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -82,8 +82,8 @@
                 <h2 id="什么是消息队列"><a href="#什么是消息队列" class="headerlink" title="什么是消息队列"></a>什么是消息队列</h2><p>消息队列常常指代的是消息中间件</p>
 <h2 id="消息队列的用处"><a href="#消息队列的用处" class="headerlink" title="消息队列的用处"></a>消息队列的用处</h2><p>随着业务不断扩张，用来异步处理，服务解耦，流量控制<br>异步处理：调用链路长，响应慢，为了减少请求的等待，还能让服务异步并发处理，提升系统总体性能<br>服务解耦：解决系统之间的耦合问题，避免互相影响<br>流量控制：流量洪峰的削峰，有一些服务特别是某些后台任务，不需要及时地响应，并且业务处理复杂且流程长，那么过来的请求先放入消息队列中，后端服务按照自己的节奏处理</p>
 <p>PS：多引入一个中间件系统的稳定性就下降一层，运维的难度抬高一层。因此要权衡利弊，系统是演进的</p>
-<h2 id="基本模型"><a href="#基本模型" class="headerlink" title="基本模型"></a>基本模型</h2><h3 id="队列模型"><a href="#队列模型" class="headerlink" title="队列模型"></a>队列模型</h3><p>生产者往某个队列里面发送消息，一个队列可以存储多个生产者的消息，一个队列也可以有多个消费者，但是消费者之间是竞争关系，即每条消息只能被一个消费者消费。<br><img src="/1.jpg" alt="1"></p>
-<h3 id="发布-订阅模型"><a href="#发布-订阅模型" class="headerlink" title="发布/订阅模型"></a>发布/订阅模型</h3><p>该模型是将消息发往一个Topic 即主题中，所有订阅了这个 Topic 的订阅者都能消费这条消息<br><img src="/2.jpg" alt="1"></p>
+<h2 id="基本模型"><a href="#基本模型" class="headerlink" title="基本模型"></a>基本模型</h2><h3 id="队列模型"><a href="#队列模型" class="headerlink" title="队列模型"></a>队列模型</h3><p>生产者往某个队列里面发送消息，一个队列可以存储多个生产者的消息，一个队列也可以有多个消费者，但是消费者之间是竞争关系，即每条消息只能被一个消费者消费。<br><img src="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%80%BB%E7%BB%93/1.jpg" alt="1"></p>
+<h3 id="发布-订阅模型"><a href="#发布-订阅模型" class="headerlink" title="发布/订阅模型"></a>发布/订阅模型</h3><p>该模型是将消息发往一个Topic 即主题中，所有订阅了这个 Topic 的订阅者都能消费这条消息<br><img src="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%80%BB%E7%BB%93/2.jpg" alt="1"></p>
 <h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>队列模型每条消息只能被一个消费者消费，而发布/订阅模型就是为让一条消息可以被多个消费者消费而生的，当然队列模型也可以通过消息全量存储至多个队列来解决一条消息被多个消费者消费问题，但是会有数据的冗余。<br>发布/订阅模型兼容队列模型，即只有一个消费者的情况下和队列模型基本一致。<br>RabbitMQ 采用队列模型， RocketMQ 和 Kafka 采用发布/订阅模型。</p>
 
                 
@@ -92,14 +92,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%80%BB%E7%BB%93/" target="_blank">消息队列的一些基本总结</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -169,7 +169,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -185,11 +185,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -204,15 +200,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -320,15 +314,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -393,10 +387,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -472,30 +464,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -532,16 +506,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -553,22 +518,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -626,9 +591,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -801,7 +766,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -811,5 +776,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

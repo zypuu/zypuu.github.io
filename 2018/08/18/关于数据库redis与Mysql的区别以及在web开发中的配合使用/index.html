@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -85,10 +85,10 @@
 <h4 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h4><p>Redis是一个开源（BSD许可）的、内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。<br>redis是一个高性能的key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sortedset–有序集合)和hash（哈希类型）。redis的出现，很大程度补偿了memcached这类key/value存储的不足，在部分场合可以对关系数据库起到很好的补充作用。它提供了Python，Ruby，Erlang，PHP客户端，使用很方便<br>Redis支持主从同步。数据可以从主服务器向任意数量的从服务器上同步，从服务器可以是关联其他从服务器的主服务器。这使得Redis可执行单层树复制。从盘可以有意无意的对数据进行写操作。由于完全实现了发布/订阅机制，使得从数据库在任何地方同步树时，可订阅一个频道并接收主服务器完整的消息发布记录。同步对读取操作的可扩展性和数据冗余很有帮助。</p>
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>NoSQL数据库的出现，弥补了关系数据（比如MySQL）在某些方面的不足，在某些方面能极大的节省开发成本和维护成本<br>MySQL和NoSQL都有各自的特点和使用的应用场景，两者的紧密结合将会给数据库发展带来新的思路。让关系数据库关注在关系上，NoSQL关注在存储上。</p>
 <h3 id="利用redis做mysql的缓存"><a href="#利用redis做mysql的缓存" class="headerlink" title="利用redis做mysql的缓存"></a>利用redis做mysql的缓存</h3><p>前面部分已经介绍mysql的瓶颈，当网站的处理和访问量非常大的时候，我们的数据库的压力就变大了，数据库的连接池，数据库同时处理数据的能力就会受到很大的挑战，一旦数据库承受了其最大承受能力，网站的数据处理效率就会大打折扣。此时就要使用高并发处理、负载均衡和分布式数据库，而这些技术既花费人力，又花费资金。</p>
-<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><p><img src="/1.jpg" alt="1"></p>
+<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><p><img src="/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/1.jpg" alt="1"></p>
 <p>页面缓存经常用在CMS(content manage system)内存管理系统里面。<br>数据缓存经常会用在页面的具体数据里面。</p>
 <h4 id="Redis缓存原理"><a href="#Redis缓存原理" class="headerlink" title="Redis缓存原理"></a>Redis缓存原理</h4><p>采用redis nosql数据库作为Mysql数据库的缓存，在查找的时候，首先查找redis缓存，如果找到则返回结果；如果在redis中没有找到，那么查找Mysql数据库，找到的花则返回结果并且更新redis；如果没有找到则返回空。</p>
-<p><img src="/2.jpg" alt="2"></p>
+<p><img src="/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/2.jpg" alt="2"></p>
 <p>对于写入：用户增删改数据库，先访问mysql，mysql再把数据更新到redis。</p>
 <p>Mysql中的数据都是按表存储的；更微观地看，这些表都是按行存储的。每执行一次select查询，Mysql都会返回一个结果集，这个结果集由若干行组成。所以，一个自然而然的想法就是在Redis中找到一种对应于Mysql行的数据结构。<br>Redis中提供了五种基本数据结构，即字符串（string）、列表（list）、哈希（hash）、集合（set）和有序集合（sorted set）。经过调研，发现适合存储行的数据结构有两种，即string和hash。</p>
 <p>用户的缓存数据在返回时一般都是JSON的字典格式，对应的存到redis里就是hash格式，这个与python的字典是相对应的。</p>
@@ -123,14 +123,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2018/08/18/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93redis%E4%B8%8EMysql%E7%9A%84%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E5%9C%A8web%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8/" target="_blank">关于数据库redis与Mysql的区别以及在web开发中的配合使用</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -200,7 +200,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -216,11 +216,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -235,15 +231,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -351,15 +345,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -424,10 +418,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -503,30 +495,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -563,16 +537,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -584,22 +549,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -657,9 +622,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -832,7 +797,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -842,5 +807,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

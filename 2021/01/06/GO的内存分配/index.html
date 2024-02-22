@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -82,7 +82,7 @@
                 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go tool compile -S main.go</span><br></pre></td></tr></table></figure>
 <p>通过以上查看汇编代码可以看到内存申请情况，runtime.newobject是用于申请内存的内建函数，newobject是mallocgc的代理，mallocgc是管理堆内存的函数。Go分配内存有两种策略：小块内存申请和大块内存申请</p>
 <h2 id="内存管理基本结构"><a href="#内存管理基本结构" class="headerlink" title="内存管理基本结构"></a>内存管理基本结构</h2><p>golang的内存管理如下：</p>
-<p><img src="/1.png" alt="1"></p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/1.png" alt="1"></p>
 <h3 id="MSpan"><a href="#MSpan" class="headerlink" title="MSpan"></a>MSpan</h3><p>内存管理的基本单位是MSpan。MSpan是一个表示若干连续内存页（8KB）的数据结构</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct MSpan</span><br><span class="line">&#123;</span><br><span class="line">    PageID    start;        <span class="comment">// starting page number</span></span><br><span class="line">    uintptr    npages;        <span class="comment">// number of pages in span</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>基地址+(页号* 页大小)，就可以定位到这个MSpan的实际的地址空间<br>PS：连续页，PageID是起始id，npages是数量</p>
@@ -112,17 +112,17 @@
 <p>每个维护了两张全局的mspan链表。一张链表为non-empty类型，包含了可供分配的mspan（由于一个span可能包含多个object，只要有一个或一个以上的object可供分配即表示该mspan可供分配），一张为empty类型，包含已分配完毕的mspan</p>
 <p>1.获取 加锁；从 nonempty链表找到一个可用的 mspan；并将其从 nonempty链表删除；将取出的 mspan加入到 empty链表；将 mspan返回给工作线程；解锁。<br>2.归还 加锁；将 mspan从 empty链表删除；将 mspan加入到 nonempty链表；解锁</p>
 <p>PS：当Go执行垃圾回收时，如果span中的内存块被标记为可供分配，span会重新加入到non-empty链表中</p>
-<p><img src="/3.png" alt="3"></p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/3.png" alt="3"></p>
 <p>当mcentral中也没有可供分配的span时，Go会从堆上申请新的span并将其放入mcentral中进行切分</p>
 <h3 id="MCache本地小块内存"><a href="#MCache本地小块内存" class="headerlink" title="MCache本地小块内存"></a>MCache本地小块内存</h3><p>对于32KB以下的小块内存申请，Go会从本地缓存mcache中获取内存。</p>
 <p>每一个M都有一个自己的局部内存缓存MCache，这样分配小对象的时候直接从MCache中分配，就不用加锁了，这是Go能够在多线程环境中高效地进行内存分配的重要原因</p>
 <p>MCache是mspan切分后的列表，包含object的列表，提供可使用的内存，2倍的object列表，上面mspan已经提到过</p>
-<p><img src="/2.png" alt="2"></p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/2.png" alt="2"></p>
 <p>mcache在初始化的时候是没有任何 mspan资源的，在使用过程中会动态地从 mcentral申请，之后会缓存下来。当对象小于等于32KB大小时，使用 mcache的相应规格的 mspan进行分配。</p>
 <p>如果mcache上没有空闲的内存块可供分配该怎么办，则进入下一级mcentral</p>
 <h3 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h3><p>堆在必要时向操作系统申请内存。它会申请一块大内存，被称为arena，在64位系统下为64MB，其它大部分系统为4MB，申请的内存同样用span管理， 1M打底</p>
-<p><img src="/4.png" alt="4"></p>
-<p><img src="/5.png" alt="5"></p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/4.png" alt="4"></p>
+<p><img src="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/5.png" alt="5"></p>
 <p>arena：堆区，运行时该区域每8KB会被划分成一个页，存储了所有在堆上初始化的对象</p>
 <p>bitmap：标识arena中哪些地址保存了对象，bitmap中一个字节的内存对应arena区域中4个指针大小的内存，并标记了是否包含指针和是否扫描的信息（一个指针大小为8B，因此bitmap的大小为512GB/(4* 8)=16GB）</p>
 <p>spans：存放mspan的指针，其中每个mspan会包含多个页，spans中一个指针（8B）表示arena中某一个page（8KB），因此spans的大小为512GB/(1024)=512MB</p>
@@ -144,14 +144,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" target="_blank">GO的内存分配</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -221,7 +221,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -237,11 +237,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -256,15 +252,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -372,15 +366,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -445,10 +439,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -524,30 +516,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -584,16 +558,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -605,22 +570,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -678,9 +643,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -853,7 +818,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -863,5 +828,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -88,11 +88,11 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AUTHENTICATION_BACKENDS=[</span><br><span class="line">			<span class="string">&#x27;users.utils.UsernameMobileModelBackend&#x27;</span>,</span><br><span class="line">		]</span><br></pre></td></tr></table></figure>
 <p>即可实现使用用户手机号登录。</p>
 <h2 id="授权第三方登录（QQ为例）"><a href="#授权第三方登录（QQ为例）" class="headerlink" title="授权第三方登录（QQ为例）"></a>授权第三方登录（QQ为例）</h2><p>QQ登录，即第三方登录，用户不在本网站输入账户密码，由第三方授权验证就可以登录本网站。如何实现授权qq登录呢，步骤如下：</p>
-<h3 id="第一步：QQ互联开发者注册"><a href="#第一步：QQ互联开发者注册" class="headerlink" title="第一步：QQ互联开发者注册"></a>第一步：QQ互联开发者注册</h3><p>要想实现第三方QQ登录，需要成为QQ互联的开发者，通过审核后，方可继续下面的步骤，注册参考文档：<a target="_blank" rel="noopener" href="http://wiki.connect.qq.com/%E6%88%90%E4%B8%BA%E5%BC%80%E5%8F%91%E8%80%85">看这里</a><br>登录成功后，填写注册信息，如下图所示<br><img src="/1.jpg" alt="1"><br>注册成功即可。</p>
-<h3 id="第二步：创建应用"><a href="#第二步：创建应用" class="headerlink" title="第二步：创建应用"></a>第二步：创建应用</h3><p>注册成功后要创建应用，选择创建网站应用还是移动应用，并填写相关资料进行创建。<br>如图所示点击创建应用。<br><img src="/2.jpg" alt="2"><br>填写相关资料<br><img src="/3.jpg" alt="3"><br>回调地址与备案信息要写规范<br><img src="/4.jpg" alt="4"><br>最后创建成功，如图所示<br><img src="/5.jpg" alt="5"><br>网站应用创建完成，点击“应用管理”，进入管理中心，在管理中心可以查看到网站获取的appid和appkey，如下图所示：<br><img src="/6.jpg" alt="6"><br>记住这两条数据，后面会用到。</p>
+<h3 id="第一步：QQ互联开发者注册"><a href="#第一步：QQ互联开发者注册" class="headerlink" title="第一步：QQ互联开发者注册"></a>第一步：QQ互联开发者注册</h3><p>要想实现第三方QQ登录，需要成为QQ互联的开发者，通过审核后，方可继续下面的步骤，注册参考文档：<a target="_blank" rel="noopener" href="http://wiki.connect.qq.com/%E6%88%90%E4%B8%BA%E5%BC%80%E5%8F%91%E8%80%85">看这里</a><br>登录成功后，填写注册信息，如下图所示<br><img src="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/1.jpg" alt="1"><br>注册成功即可。</p>
+<h3 id="第二步：创建应用"><a href="#第二步：创建应用" class="headerlink" title="第二步：创建应用"></a>第二步：创建应用</h3><p>注册成功后要创建应用，选择创建网站应用还是移动应用，并填写相关资料进行创建。<br>如图所示点击创建应用。<br><img src="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/2.jpg" alt="2"><br>填写相关资料<br><img src="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/3.jpg" alt="3"><br>回调地址与备案信息要写规范<br><img src="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/4.jpg" alt="4"><br>最后创建成功，如图所示<br><img src="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/5.jpg" alt="5"><br>网站应用创建完成，点击“应用管理”，进入管理中心，在管理中心可以查看到网站获取的appid和appkey，如下图所示：<br><img src="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/6.jpg" alt="6"><br>记住这两条数据，后面会用到。</p>
 <h3 id="第三步：设置QQ登录按钮（前端代码）"><a href="#第三步：设置QQ登录按钮（前端代码）" class="headerlink" title="第三步：设置QQ登录按钮（前端代码）"></a>第三步：设置QQ登录按钮（前端代码）</h3><p>按钮的图标样式，还有前端ui规范，以及示例代码，均在官方文档里有详细介绍，这里就不说了，主要是后端代码的开发<br>设置QQ登录按钮：<a target="_blank" rel="noopener" href="http://wiki.connect.qq.com/%E6%94%BE%E7%BD%AEqq%E7%99%BB%E5%BD%95%E6%8C%89%E9%92%AE_oauth2-0">点这里</a></p>
 <h3 id="第四步：网站后端代码开发"><a href="#第四步：网站后端代码开发" class="headerlink" title="第四步：网站后端代码开发"></a>第四步：网站后端代码开发</h3><p>由于后端代码开发流程比较复杂，首先梳理一下授权QQ登录的流程图</p>
-<h4 id="使用QQ登录的流程"><a href="#使用QQ登录的流程" class="headerlink" title="使用QQ登录的流程"></a>使用QQ登录的流程</h4><p>如图所示<br><img src="/7.jpg" alt="7"><br>由流程可见，后端代码开发需要创建三个视图，下面进行代码实现。</p>
+<h4 id="使用QQ登录的流程"><a href="#使用QQ登录的流程" class="headerlink" title="使用QQ登录的流程"></a>使用QQ登录的流程</h4><p>如图所示<br><img src="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/7.jpg" alt="7"><br>由流程可见，后端代码开发需要创建三个视图，下面进行代码实现。</p>
 <h4 id="配置中添加QQ开发者信息"><a href="#配置中添加QQ开发者信息" class="headerlink" title="配置中添加QQ开发者信息"></a>配置中添加QQ开发者信息</h4><p>在settings.py文件中添加如下代码：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># QQ登录参数</span><br><span class="line">QQ_CLIENT_ID = <span class="string">&#x27;你的APPID&#x27;</span></span><br><span class="line">QQ_CLIENT_SECRET = ‘你的APPKEY’</span><br><span class="line">QQ_REDIRECT_URI = <span class="string">&#x27;网站回调网址&#x27;</span></span><br><span class="line">QQ_STATE = &#x27;/&#x27; # 默认state初始网址为根目录</span><br></pre></td></tr></table></figure>
 
@@ -137,14 +137,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/" target="_blank">DJANGO框架如何实现用户多认证方式登录与第三方授权登录</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -214,7 +214,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -230,11 +230,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -249,15 +245,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -365,15 +359,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -438,10 +432,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -517,30 +509,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -577,16 +551,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -598,22 +563,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -671,9 +636,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -846,7 +811,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -856,5 +821,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

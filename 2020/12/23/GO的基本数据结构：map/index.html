@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -110,7 +110,7 @@
 <p>3.找到key的hash低位对应的bucket</p>
 <p>4.如果相等则再比较bucket的第i个的key与所给的key是否相等</p>
 <p>5.如果没有，则在overflow里继续寻找，桶溢出链表</p>
-<p><img src="/1.png" alt="1"></p>
+<p><img src="/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/1.png" alt="1"></p>
 <h2 id="map的插入过程"><a href="#map的插入过程" class="headerlink" title="map的插入过程"></a>map的插入过程</h2><p>1.初始化校验，根据key计算hash，根据低位找对对应的buckets数组</p>
 <p>部分代码：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">func mapassign(t *maptype, h *hmap, key unsafe.Pointer) unsafe.Pointer &#123;</span><br><span class="line">    <span class="comment">//判断 hmap 是否已经初始化（是否为 nil）</span></span><br><span class="line">    <span class="keyword">if</span> h == nil &#123;</span><br><span class="line">        panic(plainError(<span class="string">&quot;assignment to entry in nil map&quot;</span>))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">//判断是否并发读写 map，若是则抛出异常</span></span><br><span class="line">    <span class="keyword">if</span> h.flags&amp;hashWriting != <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span>(<span class="string">&quot;concurrent map writes&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//根据 key 的不同类型调用不同的 hash 方法计算得出 hash 值</span></span><br><span class="line">    alg := t.key.alg</span><br><span class="line">    hash := alg.hash(key, uintptr(h.hash0))</span><br><span class="line">    <span class="comment">//设置 flags 标志位，表示有一个 goroutine 正在写入数据。因为 alg.hash 有可能出现 panic 导致异常</span></span><br><span class="line">    h.flags |= hashWriting</span><br><span class="line">    <span class="comment">//判断 buckets 是否为 nil，若是则调用 newobject 根据当前 bucket 大小进行分配</span></span><br><span class="line">    <span class="comment">//初始化时没有初始 buckets，那么它在第一次赋值时就会对 buckets 分配</span></span><br><span class="line">    <span class="keyword">if</span> h.buckets == nil &#123;</span><br><span class="line">        h.buckets = newobject(t.bucket) <span class="comment">// newarray(t.bucket, 1)</span></span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -156,14 +156,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/" target="_blank">GO的基本数据结构：map</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -233,7 +233,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -249,11 +249,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -268,15 +264,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -384,15 +378,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -457,10 +451,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -536,30 +528,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -596,16 +570,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -617,22 +582,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -690,9 +655,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -865,7 +830,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -875,5 +840,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

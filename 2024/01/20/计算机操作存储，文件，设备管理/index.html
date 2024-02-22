@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -93,10 +93,10 @@
 <p>地址表示： （段号， 段内偏移）：其中段内偏移不能超过该段号对应的段长， 否则越界错误，<br>而此地址对应的真正内存地址应该是： 段号对应的基地址+段内偏移。</p>
 <p>优点： 程序逻辑完整， 修改互不影响<br>缺点： 内存碎片浪费大，导致内存利用率低。</p>
 <h3 id="段页存储"><a href="#段页存储" class="headerlink" title="段页存储"></a>段页存储</h3><p>对进程空间先分段， 后分页， 具体原理图和优缺点如下：<br>优点： 空间浪费小 、存储共享容易 、能动态连接。<br>缺点： 由于管理软件的增加， 复杂性和开销也增加， 执行速度下降</p>
-<h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>计算机系统中采用的索引文件结构如下图所示：<br><img src="/1.jpg" alt="1"><br>系统中有13个索引节点， 0-9为直接索引， 即每个索引节点存放的是内容， 假设每个物理<br>盘大小为4KB， 共可存4KB<em>10=40KB数据；<br>10号索引节点为一级间接索引节点， 大小为4KB， 存放的并非直接数据， 而是链接到直<br>接 物理盘块的地址， 假设每个地址占4B， 则共有1024个地址， 对应1024个物理盘， 可<br>存1024</em>4KB=4098KB数据。<br>二级索引节点类似， 直接盘存放一级地址， 一级地址再存放物理盘快地址，而后链接到存放数据的物理盘块， 容量又扩大了一个数量级， 为1024<em>1024</em>4KB数据。</p>
+<h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>计算机系统中采用的索引文件结构如下图所示：<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/1.jpg" alt="1"><br>系统中有13个索引节点， 0-9为直接索引， 即每个索引节点存放的是内容， 假设每个物理<br>盘大小为4KB， 共可存4KB<em>10=40KB数据；<br>10号索引节点为一级间接索引节点， 大小为4KB， 存放的并非直接数据， 而是链接到直<br>接 物理盘块的地址， 假设每个地址占4B， 则共有1024个地址， 对应1024个物理盘， 可<br>存1024</em>4KB=4098KB数据。<br>二级索引节点类似， 直接盘存放一级地址， 一级地址再存放物理盘快地址，而后链接到存放数据的物理盘块， 容量又扩大了一个数量级， 为1024<em>1024</em>4KB数据。</p>
 <h3 id="树形文件"><a href="#树形文件" class="headerlink" title="树形文件"></a>树形文件</h3><p>相对路径： 是从当前路径开始的路径。<br>绝对路径： 是从根目录开始的路径。</p>
 <h3 id="空间存储"><a href="#空间存储" class="headerlink" title="空间存储"></a>空间存储</h3><p>空闲区表法： 将所有空闲空间整合成一张表， 即空闲文件目录。<br>空闲链表法： 将所有空闲空间链接成一个链表， 根据需要分配。<br>成组链接法： 既分组， 每组内又链接成链表， 是上述两种方法的综合。<br>位示图法： 对每个物理空间用一位标识， 为1则使用， 为0则空闲， 形成<br>一 张位示图。</p>
-<h2 id="微内核操作系统"><a href="#微内核操作系统" class="headerlink" title="微内核操作系统"></a>微内核操作系统</h2><p>微内核， 顾名思义， 就是尽可能的将内核做的很小， 只将最为核心必要的东西放入内核中， 其<br>他 能独立的东西都放入用户进程中， 这样， 系统就被分为了用户态和内核态<br><img src="/2.jpg" alt="1"></p>
+<h2 id="微内核操作系统"><a href="#微内核操作系统" class="headerlink" title="微内核操作系统"></a>微内核操作系统</h2><p>微内核， 顾名思义， 就是尽可能的将内核做的很小， 只将最为核心必要的东西放入内核中， 其<br>他 能独立的东西都放入用户进程中， 这样， 系统就被分为了用户态和内核态<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/2.jpg" alt="1"></p>
 <h2 id="嵌入式操作系统"><a href="#嵌入式操作系统" class="headerlink" title="嵌入式操作系统"></a>嵌入式操作系统</h2><p>嵌入式操作系统特点： 微型化 、代码质量高 、专业化 、实时性强 、可裁剪可配置。<br>实时嵌入式操作系统的内核服务： 异常和中断 、计时器 、I/O管理。<br>常见的嵌入式RTOS（实时操作系统）：VxWorks、RT-Linux、QNX、pSOS。<br>嵌入式系统初始化过程按照自底向上 、从硬件到软件的次序依次为：<br>芯片级初始化-&gt;板卡级初始化-&gt;系统级初始化。<br>芯片级是微处理器的初始化， 板卡级是其他硬件设备初始化， 系统级初始化就是<br>软 件及操作系统初始化。</p>
 
                 
@@ -105,14 +105,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/" target="_blank">计算机操作存储，文件，设备管理</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -182,7 +182,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -198,11 +198,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -217,15 +213,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -333,15 +327,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -406,10 +400,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -485,30 +477,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -545,16 +519,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -566,22 +531,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -639,9 +604,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -814,7 +779,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -824,5 +789,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

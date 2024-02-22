@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -105,18 +105,18 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth <span class="keyword">import</span> get_user_model</span><br><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line">def get_sentinel_user():</span><br><span class="line">    <span class="keyword">return</span> get_user_model().objects.get_or_create(username=<span class="string">&#x27;deleted&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">class MyModel(models.Model):</span><br><span class="line">    user = models.ForeignKey(</span><br><span class="line">        settings.AUTH_USER_MODEL,</span><br><span class="line">        on_delete=models.SET(get_sentinel_user),</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
 
 <p>DO_NOTHING 不做任何操作，如果数据库前置指明级联性，此选项会抛出IntegrityError异常。</p>
-<p>5） 字段类型<br><img src="/1.jpg" alt="1"><br>6） 选项<br><img src="/2.jpg" alt="2"></p>
+<p>5） 字段类型<br><img src="/2018/03/17/%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7/1.jpg" alt="1"><br>6） 选项<br><img src="/2018/03/17/%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7/2.jpg" alt="2"></p>
 <h2 id="Flask创建模型类，表格字段属性"><a href="#Flask创建模型类，表格字段属性" class="headerlink" title="Flask创建模型类，表格字段属性"></a>Flask创建模型类，表格字段属性</h2><h3 id="数据库连接"><a href="#数据库连接" class="headerlink" title="数据库连接"></a>数据库连接</h3><p>连接数据库需要安装pymysql和flask-sqlalchemy</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install Flask-MySQLdb==<span class="number">0.2</span><span class="number">.0</span></span><br><span class="line">pip install Flask-SQLAlchemy==<span class="number">2.3</span><span class="number">.2</span></span><br></pre></td></tr></table></figure>
 <p>然后进行设置，数据库使用url指定</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_DATABASE_URI&#x27;</span>] = <span class="string">&#x27;mysql://root:mysql@localhost:3306/数据库名&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>然后在mysql创建你要连接的数据库<br>其他配置<br><img src="/3.jpg" alt="3"></p>
+<p>然后在mysql创建你要连接的数据库<br>其他配置<br><img src="/2018/03/17/%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7/3.jpg" alt="3"></p>
 <h3 id="定义模型类"><a href="#定义模型类" class="headerlink" title="定义模型类"></a>定义模型类</h3><p>定义模型类</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class 类名(db.Model):</span><br><span class="line">    属性<span class="number">1</span>=db.Column(类型,约束)</span><br><span class="line">    属性<span class="number">2</span>=db.Column(类型,约束)</span><br><span class="line">    属性<span class="number">3</span>=db.Column(类型,约束)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 <p>创建表</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.create_all()</span><br></pre></td></tr></table></figure>
 
-<h3 id="字段属性和选项"><a href="#字段属性和选项" class="headerlink" title="字段属性和选项"></a>字段属性和选项</h3><p>常用的SQLAlchemy字段类型<br><img src="/4.jpg" alt="4"><br>常用的SQLAlchemy列选项<br><img src="/5.jpg" alt="5"><br>常用的SQLAlchemy关系选项<br><img src="/6.jpg" alt="6"></p>
+<h3 id="字段属性和选项"><a href="#字段属性和选项" class="headerlink" title="字段属性和选项"></a>字段属性和选项</h3><p>常用的SQLAlchemy字段类型<br><img src="/2018/03/17/%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7/4.jpg" alt="4"><br>常用的SQLAlchemy列选项<br><img src="/2018/03/17/%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7/5.jpg" alt="5"><br>常用的SQLAlchemy关系选项<br><img src="/2018/03/17/%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7/6.jpg" alt="6"></p>
 <h2 id="SKU与SPU"><a href="#SKU与SPU" class="headerlink" title="SKU与SPU"></a>SKU与SPU</h2><p>SPU = Standard Product Unit （标准产品单位）</p>
 <p>SPU是商品信息聚合的最小单位，是一组可服用、易检索的标准化信息的集合，该集合描述了一个产品的特性。</p>
 <p>个人理解，属性值特性类似相同，可归为一起的商品类就是spu</p>
@@ -130,14 +130,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2018/03/17/%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%AD%97%E6%AE%B5%E5%B1%9E%E6%80%A7/" target="_blank">表格模型类字段属性</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -207,7 +207,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -223,11 +223,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -242,15 +238,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -358,15 +352,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -431,10 +425,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -510,30 +502,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -570,16 +544,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -591,22 +556,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -664,9 +629,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -839,7 +804,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -849,5 +814,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -88,9 +88,9 @@
 <p>AVL树具有监督机制：树的某一部分的不平衡度超过平衡因子后触发相应的平衡操作。保证树的平衡度在平衡因子范围内</p>
 <p>通过左旋、右旋操作，分为四种情况</p>
 <p>单次左右旋， 注意旋转的与被旋转的节点更换</p>
-<p><img src="/./1.png" alt="1"></p>
+<p><img src="/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/1.png" alt="1"></p>
 <p>双次旋转</p>
-<p><img src="/./2.png" alt="2"></p>
+<p><img src="/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/2.png" alt="2"></p>
 <p>case2情况下，需要先对y结点进行一次左旋转，然后再对z结点进行一次右旋转<br>case3情况下，需要先对y结点进行一次右旋转，然后再对z结点进行一次左旋转</p>
 <p>实现AVL树</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 树节点</span></span><br><span class="line">type AVLTreeNode struct &#123;</span><br><span class="line">    value int   <span class="comment">// 节点值</span></span><br><span class="line">    high  int   <span class="comment">// 节点高度，最底层新插入的高度是0</span></span><br><span class="line">    left  *AVLTreeNode</span><br><span class="line">    right *AVLTreeNode</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 初始化一个AVL树</span></span><br><span class="line">func NewAVLTreeRoot(root int) *AVLTreeNode &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;AVLTreeNode&#123;root, <span class="number">0</span>, nil, nil&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 插入节点</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) InsertNode(v int) *AVLTreeNode &#123;</span><br><span class="line">    <span class="comment">// 到叶子节点为nil时，插入v的值，递归终止条件</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">this</span> == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> &amp;AVLTreeNode&#123;v, <span class="number">0</span>, nil, nil&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// v小于当前节点的value，左子树往下</span></span><br><span class="line">    <span class="keyword">if</span> v &lt; <span class="built_in">this</span>.value &#123;</span><br><span class="line">        <span class="comment">// 左节点往下插入。开始递归，最终得到要插入的节点，就是this.left</span></span><br><span class="line">        <span class="comment">// 到最底层，此时的this是插入后的新节点的父节点，开始向上递归平衡</span></span><br><span class="line">        <span class="built_in">this</span>.left = <span class="built_in">this</span>.left.InsertNode(v)</span><br><span class="line">        <span class="comment">// 开始回溯时，从倒数第二层开始向上，更新新节点的父节点得到的高度</span></span><br><span class="line">        <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">        <span class="comment">// 检查高度差，高度差为2则复发平衡，触发第一次回溯时候就是新插入的节点的父父节点</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">this</span>.left.getNodeHigh()-<span class="built_in">this</span>.right.getNodeHigh() == <span class="number">2</span> &#123;</span><br><span class="line">            <span class="comment">// 如果要插入的值小于当前节点左节点的值，则右旋，否则 左右旋</span></span><br><span class="line">            <span class="keyword">if</span> v &lt; <span class="built_in">this</span>.left.value &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.rightRotation()</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.leftRightRotation()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">// 与上面相反，插入的时候左右交替比较插入，回溯的时候也是左右交替回溯</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.right = <span class="built_in">this</span>.right.InsertNode(v)</span><br><span class="line">        <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">this</span>.right.getNodeHigh()-<span class="built_in">this</span>.left.getNodeHigh() == <span class="number">2</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> v &lt; <span class="built_in">this</span>.right.value &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.rightLeftRotation()</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.leftRotation()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 左旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) leftRotation() *AVLTreeNode &#123;</span><br><span class="line">    <span class="comment">// 更换节点</span></span><br><span class="line">    node := <span class="built_in">this</span>.right</span><br><span class="line">    <span class="built_in">this</span>.right = node.left</span><br><span class="line">    node.left = <span class="built_in">this</span></span><br><span class="line">    <span class="comment">// 更新高度</span></span><br><span class="line">    <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    node.high = getMax(node.left.getNodeHigh(), node.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 右旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) rightRotation() *AVLTreeNode &#123;</span><br><span class="line">    node := <span class="built_in">this</span>.left</span><br><span class="line">    <span class="built_in">this</span>.left = node.right</span><br><span class="line">    node.right = <span class="built_in">this</span></span><br><span class="line">    <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    node.high = getMax(node.left.getNodeHigh(), node.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 左右旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) leftRightRotation() *AVLTreeNode &#123;</span><br><span class="line">    <span class="built_in">this</span>.left = <span class="built_in">this</span>.left.leftRotation()</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.rightRotation()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 右左旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) rightLeftRotation() *AVLTreeNode &#123;</span><br><span class="line">    <span class="built_in">this</span>.right = <span class="built_in">this</span>.right.rightRotation()</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.leftRotation()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取节点高度</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) getNodeHigh() int &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">this</span> == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.high</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 获取最大值</span></span><br><span class="line">func getMax(a, b int) int &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -106,14 +106,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" target="_blank">AVL树和红黑树</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -183,7 +183,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -199,11 +199,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -218,15 +214,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -334,15 +328,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -407,10 +401,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -486,30 +478,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -546,16 +520,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -567,22 +532,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -640,9 +605,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -815,7 +780,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -825,5 +790,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

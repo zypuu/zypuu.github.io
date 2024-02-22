@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -118,17 +118,17 @@
 <p>1.全局对象、栈上的对象（函数参数与内部变量）</p>
 <p>2.与上面对象通过引用链相连的对象</p>
 <p>对于“不可达”的对象，我们可以认为该对象为垃圾对象并回收对应的内存空间</p>
-<p><img src="/1.png" alt="1"></p>
+<p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/1.png" alt="1"></p>
 <h4 id="标记-清除-Mark-Sweep"><a href="#标记-清除-Mark-Sweep" class="headerlink" title="标记-清除 Mark-Sweep"></a>标记-清除 Mark-Sweep</h4><p>标记：记录需要回收的垃圾对象</p>
 <p>清除：在标记完成后回收垃圾对象的内存空间</p>
-<p><img src="/2.png" alt="2"></p>
+<p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/2.png" alt="2"></p>
 <p>优点：</p>
 <p>1.算法吞吐量高：用户代码时间/总时间高</p>
 <p>2.空间利用率：同标记-复制相比不需要额外空间复制对象，也不需要像引用计数算法为每个对象设置引用计数器</p>
 <p>缺点：</p>
 <p>1.清除后会产生大量的内存碎片空间，导致程序在运行时可能没法为较大的对象分配内存空间，导致提前GC</p>
 <h4 id="标记-复制-Mark-Copy"><a href="#标记-复制-Mark-Copy" class="headerlink" title="标记-复制 Mark-Copy"></a>标记-复制 Mark-Copy</h4><p>将内存分成大小相同的两块，当某一块的内存使用完了之后就将使用中的对象挨个复制到另一块内存中，最后将当前内存恢复未使用的状态</p>
-<p><img src="/3.png" alt="3"></p>
+<p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/3.png" alt="3"></p>
 <p>优点：</p>
 <p>1.标记-清除法需要在清除阶段对大量垃圾对象进行扫描，标记-复制则只需要从GC Root对象出发，将“可到达”的对象复制到另一块内存后直接清理当前这块的内存，因此提升了垃圾回收的效率</p>
 <p>PS：清除，是扫描所有垃圾，标记垃圾，回收，复制是只扫描GC ROOT对象</p>
@@ -137,7 +137,7 @@
 <p>1.同标记-清除法相比，在“可达”对象占比较高的情况下有复制对象的开销</p>
 <p>2.内存利用率较低，相当于可利用的内存仅有一半</p>
 <h4 id="标记-整理-Mark-Compact"><a href="#标记-整理-Mark-Compact" class="headerlink" title="标记-整理 Mark-Compact"></a>标记-整理 Mark-Compact</h4><p>标记出所有“可达”的对象，然后将存活的对象移动到内存空间的一端，最后清理掉端边界以外的内存</p>
-<p><img src="/4.png" alt="4"></p>
+<p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/4.png" alt="4"></p>
 <p>优点：</p>
 <p>1.避免了内存碎片化的问题</p>
 <p>2.在对象存活率较高的情况下，标记-整理算法由于不需要复制对象效率更高，因此更加适合老年代算法</p>
@@ -160,7 +160,7 @@
 <p>缺点：</p>
 <p>1.如果程序垃圾对象的产生速度大于垃圾对象的回收速度时，可能导致程序中的垃圾对象越来越多而无法及时收集</p>
 <p>2.线程切换和上下文转换的消耗会使得垃圾回收的总体成本上升，从而降低系统吞吐量</p>
-<h5 id="三色标记法的并发性问题"><a href="#三色标记法的并发性问题" class="headerlink" title="三色标记法的并发性问题"></a>三色标记法的并发性问题</h5><p><img src="/5.png" alt="5"></p>
+<h5 id="三色标记法的并发性问题"><a href="#三色标记法的并发性问题" class="headerlink" title="三色标记法的并发性问题"></a>三色标记法的并发性问题</h5><p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/5.png" alt="5"></p>
 <p>如图所示，三色标记法GC与用户程序同时并发执行，用户在标记执行过程中建立了从A对象到D对象的引用，A为黑色，D不会再被扫描为白色，会被错误回收，导致后续对D的访问出错。这种没有指向合法地址的指针一般被称为“野指针”，会造成严重的程序错误</p>
 <h5 id="问题原因及解决"><a href="#问题原因及解决" class="headerlink" title="问题原因及解决"></a>问题原因及解决</h5><p>三色标记法和用户程序并发执行，那么下列两个条件同时满足就可能出现错误回收非垃圾对象的问题：</p>
 <p>1.某一黑色对象引用白色对象</p>
@@ -176,25 +176,25 @@
 <p>需要分清楚STW方法是全局性的赋值器挂起而内存屏障技术是局部的赋值器挂起</p>
 <h4 id="Dijkstra插入写屏障"><a href="#Dijkstra插入写屏障" class="headerlink" title="Dijkstra插入写屏障"></a>Dijkstra插入写屏障</h4><p>Dijkstra插入写屏障避免了前面提到的条件1，即防止黑色对象指向白色对象</p>
 <p>一个对象可以存储在内存中的“栈”或者“堆”，由于“栈”空间容量小且要求相应速度较高，因此“插入写屏障”不适合用于“栈”空间</p>
-<p>流程：<br>1.垃圾回收之前将所有的对象标记为白色<br><img src="/6.png" alt="6"></p>
-<p>2.遍历GC Root Set，将可达对象标记为灰色<br><img src="/7.png" alt="7"></p>
-<p>3.遍历灰色对象列表，将可达的对象从白色标记为灰色；将遍历完的灰色对象标记为黑色<br><img src="/8.png" alt="8"></p>
-<p>4.在三色标记过程中用户程序令栈区对象A指向对象H，令堆区对象E指向对象I，由于对象E在堆区从而触发插入写屏障并将黑色对象E指向的白色对象I标记为灰色，栈区对象A不触发<br><img src="/9.png" alt="9"></p>
-<p>5.继续三色标记直至灰色对象队列为空<br><img src="/10.png" alt="10"></p>
-<p>6.垃圾回收之前将所有的对象标记为白色由于栈区对象没有启动插入写屏障，因此栈上可能存在白色对象被引用的情况（上图中对应对象H），因此在回收白色对象前在STW保护下重新扫描一次栈空间<br><img src="/11.png" alt="11"></p>
-<p>7.在STW保护下对栈空间一次性进行三色标记，直到灰色对象队列为空<br><img src="/12.png" alt="12"></p>
-<p>8.结束STW<br><img src="/13.png" alt="13"></p>
-<p>9.最后将栈空间和堆空间的白色垃圾对象进行回收<br><img src="/14.png" alt="14"></p>
+<p>流程：<br>1.垃圾回收之前将所有的对象标记为白色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/6.png" alt="6"></p>
+<p>2.遍历GC Root Set，将可达对象标记为灰色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/7.png" alt="7"></p>
+<p>3.遍历灰色对象列表，将可达的对象从白色标记为灰色；将遍历完的灰色对象标记为黑色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/8.png" alt="8"></p>
+<p>4.在三色标记过程中用户程序令栈区对象A指向对象H，令堆区对象E指向对象I，由于对象E在堆区从而触发插入写屏障并将黑色对象E指向的白色对象I标记为灰色，栈区对象A不触发<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/9.png" alt="9"></p>
+<p>5.继续三色标记直至灰色对象队列为空<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/10.png" alt="10"></p>
+<p>6.垃圾回收之前将所有的对象标记为白色由于栈区对象没有启动插入写屏障，因此栈上可能存在白色对象被引用的情况（上图中对应对象H），因此在回收白色对象前在STW保护下重新扫描一次栈空间<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/11.png" alt="11"></p>
+<p>7.在STW保护下对栈空间一次性进行三色标记，直到灰色对象队列为空<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/12.png" alt="12"></p>
+<p>8.结束STW<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/13.png" alt="13"></p>
+<p>9.最后将栈空间和堆空间的白色垃圾对象进行回收<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/14.png" alt="14"></p>
 <p>缺点：</p>
 <p>1.一方面它是一种比较保守的垃圾回收方法，把有可能存活的对象都标记成灰色了以满足“强三色不变性”，在修改用户修改引用的时候，会被修改后的本该回收的标记为灰色从而漏掉回收</p>
 <p>2.在于栈上的对象也是根对象，Dijkstra插入写屏障要么在用户程序执行内存写操作时为栈上对象插入写屏障，要么在一轮三色标记完成后使用STW重新对栈上的对象进行三色标记。前者会降低栈空间的响应速度，后者会暂停用户程序</p>
 <h4 id="Yuasa删除写屏障"><a href="#Yuasa删除写屏障" class="headerlink" title="Yuasa删除写屏障"></a>Yuasa删除写屏障</h4><p>Yuasa删除写屏障避免了前面提到的条件2，防止丢失灰色对象到白色对象的可达路径</p>
-<p>流程：<br>1.将所有对象标记为白色<br><img src="/15.png" alt="15"></p>
-<p>2.遍历GC Root Set将可达对象设为灰色<br><img src="/16.png" alt="16"></p>
-<p>3.如果用户程序令灰色对象A删除了对白色对象D的引用，如果这时候不触发删除写屏障，那么对象D、B和C直到本轮垃圾回收结束都会是白色对象。因此需要触发删除写屏障，将对象D标记为灰色<br><img src="/17.png" alt="17"></p>
-<p>4.遍历灰色对象队列，将可达的白色对象标记为灰色，遍历完的灰色对象标记为黑色<br><img src="/18.png" alt="18"></p>
-<p>5.继续进行三色标记，直到灰色对象队列为空<br><img src="/19.png" alt="19"></p>
-<p>6.清除所有的白色对象<br><img src="/20.png" alt="20"></p>
+<p>流程：<br>1.将所有对象标记为白色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/15.png" alt="15"></p>
+<p>2.遍历GC Root Set将可达对象设为灰色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/16.png" alt="16"></p>
+<p>3.如果用户程序令灰色对象A删除了对白色对象D的引用，如果这时候不触发删除写屏障，那么对象D、B和C直到本轮垃圾回收结束都会是白色对象。因此需要触发删除写屏障，将对象D标记为灰色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/17.png" alt="17"></p>
+<p>4.遍历灰色对象队列，将可达的白色对象标记为灰色，遍历完的灰色对象标记为黑色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/18.png" alt="18"></p>
+<p>5.继续进行三色标记，直到灰色对象队列为空<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/19.png" alt="19"></p>
+<p>6.清除所有的白色对象<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/20.png" alt="20"></p>
 <p>优点：</p>
 <p>1.不需要在一轮三色标记后对栈空间上的对象进行重新扫描</p>
 <p>缺点：</p>
@@ -208,16 +208,16 @@
 <p>Yuasa删除写屏障：回收精度低</p>
 <h5 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h5><p>混合写屏障也是仅在堆空间启动的，防止降低栈空间的运行效率</p>
 <p>1.GC开始时将栈上所有对象标记为黑色，无须STW</p>
-<p>2.GC期间在栈上创建的新对象均标记为黑色<br><img src="/21.png" alt="21"></p>
+<p>2.GC期间在栈上创建的新对象均标记为黑色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/21.png" alt="21"></p>
 <p>3.将被删除的下游对象标记为灰色</p>
 <p>4.将被添加的下游对象标记为灰色</p>
-<p>场景一：某个对象从堆对象的下游变成栈对象的下游，这种情况下标记该对象为灰色，该对象就不会被错误地回收<br><img src="/22.png" alt="22"></p>
-<p>场景二：某个对象从一个栈对象的下游变成另一个对象的下游，由于对象全都在栈空间对象的可达对象中，因此混合写屏障不会对这些对象着色。<br><img src="/23.png" alt="23"></p>
-<p>场景三：某个对象从一个堆对象的下游变成另一个堆对象的下游，比如下图中对象G从F的下游移动到Y的下游，为了避免对象G被错误回收，我们需要将其标记为灰色<br><img src="/24.png" alt="24"></p>
-<p>场景四：某个对象从栈对象的下游变成堆对象的下游，对于栈空间对象不触发写屏障，但是对于被删除的堆空间对象G需要标记成灰色以保护它和它的下游对象不被错误删除<br><img src="/25.png" alt="25"></p>
+<p>场景一：某个对象从堆对象的下游变成栈对象的下游，这种情况下标记该对象为灰色，该对象就不会被错误地回收<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/22.png" alt="22"></p>
+<p>场景二：某个对象从一个栈对象的下游变成另一个对象的下游，由于对象全都在栈空间对象的可达对象中，因此混合写屏障不会对这些对象着色。<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/23.png" alt="23"></p>
+<p>场景三：某个对象从一个堆对象的下游变成另一个堆对象的下游，比如下图中对象G从F的下游移动到Y的下游，为了避免对象G被错误回收，我们需要将其标记为灰色<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/24.png" alt="24"></p>
+<p>场景四：某个对象从栈对象的下游变成堆对象的下游，对于栈空间对象不触发写屏障，但是对于被删除的堆空间对象G需要标记成灰色以保护它和它的下游对象不被错误删除<br><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/25.png" alt="25"></p>
 <h3 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h3><p>追踪式回收有一个问题是会频繁扫描生命周期较长的对象，大部分生命周期都很短，因此有必要将对象按照生命周期的长度划分到堆heap上的两个甚至多个区域。对于新生代区域的扫描频率应该高于老年代区域</p>
 <h4 id="区域划分：新生代，老年代"><a href="#区域划分：新生代，老年代" class="headerlink" title="区域划分：新生代，老年代"></a>区域划分：新生代，老年代</h4><p>1.新生代，老年代分为young，old区域<br>2.新生代中的对象生命周期较短（每次回收约98%的对象是垃圾对象）<br>3.新生代采用标记-复制法需要两块内存交替使用<br>4.Young区为了节省复制算法的内存代价又划分成Eden、Survivor0和Survivor1三个分区（内存分配比例为8:1:1）。</p>
-<p><img src="/26.png" alt="26"></p>
+<p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/26.png" alt="26"></p>
 <p>新生代回收：Minor GC<br>老年代回收：Major GC</p>
 <h4 id="分配策略与流程"><a href="#分配策略与流程" class="headerlink" title="分配策略与流程"></a>分配策略与流程</h4><p>1.对象优先在Yonug上的Eden区域分配（大对象直接进入Old区）</p>
 <p>2.Eden区满了之后开始进行Minor GC，将Eden中存活的对象移动到Survivor0区，直接清空Eden区</p>
@@ -227,12 +227,12 @@
 <h3 id="增量和并发式垃圾回收"><a href="#增量和并发式垃圾回收" class="headerlink" title="增量和并发式垃圾回收"></a>增量和并发式垃圾回收</h3><p>传统的垃圾回收算法都有STW的弊端，即需要在执行垃圾回收过程中需要抢占CPU，这会暂停所有的用户程序</p>
 <p>1.通常GC任务都比较繁重，长时间暂停用户程序会影响程序的响应速度，这对于实时性要求较高的程序是致命的缺点<br>2.对于多核计算机而言，抢占CPU进行垃圾回收会造成计算资源浪费</p>
 <p>增量式垃圾回收和并发式垃圾回收都是基于三色标记法和读写屏障技术的</p>
-<h4 id="增量式"><a href="#增量式" class="headerlink" title="增量式"></a>增量式</h4><p><img src="/27.png" alt="27"></p>
+<h4 id="增量式"><a href="#增量式" class="headerlink" title="增量式"></a>增量式</h4><p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/27.png" alt="27"></p>
 <p>增量式垃圾回收过程图如上所示，同STW垃圾回收过程相比：</p>
 <p>优点：</p>
 <p>1.将垃圾回收时间分摊开，避免了程序的长时间暂停，防止影响程序的实时性<br>缺点：</p>
 <p>1.一方面引入了内存写屏障技术，需要额外的计算开销；另一方面由于写屏障技术的保守性导致有一些垃圾对象没有被回收，会增加一轮垃圾回收的总时长</p>
-<h4 id="并发式"><a href="#并发式" class="headerlink" title="并发式"></a>并发式</h4><p><img src="/28.png" alt="28"></p>
+<h4 id="并发式"><a href="#并发式" class="headerlink" title="并发式"></a>并发式</h4><p><img src="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/28.png" alt="28"></p>
 <p>同时执行</p>
 <p>在一定程序上利用了多核计算机的优势并减少了对用户程序的干扰，不过依然无法摆脱读写屏障的额外计算开销和增加一轮垃圾回收总时长的问题</p>
 <h2 id="GO的GC"><a href="#GO的GC" class="headerlink" title="GO的GC"></a>GO的GC</h2><h3 id="发展史"><a href="#发展史" class="headerlink" title="发展史"></a>发展史</h3><p>go v1.1：标记-清除法，整个过程都需要STW</p>
@@ -292,14 +292,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" target="_blank">GO的垃圾回收</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -369,7 +369,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -385,11 +385,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -404,15 +400,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -520,15 +514,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -593,10 +587,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -672,30 +664,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -732,16 +706,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -753,22 +718,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -826,9 +791,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -1001,7 +966,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -1011,5 +976,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

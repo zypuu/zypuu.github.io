@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -98,14 +98,14 @@
 <p>关系：可以理解为一张二维表，每个关系都具有一个关系名， 就是通常说的表名。<br>元组：可以理解为二维表中的一行，在数据库中经常被称为记 录。<br>属性：可以理解为二维表中的一列，在数据库中经常被称为字 段。<br>域：属性的取值范围，也就是数据库中某一列的取值限制。<br>关键字：一组可以唯一标识元组的属性，数据库中常称为主键， 由一个或多个列组成。<br>关系模式：指对关系的描述。其格式为：关系名（属性1，属性<br>2 ，……，属性N），在数据库中成为表结构。</p>
 <h3 id="模型转换"><a href="#模型转换" class="headerlink" title="模型转换"></a>模型转换</h3><p>E-R模型转换为关系模型 ：每个实体都对应一个关系模式</p>
 <p>1:1联系中 ，联系可以放到任意的两端实体中， 作为一个属性 (要保证1:1 的两端关联) ， 也可以转换为一个单独的关系模式；<br>1:N 的联系中 ， 联系可以单独作为一个关系模式， 也可以在N端中加入1端实体的主键；<br>M:N的联系中 ，联系必须作为 一个单独的关系模式 ，其主键是M和N端的联合主键</p>
-<h2 id="关系代数"><a href="#关系代数" class="headerlink" title="关系代数"></a>关系代数</h2><p><img src="/1.jpg" alt="1"></p>
+<h2 id="关系代数"><a href="#关系代数" class="headerlink" title="关系代数"></a>关系代数</h2><p><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/1.jpg" alt="1"></p>
 <p>并：S1 U S2， 结果是两张表中所有记录数合并 ，相同记录只显示一次。<br>交：S1 ∩ S2 ,结果是两张表中相同的记录 。<br>差：S1 - S2 ，结果是S1表中有而S2表中没有的那些记录。</p>
-<p>笛卡尔积 ：S1<em>S2 ，产生的结果包括S1和S2的所有属性列 ，并且S1 中每条记录依次和S2 中所有记录组合成一条记录，最终属性列为S1+S2属性列，记录数为 S1</em>S2记录数<br><img src="/2.jpg" alt="1"></p>
+<p>笛卡尔积 ：S1<em>S2 ，产生的结果包括S1和S2的所有属性列 ，并且S1 中每条记录依次和S2 中所有记录组合成一条记录，最终属性列为S1+S2属性列，记录数为 S1</em>S2记录数<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/2.jpg" alt="1"></p>
 <p>查询年龄小于22岁的学生 σSage&lt;22(student)<br>查询学生的姓名和所在系πSname,Sdept(Student)</p>
-<p>自然连接的结果显示全部的属性列 ， 但是相同属性列只显示一次 ， 显示两个关系模式中属性相同且值相同的记录。<br>设有关系R、S如下左图所示， 自然连接结果如下右图所示：<br><img src="/3.jpg" alt="1"></p>
+<p>自然连接的结果显示全部的属性列 ， 但是相同属性列只显示一次 ， 显示两个关系模式中属性相同且值相同的记录。<br>设有关系R、S如下左图所示， 自然连接结果如下右图所示：<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/3.jpg" alt="1"></p>
 <p>注意RxS，和R自然连接S</p>
 <h2 id="函数依赖范式"><a href="#函数依赖范式" class="headerlink" title="函数依赖范式"></a>函数依赖范式</h2><h3 id="函数依赖"><a href="#函数依赖" class="headerlink" title="函数依赖"></a>函数依赖</h3><p>给定一个X， 能唯一确定一个Y， 就称X确定Y，或者说Y依赖于X ，例如Y=X*X 函数 。<br>函数依赖又可扩展以下两种规则 :<br>部分函数依赖 ：A可确定C，(A,B)也可确定C，(A,B)中的一部分 (即A ) 可以确定C ，称为部分函数依赖。<br>传递函数依赖：当A和B不等价时，A可确定B，B可确定C，则A可确定C，是传递函数依赖；<br>若A和B等价，则不存在传递，直接就可确定C</p>
-<p>设关系模式R&lt;U，F&gt; ,U是关系模式R 的属性全集，F是关系模式R的一个函数依赖集 。<br>对于R&lt;U，F&gt;来说有以下的：<br><img src="/4.jpg" alt="1"></p>
+<p>设关系模式R&lt;U，F&gt; ,U是关系模式R 的属性全集，F是关系模式R的一个函数依赖集 。<br>对于R&lt;U，F&gt;来说有以下的：<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/4.jpg" alt="1"></p>
 <p>超键 ： 能唯一标识此表的属性的组合 。<br>候选键： 超键中去掉冗余的属性 ， 剩余的属性就是候选键。<br>主键 ：任选一 个候选键 ， 即可作为主键。<br>外键 ： 其他表中的主键。<br>主属性和非主属性： 候选键内的属性为主属性 ， 其他属性为非主属性</p>
 <h3 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h3><h4 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h4><p>关系中的每一个分量必须是一个不可分的数据项 。通俗地说 ，第一范式就是表中不允许有小表的存在</p>
 <h4 id="第二范式"><a href="#第二范式" class="headerlink" title="第二范式"></a>第二范式</h4><p>如果关系R属于1NF， 且每一个非主属性完全函数依赖于任何一个候选码 ，则R属于2NF。<br>2NF就是在1NF的基础上 ，表中的每一个非主属性不会依赖复合主键中的某一个列</p>
@@ -118,14 +118,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/" target="_blank">数据库设计</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -192,7 +192,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -208,11 +208,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -227,15 +223,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -343,15 +337,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -416,10 +410,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -495,30 +487,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -555,16 +529,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -576,22 +541,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -649,9 +614,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -824,7 +789,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -834,5 +799,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>

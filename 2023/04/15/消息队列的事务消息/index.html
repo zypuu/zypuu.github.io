@@ -29,7 +29,7 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="ALL-Nothing" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
 </head>
 <body>
     <a id="cover"></a>
@@ -90,14 +90,14 @@
 <p>发送完半消息之后再执行本地事务，再根据本地事务的执行结果来决定是向 Broker 发送提交消息，还是发送回滚消息。</p>
 <p>如果这一步发送提交或者回滚消息失败了怎么办，Broker会定时的向 Producer 来反查这个事务是否成功，具体的就是 Producer 需要暴露一个接口，通过这个接口 Broker 可以得知事务到底有没有执行成功，没成功就返回未知，因为有可能事务还在执行，会进行多次查询。</p>
 <p>如果成功那么就将半消息恢复到正常要发送的队列中，这样消费者就可以消费这条消息了</p>
-<p>看一下代码：<br><img src="/1.jpg" alt="1"></p>
+<p>看一下代码：<br><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/1.jpg" alt="1"></p>
 <p>可以看到使用起来还是很简便直观的，无非就是多加个反查事务结果的方法，然后把本地事务执行的过程写在 TransationListener 里面。</p>
-<p>整体流程如下：<br><img src="/2.jpg" alt="1"></p>
-<p>分析一下源码：<br><img src="/3.jpg" alt="1"><br>流程也就是我们上面分析的，将消息塞入一些属性，标明此时这个消息还是半消息，然后发送至<br>Broker，然后执行本地事务，然后将本地事务的执行状态发送给 Broker</p>
+<p>整体流程如下：<br><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/2.jpg" alt="1"></p>
+<p>分析一下源码：<br><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/3.jpg" alt="1"><br>流程也就是我们上面分析的，将消息塞入一些属性，标明此时这个消息还是半消息，然后发送至<br>Broker，然后执行本地事务，然后将本地事务的执行状态发送给 Broker</p>
 <p>Broker如何处理：</p>
-<p>在 Broker 的 SendMessageProcessor#sendMessage 中会处理这个半消息请求， sendMessage 中查到接受来的消息的属性里面MessageConst.PROPERTY_TRANSACTION_PREPARED 是 true ，那么可以得知这个消息是事务消息，然后再判断一下这条消息是否超过最大消费次数，是否要延迟，Broker 是否接受事务消息等操作后，将这条消息真正的 topic 和队列存入属性中，然后重置消息的 topic 为 RMQ_SYS_TRANS_HALF_TOPIC ，并且队列是 0 的队列中，使得消费者无法读取这个消息。<br><img src="/4.jpg" alt="1"></p>
+<p>在 Broker 的 SendMessageProcessor#sendMessage 中会处理这个半消息请求， sendMessage 中查到接受来的消息的属性里面MessageConst.PROPERTY_TRANSACTION_PREPARED 是 true ，那么可以得知这个消息是事务消息，然后再判断一下这条消息是否超过最大消费次数，是否要延迟，Broker 是否接受事务消息等操作后，将这条消息真正的 topic 和队列存入属性中，然后重置消息的 topic 为 RMQ_SYS_TRANS_HALF_TOPIC ，并且队列是 0 的队列中，使得消费者无法读取这个消息。<br><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/4.jpg" alt="1"></p>
 <p>其实延时消息也是这么实现的，最终将换了皮的消息入盘</p>
-<p>Broker 处理提交或者回滚消息的处理方法是 EndTransactionProcessor#processRequest<br><img src="/5.jpg" alt="1"></p>
+<p>Broker 处理提交或者回滚消息的处理方法是 EndTransactionProcessor#processRequest<br><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/5.jpg" alt="1"></p>
 <p>可以看到，如果是提交事务就是把皮再换回来写入真正的topic所属的队列中，供消费者消费，如果是回滚则是将半消息记录到一个 half_op 主题下，到时候后台服务扫描半消息的时候就依据其来判断这个消息已经处理过了。</p>
 <p>那个后台服务就是 TransactionalMessageCheckService 服务，它会定时的扫描半消息队列，去请<br>求反查接口看看事务成功了没，具体执行的就是 TransactionalMessageServiceImpl#check 方法</p>
 <p>首先取半消息 topic 即 RMQ_SYS_TRANS_HALF_TOPIC 下的所有队列，如果还记得上面内容的话，就知道半消息写入的队列是 id 是 0 的这个队列，然后取出这个队列对应的 half_op 主题下的队列，即RMQ_SYS_TRANS_OP_HALF_TOPIC 主题下的队列。</p>
@@ -108,7 +108,7 @@
 <p>首先 RocketMQ 的设计就是顺序追加写入，所以说不会更改已经入盘的消息，那事务消息又需要更新反查的次数，超过一定反查失败就判定事务回滚。</p>
 <p>因此每一次要反查的时候就将以前的半消息再入盘一次，并且往前推进消费进度。而 half_op 又会记录每一次反查的结果，不论是提交还是回滚都会记录，因此下一次还循环到处理此半消息的时候，可以从half_op 得知此事务已经结束了，因此就被过滤掉不需要处理了。</p>
 <p>如果得到的反查的结果是 UNKNOW，那 half_op 中也不会记录此结果，因此还能再次反查，并且更新反查次数。</p>
-<p>Broker处理流程：<br><img src="/6.jpg" alt="1"></p>
+<p>Broker处理流程：<br><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/6.jpg" alt="1"></p>
 <h3 id="Kafka事务消息"><a href="#Kafka事务消息" class="headerlink" title="Kafka事务消息"></a>Kafka事务消息</h3><p>Kafka 的事务消息和 RocketMQ 的事务消息又不一样了，RocketMQ 解决的是本地事务的执行和发消息这两个动作满足事务的约束。</p>
 <p>而 Kafka 事务消息则是用在一次事务中需要发送多个消息的情况，保证多个消息之间的事务约束，即多条消息要么都发送成功，要么都发送失败</p>
 <p>Kafka 的事务基本上是配合其幂等机制来实现 Exactly Once 语义的，所以说 Kafka 的事务消息不是我们想的那种事务消息，RocketMQ 的才是。</p>
@@ -116,14 +116,14 @@
 <p>所以说 Kafka 实现的是在特定场景下的恰好一次，不是我们所想的利用 Kafka 来发送消息，那么这条消息只会恰巧被消费一次</p>
 <p>Kafka 的事务有事务协调者角色，事务协调者其实就是 Broker 的一部分。<br>在开始事务的时候，生产者会向事务协调者发起请求表示事务开启，事务协调者会将这个消息记录到特殊的日志-事务日志中，然后生产者再发送真正想要发送的消息，这里 Kafka 和 RocketMQ 处理不一样，Kafka 会像对待正常消息一样处理这些事务消息，由消费端来过滤这个消息。</p>
 <p>然后发送完毕之后生产者会向事务协调者发送提交或者回滚请求，由事务协调者来进行两阶段提交，如果是提交那么会先执行预提交，即把事务的状态置为预提交然后写入事务日志，然后再向所有事务有关的分区写入一条类似事务结束的消息，这样消费端消费到这个消息的时候就知道事务好了，可以把消息放出来了。</p>
-<p><img src="/7.jpg" alt="1"></p>
+<p><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/7.jpg" alt="1"></p>
 <h3 id="比-RocketMQ-更好的事务消息实现"><a href="#比-RocketMQ-更好的事务消息实现" class="headerlink" title="比 RocketMQ 更好的事务消息实现"></a>比 RocketMQ 更好的事务消息实现</h3><p>在 RocketMQ 中，事务消息的实现方案是先发半消息（半消息对消费者不可见），待半消息发送成功之后，才能执行本地事务，等本地事务执行成功之后，再向 Broker 发送请求将半消息转成正常消息，这样消费者就可以消费此消息。</p>
 <p>这种顺序等于先得成功写入 mq，然后再写入数据库，这样的模式会出现一个问题：即 mq 集群挂了，事务就无法继续进行了，等于整个应用无法正常执行了</p>
 <h4 id="本地消息事务表"><a href="#本地消息事务表" class="headerlink" title="本地消息事务表"></a>本地消息事务表</h4><p>先看一下本地消息事务表的原理</p>
 <p>本地消息就是利用了关系型数据库的事务能力，会在数据库中存放一张本地事务消息表，在进行本地事务操作中加入了本地消息表的插入，即将业务的执行和将消息放入到消息表中的操作放在同一个事务中提交。</p>
 <p>这样本地事务执行成功的话，消息肯定也插入成功，然后再调用其他服务，如果其他服务调用成功就修改这条本地消息的状态。</p>
 <p>如果失败也不要紧，会有一个后台线程扫描，发现这些状态的消息，会一直调用相应的服务，一般会设置重试的次数，如果一直不行则特殊记录，待人工介入处理</p>
-<p><img src="/8.jpg" alt="1"></p>
+<p><img src="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/8.jpg" alt="1"></p>
 <h4 id="qmq消息事务"><a href="#qmq消息事务" class="headerlink" title="qmq消息事务"></a>qmq消息事务</h4><p>qmq的核心思想就是本地事务表</p>
 <p>利用关系型数据库的事务能力，将业务的写入和消息表的写入融在一个事务中，这样业务成功则消息表肯定写入成功。</p>
 <p>然后在事务提交之后，立刻发送事务消息，如果发送成功，则删除本地消息表中的记录</p>
@@ -135,14 +135,14 @@
             <div class="article-footer">
                 <div class="suffix-box">
     <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
     </div>
     <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
         <span class="suffix-box-title">文章出处：</span><a href="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/" target="_blank">消息队列的事务消息</a>
         <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
         <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
         <br>
@@ -212,7 +212,7 @@
                 <div class="introduce-info"> 
                     <div class="introduce-user">
                         
-                            <a href="https://worstone.cn" target="_blank"><span>Live For Code</span></a>
+                            <a href="https://zypuu.github.io" target="_blank"><span>ZYP</span></a>
                         
                     </div>
                 </div> 
@@ -228,11 +228,7 @@
                     
                         <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
-                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
-                    
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
-                    
-                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
                     
                         <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
                     
@@ -247,15 +243,13 @@
                     <div class="image-box"></div>
                 </div>
                 
-                    <a name="知乎" href="https://zhihu.com/people/worstone-29" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
+                    <a name="知乎" href="https://www.zhihu.com/people/dai-dao-xiao-huang-ji" class="" target="_blank" data=""><span class="iconfont icon-zhihu"></span></a>
                 
-                    <a name="微博" href="https://weibo.com/u/5749847477" class="" target="_blank" data=""><span class="iconfont icon-weibo"></span></a>
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.jpg"><span class="iconfont icon-qq"></span></a>
                 
-                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/weixin.jpg"><span class="iconfont icon-wechat"></span></a>
                 
-                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
-                
-                    <a name="GitHub" href="https://github.com/first19326" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                    <a name="GitHub" href="https://github.com/zypuu" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
                 
             </div> 
         </nav>
@@ -363,15 +357,15 @@
 </div>
     <script>
     window.config = {
-        GitHubUserName     : "first19326",
-        GitHubRepositories : "Hexo-LiveForCode",
+        GitHubUserName     : "zypuu",
+        GitHubRepositories : "zyp的个人博客",
 
-        User             : "Live For Code",
+        User             : "ZYP",
         UserAvatar       : "/image/sidebar/avatar.jpg",
-        WebsiteStartDate : "2020-01-01",
-        Home             : "https://worstone.cn",
+        WebsiteStartDate : "2018-01-13",
+        Home             : "https://zypuu.github.io",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -436,10 +430,8 @@
             
                 "/image/header/home.jpg",
             
-                "/image/header/home.jpeg",
-            
         ],
-        HomeBannerText  : "",
+        HomeBannerText  : " Life has a funny way of working out, just when you start to believe it never will.",
 
         ArticleHeaderImage : [
             
@@ -515,30 +507,12 @@
                 },
             
                 {
-                    name   : "赞赏",
-                    icon   : "icon-heart-fill",
-                    href   : "/donate",
-                    type   : "donate",
-                    class  : "",
-                    target : "_self"
-                },
-            
-                {
                     name   : "关于",
                     icon   : "icon-about-fill",
                     href   : "/about",
                     type   : "about",
                     class  : "",
                     target : "_self"
-                },
-            
-                {
-                    name   : "订阅",
-                    icon   : "icon-rss",
-                    href   : "/atom.xml",
-                    type   : "",
-                    class  : "",
-                    target : "_blank"
                 },
             
                 {
@@ -575,16 +549,7 @@
                     {
                         name   : "知乎",
                         icon   : "icon-zhihu",
-                        href   : "https://zhihu.com/people/worstone-29",
-                        class  : "",
-                        target : "_blank",
-                        image  : ""
-                    },
-                
-                    {
-                        name   : "微博",
-                        icon   : "icon-weibo",
-                        href   : "https://weibo.com/u/5749847477",
+                        href   : "https://www.zhihu.com/people/dai-dao-xiao-huang-ji",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -596,22 +561,22 @@
                         href   : "javascript:;",
                         class  : "image",
                         target : "_self",
-                        image  : "/image/sidebar/qq.png"
+                        image  : "/image/sidebar/qq.jpg"
                     },
                 
                     {
                         name   : "微信",
                         icon   : "icon-wechat",
                         href   : "javascript:;",
-                        class  : "",
+                        class  : "image",
                         target : "_self",
-                        image  : ""
+                        image  : "/image/sidebar/weixin.jpg"
                     },
                 
                     {
                         name   : "GitHub",
                         icon   : "icon-github",
-                        href   : "https://github.com/first19326",
+                        href   : "https://github.com/zypuu",
                         class  : "",
                         target : "_blank",
                         image  : ""
@@ -669,9 +634,9 @@
         },
 
         Search : {
-            applicationID : "010C3EANT8",
-            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
-            indexName     : "Notes",
+            applicationID : "OHIM1HOSW9",
+            apiKey        : "c7106ccb9558345987ab72136d36caed",
+            indexName     : "zypuu",
             hits          : {
                 page : 10
             },
@@ -844,7 +809,7 @@
         },
 
         Suffix : {
-            about : "简单地活着, 肆意又精彩."
+            about : "Give it a try, whispered the heart."
         },
             
         Theme : {
@@ -854,5 +819,5 @@
     };
 </script>
     <script type="text/javascript" src="/js/index.js"></script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>
