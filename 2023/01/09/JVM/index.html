@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            JVM
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -33,15 +33,40 @@
 </head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">JVM</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-01-09
+                        </span>
+                        
+                            
+                                <span id="/2023/01/09/JVM/" class="leancloud_visitors" data-flag-title="JVM">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/01/09/JVM/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">Java</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">jvm</span>
+                        
+                    
                 </div>
             
         </div>
@@ -50,135 +75,104 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="什么是JVM"><a href="#什么是JVM" class="headerlink" title="什么是JVM"></a>什么是JVM</h2><p>JVM 是可运行 Java 代码的假想计算机 ，包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收，堆 和 一个存储方法域。JVM 是运行在操作系统之上的，它与硬件没有直接的交互</p>
+<h2 id="运行过程"><a href="#运行过程" class="headerlink" title="运行过程"></a>运行过程</h2><p>Java 源文件，通过编译器，能够生产相应的.Class 文件，也就是字节码文件，字节码文件又通过 Java 虚拟机中的解释器，编译成特定机器上的机器码</p>
+<p>Java 源文件—-&gt;编译器—-&gt;字节码文件</p>
+<p>字节码文件—-&gt;JVM—-&gt;机器码</p>
+<p>每一个平台的解释器是不同的，但虚拟机是相同的，所以java能够跨平台运行，当一个程序从开始运行，这时虚拟机就开始实例化了，多个程序启动就会存在多个虚拟机实例。程序退出或者关闭，则虚拟机实例消亡，多个虚拟机实例之间数据不能共享</p>
+<h3 id="执行线程"><a href="#执行线程" class="headerlink" title="执行线程"></a>执行线程</h3><p>Hotspot JVM 中的 Java 线程与原生操作系统线程有直接的映射关系。当线程本地存储、缓冲区分配、同步对象、栈、程序计数器等准备好以后，就会创建一个操作系统原生线程。</p>
+<p>Java 线程结束，原生线程随之被回收。操作系统负责调度所有线程，并把它们分配到任何可用的 CPU 上。当原生线程初始化完毕，就会调用 Java 线程的 run() 方法。当线程结束时，会释放原生线程和 Java 线程的所有资源</p>
+<h3 id="jvm系统线程"><a href="#jvm系统线程" class="headerlink" title="jvm系统线程"></a>jvm系统线程</h3><p><img src="/2023/01/09/JVM/1.jpg" alt="1"></p>
+<h2 id="内存区域"><a href="#内存区域" class="headerlink" title="内存区域"></a>内存区域</h2><p><img src="/2023/01/09/JVM/2.jpg" alt="1"></p>
+<p><img src="/2023/01/09/JVM/3.jpg" alt="1"></p>
+<h3 id="线程私有"><a href="#线程私有" class="headerlink" title="线程私有"></a>线程私有</h3><p>线程私有数据区域生命周期与线程相同, 依赖用户线程的启动/结束 而 创建/销毁(在 Hotspot JVM 内, 每个线程都与操作系统的本地线程直接映射, 因此这部分内存区域的存/否跟随本地线程的生/死对应)</p>
+<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>一块较小的内存空间, 是当前线程所执行的字节码的行号指示器，每条线程都要有一个独立的<br>程序计数器，这类内存也称为“线程私有”的内存，唯一没有outofMemory的区域</p>
+<h4 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h4><p>是描述java方法执行的内存模型，每个方法在执行的同时都会创建一个栈帧（Stack Frame）<br>用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成<br>的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程</p>
+<p>栈帧是用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接、 方法返回值和异常分派。栈帧随着方法调用而创建，随着方法结束而销毁——无论方法是正常完成还是异常完成（抛出了在方法内未被捕获的异常）都算作方法结束</p>
+<h4 id="本地方法区"><a href="#本地方法区" class="headerlink" title="本地方法区"></a>本地方法区</h4><p>本地方法区和 Java Stack 作用类似, 区别是虚拟机栈为执行 Java 方法服务, 而本地方法栈则为<br>Native 方法服务, 如果一个 VM 实现使用 C-linkage 模型来支持 Native 调用, 那么该栈将会是一个<br>C 栈，但 HotSpot JVM 直接就把本地方法栈和虚拟机栈合二为一</p>
+<h3 id="线程共享"><a href="#线程共享" class="headerlink" title="线程共享"></a>线程共享</h3><p>线程共享区域随虚拟机的启动/关闭而创建/销毁</p>
+<h4 id="堆-heap"><a href="#堆-heap" class="headerlink" title="堆 heap"></a>堆 heap</h4><p>是被线程共享的一块内存区域，创建的对象和数组都保存在 Java 堆内存中，也是垃圾收集器进行<br>垃圾收集的最重要的内存区域。由于现代 VM 采用分代收集算法, 因此 Java 堆从 GC 的角度还可以<br>细分为: 新生代(Eden 区、From Survivor 区和 To Survivor 区)和老年代</p>
+<h4 id="方法区（永久代）"><a href="#方法区（永久代）" class="headerlink" title="方法区（永久代）"></a>方法区（永久代）</h4><p>用于存储被 JVM 加载的类信息、常量、静态变量、即时编译器编译后的代码等数据.<br> HotSpot VM把GC分代收集扩展至方法区, 即使用Java堆的永久代来实现方法区, 这样 HotSpot 的垃圾收集器就可以像管理 Java 堆一样管理这部分内存, 而不必为方法区开发专门的内存管理器(永久带的内存回收的主要目标是针对常量池的回收和类型的卸载, 因此收益一般很小)</p>
+<p>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class 文件中除了有类的版<br>本、字段、方法、接口等描述等信息外，还有一项信息是常量池Constant Pool Table，用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中</p>
+<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>直接内存并不是 JVM 运行时数据区的一部分, 但也会被频繁的使用。 在 JDK 1.4 引入的 NIO 提供了基于 Channel 与 Buffer 的 IO 方式, 它可以使用 Native 函数库直接分配堆外内存, 然后使用<br>DirectByteBuffer 对象作为这块内存的引用进行操作(详见: Java I/O 扩展), 这样就避免了在 Java堆和 Native 堆中来回复制数据, 因此在一些场景中可以显著提高性能</p>
+<p>Native方法：在 Java 代码中使用本地语言（如 C、C++）编写的方法。它允许 Java 程序直接调用和使用本地语言编写的函数库和操作系统功能</p>
+<h2 id="运行时内存"><a href="#运行时内存" class="headerlink" title="运行时内存"></a>运行时内存</h2><p>Java 堆从 GC 的角度还可以细分为: 新生代(Eden 区、From Survivor 区和 To Survivor 区)和老年代</p>
+<p><img src="/2023/01/09/JVM/4.jpg" alt="1"></p>
+<h3 id="新生代"><a href="#新生代" class="headerlink" title="新生代"></a>新生代</h3><p>是用来存放新生的对象。一般占据堆的 1/3 空间。由于频繁创建对象，所以新生代会频繁触发<br>MinorGC 进行垃圾回收</p>
+<h4 id="Eden区"><a href="#Eden区" class="headerlink" title="Eden区"></a>Eden区</h4><p>Java 新对象的出生地（如果新创建的对象占用内存很大，则直接分配到老年代）。当 Eden 区内存不够的时候就会触发 MinorGC，对新生代区进行一次垃圾回收</p>
+<h4 id="ServivorFrom"><a href="#ServivorFrom" class="headerlink" title="ServivorFrom"></a>ServivorFrom</h4><p>上一次 GC 的幸存者，作为这一次 GC 的被扫描者。</p>
+<h4 id="ServivorTo"><a href="#ServivorTo" class="headerlink" title="ServivorTo"></a>ServivorTo</h4><p>保留了一次 MinorGC 过程中的幸存者</p>
+<h4 id="MinorGC-的过程（复制-gt-清空-gt-互换）"><a href="#MinorGC-的过程（复制-gt-清空-gt-互换）" class="headerlink" title="MinorGC 的过程（复制-&gt;清空-&gt;互换）"></a>MinorGC 的过程（复制-&gt;清空-&gt;互换）</h4><p>1、把 Eden 和 ServivorFrom 区域中存活的对象复制到 ServicorTo 区域（如果有对象的年<br>龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果 ServicorTo 不<br>够位置了就放到老年区）<br>2、清空 Eden 和 ServicorFrom 中的对象<br>3、ServicorTo 和 ServicorFrom 互换，原 ServicorTo 成为下一次 GC 时的 ServicorFrom区</p>
+<h3 id="老年代"><a href="#老年代" class="headerlink" title="老年代"></a>老年代</h3><p>主要存放应用程序中生命周期长的内存对象，老年代的对象比较稳定，所以 MajorGC 不会频繁执行</p>
+<p>在进行 MajorGC 前一般都先进行了一次 MinorGC，使得有新生代的对象晋身入老年代，导致空间不够用时才触发。当无法找到足够大的连续空间分配给新创建的较大对象时也会提前触发一次 MajorGC 进行垃圾回收腾出空间</p>
+<h4 id="MajorGC的过程-（标记清除算法）"><a href="#MajorGC的过程-（标记清除算法）" class="headerlink" title="MajorGC的过程 （标记清除算法）"></a>MajorGC的过程 （标记清除算法）</h4><p>首先扫描一次所有老年代，标记出存活的对象，然后回收没有标记的对象。MajorGC 的耗时比较长，因为要扫描再回收。MajorGC 会产生内存碎片，为了减少内存损耗，我们一般需要进行合并或者标记出来方便下次直接分配。当老年代也满了装不下的时候，就会抛出 OOM（Out of Memory）异常</p>
+<h3 id="永久代"><a href="#永久代" class="headerlink" title="永久代"></a>永久代</h3><p>指内存的永久保存区域，主要存放 Class 和 Meta（元数据）的信息,Class 在被加载的时候被放入永久区域，它和和存放实例的区域不同,GC 不会在主程序运行期对永久区域进行清理。所以这也导致了永久代的区域会随着加载的 Class 的增多而胀满，最终抛出 OOM 异常。</p>
+<p>java8，永久代被移除，被一个称为“元数据区”（元空间）的区域所取代，元空间并不在虚拟机中，而是使用本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。类的元数据放入 native<br>memory, 字符串池和类的静态变量放入 java 堆中，这样可以加载多少类的元数据就不再由MaxPermSize 控制, 而由系统的实际可用空间来控制</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>ZYP
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/01/09/JVM/" target="_blank">JVM</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
                         
-                            目前共计 136 篇日志，继续加油！
+                            <a href="/category/Java/">Java</a>
                         
-                    </span>
-                    
-                    
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
                         
-                            <div class="archive-title">
-                                <h2 class="archive-year">2020</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/"><span>GO的基本数据结构：map</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-23</span>
-                                </div>
-                            </div>
-                        </div>
+                            <a href="/tag/jvm/">jvm</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/"><span>两个有序数组的中位数</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-22</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/" title="发布于 2023-03-10 06:26">消息队列的推拉模式</a>
+                        <br>
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/"><span>GO的基本数据结构：int，字符串，结构体，指针</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-22</span>
-                                </div>
-                            </div>
-                        </div>
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/21/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aslice/"><span>GO基本数据结构：slice</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-21</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/"><span>GO的make和new的区别</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-21</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"><span>GO环境安装</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-19</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/18/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/"><span>反转链表</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-18</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/18/%E9%80%92%E5%BD%92/"><span>递归</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-18</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/16/N%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/"><span>N叉树的前序遍历</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-16</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2020/12/15/%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%8C%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/"><span>树，二叉树，二叉搜索树专题</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">12-15</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/01/06/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/" class="next-prefix">» </a> 下一篇：    <a href="/2023/01/06/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/" title="发布于 2023-01-06 05:10">消息队列的消息处理</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archive/page/7/">上一页</a><a class="page-number" href="/archive/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archive/page/6/">6</a><a class="page-number" href="/archive/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/archive/page/9/">9</a><a class="page-number" href="/archive/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/archive/page/14/">14</a><a class="extend next" rel="next" href="/archive/page/9/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -216,7 +210,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
                     
