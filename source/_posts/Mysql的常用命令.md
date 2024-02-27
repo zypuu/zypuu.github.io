@@ -1,7 +1,7 @@
 ---
 title: Mysql的常用命令
 date: 2018-04-03 19:26:00
-tags: 数据库,Mysql
+tags: Mysql
 categories: 数据库
 comments: true
 description: mysql数据库的引擎区别，以及mysql的一些常用命令总结。

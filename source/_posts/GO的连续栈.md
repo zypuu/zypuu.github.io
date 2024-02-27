@@ -1,7 +1,7 @@
 ---
 title: GO的连续栈
 date: 2020-12-28 10:38:20
-tags: GO
+tags: 内存
 categories: GO
 comments: true
 description: 解析go语言，go的连续栈，go协程，栈空间不足的处理，自动增长

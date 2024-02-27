@@ -1,8 +1,8 @@
 ---
 title: 关于Celery的异步服务使用
 date: 2018-05-26 09:49:10
-tags: web,Celery
-categories: web开发
+tags: Celery
+categories: web
 comments: true
 description: 在web开发中使用Celery异步服务优化需要等待时长的耗时任务
 ---

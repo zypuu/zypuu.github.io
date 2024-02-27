@@ -2,7 +2,7 @@
 title: websocket 心跳机制处理
 date: 2019-07-01 13:10:50
 tags: websocket
-categories: Websocket
+categories: web
 comments: true
 description: websocket协议
 ---

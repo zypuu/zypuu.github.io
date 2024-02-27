@@ -1,7 +1,7 @@
 ---
 title: 关于Mysql的sql注入问题
 date: 2018-06-15 15:54:42
-tags: 数据库,Mysql,web安全
+tags: Mysql
 categories: 数据库
 comments: true
 description: Python中mysql的sql注入问题，以及如何预防sql注入。
@@ -59,5 +59,4 @@ if(e) {
 }
 ```
 前端验证只能起到一定作用，还需要后台参数化阻止SQL注入。
-
 

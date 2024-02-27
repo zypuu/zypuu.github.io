@@ -1,8 +1,8 @@
 ---
 title: 配置缓存
 date: 2018-04-20 16:19:05
-tags: web
-categories: web开发
+tags: 缓存
+categories: web
 comments: true
 description: 对于数据使用频率较高，切不经常更新的可以将数据放到缓存里，减少与mysql数据库的交互次数，Django、Flask配置缓存
 ---

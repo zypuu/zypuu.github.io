@@ -1,8 +1,8 @@
 ---
 title: RestFul设计规则
 date: 2018-06-02 09:49:38
-tags: web,Django
-categories: web开发
+tags: 设计规范
+categories: web
 comments: true
 description: web开发接口设计规则
 ---

@@ -2,7 +2,7 @@
 title: websocket 服务项目搭建
 date: 2019-07-10 14:20:37
 tags: websocket
-categories: Websocket
+categories: web
 comments: true
 description: websocket项目
 ---
@@ -22,9 +22,9 @@ description: websocket项目
 
 #### websocket服务
  WebSocket是HTML5开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。在WebSocket API中，浏览器和服务器只需要做一个握手的动作，然后，浏览器和服务器之间就形成了一条快速通道。两者之间就直接可以数据互相传送。详情看
- 
+
  这里选择使用websocket
- 
+
 
 ### 开发环境
 Python + tornado + vue + websocket
@@ -276,5 +276,4 @@ class MessageDelegate(object):
         """
         socket.write_message(message)
 ```
-
 

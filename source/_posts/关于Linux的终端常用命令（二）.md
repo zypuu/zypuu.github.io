@@ -2,8 +2,8 @@
 title: 关于Linux的常用基本命令（二）
 copyright: true
 date: 2018-01-24 17:39:04
-tags: Linux命令
-categories: Linux
+tags: Linux
+categories: 环境运维
 comments: true
 description: 关于linux系统ubantu终端的一些常用命令整理
 ---

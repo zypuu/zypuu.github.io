@@ -2,7 +2,7 @@
 title: GO环境安装
 date: 2020-12-19 13:09:22
 tags: GO
-categories: 环境安装
+categories: GO
 comments: true
 description: go服务本地开发环境安装，及相关环境参数，go mod相关
 ---

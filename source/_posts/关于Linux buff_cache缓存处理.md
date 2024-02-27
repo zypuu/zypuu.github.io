@@ -2,8 +2,8 @@
 title: 关于Linux buff/cache缓存处理
 copyright: true
 date: 2020-09-12 15:35:15
-tags: Linux命令
-categories: Linux
+tags: Linux
+categories: 环境运维
 comments: true
 description: linux相关基础，linux开发环境下开发使用
 ---

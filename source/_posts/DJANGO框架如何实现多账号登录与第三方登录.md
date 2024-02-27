@@ -1,8 +1,8 @@
 ---
 title: DJANGO框架如何实现用户多认证方式登录与第三方授权登录
 date: 2018-06-11 19:38:20
-tags: web,Django
-categories: web开发
+tags: Django
+categories: web
 comments: true
 description: 登录时单用户支持多种方式登录，添加第三方授权登录，腾讯qq为例
 ---

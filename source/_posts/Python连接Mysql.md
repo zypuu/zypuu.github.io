@@ -1,7 +1,7 @@
 ---
 title: Python连接Mysql
 date: 2018-05-07 15:55:17
-tags: 数据库,Mysql
+tags: Mysql
 categories: 数据库
 comments: true
 description: 通过python操作mysql

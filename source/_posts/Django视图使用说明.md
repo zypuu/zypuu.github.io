@@ -1,8 +1,8 @@
 ---
 title: Django视图使用说明
 date: 2018-04-25 19:15:15
-tags: web,Django
-categories: web开发
+tags: Django
+categories: web
 comments: true
 description: Django视图类的知识梳理
 ---
@@ -103,7 +103,7 @@ get_object(self) 返回详情视图所需的模型类数据对象，默认使用
  更新视图扩展类，用于修改数据库信息，局部更新（partial_update方法），成功返回200
  5. DestroyModelMixin
  删除视图扩展类，用于删除数据库信息（一般都是逻辑删除），成功返回204
- 
+
 
 ## 可用子类（组合类）
 
@@ -148,7 +148,7 @@ get_object(self) 返回详情视图所需的模型类数据对象，默认使用
 提供 get、put、patch、delete方法
 
 继承自：GenericAPIView、RetrieveModelMixin、UpdateModelMixin、DestoryModelMixin
- 
+
 
 ## 视图集ViewSet
 相对于前面的视图类，进一步封装

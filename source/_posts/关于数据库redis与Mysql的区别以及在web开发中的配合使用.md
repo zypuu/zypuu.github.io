@@ -1,7 +1,7 @@
 ---
 title: 关于数据库redis与Mysql的区别以及在web开发中的配合使用
 date: 2018-08-18 21:51:28
-tags: 数据库,redis,mysql
+tags: redis
 categories: 数据库
 comments: true
 description: redis与mysql的优缺点分析，以及在web中的配合使用

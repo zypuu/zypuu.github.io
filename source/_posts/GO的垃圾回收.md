@@ -1,7 +1,7 @@
 ---
 title: GO的垃圾回收
 date: 2021-01-12 18:07:22
-tags: GO
+tags: 垃圾回收
 categories: GO
 comments: true
 description: 解析go语言，go的垃圾回收

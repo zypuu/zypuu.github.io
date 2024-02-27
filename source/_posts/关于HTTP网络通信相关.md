@@ -1,8 +1,8 @@
 ---
 title: 关于HTTP网络通信相关
 date: 2021-03-29 15:57:37
-tags: web安全
-categories: web开发
+tags: HTTP
+categories: 网络
 comments: true
 description: 关于http的通信协议
 ---

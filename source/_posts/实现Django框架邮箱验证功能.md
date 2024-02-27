@@ -1,8 +1,8 @@
 ---
 title: 实现Django框架邮箱验证功能
 date: 2018-05-24 17:46:10
-tags: web,Django
-categories: web开发
+tags: Django
+categories: web
 comments: true
 description: 填写用户邮箱，保存，然后发送验证邮件，用户验证邮箱，跳转回页面
 ---

@@ -2,7 +2,7 @@
 title: websocket分布式共享解决方案
 date: 2019-07-14 17:43:21
 tags: websocket
-categories: Websocket
+categories: web
 comments: true
 description: websocket项目
 ---

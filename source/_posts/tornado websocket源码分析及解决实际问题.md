@@ -2,7 +2,7 @@
 title: tornado websocket源码分析及解决实际问题
 date: 2019-06-30 16:40:00
 tags: websocket
-categories: Websocket
+categories: web
 comments: true
 description: tornado websocket的应用
 ---

@@ -2,7 +2,7 @@
 title: websocket状态码
 date: 2019-06-23 10:27:30
 tags: websocket
-categories: Websocket
+categories: web
 comments: true
 description: websocket协议
 ---

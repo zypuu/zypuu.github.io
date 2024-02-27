@@ -2,8 +2,8 @@
 layout: “gnew
 title: 关于web开发用户注册功能的图形验证码与短信验证码
 date: 2018-06-18 19:15:15
-tags: web,验证码
-categories: web开发
+tags: 验证码
+categories: web
 comments: true
 description: 基于Flask框架与Django框架的web开发过程中，用户注册功能如何实现图形验证码与短信验证码功能
 ---

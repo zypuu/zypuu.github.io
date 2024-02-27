@@ -1,8 +1,8 @@
 ---
 title: Cors跨域技术应用
 date: 2018-04-22 20:21:03
-tags: cors跨域
-categories: web开发
+tags: 跨域
+categories: web
 comments: true
 description: web开发中，Django框架，如何实现cors跨域技术
 ---

@@ -1,8 +1,8 @@
 ---
 title: VMware的.vmdk文件只赠不减的处理方法
 date: 2019-11-14 16:28:22
-tags: VMware
-categories: 环境安装
+tags: VM
+categories: 环境运维
 comments: true
 description: 虚拟机
 ---

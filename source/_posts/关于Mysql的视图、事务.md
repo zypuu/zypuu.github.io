@@ -1,7 +1,7 @@
 ---
 title: 关于Mysql的视图与事务
 date: 2018-04-30 15:54:03
-tags: 数据库,Mysql
+tags: Mysql
 categories: 数据库
 comments: true
 description: mysql数据库的视图，事务介绍，使用

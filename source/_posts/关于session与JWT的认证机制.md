@@ -1,8 +1,8 @@
 ---
 title: 关于session与JWT的认证机制
 date: 2018-03-21 14:45:42
-tags: web,状态保持
-categories: web开发
+tags: session
+categories: web
 comments: true
 description: http状态保持，cookies的作用，session与jwt的认证机制
 ---
@@ -77,13 +77,13 @@ cookie说到建议不要保存用户的敏感信息，很容易会被破解，�
 #### 表单隐藏字段技术
 
 另一种技术叫做表单隐藏字段。就是服务器会自动修改表单，添加一个隐藏字段，以便在表单提交时能够把session id传递回服务器。比如下面的表单： 
-   
+
     <form name="testform" action="/xxx"> 
     <input type="text"> 
     </form> 
-
+    
     在被传递给客户端之前将被改写成： 
-
+    
     <form name="testform" action="/xxx"> 
     <input type="hidden" name="jsessionid" value="ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764"> 
     <input type="text"> 
@@ -151,18 +151,18 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 
  1. 标准中注册的声明：
  iss: jwt签发者
-sub: jwt所面向的用户
-aud: 接收jwt的一方
-exp: jwt的过期时间，这个过期时间必须要大于签发时间
-nbf: 定义在什么时间之前，该jwt都是不可用的.
-iat: jwt的签发时间
-jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
+ sub: jwt所面向的用户
+ aud: 接收jwt的一方
+ exp: jwt的过期时间，这个过期时间必须要大于签发时间
+ nbf: 定义在什么时间之前，该jwt都是不可用的.
+ iat: jwt的签发时间
+ jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
  2. 公共的声明：
  添加用户信息，不建议添加敏感信息，因为base64算法是对称算法，可解密
  3. 私有的声明：
  私有声明是提供者和消费者所共同定义的声明。
- 定义一个payload
- 
+  定义一个payload
+
 
 ``` javascript
 {

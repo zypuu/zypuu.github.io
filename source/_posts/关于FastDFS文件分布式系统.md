@@ -1,8 +1,8 @@
 ---
 title: 关于FastDFS文件分布式系统
 date: 2018-07-16 19:15:15
-tags: 文件存储
-categories: 环境安装
+tags: FastDFS
+categories: 环境运维
 comments: true
 description: FastDFS简介，使用FastDFS进行文件存储
 ---

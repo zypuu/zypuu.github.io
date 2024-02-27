@@ -2,8 +2,8 @@
 title: 关于Linux终端的常用命令（一）
 copyright: true
 date: 2018-01-15 19:15:15
-tags: Linux命令
-categories: Linux
+tags: Linux
+categories: 环境运维
 comments: true
 description: 关于linux系统ubantu终端的一些常用命令整理
 ---
@@ -23,7 +23,7 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
 ### Linux终端命令基本使用
 ----------
 <div>终端命令格式：Command 【-options（选项，可以配合使用）】【parameter（对象）】</div>
- 
+
 
 #### 1. 查看文件信息（在当前路径下输入即可查看当前路径文件）
 
@@ -150,5 +150,4 @@ gedit 【文件名】# 写入 例 ： gedit 1.txt
 ``` javascript
 more # 分屏显示文件内容，一般接到其他命令后，空格切换屏幕
 ```
-
 

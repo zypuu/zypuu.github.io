@@ -1,8 +1,8 @@
 ---
 title: RabbitMQ与RedisMQ
 date: 2020-09-18 14:10:00
-tags: 中间件
-categories: web开发
+tags: 消息队列
+categories: 消息队列
 comments: true
 description: RabbitMQ与redisMq的比较
 ---
@@ -65,11 +65,11 @@ Message 消息 由Properties和Body组成（消息头和消息体）。Propertie
 Exchange 交换机，接收生产者发送的消息，根据路由键转发消息到绑定的队列。
 
 	三种常见的交换机类型：
-
+	
 	1、direct（发布与订阅，完全匹配）
-
+	
 	2、fanout（广播）
-
+	
 	3、topic（主题，规则匹配）
 
 Routing key：路由键。一个路由规则，虚拟机可用它来确定如何路由一个特定消息

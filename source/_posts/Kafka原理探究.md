@@ -1,7 +1,7 @@
 ---
 title: Kafka原理探究
 date: 2023-07-27 8:30:00
-tags: 消息队列
+tags: Kafka
 categories: 消息队列
 comments: true
 description: Kafka源码分析，原理探究，索引，冷热分区，日志读写

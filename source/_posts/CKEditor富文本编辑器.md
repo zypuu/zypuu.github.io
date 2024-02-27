@@ -2,7 +2,7 @@
 title: CKEditor富文本编辑器
 date: 2018-07-02 20:21:03
 tags: 富文本编辑器
-categories: 环境安装
+categories: 环境运维
 comments: true
 description: CKEditor富文本编辑器的配置安装
 ---

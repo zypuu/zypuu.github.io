@@ -1,8 +1,8 @@
 ---
 title: 关于ubuntu18下docker无法启动服务的问题解决
 date: 2018-10-14 10:08:22
-tags: Linux,docker
-categories: 环境安装
+tags: docker
+categories: 环境运维
 comments: true
 description: docker服务启动问题
 ---

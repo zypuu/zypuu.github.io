@@ -1,8 +1,8 @@
 ---
 title: 关于docker的个人理解
 date: 2018-08-01 15:19:59
-tags: 虚拟技术,docker
-categories: 环境安装
+tags: docker
+categories: 环境运维
 comments: true
 description: 理解docker与镜像，如何使用docker来运行程序
 ---
