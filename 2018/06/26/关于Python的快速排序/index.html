@@ -64,7 +64,7 @@
                     
                     
                         
-                            <span class="tag-color">排序</span>
+                            <span class="tag-color">算法</span>
                         
                     
                 </div>
@@ -92,7 +92,6 @@
 <p>这样左右两边区间都只有一个数了，这就标志着排序完成，最后把所有区间合并就得到排序结果：</p>
 <p>2 3 4 5 6</p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(array):</span><br><span class="line">  less = []; greater = []</span><br><span class="line">  <span class="keyword">if</span> len(array) &lt;= <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">  pivot = array.pop()</span><br><span class="line">  <span class="keyword">for</span> x <span class="keyword">in</span> array:</span><br><span class="line">    <span class="keyword">if</span> x &lt;= pivot: less.append(x)</span><br><span class="line">    <span class="keyword">else</span>: greater.append(x)</span><br><span class="line">  <span class="keyword">return</span> quick_sort(less) + [pivot] + quick_sort(greater)</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
 
 
                 
@@ -129,13 +128,13 @@
                     <div class="tag">
                         标签：
                         
-                            <a href="/tag/%E6%8E%92%E5%BA%8F/">排序</a>
+                            <a href="/tag/%E7%AE%97%E6%B3%95/">算法</a>
                         
                     </div>
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" class="prev-prefix">« </a> 上一篇：    <a href="/2018/06/26/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" title="发布于 2018-06-26 08:21">关于Python的冒泡排序</a>
+                        <a href="/2018/07/02/CKEditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/" class="prev-prefix">« </a> 上一篇：    <a href="/2018/07/02/CKEditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/" title="发布于 2018-07-02 08:21">CKEditor富文本编辑器</a>
                         <br>
                     
                     
