@@ -46,13 +46,13 @@
                         </span>
                         
                             
-                                <span id="/2023/01/22/IO多路复用模型/" class="leancloud_visitors" data-flag-title="Java类加载">
+                                <span id="/2023/01/22/Java类加载/" class="leancloud_visitors" data-flag-title="Java类加载">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/01/22/IO多路复用模型/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/01/22/Java类加载/"></span>
                                 </span>
                               
                         
@@ -80,7 +80,7 @@
             <div class="toc"></div>
             <div class="article-body">
                 <h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2><p>JVM 类加载机制分为五个部分：加载，验证，准备，解析，初始化</p>
-<p><img src="/2023/01/22/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B/1.jpg" alt="1"></p>
+<p><img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/1.jpg" alt="1"></p>
 <h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><p>这个阶段会在内存中生成一个代表这个类的 java.lang.Class 对象，作为方法区这个类的各种数据的入口。注意这里不一定非得要从一个 Class 文件获取，这里既可以从 ZIP 包中读取（比如从 jar 包和 war 包中读取），也可以在运行时计算生成（动态代理），也可以由其它文件生成（比如将 JSP 文件转换成对应的 Class 类）</p>
 <h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>这一阶段的主要目的是为了确保 Class 文件的字节流中包含的信息是否符合当前虚拟机的要求，并<br>且不会危害虚拟机自身的安全</p>
 <h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>准备阶段是正式为类变量分配内存并设置类变量的初始值阶段，即在方法区中分配这些变量所使<br>用的内存空间</p>
@@ -107,12 +107,12 @@
 <h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化阶段是类加载最后一个阶段，前面的类加载阶段之后，除了在加载阶段可以自定义类加载器以外，其它操作都由 JVM 主导。到了初始阶段，才开始真正执行类中定义的 Java 程序代码</p>
 <h4 id="类构造器"><a href="#类构造器" class="headerlink" title="类构造器"></a>类构造器</h4><p>初始化阶段是执行类构造器client方法的过程。client方法是由编译器自动收集类中的类变量的赋值操作和静态语句块中的语句合并而成的。虚拟机会保证子client方法执行之前，父类的client方法已经执行完毕，如果一个类中没有对静态变量赋值也没有静态语句块，那么编译器可以不为这个类生成client()方法</p>
 <h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p>设计团队把加载动作放到 JVM 外部实现，以便让应用程序决定如何获取所需的类，</p>
-<p> <img src="/2023/01/22/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B/2.jpg" alt="1"></p>
+<p> <img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/2.jpg" alt="1"></p>
 <h3 id="启动类加载器"><a href="#启动类加载器" class="headerlink" title="启动类加载器"></a>启动类加载器</h3><p>负责加载 JAVA_HOME\lib 目录中的，或通过-Xbootclasspath 参数指定路径中的，且被虚拟机认可（按文件名识别，如 rt.jar）的类</p>
 <h3 id="扩展类加载器"><a href="#扩展类加载器" class="headerlink" title="扩展类加载器"></a>扩展类加载器</h3><p>负责加载 JAVA_HOME\lib\ext 目录中的，或通过 java.ext.dirs 系统变量指定路径中的类库</p>
 <h3 id="应用类加载器"><a href="#应用类加载器" class="headerlink" title="应用类加载器"></a>应用类加载器</h3><p>负责加载用户路径（classpath）上的类库。JVM 通过双亲委派模型进行类的加载，当然我们也可以通过继承 java.lang.ClassLoader实现自定义的类加载器</p>
 <h3 id="双亲委派"><a href="#双亲委派" class="headerlink" title="双亲委派"></a>双亲委派</h3><p>当一个类收到了类加载请求，他首先不会尝试自己去加载这个类，而是把这个请求委派给父类去完成，每一个层次类加载器都是如此，因此所有的加载请求都应该传送到启动类加载其中，只有当父类加载器反馈自己无法完成这个请求的时候（在它的加载路径下没有找到所需加载的Class），子类加载器才会尝试自己去加载。采用双亲委派的一个好处是比如加载位于 rt.jar 包中的类 java.lang.Object，不管是哪个加载器加载这个类，最终都是委托给顶层的启动类加载器进行加载，这样就保证了使用不同的类加载器最终得到的都是同样一个Object 对象</p>
-<p><img src="/2023/01/22/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B/3.jpg" alt="1"></p>
+<p><img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/3.jpg" alt="1"></p>
 
                 
                 <p class="end">__END__</p>
@@ -125,7 +125,7 @@
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2023/01/22/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B/" target="_blank">Java类加载</a>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/" target="_blank">Java类加载</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
@@ -154,7 +154,7 @@
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/01/24/Java%20IONIO/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/01/24/Java%20IONIO/" title="发布于 2023-01-24 07:56">Java IO/NIO</a>
+                        <a href="/2023/01/24/Java%20IO%E5%92%8CNIO/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/01/24/Java%20IO%E5%92%8CNIO/" title="发布于 2023-01-24 07:56">Java IO和NIO</a>
                         <br>
                     
                     
