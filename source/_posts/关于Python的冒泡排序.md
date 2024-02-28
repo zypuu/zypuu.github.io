@@ -1,7 +1,7 @@
 ---
 title: 关于Python的冒泡排序
 date: 2018-06-26 20:21:03
-tags:算法
+tags: 算法
 categories: 数据算法
 comments: true
 description: python实现冒泡排序，Bubble Sort

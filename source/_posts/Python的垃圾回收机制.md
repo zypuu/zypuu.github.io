@@ -1,7 +1,7 @@
 ---
 title: Python的垃圾回收机制
 date: 2018-07-09 18:57:57
-tags:垃圾回收
+tags: 垃圾回收
 categories: Python
 comments: true
 description: python中的垃圾回收机制，以及相关的内存管理
