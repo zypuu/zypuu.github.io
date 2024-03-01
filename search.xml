@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CKEditor富文本编辑器</title>
+    <url>/2018/07/02/CKEditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/</url>
+    <content><![CDATA[<p>在运营后台，运营人员需要录入并编辑模型类的详情信息，而这些信息不是普通的文本，可以是包含了HTML语法格式的字符串。为了快速简单的让用户能够在页面中编辑带格式的文本，富文本即具备丰富样式格式的文本。<br><img src="/2018/07/02/CKEditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/1.jpg" alt="1"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install django-ckeditor</span><br></pre></td></tr></table></figure>
+<h2 id="添加应用"><a href="#添加应用" class="headerlink" title="添加应用"></a>添加应用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">在INSTALLED_APPS中添加</span><br><span class="line"></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    &#x27;ckeditor&#x27;,  # 富文本编辑器</span><br><span class="line">    &#x27;ckeditor_uploader&#x27;,  # 富文本编辑器上传图片模块</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="添加CKEditor配置"><a href="#添加CKEditor配置" class="headerlink" title="添加CKEditor配置"></a>添加CKEditor配置</h2><p>在settings.py中添加</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"># 富文本编辑器ckeditor配置</span><br><span class="line">CKEDITOR_CONFIGS = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        &#x27;toolbar&#x27;: &#x27;full&#x27;,  # 工具条功能</span><br><span class="line">        &#x27;height&#x27;: 300,  # 编辑器高度</span><br><span class="line">        # &#x27;width&#x27;: 300,  # 编辑器宽度</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line">CKEDITOR_UPLOAD_PATH = &#x27;&#x27;  # 上传图片保存路径，使用了FastDFS，所以此处设为&#x27; &#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="添加ckeditor路由"><a href="#添加ckeditor路由" class="headerlink" title="添加ckeditor路由"></a>添加ckeditor路由</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">url(r<span class="string">&#x27;^ckeditor/&#x27;</span>, include(<span class="string">&#x27;ckeditor_uploader.urls&#x27;</span>)),</span><br></pre></td></tr></table></figure>
+<h2 id="为模型类添加字段"><a href="#为模型类添加字段" class="headerlink" title="为模型类添加字段"></a>为模型类添加字段</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">ckeditor.fields.RichTextField 不支持上传文件的富文本字段</span><br><span class="line">ckeditor_uploader.fields.RichTextUploadingField 支持上传文件的富文本字段</span><br></pre></td></tr></table></figure>
+<p>在需要编辑的模型类的设置可以编辑的字段。<br>别忘了数据库迁移。</p>
+]]></content>
+      <categories>
+        <category>环境运维</category>
+      </categories>
+      <tags>
+        <tag>富文本编辑器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>AVL树和红黑树</title>
     <url>/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/</url>
     <content><![CDATA[<h3 id="AVL树（平衡二叉搜索树）"><a href="#AVL树（平衡二叉搜索树）" class="headerlink" title="AVL树（平衡二叉搜索树）"></a>AVL树（平衡二叉搜索树）</h3><p>基于作者名字命名</p>
@@ -29,54 +48,6 @@
       </categories>
       <tags>
         <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CKEditor富文本编辑器</title>
-    <url>/2018/07/02/CKEditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/</url>
-    <content><![CDATA[<p>在运营后台，运营人员需要录入并编辑模型类的详情信息，而这些信息不是普通的文本，可以是包含了HTML语法格式的字符串。为了快速简单的让用户能够在页面中编辑带格式的文本，富文本即具备丰富样式格式的文本。<br><img src="/2018/07/02/CKEditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/1.jpg" alt="1"></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install django-ckeditor</span><br></pre></td></tr></table></figure>
-<h2 id="添加应用"><a href="#添加应用" class="headerlink" title="添加应用"></a>添加应用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">在INSTALLED_APPS中添加</span><br><span class="line"></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    &#x27;ckeditor&#x27;,  # 富文本编辑器</span><br><span class="line">    &#x27;ckeditor_uploader&#x27;,  # 富文本编辑器上传图片模块</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h2 id="添加CKEditor配置"><a href="#添加CKEditor配置" class="headerlink" title="添加CKEditor配置"></a>添加CKEditor配置</h2><p>在settings.py中添加</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"># 富文本编辑器ckeditor配置</span><br><span class="line">CKEDITOR_CONFIGS = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        &#x27;toolbar&#x27;: &#x27;full&#x27;,  # 工具条功能</span><br><span class="line">        &#x27;height&#x27;: 300,  # 编辑器高度</span><br><span class="line">        # &#x27;width&#x27;: 300,  # 编辑器宽度</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line">CKEDITOR_UPLOAD_PATH = &#x27;&#x27;  # 上传图片保存路径，使用了FastDFS，所以此处设为&#x27; &#x27;</span><br></pre></td></tr></table></figure>
-<h2 id="添加ckeditor路由"><a href="#添加ckeditor路由" class="headerlink" title="添加ckeditor路由"></a>添加ckeditor路由</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">url(r<span class="string">&#x27;^ckeditor/&#x27;</span>, include(<span class="string">&#x27;ckeditor_uploader.urls&#x27;</span>)),</span><br></pre></td></tr></table></figure>
-<h2 id="为模型类添加字段"><a href="#为模型类添加字段" class="headerlink" title="为模型类添加字段"></a>为模型类添加字段</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">ckeditor.fields.RichTextField 不支持上传文件的富文本字段</span><br><span class="line">ckeditor_uploader.fields.RichTextUploadingField 支持上传文件的富文本字段</span><br></pre></td></tr></table></figure>
-<p>在需要编辑的模型类的设置可以编辑的字段。<br>别忘了数据库迁移。</p>
-]]></content>
-      <categories>
-        <category>环境运维</category>
-      </categories>
-      <tags>
-        <tag>富文本编辑器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSRF攻击原理与预防</title>
-    <url>/2018/07/12/CSRF%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86%E4%B8%8E%E9%A2%84%E9%98%B2/</url>
-    <content><![CDATA[<h2 id="CSRF简介"><a href="#CSRF简介" class="headerlink" title="CSRF简介"></a>CSRF简介</h2><p> CSRF概念：CSRF跨站点请求伪造(Cross—Site Request Forgery)，跟XSS攻击一样，存在巨大的危害性，你可以这样来理解：<br>       攻击者盗用了你的身份，以你的名义发送恶意请求，对服务器来说这个请求是完全合法的，但是却完成了攻击者所期望的一个操作，比如以你的名义发送邮件、发消息，盗取你的账号，添加系统管理员，甚至于购买商品、虚拟货币转账等。</p>
-<h2 id="CSRF攻击原理"><a href="#CSRF攻击原理" class="headerlink" title="CSRF攻击原理"></a>CSRF攻击原理</h2><p><img src="/2018/07/12/CSRF%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86%E4%B8%8E%E9%A2%84%E9%98%B2/1.jpg" alt="1"></p>
-<ol>
-<li>用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；<br>2.在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；</li>
-<li>用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；</li>
-<li>网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；</li>
-<li>浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。</li>
-</ol>
-<h2 id="预防CSRF攻击"><a href="#预防CSRF攻击" class="headerlink" title="预防CSRF攻击"></a>预防CSRF攻击</h2><p>  目前防御 CSRF 攻击主要有三种策略：验证 HTTP Referer 字段；在请求地址中添加 token 并验证；在 HTTP 头中自定义属性并验证。</p>
-<h3 id="验证-HTTP-Referer-字段"><a href="#验证-HTTP-Referer-字段" class="headerlink" title="验证 HTTP Referer 字段"></a>验证 HTTP Referer 字段</h3><p>根据 HTTP 协议，在 HTTP 头中有一个字段叫 Referer，它记录了该 HTTP 请求的来源地址。在通常情况下，访问一个安全受限页面的请求来自于同一个网站，比如需要访问 <a href="http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=Mallory%EF%BC%8C">http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=Mallory，</a> 用户必须先登陆 bank.example，然后通过点击页面上的按钮来触发转账事件。这时，该转帐请求的 Referer 值就会是转账按钮所在的页面的 URL，通常是以 bank.example 域名开头的地址。而如果黑客要对银行网站实施 CSRF 攻击，他只能在他自己的网站构造请求，当用户通过黑客的网站发送请求到银行时，该请求的 Referer 是指向黑客自己的网站。因此，要防御 CSRF 攻击，银行网站只需要对于每一个转账请求验证其 Referer 值，如果是以 bank.example 开头的域名，则说明该请求是来自银行网站自己的请求，是合法的。如果 Referer 是其他网站的话，则有可能是黑客的 CSRF 攻击，拒绝该请求。</p>
-<p>这种方法的显而易见的好处就是简单易行，网站的普通开发人员不需要操心 CSRF 的漏洞，只需要在最后给所有安全敏感的请求统一增加一个拦截器来检查 Referer 的值就可以。特别是对于当前现有的系统，不需要改变当前系统的任何已有代码和逻辑，没有风险，非常便捷。</p>
-<p>   然而，这种方法并非万无一失。Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求，但是每个浏览器对于 Referer 的具体实现可能有差别，并不能保证浏览器自身没有安全漏洞。使用验证 Referer 值的方法，就是把安全性都依赖于第三方（即浏览器）来保障，从理论上来讲，这样并不安全。事实上，对于某些浏览器，比如 IE6 或 FF2，目前已经有一些方法可以篡改 Referer 值。如果 bank.example 网站支持 IE6 浏览器，黑客完全可以把用户浏览器的 Referer 值设为以 bank.example 域名开头的地址，这样就可以通过验证，从而进行 CSRF 攻击。</p>
-<p>即便是使用最新的浏览器，黑客无法篡改 Referer 值，这种方法仍然有问题。因为 Referer 值会记录下用户的访问来源，有些用户认为这样会侵犯到他们自己的隐私权，特别是有些组织担心 Referer 值会把组织内网中的某些信息泄露到外网中。因此，用户自己可以设置浏览器使其在发送请求时不再提供 Referer。当他们正常访问银行网站时，网站会因为请求没有 Referer 值而认为是 CSRF 攻击，拒绝合法用户的访问。</p>
-<p>a标签添加rel = norferer，可以不发送referer</p>
-<h3 id="在请求地址中添加-token-并验证"><a href="#在请求地址中添加-token-并验证" class="headerlink" title="在请求地址中添加 token 并验证"></a>在请求地址中添加 token 并验证</h3><p>  CSRF 攻击之所以能够成功，是因为黑客可以完全伪造用户的请求，该请求中所有的用户验证信息都是存在于 cookie 中，因此黑客可以在不知道这些验证信息的情况下直接利用用户自己的 cookie 来通过安全验证。要抵御 CSRF，关键在于在请求中放入黑客所不能伪造的信息，并且该信息不存在于 cookie 之中。可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。</p>
-<p>  这种方法要比检查 Referer 要安全一些，token 可以在用户登陆后产生并放于 session 之中，然后在每次请求时把 token 从 session 中拿出，与请求中的 token 进行比对，但这种方法的难点在于如何把 token 以参数的形式加入请求。对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成 <a href="http://url/?csrftoken=tokenvalue%E3%80%82">http://url?csrftoken=tokenvalue。</a> 而对于 POST 请求来说，要在 form 的最后加上 <input type="”hidden”" name="”csrftoken”" value="”tokenvalue”/">，这样就把 token 以参数的形式加入请求了。但是，在一个网站中，可以接受请求的地方非常多，要对于每一个请求都加上 token 是很麻烦的，并且很容易漏掉，通常使用的方法就是在每次页面加载时，使用 javascript 遍历整个 dom 树，对于 dom 中所有的 a 和 form 标签后加入 token。这样可以解决大部分的请求，但是对于在页面加载之后动态生成的 html 代码，这种方法就没有作用，还需要程序员在编码时手动添加 token。</p>
-<p>   该方法还有一个缺点是难以保证 token 本身的安全。特别是在一些论坛之类支持用户自己发表内容的网站，黑客可以在上面发布自己个人网站的地址。由于系统也会在这个地址后面加上 token，黑客可以在自己的网站上得到这个 token，并马上就可以发动 CSRF 攻击。为了避免这一点，系统可以在添加 token 的时候增加一个判断，如果这个链接是链到自己本站的，就在后面添加 token，如果是通向外网则不加。不过，即使这个 csrftoken 不以参数的形式附加在请求之中，黑客的网站也同样可以通过 Referer 来得到这个 token 值以发动 CSRF 攻击。这也是一些用户喜欢手动关闭浏览器 Referer 功能的原因。</p>
-<h3 id="在-HTTP-头中自定义属性并验证"><a href="#在-HTTP-头中自定义属性并验证" class="headerlink" title="在 HTTP 头中自定义属性并验证"></a>在 HTTP 头中自定义属性并验证</h3><p> 这种方法也是使用 token 并进行验证，和上一种方法不同的是，这里并不是把 token 以参数的形式置于 HTTP 请求之中，而是把它放到 HTTP 头中自定义的属性里。通过 XMLHttpRequest 这个类，可以一次性给所有该类请求加上 csrftoken 这个 HTTP 头属性，并把 token 值放入其中。这样解决了上种方法在请求中加入 token 的不便，同时，通过 XMLHttpRequest 请求的地址不会被记录到浏览器的地址栏，也不用担心 token 会透过 Referer 泄露到其他网站中去。<br>然而这种方法的局限性非常大。XMLHttpRequest 请求通常用于 Ajax 方法中对于页面局部的异步刷新，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，从而进行前进，后退，刷新，收藏等操作，给用户带来不便。另外，对于没有进行 CSRF 防护的遗留系统来说，要采用这种方法来进行防护，要把所有请求都改为 XMLHttpRequest 请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。</p>
-]]></content>
-      <categories>
-        <category>web</category>
-      </categories>
-      <tags>
-        <tag>安全</tag>
       </tags>
   </entry>
   <entry>
@@ -114,6 +85,35 @@
       </categories>
       <tags>
         <tag>跨域</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSRF攻击原理与预防</title>
+    <url>/2018/07/12/CSRF%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86%E4%B8%8E%E9%A2%84%E9%98%B2/</url>
+    <content><![CDATA[<h2 id="CSRF简介"><a href="#CSRF简介" class="headerlink" title="CSRF简介"></a>CSRF简介</h2><p> CSRF概念：CSRF跨站点请求伪造(Cross—Site Request Forgery)，跟XSS攻击一样，存在巨大的危害性，你可以这样来理解：<br>       攻击者盗用了你的身份，以你的名义发送恶意请求，对服务器来说这个请求是完全合法的，但是却完成了攻击者所期望的一个操作，比如以你的名义发送邮件、发消息，盗取你的账号，添加系统管理员，甚至于购买商品、虚拟货币转账等。</p>
+<h2 id="CSRF攻击原理"><a href="#CSRF攻击原理" class="headerlink" title="CSRF攻击原理"></a>CSRF攻击原理</h2><p><img src="/2018/07/12/CSRF%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86%E4%B8%8E%E9%A2%84%E9%98%B2/1.jpg" alt="1"></p>
+<ol>
+<li>用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；<br>2.在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；</li>
+<li>用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；</li>
+<li>网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；</li>
+<li>浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。</li>
+</ol>
+<h2 id="预防CSRF攻击"><a href="#预防CSRF攻击" class="headerlink" title="预防CSRF攻击"></a>预防CSRF攻击</h2><p>  目前防御 CSRF 攻击主要有三种策略：验证 HTTP Referer 字段；在请求地址中添加 token 并验证；在 HTTP 头中自定义属性并验证。</p>
+<h3 id="验证-HTTP-Referer-字段"><a href="#验证-HTTP-Referer-字段" class="headerlink" title="验证 HTTP Referer 字段"></a>验证 HTTP Referer 字段</h3><p>根据 HTTP 协议，在 HTTP 头中有一个字段叫 Referer，它记录了该 HTTP 请求的来源地址。在通常情况下，访问一个安全受限页面的请求来自于同一个网站，比如需要访问 <a href="http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=Mallory%EF%BC%8C">http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=Mallory，</a> 用户必须先登陆 bank.example，然后通过点击页面上的按钮来触发转账事件。这时，该转帐请求的 Referer 值就会是转账按钮所在的页面的 URL，通常是以 bank.example 域名开头的地址。而如果黑客要对银行网站实施 CSRF 攻击，他只能在他自己的网站构造请求，当用户通过黑客的网站发送请求到银行时，该请求的 Referer 是指向黑客自己的网站。因此，要防御 CSRF 攻击，银行网站只需要对于每一个转账请求验证其 Referer 值，如果是以 bank.example 开头的域名，则说明该请求是来自银行网站自己的请求，是合法的。如果 Referer 是其他网站的话，则有可能是黑客的 CSRF 攻击，拒绝该请求。</p>
+<p>这种方法的显而易见的好处就是简单易行，网站的普通开发人员不需要操心 CSRF 的漏洞，只需要在最后给所有安全敏感的请求统一增加一个拦截器来检查 Referer 的值就可以。特别是对于当前现有的系统，不需要改变当前系统的任何已有代码和逻辑，没有风险，非常便捷。</p>
+<p>   然而，这种方法并非万无一失。Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求，但是每个浏览器对于 Referer 的具体实现可能有差别，并不能保证浏览器自身没有安全漏洞。使用验证 Referer 值的方法，就是把安全性都依赖于第三方（即浏览器）来保障，从理论上来讲，这样并不安全。事实上，对于某些浏览器，比如 IE6 或 FF2，目前已经有一些方法可以篡改 Referer 值。如果 bank.example 网站支持 IE6 浏览器，黑客完全可以把用户浏览器的 Referer 值设为以 bank.example 域名开头的地址，这样就可以通过验证，从而进行 CSRF 攻击。</p>
+<p>即便是使用最新的浏览器，黑客无法篡改 Referer 值，这种方法仍然有问题。因为 Referer 值会记录下用户的访问来源，有些用户认为这样会侵犯到他们自己的隐私权，特别是有些组织担心 Referer 值会把组织内网中的某些信息泄露到外网中。因此，用户自己可以设置浏览器使其在发送请求时不再提供 Referer。当他们正常访问银行网站时，网站会因为请求没有 Referer 值而认为是 CSRF 攻击，拒绝合法用户的访问。</p>
+<p>a标签添加rel = norferer，可以不发送referer</p>
+<h3 id="在请求地址中添加-token-并验证"><a href="#在请求地址中添加-token-并验证" class="headerlink" title="在请求地址中添加 token 并验证"></a>在请求地址中添加 token 并验证</h3><p>  CSRF 攻击之所以能够成功，是因为黑客可以完全伪造用户的请求，该请求中所有的用户验证信息都是存在于 cookie 中，因此黑客可以在不知道这些验证信息的情况下直接利用用户自己的 cookie 来通过安全验证。要抵御 CSRF，关键在于在请求中放入黑客所不能伪造的信息，并且该信息不存在于 cookie 之中。可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。</p>
+<p>  这种方法要比检查 Referer 要安全一些，token 可以在用户登陆后产生并放于 session 之中，然后在每次请求时把 token 从 session 中拿出，与请求中的 token 进行比对，但这种方法的难点在于如何把 token 以参数的形式加入请求。对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成 <a href="http://url/?csrftoken=tokenvalue%E3%80%82">http://url?csrftoken=tokenvalue。</a> 而对于 POST 请求来说，要在 form 的最后加上 <input type="”hidden”" name="”csrftoken”" value="”tokenvalue”/">，这样就把 token 以参数的形式加入请求了。但是，在一个网站中，可以接受请求的地方非常多，要对于每一个请求都加上 token 是很麻烦的，并且很容易漏掉，通常使用的方法就是在每次页面加载时，使用 javascript 遍历整个 dom 树，对于 dom 中所有的 a 和 form 标签后加入 token。这样可以解决大部分的请求，但是对于在页面加载之后动态生成的 html 代码，这种方法就没有作用，还需要程序员在编码时手动添加 token。</p>
+<p>   该方法还有一个缺点是难以保证 token 本身的安全。特别是在一些论坛之类支持用户自己发表内容的网站，黑客可以在上面发布自己个人网站的地址。由于系统也会在这个地址后面加上 token，黑客可以在自己的网站上得到这个 token，并马上就可以发动 CSRF 攻击。为了避免这一点，系统可以在添加 token 的时候增加一个判断，如果这个链接是链到自己本站的，就在后面添加 token，如果是通向外网则不加。不过，即使这个 csrftoken 不以参数的形式附加在请求之中，黑客的网站也同样可以通过 Referer 来得到这个 token 值以发动 CSRF 攻击。这也是一些用户喜欢手动关闭浏览器 Referer 功能的原因。</p>
+<h3 id="在-HTTP-头中自定义属性并验证"><a href="#在-HTTP-头中自定义属性并验证" class="headerlink" title="在 HTTP 头中自定义属性并验证"></a>在 HTTP 头中自定义属性并验证</h3><p> 这种方法也是使用 token 并进行验证，和上一种方法不同的是，这里并不是把 token 以参数的形式置于 HTTP 请求之中，而是把它放到 HTTP 头中自定义的属性里。通过 XMLHttpRequest 这个类，可以一次性给所有该类请求加上 csrftoken 这个 HTTP 头属性，并把 token 值放入其中。这样解决了上种方法在请求中加入 token 的不便，同时，通过 XMLHttpRequest 请求的地址不会被记录到浏览器的地址栏，也不用担心 token 会透过 Referer 泄露到其他网站中去。<br>然而这种方法的局限性非常大。XMLHttpRequest 请求通常用于 Ajax 方法中对于页面局部的异步刷新，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，从而进行前进，后退，刷新，收藏等操作，给用户带来不便。另外，对于没有进行 CSRF 防护的遗留系统来说，要采用这种方法来进行防护，要把所有请求都改为 XMLHttpRequest 请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。</p>
+]]></content>
+      <categories>
+        <category>web</category>
+      </categories>
+      <tags>
+        <tag>安全</tag>
       </tags>
   </entry>
   <entry>
@@ -401,6 +401,37 @@
       </tags>
   </entry>
   <entry>
+    <title>GO的make和new的区别</title>
+    <url>/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
+<p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<h2 id="new与make"><a href="#new与make" class="headerlink" title="new与make"></a>new与make</h2><h3 id="new"><a href="#new" class="headerlink" title="new"></a>new</h3><p>new 可以开辟一个内存，然后返回这个内存的地址。</p>
+<p>简单类型还可以初始化零值，int，string</p>
+<p>复杂类型也可以开辟内存，初始化的是nil</p>
+<p>nil的指针赋值会存在问题</p>
+<p>声明一个大小为5的数组，go会自动为数组的item初始化为零值，数组可以通过索引读取和赋值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">arr[<span class="number">0</span>], arr[<span class="number">1</span>] = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;1, 2, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果声明的是一个数组指针，即一个指针的类型是数组</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil)</span></span><br></pre></td></tr></table></figure>
+<p>初始化的值是nil，nil是不能赋值的</p>
+<p>我们可以new一块内存地址出来，赋给指针，这个指针取值就可以赋值了</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil) </span></span><br><span class="line"></span><br><span class="line">arrPot = <span class="keyword">new</span>([<span class="number">5</span>]int)</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">(*arrPot)[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;11, 0, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><p>array是虽然是复合类型，但不是引用类型。go中的引用类似是slice，map等</p>
+<p>声明一个map类型的变量，map不像array那样声明之后可以初始化成零值。go会给引用类型初始化为nil，nil是不能直接赋值的</p>
+<p>map不能用new去申请内存，用make，make不仅可以开辟一个内存，还能给这个内存的类型初始化其零值，同时返回这个内存实例</p>
+<p>make 也可以申请slice，channel</p>
+<p>申请slice： 三个参数，第一个基本结构类型，第二个长度，第三个容量<br>申请map：两个参数， 第一个基本结构，第二个容量、长度</p>
+<p>初始化需要提前申请好，防止发生扩容</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GO的context</title>
     <url>/2021/01/21/GO%E7%9A%84context/</url>
     <content><![CDATA[<h2 id="场景问题"><a href="#场景问题" class="headerlink" title="场景问题"></a>场景问题</h2><p>通过done channel 可以用于协程间通信，由主协程告知子协程取消，结束，终止任务等</p>
@@ -469,37 +500,6 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc) &#123;</span><br><span class="line">    <span class="keyword">return</span> WithDeadline(parent, time.Now().Add(timeout))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2>]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO的make和new的区别</title>
-    <url>/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p>Go有两个数据结构创建函数：new和make。两者的区别在学习Go语言的初期是一个常见的混淆点。基本的区别是new(T)返回一个* T，返回的这个指针可以被隐式地消除引用（图中的黑色箭头）。而make(T, args)返回一个普通的T。通常情况下，T内部有一些隐式的指针（图中的灰色箭头）。一句话，new返回一个指向已清零内存的指针，而make返回一个复杂的结构。<br>二者都是内存的分配（堆上），但是make只用于slice、map以及channel的初始化（非零值）；而new用于类型的内存分配，并且内存置为零</p>
-<p><img src="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
-<h2 id="new与make"><a href="#new与make" class="headerlink" title="new与make"></a>new与make</h2><h3 id="new"><a href="#new" class="headerlink" title="new"></a>new</h3><p>new 可以开辟一个内存，然后返回这个内存的地址。</p>
-<p>简单类型还可以初始化零值，int，string</p>
-<p>复杂类型也可以开辟内存，初始化的是nil</p>
-<p>nil的指针赋值会存在问题</p>
-<p>声明一个大小为5的数组，go会自动为数组的item初始化为零值，数组可以通过索引读取和赋值。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">arr[<span class="number">0</span>], arr[<span class="number">1</span>] = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arr: %p %#v \n&quot;</span>, &amp;arr, arr) <span class="comment">// arr: 0xc420014180 [5]int&#123;1, 2, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果声明的是一个数组指针，即一个指针的类型是数组</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil)</span></span><br></pre></td></tr></table></figure>
-<p>初始化的值是nil，nil是不能赋值的</p>
-<p>我们可以new一块内存地址出来，赋给指针，这个指针取值就可以赋值了</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arrPot *[<span class="number">5</span>]int</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 (*[5]int)(nil) </span></span><br><span class="line"></span><br><span class="line">arrPot = <span class="keyword">new</span>([<span class="number">5</span>]int)</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;0, 0, 0, 0, 0&#125; </span></span><br><span class="line">(*arrPot)[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;arrPot: %p %#v \n&quot;</span>, &amp;arrPot, arrPot) <span class="comment">// arrPot: 0xc42000c040 &amp;[5]int&#123;11, 0, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
-<h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><p>array是虽然是复合类型，但不是引用类型。go中的引用类似是slice，map等</p>
-<p>声明一个map类型的变量，map不像array那样声明之后可以初始化成零值。go会给引用类型初始化为nil，nil是不能直接赋值的</p>
-<p>map不能用new去申请内存，用make，make不仅可以开辟一个内存，还能给这个内存的类型初始化其零值，同时返回这个内存实例</p>
-<p>make 也可以申请slice，channel</p>
-<p>申请slice： 三个参数，第一个基本结构类型，第二个长度，第三个容量<br>申请map：两个参数， 第一个基本结构，第二个容量、长度</p>
-<p>初始化需要提前申请好，防止发生扩容</p>
-]]></content>
       <categories>
         <category>GO</category>
       </categories>
@@ -1138,39 +1138,6 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>GO基本数据结构：nil,指针,值,引用类型</title>
-    <url>/2020/12/24/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Anil,%E6%8C%87%E9%92%88,%E5%80%BC,%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<h2 id="引用类型，值"><a href="#引用类型，值" class="headerlink" title="引用类型，值"></a>引用类型，值</h2><p>1.值类型：变量直接存储，内存通常在栈中分配。<br>2.引用类型：变量存储的是一个地址，这个地址存储最终的值。内存通常在堆上分配。通过GC回收</p>
-<p>PS : 通常在函数中转入指针效率比较高，因为方法中的参数是需要进行拷贝的，拷贝指针的效率比较高，要是一个大的结构体的话拷贝的效率就比较低</p>
-<p>1.值类型 ： 基本数据类型int、float、bool、string以及数组和struct。<br>2.引用类型：指针、slice、map、chan等都是引用类型</p>
-<h2 id="nil，初始化零值"><a href="#nil，初始化零值" class="headerlink" title="nil，初始化零值"></a>nil，初始化零值</h2><p>nil代表空值</p>
-<p>布尔类型是false<br>整型是0<br>字符串是””<br>而指针，函数，interface，slice，channel和map的零值都是nil</p>
-<p>PS：<br>string的空值是””，它是不能跟nil比较的。即使是空的string，它的大小也是两个机器字长的。<br>slice也类似，它的空值并不是一个空指针，而是结构体中的指针域为空，空的slice的大小也是三个机器字长的。</p>
-<p>指针域为空，但是有长度域，所以不是nil</p>
-<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>指针指的是内存地址，而指针本身也是有内存地址的</p>
-<p>&amp;： 取址符<br>变量获取内存地址，需要在变量前加上一个符号&amp;</p>
-<ul>
-<li>：取值符<br>内存地址获取变量，需要在内存地址前加上一个符号*</li>
-</ul>
-<p>这俩做着相反的事</p>
-<p>指针的值：指的是数据的内存地址<br>指针的地址：指的是指针本身的内存地址</p>
-<p>变量赋值后，指针不变</p>
-<p>一个值为nil的指针变量，直接赋值会出问题</p>
-<p>如下所示，声明的是一个指向string的指针类型的变量<br>前面打印的&amp;a是取的指针本身的地址，后面打印的是指针的值，也就是空值nil，还没有被赋值成地址，跟空字符串不一样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 声明一个指针变量 a 其类型也是 string</span></span><br><span class="line">    <span class="keyword">var</span> a *string</span><br><span class="line">    fmt.Printf(<span class="string">&quot;aPot: %p %#v\n&quot;</span>, &amp;a, a) <span class="comment">// 输出 a: 0xc42000c030 (*string)(nil)</span></span><br><span class="line">    *a = <span class="string">&quot;This is a Pointer&quot;</span>  <span class="comment">// 报错：panic: runtime error: invalid memory address or nil pointer dereference</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>所以不能这样赋值，读取也会报错。* a 做取值操作会panic</p>
-<p>解决方法是初始化内存</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> b string</span><br><span class="line">a = &amp;b</span><br><span class="line">*a = <span class="string">&quot;This is a Pointer&quot;</span></span><br></pre></td></tr></table></figure>
-<p>给a赋值一个b的内存地址，在通过取值* 相当于从这个内存地址取了一个空字符串，再赋值，就不会报错</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>GO的基本数据结构：map</title>
     <url>/2020/12/23/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Amap/</url>
     <content><![CDATA[<h2 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h2><p>G基本结构如下，runtime/map.go go版本 v1.11</p>
@@ -1244,6 +1211,39 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
 
 <p>sync.Map官方包</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m sync.Map</span><br><span class="line"></span><br><span class="line"><span class="comment">//写</span></span><br><span class="line">m.Store(<span class="string">&quot;foo&quot;</span>, <span class="string">&quot;hello world&quot;</span>)</span><br><span class="line">m.Store(<span class="string">&quot;slice&quot;</span>, []int&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;)</span><br><span class="line">m.Store(<span class="string">&quot;int&quot;</span>, <span class="number">123</span>)</span><br><span class="line"><span class="comment">//读</span></span><br><span class="line">m.Load(<span class="string">&quot;foo&quot;</span>)</span><br><span class="line">m.Load(<span class="string">&quot;slice&quot;</span>)</span><br><span class="line">m.Load(<span class="string">&quot;int&quot;</span>)</span><br><span class="line"><span class="comment">//删</span></span><br><span class="line">m.Delete(<span class="string">&quot;int&quot;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO基本数据结构：nil,指针,值,引用类型</title>
+    <url>/2020/12/24/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Anil,%E6%8C%87%E9%92%88,%E5%80%BC,%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h2 id="引用类型，值"><a href="#引用类型，值" class="headerlink" title="引用类型，值"></a>引用类型，值</h2><p>1.值类型：变量直接存储，内存通常在栈中分配。<br>2.引用类型：变量存储的是一个地址，这个地址存储最终的值。内存通常在堆上分配。通过GC回收</p>
+<p>PS : 通常在函数中转入指针效率比较高，因为方法中的参数是需要进行拷贝的，拷贝指针的效率比较高，要是一个大的结构体的话拷贝的效率就比较低</p>
+<p>1.值类型 ： 基本数据类型int、float、bool、string以及数组和struct。<br>2.引用类型：指针、slice、map、chan等都是引用类型</p>
+<h2 id="nil，初始化零值"><a href="#nil，初始化零值" class="headerlink" title="nil，初始化零值"></a>nil，初始化零值</h2><p>nil代表空值</p>
+<p>布尔类型是false<br>整型是0<br>字符串是””<br>而指针，函数，interface，slice，channel和map的零值都是nil</p>
+<p>PS：<br>string的空值是””，它是不能跟nil比较的。即使是空的string，它的大小也是两个机器字长的。<br>slice也类似，它的空值并不是一个空指针，而是结构体中的指针域为空，空的slice的大小也是三个机器字长的。</p>
+<p>指针域为空，但是有长度域，所以不是nil</p>
+<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>指针指的是内存地址，而指针本身也是有内存地址的</p>
+<p>&amp;： 取址符<br>变量获取内存地址，需要在变量前加上一个符号&amp;</p>
+<ul>
+<li>：取值符<br>内存地址获取变量，需要在内存地址前加上一个符号*</li>
+</ul>
+<p>这俩做着相反的事</p>
+<p>指针的值：指的是数据的内存地址<br>指针的地址：指的是指针本身的内存地址</p>
+<p>变量赋值后，指针不变</p>
+<p>一个值为nil的指针变量，直接赋值会出问题</p>
+<p>如下所示，声明的是一个指向string的指针类型的变量<br>前面打印的&amp;a是取的指针本身的地址，后面打印的是指针的值，也就是空值nil，还没有被赋值成地址，跟空字符串不一样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 声明一个指针变量 a 其类型也是 string</span></span><br><span class="line">    <span class="keyword">var</span> a *string</span><br><span class="line">    fmt.Printf(<span class="string">&quot;aPot: %p %#v\n&quot;</span>, &amp;a, a) <span class="comment">// 输出 a: 0xc42000c030 (*string)(nil)</span></span><br><span class="line">    *a = <span class="string">&quot;This is a Pointer&quot;</span>  <span class="comment">// 报错：panic: runtime error: invalid memory address or nil pointer dereference</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以不能这样赋值，读取也会报错。* a 做取值操作会panic</p>
+<p>解决方法是初始化内存</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> b string</span><br><span class="line">a = &amp;b</span><br><span class="line">*a = <span class="string">&quot;This is a Pointer&quot;</span></span><br></pre></td></tr></table></figure>
+<p>给a赋值一个b的内存地址，在通过取值* 相当于从这个内存地址取了一个空字符串，再赋值，就不会报错</p>
+]]></content>
       <categories>
         <category>GO</category>
       </categories>
@@ -1386,6 +1386,25 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
+    <title>GO的程序启动</title>
+    <url>/2020/12/29/GO%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>启动流程大致如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">_rt0_amd64_darwin   # 通过参数argc和argv等，确定栈的位置，得到寄存器</span><br><span class="line"></span><br><span class="line">main  # 跳转到本文件main，继续执行</span><br><span class="line"></span><br><span class="line">_rt0_amd64  # 设置好m-&gt;g0的栈,将当前的SP设置为stackbase,将SP往下大约64K的地方设置为stackguard,然后会获取处理器信息,然后设置本地线程存储</span><br><span class="line"></span><br><span class="line">runtime.check # 检测像int8,int16,float等是否是预期的大小，检测cas操作是否正常</span><br><span class="line"></span><br><span class="line">runtime.args # 去 stack 里读取参数和环境变量，执行文件的绝对路径初始化</span><br><span class="line"></span><br><span class="line">runtime.osinit # 初始化OS:获取CPU数量和内存页大小初始化</span><br><span class="line"></span><br><span class="line">runtime.hashinit # 使用读/dev/urandom的方式从内核获得随机数种子</span><br><span class="line"></span><br><span class="line">runtime.schedinit # 初始化调度，命令行参数、环境变量、gc、栈空间、内存管理、所有P实例、HASH算法等初始化</span><br><span class="line"></span><br><span class="line">runtime.newproc # 创建一个goruntine并执行，执行函数为 runtime.main</span><br><span class="line"></span><br><span class="line">runtime.mstart # 启动这个m，即m0，里面会调用schedule函数进入调度状态</span><br><span class="line"></span><br><span class="line">main.main # 用户的main函数</span><br><span class="line"></span><br><span class="line">runtime.exit</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="本地线程存储"><a href="#本地线程存储" class="headerlink" title="本地线程存储"></a>本地线程存储</h2><p>每个goroutine都有自己的控制信息，这些信息是存放在一个结构体G中</p>
+<p>有一个全局变量g是结构体G的指针，我们希望只有唯一的全局变量g，保证全局唯一，而不是g0，g1，g2</p>
+<p>每个线程访问它，得到自己线程的G，这种情况下就需要本地线程存储。</p>
+<p>g确实是一个全局变量，却在不同线程有多份不同的副本。每个goroutine去访问g时，都是对应到自己线程的这一份副本</p>
+<h2 id="调度器初始化"><a href="#调度器初始化" class="headerlink" title="调度器初始化"></a>调度器初始化</h2><p>注释写在代码里，大概流程如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func <span class="function"><span class="title">schedinit</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="comment">// raceinit must be the first call to race detector.</span></span><br><span class="line">	<span class="comment">// In particular, it must be done before mallocinit below calls racemapshadow.</span></span><br><span class="line">	<span class="comment">// 从TLS中获取g实例</span></span><br><span class="line">    _g_ := getg()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">        _g_.racectx, raceprocctx0 = raceinit()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置全局线程数上限</span></span><br><span class="line">    sched.maxmcount = <span class="number">10000</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化一系列函数所在的PC计数器，用于traceback</span></span><br><span class="line">    tracebackinit()</span><br><span class="line">    <span class="comment">// 貌似是验证链接器符号的正确性</span></span><br><span class="line">    moduledataverify()</span><br><span class="line">    <span class="comment">// 栈的初始化</span></span><br><span class="line">    stackinit()</span><br><span class="line">    <span class="comment">// 内存分配器初始化</span></span><br><span class="line">    mallocinit()</span><br><span class="line">    mcommoninit(_g_.m)</span><br><span class="line">    <span class="comment">// 初始化AES HASH算法</span></span><br><span class="line">    alginit()       <span class="comment">// maps must not be used before this call</span></span><br><span class="line">    modulesinit()   <span class="comment">// provides activeModules</span></span><br><span class="line">    typelinksinit() <span class="comment">// uses maps, activeModules</span></span><br><span class="line">    itabsinit()     <span class="comment">// uses activeModules</span></span><br><span class="line"></span><br><span class="line">    msigsave(_g_.m)</span><br><span class="line">    initSigmask = _g_.m.sigmask</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取命令行参数</span></span><br><span class="line">    <span class="comment">// 例如: ./$GOPATH/test/main test1 test2</span></span><br><span class="line">    <span class="comment">// 执行goargs得到runtime.argslice = []string len: 3, cap: 3, [&quot;main&quot;,&quot;test1&quot;,&quot;test2&quot;]</span></span><br><span class="line">    goargs()</span><br><span class="line">    <span class="comment">// 获取所有的环境变量</span></span><br><span class="line">    goenvs()</span><br><span class="line">    parsedebugvars()</span><br><span class="line">    <span class="comment">// gc初始化</span></span><br><span class="line">    gcinit()</span><br><span class="line"></span><br><span class="line">    sched.lastpoll = uint64(nanotime())</span><br><span class="line"></span><br><span class="line">    <span class="comment">// P个数检查</span></span><br><span class="line">    procs := ncpu</span><br><span class="line">    <span class="keyword">if</span> n, <span class="attr">ok</span> := atoi32(gogetenv(<span class="string">&quot;GOMAXPROCS&quot;</span>)); ok &amp;&amp; n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        procs = n</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> procs &gt; _MaxGomaxprocs &#123;</span><br><span class="line">        procs = _MaxGomaxprocs</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 所有P的初始化</span></span><br><span class="line">    <span class="keyword">if</span> procresize(procs) != nil &#123;</span><br><span class="line">        <span class="keyword">throw</span>(<span class="string">&quot;unknown runnable goroutine during bootstrap&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> buildVersion == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// Condition should never trigger. This code just serves</span></span><br><span class="line">        <span class="comment">// to ensure runtime·buildVersion is kept in the resulting binary.</span></span><br><span class="line">        buildVersion = <span class="string">&quot;unknown&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GO的连续栈</title>
     <url>/2020/12/28/GO%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%A0%88/</url>
     <content><![CDATA[<p>Go语言支持goroutine，每个goroutine需要能够运行，所以它们都有自己的栈</p>
@@ -1515,25 +1534,6 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>GO的程序启动</title>
-    <url>/2020/12/29/GO%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>启动流程大致如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">_rt0_amd64_darwin   # 通过参数argc和argv等，确定栈的位置，得到寄存器</span><br><span class="line"></span><br><span class="line">main  # 跳转到本文件main，继续执行</span><br><span class="line"></span><br><span class="line">_rt0_amd64  # 设置好m-&gt;g0的栈,将当前的SP设置为stackbase,将SP往下大约64K的地方设置为stackguard,然后会获取处理器信息,然后设置本地线程存储</span><br><span class="line"></span><br><span class="line">runtime.check # 检测像int8,int16,float等是否是预期的大小，检测cas操作是否正常</span><br><span class="line"></span><br><span class="line">runtime.args # 去 stack 里读取参数和环境变量，执行文件的绝对路径初始化</span><br><span class="line"></span><br><span class="line">runtime.osinit # 初始化OS:获取CPU数量和内存页大小初始化</span><br><span class="line"></span><br><span class="line">runtime.hashinit # 使用读/dev/urandom的方式从内核获得随机数种子</span><br><span class="line"></span><br><span class="line">runtime.schedinit # 初始化调度，命令行参数、环境变量、gc、栈空间、内存管理、所有P实例、HASH算法等初始化</span><br><span class="line"></span><br><span class="line">runtime.newproc # 创建一个goruntine并执行，执行函数为 runtime.main</span><br><span class="line"></span><br><span class="line">runtime.mstart # 启动这个m，即m0，里面会调用schedule函数进入调度状态</span><br><span class="line"></span><br><span class="line">main.main # 用户的main函数</span><br><span class="line"></span><br><span class="line">runtime.exit</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="本地线程存储"><a href="#本地线程存储" class="headerlink" title="本地线程存储"></a>本地线程存储</h2><p>每个goroutine都有自己的控制信息，这些信息是存放在一个结构体G中</p>
-<p>有一个全局变量g是结构体G的指针，我们希望只有唯一的全局变量g，保证全局唯一，而不是g0，g1，g2</p>
-<p>每个线程访问它，得到自己线程的G，这种情况下就需要本地线程存储。</p>
-<p>g确实是一个全局变量，却在不同线程有多份不同的副本。每个goroutine去访问g时，都是对应到自己线程的这一份副本</p>
-<h2 id="调度器初始化"><a href="#调度器初始化" class="headerlink" title="调度器初始化"></a>调度器初始化</h2><p>注释写在代码里，大概流程如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func <span class="function"><span class="title">schedinit</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="comment">// raceinit must be the first call to race detector.</span></span><br><span class="line">	<span class="comment">// In particular, it must be done before mallocinit below calls racemapshadow.</span></span><br><span class="line">	<span class="comment">// 从TLS中获取g实例</span></span><br><span class="line">    _g_ := getg()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">        _g_.racectx, raceprocctx0 = raceinit()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置全局线程数上限</span></span><br><span class="line">    sched.maxmcount = <span class="number">10000</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化一系列函数所在的PC计数器，用于traceback</span></span><br><span class="line">    tracebackinit()</span><br><span class="line">    <span class="comment">// 貌似是验证链接器符号的正确性</span></span><br><span class="line">    moduledataverify()</span><br><span class="line">    <span class="comment">// 栈的初始化</span></span><br><span class="line">    stackinit()</span><br><span class="line">    <span class="comment">// 内存分配器初始化</span></span><br><span class="line">    mallocinit()</span><br><span class="line">    mcommoninit(_g_.m)</span><br><span class="line">    <span class="comment">// 初始化AES HASH算法</span></span><br><span class="line">    alginit()       <span class="comment">// maps must not be used before this call</span></span><br><span class="line">    modulesinit()   <span class="comment">// provides activeModules</span></span><br><span class="line">    typelinksinit() <span class="comment">// uses maps, activeModules</span></span><br><span class="line">    itabsinit()     <span class="comment">// uses activeModules</span></span><br><span class="line"></span><br><span class="line">    msigsave(_g_.m)</span><br><span class="line">    initSigmask = _g_.m.sigmask</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取命令行参数</span></span><br><span class="line">    <span class="comment">// 例如: ./$GOPATH/test/main test1 test2</span></span><br><span class="line">    <span class="comment">// 执行goargs得到runtime.argslice = []string len: 3, cap: 3, [&quot;main&quot;,&quot;test1&quot;,&quot;test2&quot;]</span></span><br><span class="line">    goargs()</span><br><span class="line">    <span class="comment">// 获取所有的环境变量</span></span><br><span class="line">    goenvs()</span><br><span class="line">    parsedebugvars()</span><br><span class="line">    <span class="comment">// gc初始化</span></span><br><span class="line">    gcinit()</span><br><span class="line"></span><br><span class="line">    sched.lastpoll = uint64(nanotime())</span><br><span class="line"></span><br><span class="line">    <span class="comment">// P个数检查</span></span><br><span class="line">    procs := ncpu</span><br><span class="line">    <span class="keyword">if</span> n, <span class="attr">ok</span> := atoi32(gogetenv(<span class="string">&quot;GOMAXPROCS&quot;</span>)); ok &amp;&amp; n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        procs = n</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> procs &gt; _MaxGomaxprocs &#123;</span><br><span class="line">        procs = _MaxGomaxprocs</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 所有P的初始化</span></span><br><span class="line">    <span class="keyword">if</span> procresize(procs) != nil &#123;</span><br><span class="line">        <span class="keyword">throw</span>(<span class="string">&quot;unknown runnable goroutine during bootstrap&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> buildVersion == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// Condition should never trigger. This code just serves</span></span><br><span class="line">        <span class="comment">// to ensure runtime·buildVersion is kept in the resulting binary.</span></span><br><span class="line">        buildVersion = <span class="string">&quot;unknown&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>GO自定义Error方法</title>
     <url>/2020/12/27/GO%E8%87%AA%E5%AE%9A%E4%B9%89Error%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<p>通过interface定义</p>
@@ -1546,6 +1546,31 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </categories>
       <tags>
         <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO里的go关键字</title>
+    <url>/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/</url>
+    <content><![CDATA[<p>go f(x, y, z)会启动一个新的goroutine运行函数f(x, y, z)。函数f，变量x、y、z的值是在原goroutine计算的，只有函数f的执行是在新的goroutine中的</p>
+<p>新的goroutine不能和当前go线程用同一个栈，否则会相互覆盖。</p>
+<p>所以对go关键字的调用协议与普通函数调用是不同的</p>
+<p>普通函数的调用协议</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> CALL    f(SB)</span><br></pre></td></tr></table></figure>
+
+<p>将参数 1，2，3进栈，然后调用函数f</p>
+<p>go 关键字调用函数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> PUSHQ   $f(SB)</span><br><span class="line"> PUSHQ   $<span class="number">12</span></span><br><span class="line"> CALL    runtime.newproc(SB)</span><br><span class="line"> POPQ    AX</span><br><span class="line"> POPQ    AX</span><br></pre></td></tr></table></figure>
+<p>前半部分一样，将参数1，2，3进栈，同时也将函数f进栈，12也进栈，12是函数参数的大小</p>
+<p>调用runtime.newproc函数</p>
+<p>runtime.newproc函数接受的参数分别是：参数大小，新的goroutine是要运行的函数，函数的n个参数</p>
+<p>runtime.newproc函数中</p>
+<p>1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数<br>2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内<br>3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>GO</tag>
       </tags>
   </entry>
   <entry>
@@ -1596,28 +1621,29 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>GO里的go关键字</title>
-    <url>/2020/12/27/GO%E9%87%8C%E7%9A%84go%E5%85%B3%E9%94%AE%E5%AD%97/</url>
-    <content><![CDATA[<p>go f(x, y, z)会启动一个新的goroutine运行函数f(x, y, z)。函数f，变量x、y、z的值是在原goroutine计算的，只有函数f的执行是在新的goroutine中的</p>
-<p>新的goroutine不能和当前go线程用同一个栈，否则会相互覆盖。</p>
-<p>所以对go关键字的调用协议与普通函数调用是不同的</p>
-<p>普通函数的调用协议</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> CALL    f(SB)</span><br></pre></td></tr></table></figure>
-
-<p>将参数 1，2，3进栈，然后调用函数f</p>
-<p>go 关键字调用函数</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">MOVL    $<span class="number">1</span>, <span class="number">0</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">2</span>, <span class="number">4</span>(SP)</span><br><span class="line"> MOVL    $<span class="number">3</span>, <span class="number">8</span>(SP)</span><br><span class="line"> PUSHQ   $f(SB)</span><br><span class="line"> PUSHQ   $<span class="number">12</span></span><br><span class="line"> CALL    runtime.newproc(SB)</span><br><span class="line"> POPQ    AX</span><br><span class="line"> POPQ    AX</span><br></pre></td></tr></table></figure>
-<p>前半部分一样，将参数1，2，3进栈，同时也将函数f进栈，12也进栈，12是函数参数的大小</p>
-<p>调用runtime.newproc函数</p>
-<p>runtime.newproc函数接受的参数分别是：参数大小，新的goroutine是要运行的函数，函数的n个参数</p>
-<p>runtime.newproc函数中</p>
-<p>1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数<br>2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内<br>3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。</p>
+    <title>Git工作流</title>
+    <url>/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/</url>
+    <content><![CDATA[<p>Git工作流：为工作中团队成员遵守的一种代码管理方案，在Git中有以下几种工作流方案作为方案指导。</p>
+<h2 id="集中式工作流"><a href="#集中式工作流" class="headerlink" title="集中式工作流"></a>集中式工作流</h2><p>这种工作方式跟svn类似，它只有一个master分支，开发者会先把远程的仓库克隆到本地，之后的修 改和提交都在本地操作，直到在某个合适的时间点将本地的代码合入到远程master。这种工作流比 较适合小团队，因为小团队可能不会太多的协作和合流的动作。</p>
+<h2 id="功能分支工作流"><a href="#功能分支工作流" class="headerlink" title="功能分支工作流"></a>功能分支工作流</h2><p>这种工作流关注功能开发，不直接往master提交代码保证它是稳定并且干净的，而是从master拉 取feature分支进行功能开发，团队成员根据分工拉取不同的功能分支来进行不同的功能开发，这样 就可以完全隔离开每个人的工作。当功能开发完成后，会向master分支发起Pull Request，只有审 核通过的代码才真正允许合入master，这样就加强了团队成员之间的代码交流。</p>
+<h2 id="Gitflow工作流"><a href="#Gitflow工作流" class="headerlink" title="Gitflow工作流"></a>Gitflow工作流</h2><p>相对复杂一点，但它非常适合用来管理大型项目的发布和维护，贯穿整个开发周期，master和develop分支是一直存在的，master分支可以被视为稳定的分支， 而develop分支是相对稳定的分支，特性开发会在feature分支上进行，发布会在release分支上 进行，而bug修复则会在hotfix分支上进行</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><h4 id="两个分支，master，develop分支"><a href="#两个分支，master，develop分支" class="headerlink" title="两个分支，master，develop分支"></a>两个分支，master，develop分支</h4><p>相对使用仅有的一个master分支，Gitflow工作流使用2个分支来记录项目的历史。 master分支存储了正式发布的历史，而develop分支作为功能的集成分支。 这样也方便master分支上的所有提交分配一个版本号。</p>
+<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png" alt="1"></p>
+<h4 id="每个人开发的功能分支"><a href="#每个人开发的功能分支" class="headerlink" title="每个人开发的功能分支"></a>每个人开发的功能分支</h4><p>每个新功能位于一个自己的分支，这样可以push到中央仓库以备份和协作。 但功能分支不是从master分支上拉出新分支，而是使用develop分支作为父分支。 当新功能完成时，合并回develop分支。 新功能提交应该从不直接与master分支交互。 从各种含义和目的上来看，功能分支加上develop分支就是功能分支工作流的用法。但Gitflow工作流没有在这里止步。</p>
+<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/2.png" alt="2"></p>
+<h4 id="develop和master中间的发布分支"><a href="#develop和master中间的发布分支" class="headerlink" title="develop和master中间的发布分支"></a>develop和master中间的发布分支</h4><p>一旦develop分支上有了做一次发布（或者说快到了既定的发布日）的足够功能，就从develop分支上checkout一个发布分支。 新建的分支用于开始发布循环，所以从这个时间点开始之后新的功能不能再加到这个分支上—— 这个分支只应该做Bug修复、文档生成和其它面向发布任务。 一旦对外发布的工作都完成了， 发布分支合并到master分支并分配一个版本号打好Tag。 另外，这些从新建发布分支以来的做的修改要合并回develop分支。</p>
+<p>使用一个用于发布准备的专门分支，使得一个团队可以在完善当前的发布版本的同时，另一个团队可以继续开发下个版本的功能。 这也打造定义良好的开发阶段。</p>
+<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/3.png" alt="3"></p>
+<h4 id="修复分支"><a href="#修复分支" class="headerlink" title="修复分支"></a>修复分支</h4><p>维护分支或说是热修复（hotfix）分支用于生成快速给产品发布版本（production releases）打补丁， 这是唯一可以直接从master分支fork出来的分支。 修复完成，修改应该马上合并回master分支和dev elop分支（当前的发布分支），master分支应该用新的版本号打好Tag。</p>
+<p>为Bug修复使用专门分支，让团队可以处理掉问题而不用打断其它工作或是等待下一个发布循环。 你可以把维护分支想成是一个直接在master分支上处理的临时发布。</p>
+<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/4.png" alt="4"></p>
+<h2 id="Forking工作流"><a href="#Forking工作流" class="headerlink" title="Forking工作流"></a>Forking工作流</h2><p>Forking工作流对于开源项目贡献者一定不陌生了，它有一个公开的中央仓库，其他贡献 者可以Fork（克隆）这个仓库作为你自己的私有仓库，开源项目维护者可以直接往中央仓库 push代码，而代码贡献者只能将代码push到自己的私有仓库，只有项目维护者接受代码贡献 者往中央仓库发起的pull request才会真正合入。</p>
 ]]></content>
       <categories>
-        <category>GO</category>
+        <category>Git代码管理</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -1685,32 +1711,6 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
 </ol>
 <h2 id="注意-使用法则"><a href="#注意-使用法则" class="headerlink" title="注意-使用法则"></a>注意-使用法则</h2><p>不要通过rebase对任何已经提交到公共仓库中的commit进行修改,自己一个人玩的分支除外.</p>
 <p>只要你把变基命令当作是在推送前清理提交使之整洁的工具，并且只在从未推送至共用仓库的提交上执行变基命令，就不会有事。假如在那些已经被推送至共用仓库的提交上执行变基命令，并因此丢弃了一些别人的开发所基于的提交，那你就麻烦了.</p>
-]]></content>
-      <categories>
-        <category>Git代码管理</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git工作流</title>
-    <url>/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/</url>
-    <content><![CDATA[<p>Git工作流：为工作中团队成员遵守的一种代码管理方案，在Git中有以下几种工作流方案作为方案指导。</p>
-<h2 id="集中式工作流"><a href="#集中式工作流" class="headerlink" title="集中式工作流"></a>集中式工作流</h2><p>这种工作方式跟svn类似，它只有一个master分支，开发者会先把远程的仓库克隆到本地，之后的修 改和提交都在本地操作，直到在某个合适的时间点将本地的代码合入到远程master。这种工作流比 较适合小团队，因为小团队可能不会太多的协作和合流的动作。</p>
-<h2 id="功能分支工作流"><a href="#功能分支工作流" class="headerlink" title="功能分支工作流"></a>功能分支工作流</h2><p>这种工作流关注功能开发，不直接往master提交代码保证它是稳定并且干净的，而是从master拉 取feature分支进行功能开发，团队成员根据分工拉取不同的功能分支来进行不同的功能开发，这样 就可以完全隔离开每个人的工作。当功能开发完成后，会向master分支发起Pull Request，只有审 核通过的代码才真正允许合入master，这样就加强了团队成员之间的代码交流。</p>
-<h2 id="Gitflow工作流"><a href="#Gitflow工作流" class="headerlink" title="Gitflow工作流"></a>Gitflow工作流</h2><p>相对复杂一点，但它非常适合用来管理大型项目的发布和维护，贯穿整个开发周期，master和develop分支是一直存在的，master分支可以被视为稳定的分支， 而develop分支是相对稳定的分支，特性开发会在feature分支上进行，发布会在release分支上 进行，而bug修复则会在hotfix分支上进行</p>
-<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><h4 id="两个分支，master，develop分支"><a href="#两个分支，master，develop分支" class="headerlink" title="两个分支，master，develop分支"></a>两个分支，master，develop分支</h4><p>相对使用仅有的一个master分支，Gitflow工作流使用2个分支来记录项目的历史。 master分支存储了正式发布的历史，而develop分支作为功能的集成分支。 这样也方便master分支上的所有提交分配一个版本号。</p>
-<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png" alt="1"></p>
-<h4 id="每个人开发的功能分支"><a href="#每个人开发的功能分支" class="headerlink" title="每个人开发的功能分支"></a>每个人开发的功能分支</h4><p>每个新功能位于一个自己的分支，这样可以push到中央仓库以备份和协作。 但功能分支不是从master分支上拉出新分支，而是使用develop分支作为父分支。 当新功能完成时，合并回develop分支。 新功能提交应该从不直接与master分支交互。 从各种含义和目的上来看，功能分支加上develop分支就是功能分支工作流的用法。但Gitflow工作流没有在这里止步。</p>
-<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/2.png" alt="2"></p>
-<h4 id="develop和master中间的发布分支"><a href="#develop和master中间的发布分支" class="headerlink" title="develop和master中间的发布分支"></a>develop和master中间的发布分支</h4><p>一旦develop分支上有了做一次发布（或者说快到了既定的发布日）的足够功能，就从develop分支上checkout一个发布分支。 新建的分支用于开始发布循环，所以从这个时间点开始之后新的功能不能再加到这个分支上—— 这个分支只应该做Bug修复、文档生成和其它面向发布任务。 一旦对外发布的工作都完成了， 发布分支合并到master分支并分配一个版本号打好Tag。 另外，这些从新建发布分支以来的做的修改要合并回develop分支。</p>
-<p>使用一个用于发布准备的专门分支，使得一个团队可以在完善当前的发布版本的同时，另一个团队可以继续开发下个版本的功能。 这也打造定义良好的开发阶段。</p>
-<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/3.png" alt="3"></p>
-<h4 id="修复分支"><a href="#修复分支" class="headerlink" title="修复分支"></a>修复分支</h4><p>维护分支或说是热修复（hotfix）分支用于生成快速给产品发布版本（production releases）打补丁， 这是唯一可以直接从master分支fork出来的分支。 修复完成，修改应该马上合并回master分支和dev elop分支（当前的发布分支），master分支应该用新的版本号打好Tag。</p>
-<p>为Bug修复使用专门分支，让团队可以处理掉问题而不用打断其它工作或是等待下一个发布循环。 你可以把维护分支想成是一个直接在master分支上处理的临时发布。</p>
-<p><img src="/2021/05/06/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/4.png" alt="4"></p>
-<h2 id="Forking工作流"><a href="#Forking工作流" class="headerlink" title="Forking工作流"></a>Forking工作流</h2><p>Forking工作流对于开源项目贡献者一定不陌生了，它有一个公开的中央仓库，其他贡献 者可以Fork（克隆）这个仓库作为你自己的私有仓库，开源项目维护者可以直接往中央仓库 push代码，而代码贡献者只能将代码push到自己的私有仓库，只有项目维护者接受代码贡献 者往中央仓库发起的pull request才会真正合入。</p>
 ]]></content>
       <categories>
         <category>Git代码管理</category>
@@ -1901,6 +1901,50 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
+    <title>JVM</title>
+    <url>/2023/01/09/JVM/</url>
+    <content><![CDATA[<h2 id="什么是JVM"><a href="#什么是JVM" class="headerlink" title="什么是JVM"></a>什么是JVM</h2><p>JVM 是可运行 Java 代码的假想计算机 ，包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收，堆 和 一个存储方法域。JVM 是运行在操作系统之上的，它与硬件没有直接的交互</p>
+<h2 id="运行过程"><a href="#运行过程" class="headerlink" title="运行过程"></a>运行过程</h2><p>Java 源文件，通过编译器，能够生产相应的.Class 文件，也就是字节码文件，字节码文件又通过 Java 虚拟机中的解释器，编译成特定机器上的机器码</p>
+<p>Java 源文件—-&gt;编译器—-&gt;字节码文件</p>
+<p>字节码文件—-&gt;JVM—-&gt;机器码</p>
+<p>每一个平台的解释器是不同的，但虚拟机是相同的，所以java能够跨平台运行，当一个程序从开始运行，这时虚拟机就开始实例化了，多个程序启动就会存在多个虚拟机实例。程序退出或者关闭，则虚拟机实例消亡，多个虚拟机实例之间数据不能共享</p>
+<h3 id="执行线程"><a href="#执行线程" class="headerlink" title="执行线程"></a>执行线程</h3><p>Hotspot JVM 中的 Java 线程与原生操作系统线程有直接的映射关系。当线程本地存储、缓冲区分配、同步对象、栈、程序计数器等准备好以后，就会创建一个操作系统原生线程。</p>
+<p>Java 线程结束，原生线程随之被回收。操作系统负责调度所有线程，并把它们分配到任何可用的 CPU 上。当原生线程初始化完毕，就会调用 Java 线程的 run() 方法。当线程结束时，会释放原生线程和 Java 线程的所有资源</p>
+<h3 id="jvm系统线程"><a href="#jvm系统线程" class="headerlink" title="jvm系统线程"></a>jvm系统线程</h3><p><img src="/2023/01/09/JVM/1.jpg" alt="1"></p>
+<h2 id="内存区域"><a href="#内存区域" class="headerlink" title="内存区域"></a>内存区域</h2><p><img src="/2023/01/09/JVM/2.jpg" alt="1"></p>
+<p><img src="/2023/01/09/JVM/3.jpg" alt="1"></p>
+<h3 id="线程私有"><a href="#线程私有" class="headerlink" title="线程私有"></a>线程私有</h3><p>线程私有数据区域生命周期与线程相同, 依赖用户线程的启动/结束 而 创建/销毁(在 Hotspot JVM 内, 每个线程都与操作系统的本地线程直接映射, 因此这部分内存区域的存/否跟随本地线程的生/死对应)</p>
+<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>一块较小的内存空间, 是当前线程所执行的字节码的行号指示器，每条线程都要有一个独立的<br>程序计数器，这类内存也称为“线程私有”的内存，唯一没有outofMemory的区域</p>
+<h4 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h4><p>是描述java方法执行的内存模型，每个方法在执行的同时都会创建一个栈帧（Stack Frame）<br>用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成<br>的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程</p>
+<p>栈帧是用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接、 方法返回值和异常分派。栈帧随着方法调用而创建，随着方法结束而销毁——无论方法是正常完成还是异常完成（抛出了在方法内未被捕获的异常）都算作方法结束</p>
+<h4 id="本地方法区"><a href="#本地方法区" class="headerlink" title="本地方法区"></a>本地方法区</h4><p>本地方法区和 Java Stack 作用类似, 区别是虚拟机栈为执行 Java 方法服务, 而本地方法栈则为<br>Native 方法服务, 如果一个 VM 实现使用 C-linkage 模型来支持 Native 调用, 那么该栈将会是一个<br>C 栈，但 HotSpot JVM 直接就把本地方法栈和虚拟机栈合二为一</p>
+<h3 id="线程共享"><a href="#线程共享" class="headerlink" title="线程共享"></a>线程共享</h3><p>线程共享区域随虚拟机的启动/关闭而创建/销毁</p>
+<h4 id="堆-heap"><a href="#堆-heap" class="headerlink" title="堆 heap"></a>堆 heap</h4><p>是被线程共享的一块内存区域，创建的对象和数组都保存在 Java 堆内存中，也是垃圾收集器进行<br>垃圾收集的最重要的内存区域。由于现代 VM 采用分代收集算法, 因此 Java 堆从 GC 的角度还可以<br>细分为: 新生代(Eden 区、From Survivor 区和 To Survivor 区)和老年代</p>
+<h4 id="方法区（永久代）"><a href="#方法区（永久代）" class="headerlink" title="方法区（永久代）"></a>方法区（永久代）</h4><p>用于存储被 JVM 加载的类信息、常量、静态变量、即时编译器编译后的代码等数据.<br> HotSpot VM把GC分代收集扩展至方法区, 即使用Java堆的永久代来实现方法区, 这样 HotSpot 的垃圾收集器就可以像管理 Java 堆一样管理这部分内存, 而不必为方法区开发专门的内存管理器(永久带的内存回收的主要目标是针对常量池的回收和类型的卸载, 因此收益一般很小)</p>
+<p>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class 文件中除了有类的版<br>本、字段、方法、接口等描述等信息外，还有一项信息是常量池Constant Pool Table，用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中</p>
+<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>直接内存并不是 JVM 运行时数据区的一部分, 但也会被频繁的使用。 在 JDK 1.4 引入的 NIO 提供了基于 Channel 与 Buffer 的 IO 方式, 它可以使用 Native 函数库直接分配堆外内存, 然后使用<br>DirectByteBuffer 对象作为这块内存的引用进行操作(详见: Java I/O 扩展), 这样就避免了在 Java堆和 Native 堆中来回复制数据, 因此在一些场景中可以显著提高性能</p>
+<p>Native方法：在 Java 代码中使用本地语言（如 C、C++）编写的方法。它允许 Java 程序直接调用和使用本地语言编写的函数库和操作系统功能</p>
+<h2 id="运行时内存"><a href="#运行时内存" class="headerlink" title="运行时内存"></a>运行时内存</h2><p>Java 堆从 GC 的角度还可以细分为: 新生代(Eden 区、From Survivor 区和 To Survivor 区)和老年代</p>
+<p><img src="/2023/01/09/JVM/4.jpg" alt="1"></p>
+<h3 id="新生代"><a href="#新生代" class="headerlink" title="新生代"></a>新生代</h3><p>是用来存放新生的对象。一般占据堆的 1/3 空间。由于频繁创建对象，所以新生代会频繁触发<br>MinorGC 进行垃圾回收</p>
+<h4 id="Eden区"><a href="#Eden区" class="headerlink" title="Eden区"></a>Eden区</h4><p>Java 新对象的出生地（如果新创建的对象占用内存很大，则直接分配到老年代）。当 Eden 区内存不够的时候就会触发 MinorGC，对新生代区进行一次垃圾回收</p>
+<h4 id="ServivorFrom"><a href="#ServivorFrom" class="headerlink" title="ServivorFrom"></a>ServivorFrom</h4><p>上一次 GC 的幸存者，作为这一次 GC 的被扫描者。</p>
+<h4 id="ServivorTo"><a href="#ServivorTo" class="headerlink" title="ServivorTo"></a>ServivorTo</h4><p>保留了一次 MinorGC 过程中的幸存者</p>
+<h4 id="MinorGC-的过程（复制-gt-清空-gt-互换）"><a href="#MinorGC-的过程（复制-gt-清空-gt-互换）" class="headerlink" title="MinorGC 的过程（复制-&gt;清空-&gt;互换）"></a>MinorGC 的过程（复制-&gt;清空-&gt;互换）</h4><p>1、把 Eden 和 ServivorFrom 区域中存活的对象复制到 ServicorTo 区域（如果有对象的年<br>龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果 ServicorTo 不<br>够位置了就放到老年区）<br>2、清空 Eden 和 ServicorFrom 中的对象<br>3、ServicorTo 和 ServicorFrom 互换，原 ServicorTo 成为下一次 GC 时的 ServicorFrom区</p>
+<h3 id="老年代"><a href="#老年代" class="headerlink" title="老年代"></a>老年代</h3><p>主要存放应用程序中生命周期长的内存对象，老年代的对象比较稳定，所以 MajorGC 不会频繁执行</p>
+<p>在进行 MajorGC 前一般都先进行了一次 MinorGC，使得有新生代的对象晋身入老年代，导致空间不够用时才触发。当无法找到足够大的连续空间分配给新创建的较大对象时也会提前触发一次 MajorGC 进行垃圾回收腾出空间</p>
+<h4 id="MajorGC的过程-（标记清除算法）"><a href="#MajorGC的过程-（标记清除算法）" class="headerlink" title="MajorGC的过程 （标记清除算法）"></a>MajorGC的过程 （标记清除算法）</h4><p>首先扫描一次所有老年代，标记出存活的对象，然后回收没有标记的对象。MajorGC 的耗时比较长，因为要扫描再回收。MajorGC 会产生内存碎片，为了减少内存损耗，我们一般需要进行合并或者标记出来方便下次直接分配。当老年代也满了装不下的时候，就会抛出 OOM（Out of Memory）异常</p>
+<h3 id="永久代"><a href="#永久代" class="headerlink" title="永久代"></a>永久代</h3><p>指内存的永久保存区域，主要存放 Class 和 Meta（元数据）的信息,Class 在被加载的时候被放入永久区域，它和和存放实例的区域不同,GC 不会在主程序运行期对永久区域进行清理。所以这也导致了永久代的区域会随着加载的 Class 的增多而胀满，最终抛出 OOM 异常。</p>
+<p>java8，永久代被移除，被一个称为“元数据区”（元空间）的区域所取代，元空间并不在虚拟机中，而是使用本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。类的元数据放入 native<br>memory, 字符串池和类的静态变量放入 java 堆中，这样可以加载多少类的元数据就不再由MaxPermSize 控制, 而由系统的实际可用空间来控制</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>jvm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GO的常见小问题</title>
     <url>/2021/03/18/Go%E7%9A%84%E5%B8%B8%E8%A7%81%E5%B0%8F%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id="byte与int"><a href="#byte与int" class="headerlink" title="byte与int"></a>byte与int</h3><h3 id="byte与字符串"><a href="#byte与字符串" class="headerlink" title="byte与字符串"></a>byte与字符串</h3><h3 id="strings转换"><a href="#strings转换" class="headerlink" title="strings转换"></a>strings转换</h3><h3 id="for循环字符串"><a href="#for循环字符串" class="headerlink" title="for循环字符串"></a>for循环字符串</h3><h3 id="简短模式"><a href="#简短模式" class="headerlink" title="简短模式"></a>简短模式</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> size := <span class="number">1024</span></span><br></pre></td></tr></table></figure>
@@ -2018,50 +2062,6 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>JVM</title>
-    <url>/2023/01/09/JVM/</url>
-    <content><![CDATA[<h2 id="什么是JVM"><a href="#什么是JVM" class="headerlink" title="什么是JVM"></a>什么是JVM</h2><p>JVM 是可运行 Java 代码的假想计算机 ，包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收，堆 和 一个存储方法域。JVM 是运行在操作系统之上的，它与硬件没有直接的交互</p>
-<h2 id="运行过程"><a href="#运行过程" class="headerlink" title="运行过程"></a>运行过程</h2><p>Java 源文件，通过编译器，能够生产相应的.Class 文件，也就是字节码文件，字节码文件又通过 Java 虚拟机中的解释器，编译成特定机器上的机器码</p>
-<p>Java 源文件—-&gt;编译器—-&gt;字节码文件</p>
-<p>字节码文件—-&gt;JVM—-&gt;机器码</p>
-<p>每一个平台的解释器是不同的，但虚拟机是相同的，所以java能够跨平台运行，当一个程序从开始运行，这时虚拟机就开始实例化了，多个程序启动就会存在多个虚拟机实例。程序退出或者关闭，则虚拟机实例消亡，多个虚拟机实例之间数据不能共享</p>
-<h3 id="执行线程"><a href="#执行线程" class="headerlink" title="执行线程"></a>执行线程</h3><p>Hotspot JVM 中的 Java 线程与原生操作系统线程有直接的映射关系。当线程本地存储、缓冲区分配、同步对象、栈、程序计数器等准备好以后，就会创建一个操作系统原生线程。</p>
-<p>Java 线程结束，原生线程随之被回收。操作系统负责调度所有线程，并把它们分配到任何可用的 CPU 上。当原生线程初始化完毕，就会调用 Java 线程的 run() 方法。当线程结束时，会释放原生线程和 Java 线程的所有资源</p>
-<h3 id="jvm系统线程"><a href="#jvm系统线程" class="headerlink" title="jvm系统线程"></a>jvm系统线程</h3><p><img src="/2023/01/09/JVM/1.jpg" alt="1"></p>
-<h2 id="内存区域"><a href="#内存区域" class="headerlink" title="内存区域"></a>内存区域</h2><p><img src="/2023/01/09/JVM/2.jpg" alt="1"></p>
-<p><img src="/2023/01/09/JVM/3.jpg" alt="1"></p>
-<h3 id="线程私有"><a href="#线程私有" class="headerlink" title="线程私有"></a>线程私有</h3><p>线程私有数据区域生命周期与线程相同, 依赖用户线程的启动/结束 而 创建/销毁(在 Hotspot JVM 内, 每个线程都与操作系统的本地线程直接映射, 因此这部分内存区域的存/否跟随本地线程的生/死对应)</p>
-<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>一块较小的内存空间, 是当前线程所执行的字节码的行号指示器，每条线程都要有一个独立的<br>程序计数器，这类内存也称为“线程私有”的内存，唯一没有outofMemory的区域</p>
-<h4 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h4><p>是描述java方法执行的内存模型，每个方法在执行的同时都会创建一个栈帧（Stack Frame）<br>用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成<br>的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程</p>
-<p>栈帧是用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接、 方法返回值和异常分派。栈帧随着方法调用而创建，随着方法结束而销毁——无论方法是正常完成还是异常完成（抛出了在方法内未被捕获的异常）都算作方法结束</p>
-<h4 id="本地方法区"><a href="#本地方法区" class="headerlink" title="本地方法区"></a>本地方法区</h4><p>本地方法区和 Java Stack 作用类似, 区别是虚拟机栈为执行 Java 方法服务, 而本地方法栈则为<br>Native 方法服务, 如果一个 VM 实现使用 C-linkage 模型来支持 Native 调用, 那么该栈将会是一个<br>C 栈，但 HotSpot JVM 直接就把本地方法栈和虚拟机栈合二为一</p>
-<h3 id="线程共享"><a href="#线程共享" class="headerlink" title="线程共享"></a>线程共享</h3><p>线程共享区域随虚拟机的启动/关闭而创建/销毁</p>
-<h4 id="堆-heap"><a href="#堆-heap" class="headerlink" title="堆 heap"></a>堆 heap</h4><p>是被线程共享的一块内存区域，创建的对象和数组都保存在 Java 堆内存中，也是垃圾收集器进行<br>垃圾收集的最重要的内存区域。由于现代 VM 采用分代收集算法, 因此 Java 堆从 GC 的角度还可以<br>细分为: 新生代(Eden 区、From Survivor 区和 To Survivor 区)和老年代</p>
-<h4 id="方法区（永久代）"><a href="#方法区（永久代）" class="headerlink" title="方法区（永久代）"></a>方法区（永久代）</h4><p>用于存储被 JVM 加载的类信息、常量、静态变量、即时编译器编译后的代码等数据.<br> HotSpot VM把GC分代收集扩展至方法区, 即使用Java堆的永久代来实现方法区, 这样 HotSpot 的垃圾收集器就可以像管理 Java 堆一样管理这部分内存, 而不必为方法区开发专门的内存管理器(永久带的内存回收的主要目标是针对常量池的回收和类型的卸载, 因此收益一般很小)</p>
-<p>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class 文件中除了有类的版<br>本、字段、方法、接口等描述等信息外，还有一项信息是常量池Constant Pool Table，用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中</p>
-<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>直接内存并不是 JVM 运行时数据区的一部分, 但也会被频繁的使用。 在 JDK 1.4 引入的 NIO 提供了基于 Channel 与 Buffer 的 IO 方式, 它可以使用 Native 函数库直接分配堆外内存, 然后使用<br>DirectByteBuffer 对象作为这块内存的引用进行操作(详见: Java I/O 扩展), 这样就避免了在 Java堆和 Native 堆中来回复制数据, 因此在一些场景中可以显著提高性能</p>
-<p>Native方法：在 Java 代码中使用本地语言（如 C、C++）编写的方法。它允许 Java 程序直接调用和使用本地语言编写的函数库和操作系统功能</p>
-<h2 id="运行时内存"><a href="#运行时内存" class="headerlink" title="运行时内存"></a>运行时内存</h2><p>Java 堆从 GC 的角度还可以细分为: 新生代(Eden 区、From Survivor 区和 To Survivor 区)和老年代</p>
-<p><img src="/2023/01/09/JVM/4.jpg" alt="1"></p>
-<h3 id="新生代"><a href="#新生代" class="headerlink" title="新生代"></a>新生代</h3><p>是用来存放新生的对象。一般占据堆的 1/3 空间。由于频繁创建对象，所以新生代会频繁触发<br>MinorGC 进行垃圾回收</p>
-<h4 id="Eden区"><a href="#Eden区" class="headerlink" title="Eden区"></a>Eden区</h4><p>Java 新对象的出生地（如果新创建的对象占用内存很大，则直接分配到老年代）。当 Eden 区内存不够的时候就会触发 MinorGC，对新生代区进行一次垃圾回收</p>
-<h4 id="ServivorFrom"><a href="#ServivorFrom" class="headerlink" title="ServivorFrom"></a>ServivorFrom</h4><p>上一次 GC 的幸存者，作为这一次 GC 的被扫描者。</p>
-<h4 id="ServivorTo"><a href="#ServivorTo" class="headerlink" title="ServivorTo"></a>ServivorTo</h4><p>保留了一次 MinorGC 过程中的幸存者</p>
-<h4 id="MinorGC-的过程（复制-gt-清空-gt-互换）"><a href="#MinorGC-的过程（复制-gt-清空-gt-互换）" class="headerlink" title="MinorGC 的过程（复制-&gt;清空-&gt;互换）"></a>MinorGC 的过程（复制-&gt;清空-&gt;互换）</h4><p>1、把 Eden 和 ServivorFrom 区域中存活的对象复制到 ServicorTo 区域（如果有对象的年<br>龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果 ServicorTo 不<br>够位置了就放到老年区）<br>2、清空 Eden 和 ServicorFrom 中的对象<br>3、ServicorTo 和 ServicorFrom 互换，原 ServicorTo 成为下一次 GC 时的 ServicorFrom区</p>
-<h3 id="老年代"><a href="#老年代" class="headerlink" title="老年代"></a>老年代</h3><p>主要存放应用程序中生命周期长的内存对象，老年代的对象比较稳定，所以 MajorGC 不会频繁执行</p>
-<p>在进行 MajorGC 前一般都先进行了一次 MinorGC，使得有新生代的对象晋身入老年代，导致空间不够用时才触发。当无法找到足够大的连续空间分配给新创建的较大对象时也会提前触发一次 MajorGC 进行垃圾回收腾出空间</p>
-<h4 id="MajorGC的过程-（标记清除算法）"><a href="#MajorGC的过程-（标记清除算法）" class="headerlink" title="MajorGC的过程 （标记清除算法）"></a>MajorGC的过程 （标记清除算法）</h4><p>首先扫描一次所有老年代，标记出存活的对象，然后回收没有标记的对象。MajorGC 的耗时比较长，因为要扫描再回收。MajorGC 会产生内存碎片，为了减少内存损耗，我们一般需要进行合并或者标记出来方便下次直接分配。当老年代也满了装不下的时候，就会抛出 OOM（Out of Memory）异常</p>
-<h3 id="永久代"><a href="#永久代" class="headerlink" title="永久代"></a>永久代</h3><p>指内存的永久保存区域，主要存放 Class 和 Meta（元数据）的信息,Class 在被加载的时候被放入永久区域，它和和存放实例的区域不同,GC 不会在主程序运行期对永久区域进行清理。所以这也导致了永久代的区域会随着加载的 Class 的增多而胀满，最终抛出 OOM 异常。</p>
-<p>java8，永久代被移除，被一个称为“元数据区”（元空间）的区域所取代，元空间并不在虚拟机中，而是使用本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。类的元数据放入 native<br>memory, 字符串池和类的静态变量放入 java 堆中，这样可以加载多少类的元数据就不再由MaxPermSize 控制, 而由系统的实际可用空间来控制</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>jvm</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java IO和NIO</title>
     <url>/2023/01/24/Java%20IO%E5%92%8CNIO/</url>
     <content><![CDATA[<h2 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h2><h3 id="阻塞IO模型"><a href="#阻塞IO模型" class="headerlink" title="阻塞IO模型"></a>阻塞IO模型</h3><p>最传统的一种 IO 模型，即在读写数据过程中会发生阻塞现象。当用户线程发出 IO 请求之后，内<br>核会去查看数据是否就绪，如果没有就绪就会等待数据就绪，而用户线程就会处于阻塞状态，用<br>户线程交出 CPU。当数据就绪之后，内核会将数据拷贝到用户线程，并返回结果给用户线程，用<br>户线程才解除 block 状态。典型的阻塞 IO 模型的例子为：data = socket.read();如果数据没有就<br>绪，就会一直阻塞在 read 方法。</p>
@@ -2095,48 +2095,93 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>Java类加载</title>
-    <url>/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/</url>
-    <content><![CDATA[<h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2><p>JVM 类加载机制分为五个部分：加载，验证，准备，解析，初始化</p>
-<p><img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/1.jpg" alt="1"></p>
-<h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><p>这个阶段会在内存中生成一个代表这个类的 java.lang.Class 对象，作为方法区这个类的各种数据的入口。注意这里不一定非得要从一个 Class 文件获取，这里既可以从 ZIP 包中读取（比如从 jar 包和 war 包中读取），也可以在运行时计算生成（动态代理），也可以由其它文件生成（比如将 JSP 文件转换成对应的 Class 类）</p>
-<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>这一阶段的主要目的是为了确保 Class 文件的字节流中包含的信息是否符合当前虚拟机的要求，并<br>且不会危害虚拟机自身的安全</p>
-<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>准备阶段是正式为类变量分配内存并设置类变量的初始值阶段，即在方法区中分配这些变量所使<br>用的内存空间</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int v &#x3D; 1;</span><br></pre></td></tr></table></figure>
+    <title>Java List以及扩容分析</title>
+    <url>/2023/02/01/Java%20List%E4%BB%A5%E5%8F%8A%E6%89%A9%E5%AE%B9%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h3 id="ArrayList（数组）"><a href="#ArrayList（数组）" class="headerlink" title="ArrayList（数组）"></a>ArrayList（数组）</h3><p>ArrayList 是最常用的 List 实现类，内部是通过数组实现的，它允许对元素进行快速随机访问。数组的缺点是每个元素之间不能有间隔，当数组大小不满足时需要增加存储能力，就要将已经有数组的数据复制到新的存储空间中。当从 ArrayList 的中间位置插入或者删除元素时，需要对数组进行复制、移动、代价比较高。因此，它适合随机查找和遍历，不适合插入和删除</p>
+<h4 id="三种构造方式"><a href="#三种构造方式" class="headerlink" title="三种构造方式"></a>三种构造方式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt;, <span class="title">RandomAccess</span>, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//默认初始容量大小</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//1.创建时指定容量大小</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">if</span> (initialCapacity &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	        <span class="keyword">this</span>.elementData = <span class="keyword">new</span> Object[initialCapacity];</span><br><span class="line">	    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (initialCapacity == <span class="number">0</span>) &#123;</span><br><span class="line">	        <span class="keyword">this</span>.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">	    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;Illegal Capacity: &quot;</span>+</span><br><span class="line">	                                           initialCapacity);</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//2.无参构造函数，使用初始容量 10 来构造一个空列表</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">this</span>.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//3.构造包含指定 collection 元素的列表，这些元素利用该集合的迭代器按顺序返回</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(Collection&lt;? extends E&gt; c)</span> </span>&#123;</span><br><span class="line">	    elementData = c.toArray();</span><br><span class="line">	    <span class="keyword">if</span> ((size = elementData.length) != <span class="number">0</span>) &#123;</span><br><span class="line">	        <span class="comment">// c.toArray might (incorrectly) not return Object[] (see 6260652)</span></span><br><span class="line">	        <span class="keyword">if</span> (elementData.getClass() != Object[].class)</span><br><span class="line">	            elementData = Arrays.copyOf(elementData, size, Object[].class);</span><br><span class="line">	    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	        <span class="comment">// replace with empty array.</span></span><br><span class="line">	        <span class="keyword">this</span>.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>实际上变量 v 在准备阶段过后的初始值为 0 而不是 1，将 v 赋值为 1 的 put static 指令是程序被编译后，存放于类构造器client方法之中。</p>
-<p>但是注意如果声明为</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static final int v &#x3D; 1;</span><br></pre></td></tr></table></figure>
+<p>以无参数构造方法创建 ArrayList 时，实际上初始化赋值的是一个空数组。当真正对数组进行添加元素操作时，才真正分配容量。即向数组中添加第一个元素时，数组容量扩为 10。</p>
+<p>无参构造的 ArrayList 对象时，直接创建了长度是 10 的 Object[] 数组 elementData</p>
+<h4 id="扩容过程"><a href="#扩容过程" class="headerlink" title="扩容过程"></a>扩容过程</h4><p>在添加元素的时候</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//向列表末尾添加元素，添加成功时返回 true</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//调用了 ensureCapacityInternal 方法，确保数组下标不越界</span></span><br><span class="line">	ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">	<span class="comment">//添加元素</span></span><br><span class="line">	elementData[size++] = e;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacityInternal</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 当要向列表中添加第 1 个元素时，minCapacity 为 1，在 Math.max()方法比较后，minCapacity 变为 10。</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calculateCapacity</span><span class="params">(Object[] elementData, <span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">    	<span class="comment">//返回默认的容量和传入参数的较大值</span></span><br><span class="line">        <span class="keyword">return</span> Math.max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> minCapacity;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断是否需要扩容</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureExplicitCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    modCount++;</span><br><span class="line">    <span class="comment">// overflow-conscious code</span></span><br><span class="line">    <span class="keyword">if</span> (minCapacity - elementData.length &gt; <span class="number">0</span>)</span><br><span class="line">    	<span class="comment">//调用 grow 方法进行扩容</span></span><br><span class="line">        grow(minCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>在编译阶段会为 v 生成 ConstantValue 属性，在准备阶段虚拟机会根据 ConstantValue 属性将 v赋值为 1</p>
-<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>解析阶段是指虚拟机将常量池中的符号引用替换为直接引用的过程</p>
-<h4 id="符号引用"><a href="#符号引用" class="headerlink" title="符号引用"></a>符号引用</h4><p>符号引用与虚拟机实现的布局无关，引用的目标并不一定要已经加载到内存中。各种虚拟机实现的内存布局可以各不相同，但是它们能接受的符号引用必须是一致的，因为符号引用的字面量形式明确定义在 Java 虚拟机规范的 Class 文件格式中</p>
-<p>符号引用就是 class 文件中的：</p>
-<ol>
-<li><p>CONSTANT_Class_info</p>
-</li>
-<li><p>CONSTANT_Field_info</p>
-</li>
-<li><p>CONSTANT_Method_info</p>
-</li>
-</ol>
-<p>等类型的常量</p>
-<h4 id="直接引用"><a href="#直接引用" class="headerlink" title="直接引用"></a>直接引用</h4><p>直接引用可以是指向目标的指针，相对偏移量或是一个能间接定位到目标的句柄。如果有了直接引用，那引用的目标必定已经在内存中存在</p>
-<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化阶段是类加载最后一个阶段，前面的类加载阶段之后，除了在加载阶段可以自定义类加载器以外，其它操作都由 JVM 主导。到了初始阶段，才开始真正执行类中定义的 Java 程序代码</p>
-<h4 id="类构造器"><a href="#类构造器" class="headerlink" title="类构造器"></a>类构造器</h4><p>初始化阶段是执行类构造器client方法的过程。client方法是由编译器自动收集类中的类变量的赋值操作和静态语句块中的语句合并而成的。虚拟机会保证子client方法执行之前，父类的client方法已经执行完毕，如果一个类中没有对静态变量赋值也没有静态语句块，那么编译器可以不为这个类生成client()方法</p>
-<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p>设计团队把加载动作放到 JVM 外部实现，以便让应用程序决定如何获取所需的类，</p>
-<p> <img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/2.jpg" alt="1"></p>
-<h3 id="启动类加载器"><a href="#启动类加载器" class="headerlink" title="启动类加载器"></a>启动类加载器</h3><p>负责加载 JAVA_HOME\lib 目录中的，或通过-Xbootclasspath 参数指定路径中的，且被虚拟机认可（按文件名识别，如 rt.jar）的类</p>
-<h3 id="扩展类加载器"><a href="#扩展类加载器" class="headerlink" title="扩展类加载器"></a>扩展类加载器</h3><p>负责加载 JAVA_HOME\lib\ext 目录中的，或通过 java.ext.dirs 系统变量指定路径中的类库</p>
-<h3 id="应用类加载器"><a href="#应用类加载器" class="headerlink" title="应用类加载器"></a>应用类加载器</h3><p>负责加载用户路径（classpath）上的类库。JVM 通过双亲委派模型进行类的加载，当然我们也可以通过继承 java.lang.ClassLoader实现自定义的类加载器</p>
-<h3 id="双亲委派"><a href="#双亲委派" class="headerlink" title="双亲委派"></a>双亲委派</h3><p>当一个类收到了类加载请求，他首先不会尝试自己去加载这个类，而是把这个请求委派给父类去完成，每一个层次类加载器都是如此，因此所有的加载请求都应该传送到启动类加载其中，只有当父类加载器反馈自己无法完成这个请求的时候（在它的加载路径下没有找到所需加载的Class），子类加载器才会尝试自己去加载。采用双亲委派的一个好处是比如加载位于 rt.jar 包中的类 java.lang.Object，不管是哪个加载器加载这个类，最终都是委托给顶层的启动类加载器进行加载，这样就保证了使用不同的类加载器最终得到的都是同样一个Object 对象</p>
-<p><img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/3.jpg" alt="1"></p>
+<p>当添加第 1 个元素时，elementData.length 为 0，因为执行了 ensureCapacityInternal() 方法 ，所以 minCapacity 此时为 10。此时，minCapacity - elementData.length &gt; 0成立，所以会进入 grow(minCapacity) 方法；</p>
+<p>当添加第 2 个元素时，minCapacity = 2，此时 elementData.length 在添加第一个元素后扩容成 10 了。此时，minCapacity - elementData.length &gt; 0 不成立，所以不会执行 grow(minCapacity) 方法，既不会进行扩容。添加第 3、4、···直到第 10 个元素时，依然不会执行 grow 方法，数组容量都为 10；</p>
+<p>当添加第 11 个元素时，minCapacity = 11，此时 minCapacity - elementData.length = 11 - 10 &gt; 0 成立，因此便进行扩容操作</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//要分配的最大数组大小</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ARRAY_SIZE = Integer.MAX_VALUE - <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//扩容的核心代码</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// oldCapacity 为旧容量，newCapacity 为新容量</span></span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">    <span class="comment">//将 oldCapacity 右移一位，即相当于 oldCapacity / 2，整句运算式的结果就是将新容量更新为旧容量的 1.5 倍</span></span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="comment">//检查新容量 newCapacity 是否大于最小需要容量 minCapacity，若还是小于最小需要容量，那么就把最小需要容量当作数组的新容量</span></span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    <span class="comment">//如果 minCapacity 大于最大容量，则新容量则为`Integer.MAX_VALUE`，否则，新容量大小则为 MAX_ARRAY_SIZE 即为 Integer.MAX_VALUE - 8。</span></span><br><span class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    <span class="comment">// minCapacity is usually close to size, so this is a win:</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">		(1) Arrays.copyOf()方法返回的数组是新的数组对象，原数组对象仍是原数组对象不变;</span></span><br><span class="line"><span class="comment">		(2) 该拷贝不会影响原来的数组, copyOf()的第二个自变量指定要建立的新数组长度，如果新数组的长度超过原数组的长度，则保留数组默认值;</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 如果新容量 newCapacity &gt; MAX_ARRAY_SIZE，则执行 hugeCapacity() 方法来比较 minCapacity 和 MAX_ARRAY_SIZE：</span></span><br><span class="line"><span class="comment">// 如果 minCapacity 大于最大容量，则新容量 newCapacity 则为 Integer.MAX_VALUE；</span></span><br><span class="line"><span class="comment">// 否则，新容量 newCapacity 则为 MAX_ARRAY_SIZE 即为 Integer.MAX_VALUE - 8；</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hugeCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (minCapacity &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> OutOfMemoryError();</span><br><span class="line">    <span class="keyword">return</span> (minCapacity &gt; MAX_ARRAY_SIZE) ?</span><br><span class="line">        Integer.MAX_VALUE :</span><br><span class="line">        MAX_ARRAY_SIZE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当向 ArrayList 中添加一个新元素时，ArrayList 会先检查当前数组中是否还有剩余的空间可以存储元素；<br>如果有剩余空间，则将元素添加到数组 elementData 的尾部，然后更新数组 elementData 中的元素数量 size 即可。<br>如果没有剩余空间，则底层通过 ArrayList 扩容的核心方法 grow(int minCapacity) 来进行扩容，具体步骤如下：<br>将数组 elementData 的长度设置为旧容量 oldCapacity；<br>然后取 oldCapacity 的大约 1.5 倍作为新容量 newCapacity，具体的计算方法是 newCapacity = oldCapacity + (oldCapacity &lt;&lt; 1)，这里通过使用移位运算符来加快计算速度；<br>通过 Arrays.copyOf() 方法来创建一个长度为 newCapacity 的数组，并且将旧数组中的元素复制到新数组中，复制完成后，ArrayList 就会开始使用新数组来存储元素，并更新数组的大小和元素数量</p>
+<h3 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h3><p>Vector 与 ArrayList 一样，也是通过数组实现的，不同的是它支持线程的同步，即某一时刻只有一个线程能够写 Vector，避免多线程同时写而引起的不一致性，但实现同步需要很高的花费，因此，访问它比访问 ArrayList 慢。</p>
+<h4 id="三种构造方式-1"><a href="#三种构造方式-1" class="headerlink" title="三种构造方式"></a>三种构造方式</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public Vector() &#123;</span><br><span class="line">  &#x2F;&#x2F; 当前是无参构造方法 Vector vector &#x3D; new Vector();</span><br><span class="line">  &#x2F;&#x2F; 其实你不给参数，它默认就是10，它会去调用一个有参方法</span><br><span class="line">     this(10);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> ...</span><br><span class="line"> </span><br><span class="line"> public Vector(int initialCapacity) &#123;</span><br><span class="line"> 	&#x2F;&#x2F; 这句话好比如 Vector vector &#x3D; new Vector(5);</span><br><span class="line"> 	&#x2F;&#x2F; 意思代表着如果你没有参数我默认就是10，如何调用有参方法</span><br><span class="line"> 	&#x2F;&#x2F; 如果构造方法有值的话，则直接走当前方法</span><br><span class="line">     this(initialCapacity, 0);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> ...</span><br><span class="line"> </span><br><span class="line"> public Vector(int initialCapacity, int capacityIncrement) &#123;</span><br><span class="line">     super();</span><br><span class="line">     &#x2F;&#x2F; 判断当前的值是否为负数，则会抛出异常</span><br><span class="line">     if (initialCapacity &lt; 0)</span><br><span class="line">         throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+</span><br><span class="line">                                            initialCapacity);</span><br><span class="line">     &#x2F;**</span><br><span class="line">     * 第一个值代表当前数组初始化的大小</span><br><span class="line">     * 第二个值代表待会儿我们可以在扩容的那个地方说，它起到了关键</span><br><span class="line">     * 性作用</span><br><span class="line">     *&#x2F;</span><br><span class="line">     this.elementData &#x3D; new Object[initialCapacity];</span><br><span class="line">     &#x2F;&#x2F; 如果我们在刚刚开始构建Vector的时候你没有传入参数</span><br><span class="line">     &#x2F;&#x2F; 或者说你只传了一个参数，在调用当前方法的时候，它是</span><br><span class="line">     &#x2F;&#x2F; 默认传入0的</span><br><span class="line">     this.capacityIncrement &#x3D; capacityIncrement;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="扩容过程-1"><a href="#扩容过程-1" class="headerlink" title="扩容过程"></a>扩容过程</h4><p>在添加元素的时候</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 可以看见该方法synchronized修饰，则是线程安全的</span><br><span class="line">    public synchronized boolean add(E e) &#123;</span><br><span class="line">        modCount++;&#x2F;&#x2F; 修改次数 加加</span><br><span class="line">        &#x2F;&#x2F; protected int elementCount; 则记录当前，每次加1</span><br><span class="line">        ensureCapacityHelper(elementCount + 1);</span><br><span class="line">        elementData[elementCount++] &#x3D; e;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    private void ensureCapacityHelper(int minCapacity) &#123;</span><br><span class="line">        &#x2F;&#x2F; overflow-conscious code</span><br><span class="line">        &#x2F;&#x2F; 如果在无参构造方法在第一次进行添加的时候，</span><br><span class="line">        &#x2F;&#x2F; 此时的minCapacity 等于1 而elementDta.length等于10</span><br><span class="line">        &#x2F;&#x2F; 1-10 &#x3D; -9; -9不大于0 所以说不满足条件</span><br><span class="line">        if (minCapacity - elementData.length &gt; 0)</span><br><span class="line">            grow(minCapacity);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>经过多次添加的时候，满足条件，会触发扩容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void grow(int minCapacity) &#123;</span><br><span class="line">    &#x2F;&#x2F; overflow-conscious code</span><br><span class="line">    &#x2F;&#x2F; 此时我们的elementData.length是等于10 </span><br><span class="line">    int oldCapacity &#x3D; elementData.length;</span><br><span class="line">    &#x2F;**</span><br><span class="line">    * 这边 运用了一个三元运算符就行判断</span><br><span class="line">    * capacityIncrement  就是前面说的起到关键性作用的变量</span><br><span class="line">    * 假设，我们在创建Vector的时候是一个无参的构造器，或者说只有一个</span><br><span class="line">    * 参数，那么此时的capacityIncrement 等于0，前面提到过 默认传给</span><br><span class="line">    * 它的就是0，0不大于0所以结果为 oldCapacity + oldCapacity </span><br><span class="line">    * 也就是10加上10 等于20，以2倍的速度进行增加</span><br><span class="line">    * 如果你是Vector vector &#x3D; new Vector(5,5);这样创建</span><br><span class="line">    * 结果明显而知，5肯定大于0的</span><br><span class="line">    *&#x2F;</span><br><span class="line">    int newCapacity &#x3D; oldCapacity + ((capacityIncrement &gt; 0) ?</span><br><span class="line">                                     capacityIncrement : oldCapacity);</span><br><span class="line">    </span><br><span class="line">    if (newCapacity - minCapacity &lt; 0)</span><br><span class="line">        newCapacity &#x3D; minCapacity;</span><br><span class="line">    &#x2F;&#x2F; private static final int MAX_ARRAY_SIZE &#x3D; Integer.MAX_VALUE - 8 &#x3D; 2147483639</span><br><span class="line">    &#x2F;&#x2F; 判断当前是否超出了一个最大值</span><br><span class="line">    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)</span><br><span class="line">        newCapacity &#x3D; hugeCapacity(minCapacity);</span><br><span class="line">    &#x2F;&#x2F; 调用了Arrays.copyOf方法，</span><br><span class="line">    &#x2F;&#x2F; 为什么调用Arrays.copyOf，为了就是保留原有的数据</span><br><span class="line">    &#x2F;&#x2F; 把新的newCapacity赋值给它后再copy给原来的elementData</span><br><span class="line">    &#x2F;&#x2F; 则当前扩容完成</span><br><span class="line">    elementData &#x3D; Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h3><p>LinkedList 是用链表结构存储数据的，很适合数据的动态插入和删除，随机访问和遍历速度比较慢。另外，他还提供了 List 接口中没有定义的方法，专门用于操作表头和表尾元素，可以当作堆栈、队列和双向队列使用。</p>
+<p>可以参考算法 <a href="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/">数组、链表和跳表</a></p>
 ]]></content>
       <categories>
         <category>Java</category>
       </categories>
       <tags>
-        <tag>jvm</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java Set源码分析</title>
+    <url>/2023/02/06/Java%20Set%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>Set 注重独一无二的性质,该体系集合用于存储无序(存入和取出的顺序不一定相同)元素，值不能重复。对象的相等性本质是对象 hashCode 值（java 是依据对象的内存地址计算出的此序号）判断的，如果想要让两个不同的对象视为相等的，就必须覆盖 Object 的 hashCode 方法和 equals 方法。</p>
+<h3 id="HashSet-Hash表"><a href="#HashSet-Hash表" class="headerlink" title="HashSet (Hash表)"></a>HashSet (Hash表)</h3><p>1、HashSet ：无序、不重复、无索引<br>2、HashSet 底层是采用HashMap存储数据的，在JDK8之前是由数组+链表组成的，在JDK8之后是由数组+链表+红黑树组成的，数组的每个索引位置默认存放的是单向链表，如果链表的长度到达了一个临界值就会转为红黑树<br>3、在哈希表中，最重要的是哈希值，哈希值就是对象的整数表现形式，HashSet 在存数据的时候，会根据数组长度和哈希值计算出要存入的位置，哈希值是根据hashCode()方法计算出来的int型的整数，hashCode()方法定义在Object类中，所有对象都可以调用，默认使用地址值进行计算，一般情况下，自定义的对象都要重写hashCode()方法，利用对象内部的属性值计算哈希值。</p>
+<h4 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public HashSet() &#123;</span><br><span class="line">    map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 定义</span><br><span class="line">private transient HashMap&lt;E,Object&gt; map;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到底层就是HashMap</p>
+<h4 id="add方法"><a href="#add方法" class="headerlink" title="add方法"></a>add方法</h4><p>PRESENT 主要起到占位作用，是一个空对象，用来代替 HashMap 中的 value</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    return map.put(e, PRESENT)&#x3D;&#x3D;null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">private static final Object PRESENT &#x3D; new Object();</span><br></pre></td></tr></table></figure>
+
+<h5 id="调用HashMap底层"><a href="#调用HashMap底层" class="headerlink" title="调用HashMap底层"></a>调用HashMap底层</h5><p>然后实际调用到了HashMap的底层</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    return putVal(hash(key), key, value, false, true);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 先调用一个hash方法，这是一个hash算法，并不是计算hash值</span><br><span class="line">&#x2F;&#x2F; 如果 key 的 hash 值 &lt; 216 - 1，那么得到就是 key 的 hash 值，否则就不是</span><br><span class="line">&#x2F;&#x2F; 用来后面寻找索引位置</span><br><span class="line">static final int hash(Object key) &#123;</span><br><span class="line">    int h;</span><br><span class="line">    return (key &#x3D;&#x3D; null) ? 0 : (h &#x3D; key.hashCode()) ^ (h &gt;&gt;&gt; 16);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">final V putVal(int hash, K key, V value, boolean onlyIfAbsent,</span><br><span class="line">                   boolean evict) &#123;</span><br><span class="line">    &#x2F;&#x2F; 定义辅助变量</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;</span><br><span class="line">    &#x2F;&#x2F; table 其实就是数组，定义：</span><br><span class="line">    &#x2F;&#x2F; transient Node&lt;K,V&gt;[] table;</span><br><span class="line">    &#x2F;&#x2F; 判断数组是否为空，如果为空调用 resize() 方法进行第一次扩容</span><br><span class="line">    &#x2F;&#x2F; 并将扩容后的数组大小返回给 n</span><br><span class="line">    if ((tab &#x3D; table) &#x3D;&#x3D; null || (n &#x3D; tab.length) &#x3D;&#x3D; 0)</span><br><span class="line">        n &#x3D; (tab &#x3D; resize()).length;</span><br><span class="line">		...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="第一次初始化扩容"><a href="#第一次初始化扩容" class="headerlink" title="第一次初始化扩容"></a>第一次初始化扩容</h5><p>初始化 HashSet(或者是 HashMap)后，数组是空值(null)，需要进行数组的扩容,后面会详解扩容机制</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">final Node&lt;K,V&gt;[] resize() &#123;</span><br><span class="line">    &#x2F;&#x2F; 定义辅助变量</span><br><span class="line">    Node&lt;K,V&gt;[] oldTab &#x3D; table;</span><br><span class="line">    &#x2F;&#x2F; 旧数组长度 0</span><br><span class="line">    int oldCap &#x3D; (oldTab &#x3D;&#x3D; null) ? 0 : oldTab.length;</span><br><span class="line">    &#x2F;&#x2F; 旧临界值</span><br><span class="line">    int oldThr &#x3D; threshold;</span><br><span class="line">    &#x2F;&#x2F; 新的数组长度和临界值</span><br><span class="line">    int newCap, newThr &#x3D; 0;</span><br><span class="line">    &#x2F;&#x2F; 不满足条件</span><br><span class="line">    if (oldCap &gt; 0) &#123;</span><br><span class="line">        if (oldCap &gt;&#x3D; MAXIMUM_CAPACITY) &#123;</span><br><span class="line">            threshold &#x3D; Integer.MAX_VALUE;</span><br><span class="line">            return oldTab;</span><br><span class="line">        &#125;</span><br><span class="line">        else if ((newCap &#x3D; oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;</span><br><span class="line">                 oldCap &gt;&#x3D; DEFAULT_INITIAL_CAPACITY)</span><br><span class="line">            newThr &#x3D; oldThr &lt;&lt; 1; &#x2F;&#x2F; double threshold</span><br><span class="line">    &#125;</span><br><span class="line">	  &#x2F;&#x2F; 不满足条件</span><br><span class="line">    else if (oldThr &gt; 0) &#x2F;&#x2F; initial capacity was placed in threshold</span><br><span class="line">        newCap &#x3D; oldThr;</span><br><span class="line">    &#x2F;&#x2F; 第一次扩容</span><br><span class="line">    else &#123;               &#x2F;&#x2F; zero initial threshold signifies using defaults</span><br><span class="line">        &#x2F;&#x2F; 新的数组长度默认为 16</span><br><span class="line">        newCap &#x3D; DEFAULT_INITIAL_CAPACITY;</span><br><span class="line">        &#x2F;&#x2F; 新的临界值默认为 12</span><br><span class="line">        newThr &#x3D; (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 不满足条件</span><br><span class="line">    if (newThr &#x3D;&#x3D; 0) &#123;</span><br><span class="line">        float ft &#x3D; (float)newCap * loadFactor;</span><br><span class="line">        newThr &#x3D; (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?</span><br><span class="line">                  (int)ft : Integer.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 改变为新的临界值</span><br><span class="line">    threshold &#x3D; newThr;</span><br><span class="line">    @SuppressWarnings(&#123;&quot;rawtypes&quot;,&quot;unchecked&quot;&#125;)</span><br><span class="line">	  &#x2F;&#x2F; 定义新的数组</span><br><span class="line">    Node&lt;K,V&gt;[] newTab &#x3D; (Node&lt;K,V&gt;[])new Node[newCap];</span><br><span class="line">    &#x2F;&#x2F; 改变数组</span><br><span class="line">    table &#x3D; newTab;</span><br><span class="line">    &#x2F;&#x2F; 旧数组为空，不满足条件</span><br><span class="line">    if (oldTab !&#x3D; null) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 返回新的数组</span><br><span class="line">    return newTab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="索引位置计算"><a href="#索引位置计算" class="headerlink" title="索引位置计算"></a>索引位置计算</h5><p>第一次扩容后，继续putVal，会计算索引位置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">final V putVal(int hash, K key, V value, boolean onlyIfAbsent,</span><br><span class="line">                   boolean evict) &#123;</span><br><span class="line">        Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;</span><br><span class="line">    if ((tab &#x3D; table) &#x3D;&#x3D; null || (n &#x3D; tab.length) &#x3D;&#x3D; 0)</span><br><span class="line">        n &#x3D; (tab &#x3D; resize()).length;</span><br><span class="line">    &#x2F;&#x2F; 从这里开始</span><br><span class="line">    &#x2F;&#x2F; 计算应该存放的数组索引</span><br><span class="line">    &#x2F;&#x2F; 判断该索引位置是否为空，</span><br><span class="line">    if ((p &#x3D; tab[i &#x3D; (n - 1) &amp; hash]) &#x3D;&#x3D; null)</span><br><span class="line">        &#x2F;&#x2F; 如果为空，直接将结点加到该索引位置</span><br><span class="line">        tab[i] &#x3D; newNode(hash, key, value, null);</span><br><span class="line">    &#x2F;&#x2F; 如果不为空，则该位置有可能是链表或红黑树，目前不会执行这一步</span><br><span class="line">    else &#123;</span><br><span class="line">        &#x2F;&#x2F; 此处省略一大堆代码</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount; &#x2F;&#x2F; 修改次数 +1</span><br><span class="line">    &#x2F;&#x2F; 判断添加后的节点数是否大于临界值</span><br><span class="line">    if (++size &gt; threshold)</span><br><span class="line">        &#x2F;&#x2F; 如果大于，再次扩容</span><br><span class="line">        resize();</span><br><span class="line">    &#x2F;&#x2F; 一个空方法，供继承 HashMap 的类去实现</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(n - 1) &amp; hash 是计算索引的算法，计算后可以得到一个 0 ~ n -1 范围的值</p>
+<p>这里的 n 也就是数组的长度是始终是 2 的 m 次幂，初始是16.扩容后就是32</p>
+<p>那么 n -1 用二进制表示就是 0000 1111(高位省略)，二进制与运算(&amp;)可以用来隐藏和显示某些位。这里的 0000 1111 &amp; hash 就是指显示 hash 值的后 4 位，最终就会得到 0 ~ 15 之间的数，作为数组的索引</p>
+<h5 id="重复判断"><a href="#重复判断" class="headerlink" title="重复判断"></a>重复判断</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">final V putVal(int hash, K key, V value, boolean onlyIfAbsent,</span><br><span class="line">                   boolean evict) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;</span><br><span class="line">    if ((tab &#x3D; table) &#x3D;&#x3D; null || (n &#x3D; tab.length) &#x3D;&#x3D; 0)</span><br><span class="line">        n &#x3D; (tab &#x3D; resize()).length;</span><br><span class="line">    if ((p &#x3D; tab[i &#x3D; (n - 1) &amp; hash]) &#x3D;&#x3D; null)</span><br><span class="line">        tab[i] &#x3D; newNode(hash, key, value, null);</span><br><span class="line">    &#x2F;&#x2F; 上面讲过注释省略，从这里开始分析</span><br><span class="line">	&#x2F;&#x2F; 如果当前索引位置不为空(是链表或红黑树)</span><br><span class="line">    else &#123;</span><br><span class="line">        &#x2F;&#x2F; 定义辅助变量</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        &#x2F;&#x2F; 判断当前索引位置的结点的 hash 值是否和新结点的 hash 值相同</span><br><span class="line">        &#x2F;&#x2F; 并且 key 对象相同或者 key 值相等(equlas)</span><br><span class="line">        if (p.hash &#x3D;&#x3D; hash &amp;&amp;</span><br><span class="line">            ((k &#x3D; p.key) &#x3D;&#x3D; key || (key !&#x3D; null &amp;&amp; key.equals(k))))</span><br><span class="line">            &#x2F;&#x2F; 将当前索引位置的结点赋值给 e</span><br><span class="line">            e &#x3D; p;</span><br><span class="line">        &#x2F;&#x2F; 判断当前索引位置是否是红黑树</span><br><span class="line">        else if (p instanceof TreeNode)</span><br><span class="line">            e &#x3D; ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);</span><br><span class="line">        &#x2F;&#x2F; 当前索引位置是链表</span><br><span class="line">        else &#123;</span><br><span class="line">            &#x2F;&#x2F; 代码省略</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; 用 e 是否为空来判断是否存在重复结点</span><br><span class="line">        if (e !&#x3D; null) &#123; &#x2F;&#x2F; existing mapping for key</span><br><span class="line">            V oldValue &#x3D; e.value;</span><br><span class="line">            &#x2F;&#x2F; 判断是否更新 value</span><br><span class="line">            &#x2F;&#x2F; 这里 value 始终是一个 object 对象，用来占位，所以不需要更新</span><br><span class="line">            if (!onlyIfAbsent || oldValue &#x3D;&#x3D; null)</span><br><span class="line">                e.value &#x3D; value;</span><br><span class="line">            &#x2F;&#x2F; 一个空方法，供 HashMap 的子类实现</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            &#x2F;&#x2F; 返回旧的 value</span><br><span class="line">            return oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 下面讲过注释省略</span><br><span class="line">    ++modCount;</span><br><span class="line">    if (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="链表转红黑树"><a href="#链表转红黑树" class="headerlink" title="链表转红黑树"></a>链表转红黑树</h5><p>添加元素时，当元素长度到达一定阈值，是如何从链表转为红黑树</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">final V putVal(int hash, K key, V value, boolean onlyIfAbsent,</span><br><span class="line">                   boolean evict) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;</span><br><span class="line">    if ((tab &#x3D; table) &#x3D;&#x3D; null || (n &#x3D; tab.length) &#x3D;&#x3D; 0)</span><br><span class="line">        n &#x3D; (tab &#x3D; resize()).length;</span><br><span class="line">    if ((p &#x3D; tab[i &#x3D; (n - 1) &amp; hash]) &#x3D;&#x3D; null)</span><br><span class="line">        tab[i] &#x3D; newNode(hash, key, value, null);</span><br><span class="line">    else &#123;</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        if (p.hash &#x3D;&#x3D; hash &amp;&amp;</span><br><span class="line">            ((k &#x3D; p.key) &#x3D;&#x3D; key || (key !&#x3D; null &amp;&amp; key.equals(k))))</span><br><span class="line">            e &#x3D; p;</span><br><span class="line">        else if (p instanceof TreeNode)</span><br><span class="line">            e &#x3D; ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);</span><br><span class="line">        &#x2F;&#x2F; 上面讲过注释省略，从这里开始分析</span><br><span class="line">        else &#123;</span><br><span class="line">            &#x2F;&#x2F; 遍历链表</span><br><span class="line">            for (int binCount &#x3D; 0; ; ++binCount) &#123;</span><br><span class="line">                &#x2F;&#x2F; 判断是否到达链表的末尾</span><br><span class="line">                if ((e &#x3D; p.next) &#x3D;&#x3D; null) &#123;</span><br><span class="line">                    &#x2F;&#x2F; 直接将结点添加到链表的末尾</span><br><span class="line">                    p.next &#x3D; newNode(hash, key, value, null);</span><br><span class="line">                    &#x2F;&#x2F; 判断链表的结点数是否到达转为红黑树的临界值(8)</span><br><span class="line">                    if (binCount &gt;&#x3D; TREEIFY_THRESHOLD - 1) &#x2F;&#x2F; -1 for 1st</span><br><span class="line">                        &#x2F;&#x2F; bin 可以理解为链表的结点</span><br><span class="line">                        &#x2F;&#x2F; 当 binCount 为 7 时，此时的位置是第 8 个结点</span><br><span class="line">                        &#x2F;&#x2F; 但由于刚刚又加入了一个结点，所以实际链表上已经有 9 个结点了</span><br><span class="line">                        &#x2F;&#x2F; 所以准确的说应该是超过临界值后会转为红黑树，不是到达</span><br><span class="line">                        &#x2F;&#x2F; 只不过 binCount 是从 0 开始数的，导致结点数少了一个</span><br><span class="line">                        &#x2F;&#x2F; 转为红黑树</span><br><span class="line">                        treeifyBin(tab, hash);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                &#x2F;&#x2F; 判断当前结点的 hash 是否和新结点的 hash 相同</span><br><span class="line">                &#x2F;&#x2F; 并且 key 对象相同或者 key 值相同</span><br><span class="line">                if (e.hash &#x3D;&#x3D; hash &amp;&amp;</span><br><span class="line">                    ((k &#x3D; e.key) &#x3D;&#x3D; key || (key !&#x3D; null &amp;&amp; key.equals(k))))</span><br><span class="line">                    &#x2F;&#x2F; 直接退出循环，不做任何添加操作</span><br><span class="line">                    break;</span><br><span class="line">                &#x2F;&#x2F; 继续下一个结点</span><br><span class="line">                p &#x3D; e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; 下面讲过注释省略</span><br><span class="line">        if (e !&#x3D; null) &#123; &#x2F;&#x2F; existing mapping for key</span><br><span class="line">            V oldValue &#x3D; e.value;</span><br><span class="line">            if (!onlyIfAbsent || oldValue &#x3D;&#x3D; null)</span><br><span class="line">                e.value &#x3D; value;</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            return oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount;</span><br><span class="line">    if (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后进入treeifyBin函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">final void treeifyBin(Node&lt;K,V&gt;[] tab, int hash) &#123;</span><br><span class="line">    &#x2F;&#x2F; 定义辅助变量</span><br><span class="line">    int n, index; Node&lt;K,V&gt; e;</span><br><span class="line">    &#x2F;&#x2F; 判断数组是否为空，或者数组长度小于一个临界值(64)</span><br><span class="line">    if (tab &#x3D;&#x3D; null || (n &#x3D; tab.length) &lt; MIN_TREEIFY_CAPACITY)</span><br><span class="line">        &#x2F;&#x2F; 进行数组扩容，而不是转成红黑树</span><br><span class="line">        resize();</span><br><span class="line">    else if ((e &#x3D; tab[index &#x3D; (n - 1) &amp; hash]) !&#x3D; null) &#123;</span><br><span class="line">    	&#x2F;&#x2F; 转红黑树的代码省略</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>链表上的结点到达了 8 个，但此时数组长度小于 64，是不会将其转为红黑树的，而是进行一次扩容</p>
+<p>所以链表转为红黑树的临界条件是结点超过8个，且数组长度超过64</p>
+<h5 id="数组达到临界值扩容机制"><a href="#数组达到临界值扩容机制" class="headerlink" title="数组达到临界值扩容机制"></a>数组达到临界值扩容机制</h5><ol>
+<li>数组长度（Capacity）：数组长度表示 HashSet 内部数组的大小。在 Java 8 的 HashSet 实现中，默认的初始数组长度是 16。当 HashSet 中的元素数量超过数组长度时，就可能会发生冲突（碰撞），即多个元素哈希值相同但放置在数组同一个位置上。</li>
+<li>临界值（Load Factor）：临界值是一个比例值，用于表示 HashSet 中元素数量和数组长度的比例。在 Java 8 的 HashSet 实现中，默认的临界值是 0.75，即当元素数量达到数组长度的 0.75 倍时，就会触发数组的扩容操作。</li>
+<li>扩容之后，将旧数组的链表数据移动到新数组，移动链表时并不是把整个链表直接移动到新数组上，而是一个一个结点的移动。因为随着数组扩容后数组长度的变大，每个结点计算出的索引会和之前的不一样</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">final Node&lt;K,V&gt;[] resize() &#123;</span><br><span class="line">    &#x2F;&#x2F; 定义辅助变量</span><br><span class="line">    Node&lt;K,V&gt;[] oldTab &#x3D; table;</span><br><span class="line">    &#x2F;&#x2F; 旧数组长度 0</span><br><span class="line">    int oldCap &#x3D; (oldTab &#x3D;&#x3D; null) ? 0 : oldTab.length;</span><br><span class="line">    &#x2F;&#x2F; 旧临界值</span><br><span class="line">    int oldThr &#x3D; threshold;</span><br><span class="line">    &#x2F;&#x2F; 新的数组长度和临界值</span><br><span class="line">    int newCap, newThr &#x3D; 0;</span><br><span class="line">    &#x2F;&#x2F; 第 n 此扩容，n &gt; 1</span><br><span class="line">    if (oldCap &gt; 0) &#123;</span><br><span class="line">        &#x2F;&#x2F; 判断旧数组长度是否大于最大值</span><br><span class="line">        if (oldCap &gt;&#x3D; MAXIMUM_CAPACITY) &#123;</span><br><span class="line">            threshold &#x3D; Integer.MAX_VALUE;</span><br><span class="line">            return oldTab;</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; 新数组长度扩大两倍</span><br><span class="line">    	&#x2F;&#x2F; 并判断新数组长度是否 &lt; 最大值，同时旧数组长度是否 &gt;&#x3D; 初始长度(16)</span><br><span class="line">        else if ((newCap &#x3D; oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;</span><br><span class="line">                 oldCap &gt;&#x3D; DEFAULT_INITIAL_CAPACITY)</span><br><span class="line">            &#x2F;&#x2F; 新数组长度临界值扩大两倍</span><br><span class="line">            newThr &#x3D; oldThr &lt;&lt; 1; &#x2F;&#x2F; double threshold</span><br><span class="line">    &#125;</span><br><span class="line">	&#x2F;&#x2F; 判断旧数组长度临界值是否 &gt; 0</span><br><span class="line">    else if (oldThr &gt; 0) &#x2F;&#x2F; initial capacity was placed in threshold</span><br><span class="line">        &#x2F;&#x2F; 新数组长度为旧数组长度临界值</span><br><span class="line">        &#x2F;&#x2F; oldCap 为 0，因为如果 &gt; 0 就走第一个条件了</span><br><span class="line">        newCap &#x3D; oldThr;</span><br><span class="line">    &#x2F;&#x2F; 第一次扩容</span><br><span class="line">    else &#123;               &#x2F;&#x2F; zero initial threshold signifies using defaults</span><br><span class="line">        &#x2F;&#x2F; 新的数组长度默认为 16</span><br><span class="line">        newCap &#x3D; DEFAULT_INITIAL_CAPACITY;</span><br><span class="line">        &#x2F;&#x2F; 新的临界值默认为 12</span><br><span class="line">        newThr &#x3D; (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 判断是否新临界值为 0</span><br><span class="line">    if (newThr &#x3D;&#x3D; 0) &#123;</span><br><span class="line">        &#x2F;&#x2F; 将新数组大小的 0.75 倍赋值给 ft</span><br><span class="line">        &#x2F;&#x2F; 初始化 HashMap 时就指定了 loadFactor 为默认临界因子(0.75f)</span><br><span class="line">        float ft &#x3D; (float)newCap * loadFactor;</span><br><span class="line">        &#x2F;&#x2F; 如果新的数组大小 &lt; 最大长度，并且 ft &lt; 最大长度，新的数组长度临界值就为 ft</span><br><span class="line">        &#x2F;&#x2F; 否则为整数的最大值</span><br><span class="line">        newThr &#x3D; (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?</span><br><span class="line">                  (int)ft : Integer.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 改变为新的临界值</span><br><span class="line">    threshold &#x3D; newThr;</span><br><span class="line">    @SuppressWarnings(&#123;&quot;rawtypes&quot;,&quot;unchecked&quot;&#125;)</span><br><span class="line">	&#x2F;&#x2F; 定义新的数组</span><br><span class="line">    Node&lt;K,V&gt;[] newTab &#x3D; (Node&lt;K,V&gt;[])new Node[newCap];</span><br><span class="line">    &#x2F;&#x2F; 改变数组</span><br><span class="line">    table &#x3D; newTab;</span><br><span class="line">    &#x2F;&#x2F; 判断旧数组是否为空</span><br><span class="line">    if (oldTab !&#x3D; null) &#123;</span><br><span class="line">        &#x2F;&#x2F; 按照新的数组长度创建新的数组</span><br><span class="line">        &#x2F;&#x2F; 并遍历旧数组，将旧数组上的结点一个一个移动到新数组上</span><br><span class="line">        for (int j &#x3D; 0; j &lt; oldCap; ++j) &#123;</span><br><span class="line">            Node&lt;K,V&gt; e; &#x2F;&#x2F; 定义辅助变量</span><br><span class="line">            &#x2F;&#x2F; 判断当前索引位置是否为空</span><br><span class="line">            if ((e &#x3D; oldTab[j]) !&#x3D; null) &#123;</span><br><span class="line">                &#x2F;&#x2F; 设置旧数组该索引处为空</span><br><span class="line">                oldTab[j] &#x3D; null;</span><br><span class="line">                &#x2F;&#x2F; 判断是否有下一个结点</span><br><span class="line">                if (e.next &#x3D;&#x3D; null)</span><br><span class="line">                    &#x2F;&#x2F; 没有下一个结点就直接将该结点移动到新数组上</span><br><span class="line">                    &#x2F;&#x2F; 注意：索引是由数组长度和 hash 值共同决定的</span><br><span class="line">                    &#x2F;&#x2F; 此时计算索引用的是新数组的长度，结果可能会与旧数组的索引不同</span><br><span class="line">                    newTab[e.hash &amp; (newCap - 1)] &#x3D; e;</span><br><span class="line">                &#x2F;&#x2F; 判断该索引位置是不是一个红黑树</span><br><span class="line">                else if (e instanceof TreeNode)</span><br><span class="line">                    &#x2F;&#x2F; 移动树上的结点</span><br><span class="line">                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);</span><br><span class="line">                &#x2F;&#x2F; 该索引位置是一个链表</span><br><span class="line">                else &#123; &#x2F;&#x2F; preserve order</span><br><span class="line">                    &#x2F;&#x2F; 定义 lowHead，lowTail，表示低位链表的头结点和尾节点</span><br><span class="line">                    Node&lt;K,V&gt; loHead &#x3D; null, loTail &#x3D; null;</span><br><span class="line">                    &#x2F;&#x2F; 定义 hightHead，hightTail，表示高位链表的头结点和尾节点</span><br><span class="line">                    &#x2F;&#x2F; 低位链表和高位链表里的位，表示的是数组索引位</span><br><span class="line">                    &#x2F;&#x2F; 由于数组长度的增加，新数组的索引位置可能不变，也可能变大</span><br><span class="line">                    &#x2F;&#x2F; 如果不变，就用低位链表；如果变大，就用高位链表</span><br><span class="line">                    Node&lt;K,V&gt; hiHead &#x3D; null, hiTail &#x3D; null;</span><br><span class="line">                    Node&lt;K,V&gt; next; &#x2F;&#x2F; 定义下一个结点</span><br><span class="line">                    do &#123;</span><br><span class="line">                        &#x2F;&#x2F; 获取下一个结点</span><br><span class="line">                        next &#x3D; e.next;</span><br><span class="line">                        &#x2F;&#x2F; 计算新新数组的索引位是否不变</span><br><span class="line">                        if ((e.hash &amp; oldCap) &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                            &#x2F;&#x2F; 判断当前结点是否是头结点</span><br><span class="line">                            &#x2F;&#x2F; 因为最开始定义 loTail 为 null</span><br><span class="line">                            &#x2F;&#x2F; 而如果添加了一个结点后，loTail 就会指新的结点，不为 null</span><br><span class="line">                            if (loTail &#x3D;&#x3D; null)</span><br><span class="line">                                &#x2F;&#x2F; 将当前结点赋值给头结点</span><br><span class="line">                                loHead &#x3D; e;</span><br><span class="line">                        	&#x2F;&#x2F; 当前结点不是头结点</span><br><span class="line">                            else</span><br><span class="line">                                &#x2F;&#x2F; 将当前结点添加到最后</span><br><span class="line">                                loTail.next &#x3D; e;</span><br><span class="line">                            &#x2F;&#x2F; 尾节点指向最后的新结点</span><br><span class="line">                            loTail &#x3D; e;</span><br><span class="line">                        &#125;</span><br><span class="line">                        &#x2F;&#x2F; 新数组的索引位变大，使用高位链表</span><br><span class="line">                        else &#123;</span><br><span class="line">                            &#x2F;&#x2F; 和上面的低位链表一样的操作</span><br><span class="line">                            if (hiTail &#x3D;&#x3D; null)</span><br><span class="line">                                hiHead &#x3D; e;</span><br><span class="line">                            else</span><br><span class="line">                                hiTail.next &#x3D; e;</span><br><span class="line">                            hiTail &#x3D; e;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#x2F;&#x2F; 继续下一个结点</span><br><span class="line">                    &#125; while ((e &#x3D; next) !&#x3D; null);</span><br><span class="line">                    &#x2F;&#x2F; 判断低位链表是否为非空链表</span><br><span class="line">                    if (loTail !&#x3D; null) &#123;</span><br><span class="line">                        loTail.next &#x3D; null;</span><br><span class="line">                        &#x2F;&#x2F; 移动到新数组上的索引不变</span><br><span class="line">                        newTab[j] &#x3D; loHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                    &#x2F;&#x2F; 判断高位链表是否为非空链表</span><br><span class="line">                    if (hiTail !&#x3D; null) &#123;</span><br><span class="line">                        hiTail.next &#x3D; null;</span><br><span class="line">                        &#x2F;&#x2F; 移动到新数组上的索引变大，相差一个旧数组的长度</span><br><span class="line">                        newTab[j + oldCap] &#x3D; hiHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 返回新的数组</span><br><span class="line">    return newTab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="TreeSet（二叉树）"><a href="#TreeSet（二叉树）" class="headerlink" title="TreeSet（二叉树）"></a>TreeSet（二叉树）</h3><h3 id="LinkHashSet（HashSet-LinkedHashMap）"><a href="#LinkHashSet（HashSet-LinkedHashMap）" class="headerlink" title="LinkHashSet（HashSet+LinkedHashMap）"></a>LinkHashSet（HashSet+LinkedHashMap）</h3>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -2187,6 +2232,51 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </categories>
       <tags>
         <tag>垃圾回收</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java类加载</title>
+    <url>/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/</url>
+    <content><![CDATA[<h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2><p>JVM 类加载机制分为五个部分：加载，验证，准备，解析，初始化</p>
+<p><img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/1.jpg" alt="1"></p>
+<h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><p>这个阶段会在内存中生成一个代表这个类的 java.lang.Class 对象，作为方法区这个类的各种数据的入口。注意这里不一定非得要从一个 Class 文件获取，这里既可以从 ZIP 包中读取（比如从 jar 包和 war 包中读取），也可以在运行时计算生成（动态代理），也可以由其它文件生成（比如将 JSP 文件转换成对应的 Class 类）</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>这一阶段的主要目的是为了确保 Class 文件的字节流中包含的信息是否符合当前虚拟机的要求，并<br>且不会危害虚拟机自身的安全</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>准备阶段是正式为类变量分配内存并设置类变量的初始值阶段，即在方法区中分配这些变量所使<br>用的内存空间</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int v &#x3D; 1;</span><br></pre></td></tr></table></figure>
+
+<p>实际上变量 v 在准备阶段过后的初始值为 0 而不是 1，将 v 赋值为 1 的 put static 指令是程序被编译后，存放于类构造器client方法之中。</p>
+<p>但是注意如果声明为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static final int v &#x3D; 1;</span><br></pre></td></tr></table></figure>
+
+<p>在编译阶段会为 v 生成 ConstantValue 属性，在准备阶段虚拟机会根据 ConstantValue 属性将 v赋值为 1</p>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>解析阶段是指虚拟机将常量池中的符号引用替换为直接引用的过程</p>
+<h4 id="符号引用"><a href="#符号引用" class="headerlink" title="符号引用"></a>符号引用</h4><p>符号引用与虚拟机实现的布局无关，引用的目标并不一定要已经加载到内存中。各种虚拟机实现的内存布局可以各不相同，但是它们能接受的符号引用必须是一致的，因为符号引用的字面量形式明确定义在 Java 虚拟机规范的 Class 文件格式中</p>
+<p>符号引用就是 class 文件中的：</p>
+<ol>
+<li><p>CONSTANT_Class_info</p>
+</li>
+<li><p>CONSTANT_Field_info</p>
+</li>
+<li><p>CONSTANT_Method_info</p>
+</li>
+</ol>
+<p>等类型的常量</p>
+<h4 id="直接引用"><a href="#直接引用" class="headerlink" title="直接引用"></a>直接引用</h4><p>直接引用可以是指向目标的指针，相对偏移量或是一个能间接定位到目标的句柄。如果有了直接引用，那引用的目标必定已经在内存中存在</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化阶段是类加载最后一个阶段，前面的类加载阶段之后，除了在加载阶段可以自定义类加载器以外，其它操作都由 JVM 主导。到了初始阶段，才开始真正执行类中定义的 Java 程序代码</p>
+<h4 id="类构造器"><a href="#类构造器" class="headerlink" title="类构造器"></a>类构造器</h4><p>初始化阶段是执行类构造器client方法的过程。client方法是由编译器自动收集类中的类变量的赋值操作和静态语句块中的语句合并而成的。虚拟机会保证子client方法执行之前，父类的client方法已经执行完毕，如果一个类中没有对静态变量赋值也没有静态语句块，那么编译器可以不为这个类生成client()方法</p>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p>设计团队把加载动作放到 JVM 外部实现，以便让应用程序决定如何获取所需的类，</p>
+<p> <img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/2.jpg" alt="1"></p>
+<h3 id="启动类加载器"><a href="#启动类加载器" class="headerlink" title="启动类加载器"></a>启动类加载器</h3><p>负责加载 JAVA_HOME\lib 目录中的，或通过-Xbootclasspath 参数指定路径中的，且被虚拟机认可（按文件名识别，如 rt.jar）的类</p>
+<h3 id="扩展类加载器"><a href="#扩展类加载器" class="headerlink" title="扩展类加载器"></a>扩展类加载器</h3><p>负责加载 JAVA_HOME\lib\ext 目录中的，或通过 java.ext.dirs 系统变量指定路径中的类库</p>
+<h3 id="应用类加载器"><a href="#应用类加载器" class="headerlink" title="应用类加载器"></a>应用类加载器</h3><p>负责加载用户路径（classpath）上的类库。JVM 通过双亲委派模型进行类的加载，当然我们也可以通过继承 java.lang.ClassLoader实现自定义的类加载器</p>
+<h3 id="双亲委派"><a href="#双亲委派" class="headerlink" title="双亲委派"></a>双亲委派</h3><p>当一个类收到了类加载请求，他首先不会尝试自己去加载这个类，而是把这个请求委派给父类去完成，每一个层次类加载器都是如此，因此所有的加载请求都应该传送到启动类加载其中，只有当父类加载器反馈自己无法完成这个请求的时候（在它的加载路径下没有找到所需加载的Class），子类加载器才会尝试自己去加载。采用双亲委派的一个好处是比如加载位于 rt.jar 包中的类 java.lang.Object，不管是哪个加载器加载这个类，最终都是委托给顶层的启动类加载器进行加载，这样就保证了使用不同的类加载器最终得到的都是同样一个Object 对象</p>
+<p><img src="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/3.jpg" alt="1"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>jvm</tag>
       </tags>
   </entry>
   <entry>
