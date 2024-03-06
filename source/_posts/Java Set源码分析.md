@@ -452,7 +452,148 @@ final Node<K,V>[] resize() {
 
 ### TreeSet（二叉树）
 
+1. TreeSet()是使用二叉树的原理对新 add()的对象按照指定的顺序排序（升序、降序），每增加一个对象都会进行排序，将对象插入的二叉树指定的位置。
 
+2. Integer 和 String 对象都可以进行默认的 TreeSet 排序，而自定义类的对象是不可以的，自己定义的类必须实现 Comparable 接口，并且覆写相应的 compareTo()函数，才可以正常使用。
+
+3. 在覆写 compare()函数时，要返回相应的值才能使 TreeSet 按照一定的规则来排序
+
+4. 比较此对象与指定对象的顺序。如果该对象小于、等于或大于指定对象，则分别返回负数、零或正整数。
+
+   
+
+#### 构造方法
+
+TreeSet秉承了HashSet的一贯做法，内部通过Map来保存key/value数据，由于Set只保存key，所以内部的Map的value公用了一个定义的Object对象PRESENT。 TreeSet由于维持有序性，所以内部通过TreeMap存储数据。
+
+```
+public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>, Cloneable, java.io.Serializable
+{
+    // 用于保存TreeMap的对象，会在构造函数当中赋值TreeMap对象
+    private transient NavigableMap<E,Object> m;
+
+    // TreeMap当中所有的value都是保存的PRESENT对象
+    private static final Object PRESENT = new Object();
+}
+
+ TreeSet(NavigableMap<E,Object> m) {
+ 			this.m = m;
+ }
+```
+
+几种构造方式：
+
+通过创建TreeMap对象赋值给TreeSet当中NavigableMap<E,Object> m变量；
+
+通过创建NavigableMap<E,Object> m变量并通过addAll方法方法添加到TreeMap当中。
+
+在TreeSet的addAll()方法通过super.addAll()方法调用AbstractCollection的addAll()方法，在该方法内部最后又调用TreeSet的add()方法添加到TreeMap m当中。
+
+```
+public TreeSet() {
+        this(new TreeMap<E,Object>());
+    }
+
+
+public TreeSet(Comparator<? super E> comparator) {
+        this(new TreeMap<>(comparator));
+    }
+
+
+public TreeSet(Collection<? extends E> c) {
+        this();
+        addAll(c);
+    }
+
+
+public TreeSet(SortedSet<E> s) {
+        this(s.comparator());
+        addAll(s);
+    }
+```
+
+add方法
+
+```
+public  boolean addAll(Collection<? extends E> c) {
+        // Use linear-time version if applicable
+        if (m.size()==0 && c.size() > 0 &&
+            c instanceof SortedSet &&
+            m instanceof TreeMap) {
+            SortedSet<? extends E> set = (SortedSet<? extends E>) c;
+            TreeMap<E,Object> map = (TreeMap<E, Object>) m;
+            Comparator<?> cc = set.comparator();
+            Comparator<? super E> mc = map.comparator();
+            if (cc==mc || (cc != null && cc.equals(mc))) {
+                map.addAllForTreeSet(set, PRESENT);
+                return true;
+            }
+        }
+        return super.addAll(c);
+    }
+
+
+public boolean add(E e) {
+        return m.put(e, PRESENT)==null;
+    }
+
+----------AbstractCollection.java中代码-----------
+
+public boolean addAll(Collection<? extends E> c) {
+        boolean modified = false;
+        for (E e : c)
+            if (add(e))
+                modified = true;
+        return modified;
+    }
+```
+
+
+
+详情见TreeMap的底层实现方法
 
 ### LinkHashSet（HashSet+LinkedHashMap）
 
+ 对于 LinkedHashSet 而言，它继承与 HashSet、又基于 LinkedHashMap 来实现的。LinkedHashSet 底层使用 LinkedHashMap 来保存所有元素，它继承与 HashSet，其所有的方法操作上又与 HashSet 相同，因此 LinkedHashSet 的实现上非常简单，调用父类的构造器，底层构造一个 LinkedHashMap 来实现，在相关操作上与父类 HashSet 的操作相同，直接调用父类 HashSet 的方法即可。
+
+```
+   public LinkedHashSet(int initialCapacity, float loadFactor) {
+       super(initialCapacity, loadFactor, true);
+   }
+   public LinkedHashSet(int initialCapacity) {
+       super(initialCapacity, .75f, true);
+   }
+   public LinkedHashSet() {
+       super(16, .75f, true);
+   }
+   public LinkedHashSet(Collection<? extends E> c) {
+       super(Math.max(2*c.size(), 11), .75f, true);
+       addAll(c);
+   }
+   public LinkedHashSet(int initialCapacity, float loadFactor) {
+       super(initialCapacity, loadFactor, true);
+   }
+   public LinkedHashSet(int initialCapacity) {
+       super(initialCapacity, .75f, true);
+   }
+
+   public LinkedHashSet() {
+       super(16, .75f, true);
+   }
+
+   public LinkedHashSet(Collection<? extends E> c) {
+       super(Math.max(2*c.size(), 11), .75f, true);
+       addAll(c);
+   }
+   
+   ...
+   
+   
+   private transient HashMap<E,Object> map;
+    HashSet(int initialCapacity, float loadFactor, boolean dummy) {
+        map = new LinkedHashMap<>(initialCapacity, loadFactor);
+    }
+
+```
+
+详情见LinkedHashMap的底层实现方法
