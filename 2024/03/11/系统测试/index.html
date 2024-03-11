@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            系统测试
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -33,15 +33,40 @@
 </head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">系统测试</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2024-03-11
+                        </span>
+                        
+                            
+                                <span id="/2024/03/11/系统测试/" class="leancloud_visitors" data-flag-title="系统测试">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2024/03/11/系统测试/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">系统架构基础</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">架构</span>
+                        
+                    
                 </div>
             
         </div>
@@ -50,65 +75,100 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <p>系统测试：为了发现错误而执行程序的过程，成功的测试是发现了至今尚未发现的错误的测试</p>
+<h2 id="测试方法"><a href="#测试方法" class="headerlink" title="测试方法"></a>测试方法</h2><h3 id="静态测试"><a href="#静态测试" class="headerlink" title="静态测试"></a>静态测试</h3><p>指被测试程序不在机器上运行，而采用人工检测和计算机辅助静态分析的手段对程序进行检测，包括对文档的静态测试和对代码的静态测试。包括桌前检查、代码审查、代码走查的方式。使用这种方法能够有效地发现30%-70%的逻辑设计和编码错误</p>
+<h3 id="动态测试"><a href="#动态测试" class="headerlink" title="动态测试"></a>动态测试</h3><p>指在计算机上实际运行程序进行软件测试，一般采用白盒测试和黑盒测试方法(还有灰盒和自动化)</p>
+<h4 id="黑盒测试"><a href="#黑盒测试" class="headerlink" title="黑盒测试"></a>黑盒测试</h4><p>黑盒测试关注于测试软件的功能(功能性测试)，而不考虑内部实现细节。测试人员不需要知道代码的具体结构，而是根据软件的需求规格和功能来设计测试用例</p>
+<h4 id="白盒测试"><a href="#白盒测试" class="headerlink" title="白盒测试"></a>白盒测试</h4><p>白盒测试关注于测试软件的内部逻辑和代码结构(结构性测试)，以确保代码按照预期方式执行。测试人员需要了解软件的代码，以设计测试用例，以覆盖不同的代码路径和分支情况，以及验证代码是否满足质量标准和最佳实践</p>
+<h2 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h2><h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><p>也称为模块测试，测试的对象是可独立编译或汇编的程序模块、软件构件或OO软件中的类(统称为模块),测试依据是软件详细设计说明书。</p>
+<h3 id="集成测试"><a href="#集成测试" class="headerlink" title="集成测试"></a>集成测试</h3><p>目的是检查模块之间，以及模块和已集成的软件之间的接口关系，并验证已集成的软件是否符合设计要求。测试依据是软件概要设计文档</p>
+<h3 id="系统测试"><a href="#系统测试" class="headerlink" title="系统测试"></a>系统测试</h3><p>测试对象是完整的、集成的计算机系统；测试的目的是在真实系统工作环境下，验证完成的软件配置项能否和系统正确连接，并满足系统/子系统设计文档和软件开发合同规定的要求。测试依据是用户需求或开发合同。主要内容包括功能测试、健壮性测试、性能测试、用户界面测试、安全性测试、安装与反安装测试等，其中，最重要的工作是进行功能测试与性能测试。</p>
+<p>功能测试主要采用黑盒测试方法；性能测试主要指标有响应时间、吞吐量、并发用户数和资源利用率等。系统测试通常由独立的测试团队执行，他们并不直接参与软件的开发过程</p>
+<h3 id="确认测试"><a href="#确认测试" class="headerlink" title="确认测试"></a>确认测试</h3><p>主要用于验证软件的功能、性能和其他特性是否与用户需求一致。测试依据是需求文档，确认测试是软件或产品开发的最后一个阶段，在系统测试完成后进行。它的主要目标是确保软件或产品已经满足最终用户的期望和需求。在确认测试中，最终用户（或其代表）将根据他们的实际使用情境，验证软件是否符合他们的业务流程和预期目标根据用户的参与程度，通常包括以下类型：</p>
+<p>内部确认测试：主要由软件开发组织内部按照SRS进行测试。</p>
+<p>Alpha测试：用户在开发环境下进行测试。</p>
+<p>Beta测试：用户在实际使用环境下进行测试，通过改测试后，产品才能交付用户。</p>
+<p>验收测试：针对SRS,在交付前以用户为主进行的测试。其测试对象为完整的、集成的计算机系统。验收测试的目的是，在真实的用户工作环境下，检验软件系统是否满足开发技术合同或SRS。验收测试的结论是用户确定是否接收该软件的主要依据。除应满足一般测试的准入条件外，在进行验收测试之前，应确认被测软件系统已通过系统测试。</p>
+<h3 id="回归测试"><a href="#回归测试" class="headerlink" title="回归测试"></a>回归测试</h3><p>测试目的是测试软件变更之后，变更部分的正确性和对变更需求的符合性，以及软件原有的、正确的功能、性能和其他规定的要求的不损害性(不能把其他好的模块改错)</p>
+<h2 id="测试用例设计"><a href="#测试用例设计" class="headerlink" title="测试用例设计"></a>测试用例设计</h2><h3 id="黑盒测试用例"><a href="#黑盒测试用例" class="headerlink" title="黑盒测试用例"></a>黑盒测试用例</h3><p>将程序看做一个黑盒子，只知道输入输出，不知道内部代码，由此设计出测试用例，分为下面几类：</p>
+<p>等价类划分：通过将输入值分成不同的类别，从而减少测试用例的数量，同时确保测试覆盖各种可能的情况。这样可以更高效地测试软件，而不必为每个可能的输入值都编写一个测试用例</p>
+<p>边界值划分：将每类的边界值作为测试用例，边界值一般为范围的两端值以及在此范围之外的与此范围间隔最小的两个值</p>
+<p>错误推测：没有固定的方法，凭经验而言，来推测有可能产生问题的地方，作为测试用例进行测试。</p>
+<p>因果图：由一个结果来反推原因的方法，具体结果具体分析，没有固定方法</p>
+<h3 id="白盒测试用例"><a href="#白盒测试用例" class="headerlink" title="白盒测试用例"></a>白盒测试用例</h3><p>知道程序的代码逻辑，按照程序的代码语句，来设计覆盖代码分支的测试用例，覆盖级别从低至高分为下面几种：</p>
+<p>语句覆盖SC:逻辑代码中的所有语句都要被执行一遍，覆盖层级最低，因为执行了所有的语句，不代表执行了所有的条件判断</p>
+<p>判定覆盖DC:逻辑代码中的所有判断语句的条件的真假分支都要覆盖一次</p>
+<p>条件覆盖CC: 针对每一个判断条件内（if）的每一个独立条件内都要执行一遍真假</p>
+<p>条件判定组合覆盖CDC：同时满足判定覆盖和条件覆盖</p>
+<p>路径覆盖：逻辑代码中的所有可行路径都覆盖了，覆盖层级最高</p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>测试是发现错误，调试是找出错误的代码和原因</p>
+<p>调试需要确定错误的准确位置；确定问题的原因并设法改正；改正后要进行回归测试。</p>
+<p>调试的方法有：蛮力法、回溯法(从出错的地方开始，向回找)、原因排除法(找出所有可能的原因，逐一进行排除)。</p>
+<p>软件的两种属性：外部属性指面向管理者和用户的属性，可直接测量，一般为性能指标。内部属性指软件产品本身的的属性，如可靠性等，只能间接测量。</p>
+<p>McCabe度量法：又称为环路复杂度，假设有向图中有向边数为m,节点数为n,则此有向图的环路复杂度为m-n+2.</p>
+<p>注意m和n代表的含义不能混淆，可以用一个最简单的环路来做特殊值记忆此公式，另外，针对一个程序流程图，每一个分支边(连线)就是一条有向边，每一条语句(语句框)就是一个顶点。</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>ZYP
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2024/03/11/%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/" target="_blank">系统测试</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
                         
-                            目前共计 146 篇日志，继续加油！
+                            <a href="/category/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80/">系统架构基础</a>
                         
-                    </span>
-                    
-                    
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
                         
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/01/06/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/"><span>消息队列的消息处理</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-06</span>
-                                </div>
-                            </div>
-                        </div>
+                            <a href="/tag/%E6%9E%B6%E6%9E%84/">架构</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/01/04/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"><span>如何设计一个消息队列</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-04</span>
-                                </div>
-                            </div>
-                        </div>
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/01/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%80%BB%E7%BB%93/"><span>消息队列的一些基本总结</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-04</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2024/03/09/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="next-prefix">» </a> 下一篇：    <a href="/2024/03/09/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" title="发布于 2024-03-09 03:42">系统设计</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archive/2023/">上一页</a><a class="page-number" href="/archive/2023/">1</a><span class="page-number current">2</span>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -146,7 +206,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
                     
