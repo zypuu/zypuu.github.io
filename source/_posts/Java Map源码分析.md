@@ -1,7 +1,7 @@
 ---
 title: Java Map源码分析
 date: 2023-03-22 19:50:00
-tags: Java
+tags: 源码
 categories: Java
 comments: true
 description: 关于java的Map， HashMap， TreeMap， ConcurrentHashMap，HashTable， TreeMap ，LinkHashMap
@@ -364,3 +364,250 @@ Java 8为进一步提高并发性，摒弃了分段锁的方案，而是直接�
 #### size方法
 
 put方法和remove方法都会通过addCount方法维护Map的size。size方法通过sumCount获取由addCount方法维护的Map的size。
+
+
+
+## TreeMap
+
+TreeMap 实现 SortedMap 接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用 Iterator 遍历 TreeMap 时，得到的记录是排过序的。
+
+如果使用排序的映射，建议使用 TreeMap。
+
+在使用 TreeMap 时，key 必须实现 Comparable 接口或者在构造 TreeMap 传入自定义的Comparator，否则会在运行时抛出 java.lang.ClassCastException 类型的异常
+
+
+
+## LinkHashMap
+
+LinkedHashMap 是 HashMap 的一个子类，保存了记录的插入顺序，在用 Iterator 遍历
+
+LinkedHashMap 时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序
+
+linkedhashmap继承了hashmap的所有方法和属性，在hashmap数据结构，数组+单项链表+红黑树的原理上加上了双向链表，通过双向链表保证输出的时候按照插入顺序或者自己指定的顺序进行输出
+
+### 成员变量参数
+
+```
+public class LinkedHashMap<K,V> extends HashMap<K,V> implements Map<K,V>{
+    
+    // 序列化唯一表示 UID
+    private static final long serialVersionUID = 3801124242820219131L;
+
+    // 双向链表的头节点
+    transient LinkedHashMapEntry<K,V> head;
+
+    // 双向链表的尾节点
+    transient LinkedHashMapEntry<K,V> tail;
+
+    // 默认是 false，则迭代时输出的顺序是插入节点的顺序。
+    // 若为 true，则输出的顺序是按照访问节点的顺序（最近最少使用原则）。
+    // accessOrder 为 true 时，可以在这基础之上构建一个 LruCache。
+    final boolean accessOrder;
+
+}
+```
+
+### 构造
+
+```
+public class LinkedHashMap<K,V> extends HashMap<K,V> implements Map<K,V>{
+    
+    ...
+    
+    /**
+     * 无参构造函数
+     */
+    public LinkedHashMap() {
+        super();
+        accessOrder = false;
+    }
+
+    /**
+     * 有参构造函数
+     *
+     * @param initialCapacity 初始化时的容量
+     */
+    public LinkedHashMap(int initialCapacity) {
+        super(initialCapacity);
+        accessOrder = false;
+    }
+
+    /**
+     * 有参构造函数
+     *
+     * @param initialCapacity 初始化时的容量
+     * @param loadFactor      扩容的加载因子
+     */
+    public LinkedHashMap(int initialCapacity, float loadFactor) {
+        super(initialCapacity, loadFactor);
+        accessOrder = false;
+    }
+
+    /**
+     * 有参构造函数
+     *
+     * @param initialCapacity 初始化时的容量
+     * @param loadFactor      扩容的加载因子
+     * @param accessOrder     迭代输出节点的顺序
+     */
+    public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) {
+        super(initialCapacity, loadFactor);
+        this.accessOrder = accessOrder;
+    }
+
+    /**
+     * 有参构造函数
+     *
+     * @param m 利用另一个Map 来构建
+     */
+    public LinkedHashMap(Map<? extends K, ? extends V> m) {
+        super();
+        accessOrder = false;
+        // 批量插入一个 map 中的所有数据到本集合中。
+        putMapEntries(m, false);
+    }
+    ...
+    
+}
+
+```
+
+### put方法
+
+当前方法重写了hashmap中的Node方法，当创建的时候会调用当前方法中的类进行创建，根据添加顺序为双向链表添加位置。在hashmap的put()调用中会生成前后项指针。
+
+```
+ Node<K,V> newNode(int hash, K key, V value, Node<K,V> e) {
+        LinkedHashMap.Entry<K,V> p =
+            new LinkedHashMap.Entry<K,V>(hash, key, value, e);
+        linkNodeLast(p);
+        return p;
+    }
+ 
+ 
+    TreeNode<K,V> newTreeNode(int hash, K key, V value, Node<K,V> next) {
+        TreeNode<K,V> p = new TreeNode<K,V>(hash, key, value, next);
+        linkNodeLast(p);
+        return p;
+    }
+ 
+    private void linkNodeLast(LinkedHashMap.Entry<K,V> p) {
+        LinkedHashMap.Entry<K,V> last = tail;
+        tail = p;
+        if (last == null)
+            head = p;
+        else {
+            p.before = last;
+            last.after = p;
+        }
+    }
+ 
+    static class Entry<K,V> extends HashMap.Node<K,V> {
+        Entry<K,V> before, after;
+        Entry(int hash, K key, V value, Node<K,V> next) {
+            super(hash, key, value, next);
+        }
+    }
+```
+
+然后调用putVal方法
+
+```
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
+            ...
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e); //
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
+```
+
+linkedhashmap直接使用了hashmap的put()方法，因为继承了hashmap并且重写了afterNodeInsertion()方法,在accessOrder为true的时候调用，会破坏原先的顺序存储，会把最近访问的放到链表的最后
+
+```
+/**
+ * 此方法的作用是将刚刚访问的节点e放到链表的尾端
+ */
+void afterNodeAccess(Node<K,V> e) {
+    LinkedHashMap.Entry<K,V> last;
+    // accessOrder = true 时 访问节点后才需要置于尾端
+    // 如果e本身就在尾端，那就不需要操作
+    if (accessOrder && (last = tail) != e) {
+        // 记录节点e、e的前驱、e的后继
+        LinkedHashMap.Entry<K,V> p = (LinkedHashMap.Entry<K,V>)e, b = p.before, a = p.after;
+        //   b<->p  <--> a
+        // 第一步：现将p.after置空
+        //断开p的后节点
+        p.after = null;
+        // 第二步：将e的前驱.after 连接上e的后继
+        if (b == null)
+          //如果没有头节点      b<---> p  
+          直接把head指向a
+            head = a;
+        else
+          //如果有前驱的话，把b<  ---> a
+            b.after = a;
+        if (a != null)
+              // 如果a不等于空的话，把a指向b
+            a.before = b;
+        else
+            //如果a等于空的话，把last指向b.
+            last = b;
+        if (last == null)
+          //如果last 空把p插入到head节点。
+            head = p;
+        else {
+          //把p插入到最后节点。
+            p.before = last;
+            last.after = p;
+        }
+      //更新节点为尾节点。
+        tail = p;
+        // 链表结构性调整，修改次数自增
+        ++modCount;
+    }
+}
+```
+
+### get方法
+
+与hashmap的区别在于，当accessOrder为true的话，会把当前访问的节点插入到双向链表的最后
+
+```java
+public V get(Object key) {
+        Node<K,V> e;
+        if ((e = getNode(hash(key), key)) == null)
+            return null;
+        if (accessOrder)
+            afterNodeAccess(e);
+        return e.value;
+    }
+```
+
+### remove方法
+
+```
+void afterNodeRemoval(Node<K,V> e) { // unlink
+        LinkedHashMap.Entry<K,V> p =
+                (LinkedHashMap.Entry<K,V>)e, b = p.before, a = p.after; // b是当前节点的前一个节点，a是后一个节点
+        p.before = p.after = null; //先断开当前节点，把当前节点对上一个和下一个节点的引用置为空
+        if (b == null) //当前节点的前一个节点是null，说明当前节点是头节点，那去掉当前节点之后，当前节点的后一个节点成为了链第一个，
+            // 也就是头节点，当然有可能a也是null，那整个链就是空链，这种写法兼容了a也是null的情况
+            head = a;
+        else 
+            b.after = a; //如果当前节点不是头节点，直接去掉当前节点，当前节点的前一个和后一个连起来
+        if (a == null) //如果当前节点的后一个节点是null，说明当前节点是尾节点，那把当前节点去掉后，当前节点的前一个节点成为了链的最后一个节点尾节点。
+            tail = b;
+        else
+            a.before = b;//如果当前节点不是尾节点，直接去掉当前节点，当前节点的前一个和后一个连起来
+    }
+```

@@ -1,7 +1,7 @@
 ---
 title: Java List以及扩容分析
 date: 2023-02-01 8:42:00
-tags: Java
+tags: 源码
 categories: Java
 comments: true
 description: 关于java的Collection List ArrayList、Vector 和 LinkedList
