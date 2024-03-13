@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Java关键字native和volatile
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -33,15 +33,40 @@
 </head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Java关键字native和volatile</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-04-22
+                        </span>
+                        
+                            
+                                <span id="/2023/04/22/Java关键字native和volatile/" class="leancloud_visitors" data-flag-title="Java关键字native和volatile">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/04/22/Java关键字native和volatile/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">Java</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">Java</span>
+                        
+                    
                 </div>
             
         </div>
@@ -50,135 +75,147 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="native"><a href="#native" class="headerlink" title="native"></a>native</h2><p>1.java 中的 native 修饰符表示被修饰的方法由本地语言实现。</p>
+<p>2.有时java应用需要与java外面的环境交互。这是本地方法存在的主要原因，你可以想想java需要与一些底层系统如操作系统或某些硬件交换信息时的情况。</p>
+<p>3.JVM支持着java语言本身和运行时库，它是java程序赖以生存的平台，通过使用本地方法，我们得以用java实现了jre的与底层系统的交互，甚至JVM的一些部分就是用C写的，还有，如果我们要使用一些java语言本身没有提供封装的操作系统的特性时，我们也需要使用本地方法</p>
+<p>比如：Thread.start()方法，CAS里面调用的操作系统的CAS</p>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>关键字volatile在Java中本质上是一种修饰符，它用来修饰变量。</p>
+<p>volatile关键字在多线程编程中非常重要，它保证了多个线程之间变量的可见性和有序性。</p>
+<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p>被volatile修饰的变量对于所有线程都是可见的，即当一个线程修改volatile变量的值后，其他线程立即可见修改后的值。写完后立即刷新回主内存并及时发出通知，大家可以去主内存拿最新版，前面的修改对后面所有线程可见</p>
+<h3 id="有序性（禁止指令重排序）"><a href="#有序性（禁止指令重排序）" class="headerlink" title="有序性（禁止指令重排序）"></a>有序性（禁止指令重排序）</h3><p>JVM会对代码进行优化，其中包括指令重排序，编译器和处理器为了优化程序性能而对指令序列进行重新排序的一种手段，有时候会改变程序语句的先后顺序，如果一个操作的结果并不影响程序的正确性，那么JVM很有可能会将此操作与其后面的操作交换执行顺序。而在多线程环境中，这种指令重排序可能会导致程序输出不正确的结果，因此使用volatile关键字可以禁止指令重排序优化。</p>
+<h3 id="不保证原子性"><a href="#不保证原子性" class="headerlink" title="不保证原子性"></a>不保证原子性</h3><p>并不保证操作具有原子性</p>
+<h3 id="如何实现volatile的可见性和有序性"><a href="#如何实现volatile的可见性和有序性" class="headerlink" title="如何实现volatile的可见性和有序性"></a>如何实现volatile的可见性和有序性</h3><p>当写一个volatile变量时，JVM会把该线程对应的本地内存中的共享变量值立即刷新回主内存中。.<br>当读一个volatile变量时，JVM会把该线程对应的本地内存设置为无效，重新回到主内存中读取最新共享变量</p>
+<p>所以volatile的写内存语义是直接刷新到主内存中，读的内存语义是直接从主内存中读取</p>
+<p>引入内存屏障的定义</p>
+<h4 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h4><p>内存屏障是一种机制，用于保障程序在多线程环境中的数据一致性。它可以保证指令的执行顺序，避免出现线程安全问题</p>
+<p>内存屏障(也称内存栅栏，屏障指令等，是一类同步屏障指令，是CPU或编译器在对内存随机访问的操作中的一个同步点，使得此点之前的所有读写操作都执行后才可以开始执行此点之后的操作)，避免代码重排序。内存屏障其实就是一种JVM指令，Java内存模型的重排规则会要求Java编译器在生成JVM指令时插入特定的内存屏障指令，通过这些内存屏障指令，volatile实现了Java内存模型中的可见性和有序性(禁重排)</p>
+<p>可见性实现：</p>
+<p>内存屏障之前的所有写操作都要回写到主内存。<br>内存屏障之后的所有读操作都能获得内存屏障之前的所有写操作的最新结果</p>
+<p>实现了可见性</p>
+<p>内存屏障分类：</p>
+<table>
+<thead>
+<tr>
+<th>Load Barrier（读屏障）</th>
+<th>确保前面的读操作必须在它之前的写操作完成之后才执行</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Store Barrier（写屏障）</td>
+<td>确保后面的写操作必须在它之前的读操作完成之后才执行。</td>
+</tr>
+<tr>
+<td>Full Fence（全屏障）</td>
+<td>保证所有前面的操作都完成后再执行后面的操作。</td>
+</tr>
+<tr>
+<td>StoreLoad Barrier（写-读屏障）</td>
+<td>保证后面的读操作必须在前面的写操作完成后执行</td>
+</tr>
+</tbody></table>
+<p>内存屏障指令：</p>
+<table>
+<thead>
+<tr>
+<th>屏障类型</th>
+<th>屏障指令</th>
+<th>指令效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LoadLoad屏障</td>
+<td>读1；LoadLoad屏障；读2</td>
+<td>保证读1在读2以及后续读取操作之前执行</td>
+</tr>
+<tr>
+<td>StoreStore屏障</td>
+<td>写1；StoreStore屏障；写2</td>
+<td>写2及其后续写操作执行前，保证写1的操作已经刷新到主内存</td>
+</tr>
+<tr>
+<td>LoadStore屏障</td>
+<td>读1；LoadStore屏障；写2</td>
+<td>写2及其后续的写操作执行前，保证读1的操作已经结束</td>
+</tr>
+<tr>
+<td>StoreLoad屏障</td>
+<td>写1；StoreLoad屏障；读2</td>
+<td>保证写1的操作已经刷新到主内存之后，才会执行后续的读2操作</td>
+</tr>
+</tbody></table>
+<p>内存屏障刷内存数据：</p>
+<p>读屏障(LoadBarrier)：在读指令之前插入读屏障，让工作内存或CPU高速缓存当中的缓存数据失效，重新回到主内存中获取最新数据<br>写屏障(StoreBarrier)：在写指令之后插入写屏障，强制把写缓冲区的数据刷回到主内存中</p>
+<h4 id="volatile读操作"><a href="#volatile读操作" class="headerlink" title="volatile读操作"></a>volatile读操作</h4><p>在每个volatile读操作的后面插入一个LoadLoad屏障<br>在每个volatile读操作的后面插入一个LoadStore屏障</p>
+<p><img src="/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/1.jpg" alt="1"></p>
+<h4 id="volatile写操作"><a href="#volatile写操作" class="headerlink" title="volatile写操作"></a>volatile写操作</h4><p>在每个volatile写操作的前面插入一个StoreStore屏障<br>在每个volatile写操作的后面插入一个StoreLoad屏障</p>
+<p><img src="/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/2.jpg" alt="1"></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Java中的volatile关键字会告诉Java虚拟机，在访问该变量时总是从主内存中读取数据，在修改该变量时总是将数据写回主内存中。这个特性可以保证在多线程环境下，不同线程访问该变量时不会出现数据不一致的问题。</p>
+<p>为了实现这个特性，Java虚拟机会在volatile变量的读写操作前后加上内存屏障（Memory Barriers），它会强制将写缓冲区/高速缓存中的数据刷新到主内存中，或强制从主内存中读取最新的数据到写缓冲区/高速缓存中。内存屏障是一种CPU指令，在不同的CPU体系结构下实现方式可能不同。</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="ZYP">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>ZYP
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/" target="_blank">Java关键字native和volatile</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
                         
-                            目前共计 149 篇日志，继续加油！
+                            <a href="/category/Java/">Java</a>
                         
-                    </span>
-                    
-                    
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
                         
-                            <div class="archive-title">
-                                <h2 class="archive-year">2021</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/27/%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/"><span>两数之和，三数之和</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-27</span>
-                                </div>
-                            </div>
-                        </div>
+                            <a href="/tag/Java/">Java</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/26/%E5%A4%9A%E7%B1%B3%E8%AF%BA%E9%AA%A8%E7%89%8C%E7%AD%89%E4%BB%B7%E9%97%AE%E9%A2%98/"><span>多米诺骨牌等价问题</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-26</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/05/14/Java%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/05/14/Java%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0/" title="发布于 2023-05-14 07:21">Java线程和线程池</a>
+                        <br>
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/26/%E5%88%97%E8%A1%A8%E6%95%B4%E6%95%B0%E5%8A%A01/"><span>列表整数加1</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-26</span>
-                                </div>
-                            </div>
-                        </div>
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/21/GO%E7%9A%84context/"><span>GO的context</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-21</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/20/GO%E7%9A%84%E6%8E%A5%E5%8F%A3interface%E5%92%8C%E5%8F%8D%E5%B0%84/"><span>GO的接口interface和反射</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-20</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/14/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Achannel/"><span>GO的基本数据结构：channel</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-14</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/"><span>GO的垃圾回收</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/"><span>GO的逃逸分析</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-08</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/"><span>Mysql相关问题</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-06</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/"><span>GO的内存分配</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">01-06</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/" class="next-prefix">» </a> 下一篇：    <a href="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/" title="发布于 2023-04-15 02:07">消息队列的事务消息</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archive/2021/page/3/">上一页</a><a class="page-number" href="/archive/2021/">1</a><a class="page-number" href="/archive/2021/page/2/">2</a><a class="page-number" href="/archive/2021/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archive/2021/page/5/">5</a><a class="extend next" rel="next" href="/archive/2021/page/5/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -216,7 +253,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
                     
