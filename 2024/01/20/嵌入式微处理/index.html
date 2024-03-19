@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            嵌入式微处理
+            微处理
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -38,7 +38,7 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">嵌入式微处理</h1>
+                <h1 class="header-subtitle">微处理</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
@@ -46,7 +46,7 @@
                         </span>
                         
                             
-                                <span id="/2024/01/20/嵌入式微处理/" class="leancloud_visitors" data-flag-title="嵌入式微处理">
+                                <span id="/2024/01/20/嵌入式微处理/" class="leancloud_visitors" data-flag-title="微处理">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
@@ -80,7 +80,11 @@
             <div class="toc"></div>
             <div class="article-body">
                 <h2 id="嵌入式硬件"><a href="#嵌入式硬件" class="headerlink" title="嵌入式硬件"></a>嵌入式硬件</h2><h3 id="处理体系结构"><a href="#处理体系结构" class="headerlink" title="处理体系结构"></a>处理体系结构</h3><h4 id="冯诺依曼结构"><a href="#冯诺依曼结构" class="headerlink" title="冯诺依曼结构"></a>冯诺依曼结构</h4><p>传统计算机采用冯·诺依曼（Von Neumann）结构，也称普林斯顿结构，是一种将程序指令存储器和数据存储器合并在一起的存储器结构。<br>冯·诺依曼结构的计算机程序和数据共用一个存储空间，程序指令存储地址和数据存储地址指向同一个存储器的不同物理位置。<br>采用单一的地址及数据总线，程序指令和数据的宽度相同。<br>处理器执行指令时，先从储存器中取出指令解码，再取操作数执行运算，即使单条指令也要耗费几个甚至几十个周期，在高速运算时，在传输通道上会出现瓶颈效应。这是一种串行结构。相对比较低效</p>
+<p>指令数据存储在一个存储器中，只能串行读取，通过相同的数据总线传输</p>
+<p>AMD</p>
 <h4 id="哈佛结构"><a href="#哈佛结构" class="headerlink" title="哈佛结构"></a>哈佛结构</h4><p>是一种并行体系结构，它的主要特点是将程序和数据存储在不同的存储空间中，即<br>程序存储器和数据存储器是两个相互独立的存储器，每个存储器独立编址、独立访问。<br>• 与两个存储器相对应的是系统中的两套独立的地址总线和数据总线。<br>• 这种分离的程序总线和数据总线可允许在一个机器周期内同时获取指令字（来自程序存储器）<br>和操作数（来自数据存储器），从而提高了执行速度，使数据的吞吐率提高了1倍</p>
+<p>DSP</p>
+<p>指令和数据存在不同存储结构中，可并行读取，有较高的数据吞吐率，指令和数据的数据总线和地址总线</p>
 <h4 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h4><p>在冯诺依曼架构中，指令和数据共享同一个存储器，CPU 只能执行一条指令，因为它需<br>要等待指令和数据都被读取到 CPU 中。而在哈佛架构中，指令和数据存储在不同的内存<br>中，CPU 可以同时访问指令和数据内存，因此可以同时执行多条指令。所以，可以这样<br>理解，冯诺依曼架构是单车道，而哈佛架构是多车道。</p>
 <p>冯诺依曼架构的好处，就是简单、易于实现和设计。哈佛架构的好处，可以使用不同的技<br>术来优化性能。</p>
 <p>冯·诺依曼架构适用于大多数通用计算机，因为它能够灵活地处理各种不同的计算任务，同<br>时还可以使用缓存等技术来优化性能。而哈佛架构则适用于一些特定的应用领域，例如需<br>要高效地处理大量数据的嵌入式系统，或数字信号处理器等领域。</p>
@@ -120,7 +124,7 @@
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>ZYP
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/" target="_blank">嵌入式微处理</a>
+        <span class="suffix-box-title">文章出处：</span><a href="/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/" target="_blank">微处理</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>Give it a try, whispered the heart.
         <br>
