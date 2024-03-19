@@ -4,7 +4,7 @@ date: 2023-05-14 19:21:00
 tags: 多线程并发
 categories: Java
 comments: true
-description: 关于java的线程状态，几种线程池，线程中断方法，守护线程
+description: 关于java的线程状态，几种线程池，线程中断方法，守护线程hexo
 ---
 
 ## 线程
