@@ -8,7 +8,7 @@ subtitle: Life has a funny way of working out, just when you start to believe it
 description: Give it a try, whispered the HEART
 keywords: Java Go
 author: ZYP
-language: zh-cn
+language: zh-Hans
 timezone: Asia/Shanghai
 
 # URL
@@ -21,9 +21,9 @@ permalink_defaults:
 # Directory
 source_dir: source
 public_dir: public
-tag_dir: tag
+tag_dir: tags
 archive_dir: archive
-category_dir: category
+category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
@@ -89,7 +89,7 @@ plugins:
   hexo-generator-feed
   hexo-math
 ## Themes: https://hexo.io/themes/
-theme: LiveForCode
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
