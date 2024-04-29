@@ -105,6 +105,13 @@ feed:
   path: atom.xml
   limit: 10
 
+search:
+  path: search.xml
+  field: all
+  format: html
+  limit: 10000
+
+
 # Algolia Search
 algolia:
   applicationID: OHIM1HOSW9
