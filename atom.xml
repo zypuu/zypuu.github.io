@@ -6,7 +6,7 @@
   <link href="https://zypuu.github.io/atom.xml" rel="self"/>
   
   <link href="https://zypuu.github.io/"/>
-  <updated>2024-06-03T09:11:29.963Z</updated>
+  <updated>2024-06-03T09:11:29.919Z</updated>
   <id>https://zypuu.github.io/</id>
   
   <author>
@@ -15,27 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Git工作流</title>
-    <link href="https://zypuu.github.io/2024/06/03/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/"/>
-    <id>https://zypuu.github.io/2024/06/03/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/</id>
-    <published>2024-06-03T09:11:29.963Z</published>
-    <updated>2024-06-03T09:11:29.963Z</updated>
-    
-    <content type="html"><![CDATA[<p>Git工作流：为工作中团队成员遵守的一种代码管理方案，在Git中有以下几种工作流方案作为方案指导。</p><h2 id="集中式工作流"><a href="#集中式工作流" class="headerlink" title="集中式工作流"></a>集中式工作流</h2><p>这种工作方式跟svn类似，它只有一个master分支，开发者会先把远程的仓库克隆到本地，之后的修 改和提交都在本地操作，直到在某个合适的时间点将本地的代码合入到远程master。这种工作流比 较适合小团队，因为小团队可能不会太多的协作和合流的动作。</p><h2 id="功能分支工作流"><a href="#功能分支工作流" class="headerlink" title="功能分支工作流"></a>功能分支工作流</h2><p>这种工作流关注功能开发，不直接往master提交代码保证它是稳定并且干净的，而是从master拉 取feature分支进行功能开发，团队成员根据分工拉取不同的功能分支来进行不同的功能开发，这样 就可以完全隔离开每个人的工作。当功能开发完成后，会向master分支发起Pull Request，只有审 核通过的代码才真正允许合入master，这样就加强了团队成员之间的代码交流。</p><h2 id="Gitflow工作流"><a href="#Gitflow工作流" class="headerlink" title="Gitflow工作流"></a>Gitflow工作流</h2><p>相对复杂一点，但它非常适合用来管理大型项目的发布和维护，贯穿整个开发周期，master和develop分支是一直存在的，master分支可以被视为稳定的分支， 而develop分支是相对稳定的分支，特性开发会在feature分支上进行，发布会在release分支上 进行，而bug修复则会在hotfix分支上进行</p><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><h4 id="两个分支，master，develop分支"><a href="#两个分支，master，develop分支" class="headerlink" title="两个分支，master，develop分支"></a>两个分支，master，develop分支</h4><p>相对使用仅有的一个master分支，Gitflow工作流使用2个分支来记录项目的历史。 master分支存储了正式发布的历史，而develop分支作为功能的集成分支。 这样也方便master分支上的所有提交分配一个版本号。</p><p><img src="/2024/06/03/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/1.png" alt="1"></p><h4 id="每个人开发的功能分支"><a href="#每个人开发的功能分支" class="headerlink" title="每个人开发的功能分支"></a>每个人开发的功能分支</h4><p>每个新功能位于一个自己的分支，这样可以push到中央仓库以备份和协作。 但功能分支不是从master分支上拉出新分支，而是使用develop分支作为父分支。 当新功能完成时，合并回develop分支。 新功能提交应该从不直接与master分支交互。 从各种含义和目的上来看，功能分支加上develop分支就是功能分支工作流的用法。但Gitflow工作流没有在这里止步。</p><p><img src="/2024/06/03/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/2.png" alt="2"></p><h4 id="develop和master中间的发布分支"><a href="#develop和master中间的发布分支" class="headerlink" title="develop和master中间的发布分支"></a>develop和master中间的发布分支</h4><p>一旦develop分支上有了做一次发布（或者说快到了既定的发布日）的足够功能，就从develop分支上checkout一个发布分支。 新建的分支用于开始发布循环，所以从这个时间点开始之后新的功能不能再加到这个分支上—— 这个分支只应该做Bug修复、文档生成和其它面向发布任务。 一旦对外发布的工作都完成了， 发布分支合并到master分支并分配一个版本号打好Tag。 另外，这些从新建发布分支以来的做的修改要合并回develop分支。</p><p>使用一个用于发布准备的专门分支，使得一个团队可以在完善当前的发布版本的同时，另一个团队可以继续开发下个版本的功能。 这也打造定义良好的开发阶段。</p><p><img src="/2024/06/03/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/3.png" alt="3"></p><h4 id="修复分支"><a href="#修复分支" class="headerlink" title="修复分支"></a>修复分支</h4><p>维护分支或说是热修复（hotfix）分支用于生成快速给产品发布版本（production releases）打补丁， 这是唯一可以直接从master分支fork出来的分支。 修复完成，修改应该马上合并回master分支和dev elop分支（当前的发布分支），master分支应该用新的版本号打好Tag。</p><p>为Bug修复使用专门分支，让团队可以处理掉问题而不用打断其它工作或是等待下一个发布循环。 你可以把维护分支想成是一个直接在master分支上处理的临时发布。</p><p><img src="/2024/06/03/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/4.png" alt="4"></p><h2 id="Forking工作流"><a href="#Forking工作流" class="headerlink" title="Forking工作流"></a>Forking工作流</h2><p>Forking工作流对于开源项目贡献者一定不陌生了，它有一个公开的中央仓库，其他贡献 者可以Fork（克隆）这个仓库作为你自己的私有仓库，开源项目维护者可以直接往中央仓库 push代码，而代码贡献者只能将代码push到自己的私有仓库，只有项目维护者接受代码贡献 者往中央仓库发起的pull request才会真正合入。</p>]]></content>
-    
-    
-    <summary type="html">git几种工作流，flow工作流</summary>
-    
-    
-    
-    <category term="Git代码管理" scheme="https://zypuu.github.io/categories/Git%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86/"/>
-    
-    
-    <category term="git" scheme="https://zypuu.github.io/tags/git/"/>
-    
-  </entry>
   
   <entry>
     <title>GO的WaitGroup</title>
@@ -216,6 +195,27 @@
     
     
     <summary type="html">软件工程-系统测试，黑白盒，测试用例设计，调试</summary>
+    
+    
+    
+    <category term="系统架构设计" scheme="https://zypuu.github.io/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="架构" scheme="https://zypuu.github.io/tags/%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>系统设计</title>
+    <link href="https://zypuu.github.io/2024/03/09/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
+    <id>https://zypuu.github.io/2024/03/09/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</id>
+    <published>2024-03-09T07:42:00.000Z</published>
+    <updated>2024-06-03T09:11:30.204Z</updated>
+    
+    <content type="html"><![CDATA[<p>软件设计包括四个独立，又联系的活动：数据设计软件结构设计，人机界面设计，过程设计</p><h3 id="业务流程设计"><a href="#业务流程设计" class="headerlink" title="业务流程设计"></a>业务流程设计</h3><h4 id="图工具"><a href="#图工具" class="headerlink" title="图工具"></a>图工具</h4><p>程序流程图(Program Flow Diagram,PFD)：它独立于任何一种程序设计语言，比较直观、清晰，易于学习掌握。任何复杂的程序流程图都应该由顺序、选择和循环结构组合或嵌套而成</p><p>IPO图：也是流程描述工具，用来描述构成软件系统的每个模块的输入、输出和数据加工。数据流图其实就是一种IPO图</p><p>N-S图：比较容易表示嵌套和层次关系，并具有强烈的结构化特征。但是当问题很复杂时，N-S图可能很大，因此不适合于复杂程序的设计</p><p>问题分析图（PAD）：是一种支持结构化程序设计的图形工具。PAD具有清晰的逻辑结构、标准化的图形等优点，更重要的是，它引导设计人员使用结构化程序设计方法，从而提高程序的质量</p><h4 id="设计分类"><a href="#设计分类" class="headerlink" title="设计分类"></a>设计分类</h4><p>业务流程管理（BPM）：是一种方法论，用于优化、管理和自动化组织内的业务流程。它涉及识别、建模、分析和优化业务流程，以实现更高效、灵活和协调的运作。BPM关注整个业务流程的管理，包括流程的执行、监控、优化和自动化</p><p>业务流程重组（BPR）：BPR是更为激进的方法，它着眼于对现有业务流程进行彻底的重新设计和改造，以实现质的飞跃的改进，是对企业的业务流程进行根本性的再思考和彻底性的再设计，从而获得可以用诸如成本、质量、服务和速度等方面的业绩来衡量的显著性的成就</p><p>流程管理包含三个层面：规范流程、优化流程和再造流程</p><h3 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h3><h4 id="系统设计主要目的"><a href="#系统设计主要目的" class="headerlink" title="系统设计主要目的"></a>系统设计主要目的</h4><p>为系统制定蓝图，在各种技术和实施方法中权衡利弊，精心设计，合理地使用各种资源，最终勾画出新系统的详细设计方法。简单点说，系统设计就是告诉你该怎么做，需求分析就是找到你要做什么，系统设计就是告诉你怎么做</p><h4 id="系统设计方法"><a href="#系统设计方法" class="headerlink" title="系统设计方法"></a>系统设计方法</h4><p>结构化设计方法，面向对象设计方法。</p><h4 id="系统设计的主要内容"><a href="#系统设计的主要内容" class="headerlink" title="系统设计的主要内容"></a>系统设计的主要内容</h4><p>概要设计、详细设计。</p><p>概要设计基本任务：外部设计，又称为系统总体结构设计，是将系统的功能需求分配给软件模块，确定每个模块的功能和调用关系，形成软件的<strong>模块结构图</strong>，即<strong>系统结构图</strong>。还需要产出<strong>概要设计说明书</strong></p><p>详细设计的基本任务：内部设计，模块内详细算法设计、模块内数据结构设计、数据库的物理设计、其他设计(代码、输入/输出格式、用户界面)、编写<strong>详细设计说明书</strong>、评审</p><h4 id="系统设计基本原理"><a href="#系统设计基本原理" class="headerlink" title="系统设计基本原理"></a>系统设计基本原理</h4><p>抽象化： 系统设计中也会将复杂的问题分成更小、更易管理的部分。这样做能让我们关注重要的细节，同时不被不必要的复杂性所困扰。</p><p>自顶而下，逐步求精： 先考虑整体框架，然后逐步添加细节，以确保每个部分都被仔细设计和优化。</p><p>信息隐蔽：在系统设计中，我们可以隐藏复杂的内部细节，只暴露必要的信息给其他部分。这样能够降低不同模块之间的相互影响，使系统更易于管理和维护。</p><p>模块独立（<strong>高内聚</strong>，<strong>低耦合</strong>）： 系统设计中的各个部分应该是独立的，即每个模块都有自己的功能并且尽可能不依赖其他模块。高内聚表示模块内部的元素彼此紧密相关，低耦合表示模块之间的依赖尽可能降低</p><p>衡量模块独立程度的标准有两个：耦合性和内聚性</p><p>内聚程度，模块内</p><table><thead><tr><th>偶然内聚</th><th>无直接关系</th></tr></thead><tbody><tr><td>逻辑内聚</td><td>逻辑相似，参数决定</td></tr><tr><td>时间内聚</td><td>同时执行动作</td></tr><tr><td>过程内聚</td><td>指定的过程顺序</td></tr><tr><td>通信内聚</td><td>相同的数据结构，相同输入输出</td></tr><tr><td>顺序内聚</td><td>顺序执行，前一个输出是下一个输入</td></tr><tr><td>功能内聚</td><td>共同作用，缺一不可</td></tr></tbody></table><p>耦合程度，模块之间</p><table><thead><tr><th>无直接耦合</th><th>无直接关系</th></tr></thead><tbody><tr><td>数据耦合</td><td>模块间调用关系，传递数据值调用</td></tr><tr><td>标记耦合</td><td>传递数据结构</td></tr><tr><td>控制耦合</td><td>传递的是控制变量，执行另一个模块内部的某一功能</td></tr><tr><td>外部耦合</td><td>软件外部环境</td></tr><tr><td>公共耦合</td><td>公共数据结构</td></tr><tr><td>内容耦合</td><td>模块内部关联</td></tr></tbody></table><h4 id="系统设计基本原则"><a href="#系统设计基本原则" class="headerlink" title="系统设计基本原则"></a>系统设计基本原则</h4><p>保持模块的大小适中： 系统中的模块也应该适中，不要太大也不要太小。这样做可以使每个模块的功能清晰，并且易于理解、测试和维护。</p><p>尽可能减少调用的深度： 在系统设计中，减少调用深度意味着尽量减少程序的层层嵌套，以避免复杂的调用关系，使代码更清晰和高效。</p><p>多扇入，少扇出： 在系统设计中，模块应该允许多个模块调用它（多扇入），但它本身应尽量少调用其他模块（少扇出），以减少模块</p><p>之间的复杂关系。</p><p>单入口，单出口：这样可以使模块的功能和接口更清晰，不容易引入混淆和错误。</p><p>模块的作用域应该在模块之内： 模块的功能应该限制在模块内部，不要让外部模块直接访问内部的细节。这有助于封装和隐藏内部逻辑，防止外部干扰。</p><p>功能应该是可预测的： 使用者在调用一个模块时应该能够合理地预期它会发生什么，从而避免产生混淆和不可预知的结果</p><h3 id="人机界面设计"><a href="#人机界面设计" class="headerlink" title="人机界面设计"></a>人机界面设计</h3><p>三大黄金原则：</p><p>置于用户的控制之下</p><p>减少用户的记忆负担</p><p>保持界面的一致性</p>]]></content>
+    
+    
+    <summary type="html">软件工程-系统设计，业务流程设计</summary>
     
     
     
