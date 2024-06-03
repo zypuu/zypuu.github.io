@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="数组，链表，跳表，时间复杂度，空间复杂度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组、链表和跳表">
+<meta property="og:url" content="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="数组，链表，跳表，时间复杂度，空间复杂度">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/1.png">
+<meta property="og:image" content="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/5.png">
+<meta property="og:image" content="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/2.png">
+<meta property="og:image" content="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/3.png">
+<meta property="og:image" content="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/4.png">
+<meta property="article:published_time" content="2021-02-01T03:12:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.073Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/1.png">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/","path":"2021/02/01/数组、链表和跳表/","title":"数组、链表和跳表"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数组、链表和跳表 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">线性表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">1.1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-number">1.2.</span> <span class="nav-text">链表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E9%93%BE%E8%A1%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">单链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">循环链表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%B3%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">跳表</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数组、链表和跳表 | All-Nothing">
+      <meta itemprop="description" content="数组，链表，跳表，时间复杂度，空间复杂度">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数组、链表和跳表
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-02-01 11:12:00" itemprop="dateCreated datePublished" datetime="2021-02-01T11:12:00+08:00">2021-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">数组，链表，跳表，时间复杂度，空间复杂度</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p>线性表是最常用且最简单的一种数据结构，它是n个数据元素的有限序列。</p>
+<p>实现线性表的方式一般有两种，一种是使用数组存储线性表的元素，即用一组连续的存储单元依次存储线性表的数据元素。另一种是使用链表存储线性表的元素，即用一组任意的存储单元存储线性表的数据元素（存储单元可以是连续的，也可以是不连续的）</p>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>golang 数组  slice</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a []int</span><br></pre></td></tr></table></figure>
+
+<p>每当申请数组时，计算机在内存中开辟了一段连续的地址，每一个地址直接可以通过内存管理器进行访问</p>
+<p>所以无论访问哪个元素，时间复杂度是一样的，常数O(1)的</p>
+<p>添加，删除时的操作，插入，删除元素都需要移动后面的元素，复杂度是O(n)</p>
+<p>prepend: O(1), append: O(1), insert：O(n), del: O(n), lookup:O(1)</p>
+<p>prepend正常情况下是O(n),可以特殊化到O(1)，申请稍大一些的内存空间，在前面预留一些，操作的时候把头下标前移一个位置即可</p>
+<p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/1.png" alt="1"></p>
+<p>空间复杂度</p>
+<p>O(n)</p>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>1.每个元素有Value、Next，next指向下一个元素</p>
+<p>2.头指针用head表示，尾指针用tail表示</p>
+<p>3.最后一个元素next指向空</p>
+<p>4.增加或删除节点的话，没有引起整个链表的群移操作，也不需要复制元素，挪动元素到新的位置，所以它移动的效率和修改的操作效率非常高，复杂度为O(1)</p>
+<p>5.这个结构导致了访问链表中的任何一个位置，操作就不再简单了，复杂度为O(n)</p>
+<p>prepend: O(1), append: O(1), insert：O(1), del: O(1), lookup:O(n)</p>
+<p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/5.png" alt="5"></p>
+<p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/2.png" alt="2"></p>
+<p>空间复杂度</p>
+<p>O(n)</p>
+<h4 id="单链表"><a href="#单链表" class="headerlink" title="单链表"></a>单链表</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ListNode ...</span></span><br><span class="line">type ListNode struct &#123;</span><br><span class="line">    Val int</span><br><span class="line">    Next *ListNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由各个内存结构通过一个 Next 指针链接在一起组成，每一个内存结构都存在后继内存结构【链尾除外】，内存结构由数据域和 Next 指针域组成</p>
+<p>1.Data 数据 + Next 指针，组成一个单链表的内存结构</p>
+<p>2.第一个内存结构称为 链头，最后一个内存结构称为 链尾</p>
+<p>3.链尾的 Next 指针设置为 NULL [指向空]</p>
+<p>4.单链表的遍历方向单一【只能从链头一直遍历到链尾】</p>
+<h4 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DNode ...</span></span><br><span class="line">type DNode struct &#123;</span><br><span class="line">	data interface&#123;&#125;</span><br><span class="line">	prev *DNode</span><br><span class="line">	next *DNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由各个内存结构通过指针 Next 和指针 Prev 链接在一起组成，每一个内存结构都存在前驱内存结构和后继内存结构【链头没有前驱，链尾没有后继】，内存结构由数据域、Prev 指针域和 Next 指针域组成</p>
+<p>1.Data 数据 + Next 指针 + Prev 指针，组成一个双向链表的内存结构</p>
+<p>2.第一个内存结构称为 链头，最后一个内存结构称为 链尾</p>
+<p>3.链头的 Prev 指针设置为 NULL， 链尾的 Next 指针设置为 NULL</p>
+<p>4.Prev 指向的内存结构称为 前驱， Next 指向的内存结构称为 后继</p>
+<p>5.双向链表的遍历是双向的，即如果把从链头的 Next 一直到链尾的[NULL] 遍历方向定义为正向，那么从链尾的 Prev 一直到链头 [NULL ]遍历方向就是反向</p>
+<h4 id="循环链表"><a href="#循环链表" class="headerlink" title="循环链表"></a>循环链表</h4><p>在单向链表和双向链表的基础上</p>
+<p>单向循环链表 [Circular Linked List] : 由各个内存结构通过一个指针 Next 链接在一起组成，每一个内存结构都存在后继内存结构，内存结构由数据域和 Next 指针域组成。</p>
+<p>双向循环链表 [Double Circular Linked List] : 由各个内存结构通过指针 Next 和指针 Prev 链接在一起组成，每一个内存结构都存在前驱内存结构和后继内存结构，内存结构由数据域、Prev 指针域和 Next 指针域组成。</p>
+<p>1.循环链表分为单向、双向两种</p>
+<p>2.单向的实现就是在单链表的基础上，把链尾的 Next 指针直接指向链头，形成一个闭环</p>
+<p>3.双向的实现就是在双向链表的基础上，把链尾的 Next 指针指向链头，再把链头的 Prev 指针指向链尾，形成一个闭环</p>
+<p>4.循环链表没有链头和链尾的说法，因为是闭环的，所以每一个内存结构都可以充当链头和链尾</p>
+<h2 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h2><p>链表在增加删除都很快，都是O(1)操作</p>
+<p>但是查询很慢，是O(n)那么如何给链表的查询加速呢</p>
+<p>升维</p>
+<p>增加多级索引</p>
+<p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/3.png" alt="3"></p>
+<p>由于节点的增删改查，会导致索引不工整，维护成本相对较高。</p>
+<p>在redis里面，就是使用的跳表。</p>
+<p>时间复杂度</p>
+<p><img src="/2021/02/01/%E6%95%B0%E7%BB%84%E3%80%81%E9%93%BE%E8%A1%A8%E5%92%8C%E8%B7%B3%E8%A1%A8/4.png" alt="4"></p>
+<p>索引的高度：logn，每层索引遍历的结点个数：3</p>
+<p>在跳表中查询任意数据的时间复杂度就是 O(logn)</p>
+<p>空间复杂度</p>
+<p>O(n)</p>
+<p>每层节点，每两个节点抽1个 n/2, 每3个节点抽一个 3/n</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/29/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" rel="prev" title="合并两个有序链表">
+                  <i class="fa fa-angle-left"></i> 合并两个有序链表
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/01/%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9A%84%E4%BA%A4%E9%9B%86/" rel="next" title="两个数组的交集">
+                  两个数组的交集 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

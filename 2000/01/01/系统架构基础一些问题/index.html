@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="系统架构基础一些问题，笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统架构基础一些问题">
+<meta property="og:url" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="系统架构基础一些问题，笔记">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/2.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/3.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/4.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/5.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/30.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/32.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/31.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/6.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/7.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/8.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/9.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/10.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/11.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/12.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/13.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/14.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/15.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/16.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/17.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/18.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/19.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/36.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/37.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/20.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/21.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/22.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/26.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/27.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/35.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/23.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/24.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/25.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/28.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/29.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/34.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/33.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/38.jpg">
+<meta property="article:published_time" content="1999-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.143Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/","path":"2000/01/01/系统架构基础一些问题/","title":"系统架构基础一些问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>系统架构基础一些问题 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%B6%E6%95%A3%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">零散问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">案例分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC"><span class="nav-number">2.1.</span> <span class="nav-text">架构风格</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81%E9%A3%8E%E6%A0%BC%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.1.</span> <span class="nav-text">面向数据流风格的优缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%A3%8E%E6%A0%BC%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.2.</span> <span class="nav-text">面向对象风格的优缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E6%9E%B6%E6%9E%84%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.3.</span> <span class="nav-text">层次架构的优缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A5%E6%95%B0%E6%8D%AE%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.4.</span> <span class="nav-text">以数据为中心的架构风格的优缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E8%B0%83%E7%94%A8%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.5.</span> <span class="nav-text">隐式调用架构风格的优缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E9%87%8A%E5%99%A8%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.6.</span> <span class="nav-text">解释器架构风格优缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.7.</span> <span class="nav-text">基于规则的架构风格的优缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BS%E6%9E%B6%E6%9E%84%E5%92%8CCS%E6%9E%B6%E6%9E%84%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.8.</span> <span class="nav-text">BS架构和CS架构的优缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CS%E6%9E%B6%E6%9E%84%EF%BC%8CBS%E6%9E%B6%E6%9E%84%EF%BC%8CRIA"><span class="nav-number">2.2.</span> <span class="nav-text">CS架构，BS架构，RIA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MVC%EF%BC%8CMVP%E6%9E%B6%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">MVC，MVP架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">软件工程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%8C%96%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.1.</span> <span class="nav-text">结构化分析方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">面向对象分析方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86"><span class="nav-number">2.5.</span> <span class="nav-text">项目管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.6.</span> <span class="nav-text">设计模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3"><span class="nav-number">2.7.</span> <span class="nav-text">数据库相关</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%8C%83%E5%BC%8F"><span class="nav-number">2.7.1.</span> <span class="nav-text">范式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E4%B8%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="nav-number">2.7.2.</span> <span class="nav-text">主从与读写分离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E7%B1%BB%EF%BC%8C%E7%BC%93%E5%AD%98%E6%8A%80%E6%9C%AF%E6%AF%94%E8%BE%83"><span class="nav-number">2.7.3.</span> <span class="nav-text">数据库分类，缓存技术比较</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.7.4.</span> <span class="nav-text">分布式数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93"><span class="nav-number">2.7.5.</span> <span class="nav-text">数据仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%81%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.7.6.</span> <span class="nav-text">封锁协议</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%8D%E8%A7%84%E8%8C%83%E5%8C%96%E6%8A%80%E6%9C%AF"><span class="nav-number">2.7.7.</span> <span class="nav-text">反规范化技术</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ORM"><span class="nav-number">2.7.8.</span> <span class="nav-text">ORM</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84ISA"><span class="nav-number">2.8.</span> <span class="nav-text">信息系统架构ISA</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E6%A1%88%E4%BE%8B"><span class="nav-number">2.8.1.</span> <span class="nav-text">架构案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E6%9E%B6%E6%9E%84"><span class="nav-number">2.9.</span> <span class="nav-text">层次架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A1%A8%E7%8E%B0%E5%B1%82%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.9.1.</span> <span class="nav-text">表现层框架设计</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#UIP"><span class="nav-number">2.9.1.1.</span> <span class="nav-text">UIP</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#XML"><span class="nav-number">2.9.1.2.</span> <span class="nav-text">XML</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E5%B1%82%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.9.2.</span> <span class="nav-text">中间层框架设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.9.3.</span> <span class="nav-text">数据访问层设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%9E%B6%E6%9E%84%E8%A7%84%E5%88%92%E4%B8%8E%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.9.4.</span> <span class="nav-text">数据架构规划与设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%84%E5%B1%82%E8%AE%BE%E8%AE%A1%E4%B8%AD%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.9.5.</span> <span class="nav-text">各层设计中可能遇到的问题以及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E5%B1%82"><span class="nav-number">2.9.5.1.</span> <span class="nav-text">表示层</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E5%B1%82"><span class="nav-number">2.9.5.2.</span> <span class="nav-text">业务逻辑层</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%B1%82"><span class="nav-number">2.9.5.3.</span> <span class="nav-text">数据访问层</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E6%9E%B6%E6%9E%84%E7%9A%84%E5%85%B3%E9%94%AE%E8%AE%BE%E8%AE%A1%E7%AD%96%E7%95%A5"><span class="nav-number">2.9.6.</span> <span class="nav-text">层次架构的关键设计策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E6%9E%B6%E6%9E%84%E7%9A%84%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8"><span class="nav-number">2.9.7.</span> <span class="nav-text">层次架构的主要作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E5%B1%82%E6%AC%A1%E8%A7%84%E5%88%92%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.9.8.</span> <span class="nav-text">物联网层次规划设计</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84"><span class="nav-number">2.10.</span> <span class="nav-text">云原生架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97"><span class="nav-number">2.10.1.</span> <span class="nav-text">云计算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84%E5%8E%9F%E5%88%99"><span class="nav-number">2.10.2.</span> <span class="nav-text">云原生架构原则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.10.3.</span> <span class="nav-text">云原生架构模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84%E6%8A%80%E6%9C%AF"><span class="nav-number">2.10.4.</span> <span class="nav-text">云原生架构技术</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E6%A1%88%E4%BE%8B-1"><span class="nav-number">2.10.5.</span> <span class="nav-text">架构案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84SOA"><span class="nav-number">2.11.</span> <span class="nav-text">面向服务架构SOA</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SOA%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.11.1.</span> <span class="nav-text">SOA与微服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%88%86%E7%B1%BB"><span class="nav-number">2.11.2.</span> <span class="nav-text">服务分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SOA%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.11.3.</span> <span class="nav-text">SOA协议</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SOA%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">2.11.4.</span> <span class="nav-text">SOA的设计原则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SOA%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.11.5.</span> <span class="nav-text">SOA设计模式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%9E%B6%E6%9E%84"><span class="nav-number">2.12.</span> <span class="nav-text">安全架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84%E8%A7%84%E5%88%92%E6%A1%86%E6%9E%B6"><span class="nav-number">2.12.1.</span> <span class="nav-text">安全体系架构规划框架</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.12.2.</span> <span class="nav-text">信息安全整体架构设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.12.3.</span> <span class="nav-text">网络安全体系架构设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.12.4.</span> <span class="nav-text">数据库系统的安全设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%84%86%E5%BC%B1%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.12.5.</span> <span class="nav-text">系统架构的脆弱性分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E6%A1%88%E4%BE%8B-2"><span class="nav-number">2.12.6.</span> <span class="nav-text">架构案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%B8%BF%E8%92%99%E6%9E%B6%E6%9E%84"><span class="nav-number">2.13.</span> <span class="nav-text">鸿蒙架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%9E%B6%E6%9E%84"><span class="nav-number">2.14.</span> <span class="nav-text">大数据架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Lambda"><span class="nav-number">2.14.1.</span> <span class="nav-text">Lambda</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kappa"><span class="nav-number">2.14.2.</span> <span class="nav-text">Kappa</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BA%E6%96%87"><span class="nav-number">3.</span> <span class="nav-text">论文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF"><span class="nav-number">3.1.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.2.</span> <span class="nav-text">示例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="系统架构基础一些问题 | All-Nothing">
+      <meta itemprop="description" content="系统架构基础一些问题，笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          系统架构基础一些问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2000-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2000-01-01T00:00:00+08:00">2000-01-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>65k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>59 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">系统架构基础一些问题，笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="零散问题"><a href="#零散问题" class="headerlink" title="零散问题"></a>零散问题</h3><p>1、在冯诺依曼结构中，程序指令和娄数据存在同一个存储器中</p>
+<p>2、全局队列调度优点是CPU核心利用率较高而且平均，局部队列调度优点是任务无需在多个CPU核心间切换，提高了CPU核心局部缓存命中率;缺点是CPU利用率较低</p>
+<p>3、采用不同的寻址方式可以扩展操作码，但是并不会降低指令译码难度，反而会增加难度。</p>
+<p>采用不同寻址方式可缩短指令字长（如果使用立即寻址，长度会很长，但是使用寄存器寻址，指令长度就会变短），扩大寻址空间（立即寻址和间接寻址就可以看出来），提高编程的灵活性（可以按照需要采取直接或间接寻址方式）</p>
+<p>实现程序控制是通过转移指令来实现的</p>
+<p>4、PC保存的是当前欲执行的指令的地址</p>
+<p>地址码字段指出的是操作数所在的地址</p>
+<p>程序员可以修改指令执行的顺序，但不能给出指令的地址。</p>
+<p>操作系统编译为CPU指令，在CPU架构上执行，并不是决定指令的地址的。</p>
+<p>5、在计算机设计时，围绕的中心是指令，指令是一种基本的操作。一台计算机处理功能的大小与指令的功能以及指令的多少有关。所有指令的集合称为指令系统，也就是机器语言</p>
+<p>6、全相联映像块冲突最小，其次为组相联映像，直接映像块冲突最大。</p>
+<p>7、CISC的主要缺点如下：复杂，周期长，成本高，成品率低，降低速度，优化编译难</p>
+<p>①微程序技术是CISC的重要支柱，每条复杂指令都要通过执行一段解释性微程序才能完成，这就需要多个CPU周期，从而降低了机器的处理速度；②指令系统过分庞大，从而使高级语言编译程序选择目标指令的范围很大，并使编译程序本身冗长而复杂，从而难以优化编译使之生成真正高效的目标代码；③CISC强调完善的中断控制，势必导致动作繁多，设计复杂，研制周期长；</p>
+<p>④CISC给芯片设计带来很多困难，使芯片种类增多，出错几率增大，成本提高而成品率降低。</p>
+<p>8、地址总线由单向多根信号线组成，可用于CPU向主存、外设传送地址信息；<br>数据总线由双向的多根信号线组成，CPU可以沿看这些线从主存或外设读入数据也可发送数据；<br>控制总线上传输控制信息，包括控制命令和反馈信号等。<br>访问内存所得到的信息是数据信息，通过数据总线传送至CPU</p>
+<p>9、浮点数中尾数是纯小数</p>
+<p>10、把符号位和数值位一起进行编码来表示的数叫做机器数。</p>
+<p>真值是指在机器数编码的基础上，将符号位和数值位分开进行运算得到的数值</p>
+<p>11、原码，反码，补码：</p>
+<p>在现代计算机中，数值型数据一般采用二进制数的补码形式表示。原码、 反码和补码都是机器数的不同表示形式。其中</p>
+<p>原码最高位表示符号位， 其余位表示数值。</p>
+<p>反码是在原码的基础上，将负数的表示方法取反， 即负数的符号位为1， 其余为取反的原码。</p>
+<p>补码是在反码的基础上再加1， <strong>对于正数和0， 补码和原码相同， 而对于负数，补码是其绝对值的原码取反加1</strong>。补码的优点是， 可以用同一套加法规则处理加减法，且没有溢出的问题</p>
+<p>12、机器字长为n，最高位符号位，定点整数最大值2的n-1次方-1</p>
+<p>13、原码乘法：将被乘数和乘数的符号位和数值部分单独处理<br>对被乘数和乘数的数值部分取绝对值相乘， 得到乘积。<br>如果被乘数和乘数的符号位相同 则乘积为正；如果符号位不同， 则乘积为负。将乘积的符号位和数值部分合并得到最终结果。</p>
+<p>14、原码，反码有0和-0之分，补码没有，移码也没有，移码是补码符号位取反</p>
+<p>15、n位补码表示范围-2的n-1次方到2的n-1次方-1</p>
+<p>16、正数的原码，反码都一样，只有负数的反码取反</p>
+<p>17、总能保证除数的首位为1，则模2除法运算的商是由余数首位与除数首位的模2除法运算结果确定。因为除数首位总是1，按照模2除法运算法， 那么余数首位是1就商1，是0就商0</p>
+<p>18、模2除法原则：被除数的首位为1，商为1。被除数的首位为0，商为0。模2除法等同于按位异或， 要保证每次除完首位都为0，才能进行石移。计算时每次右移一位， 当被除数的位数小于除数，其为余数。</p>
+<p>19、存储器常用的存取方式：</p>
+<p>（1）顺序存取：存储器的数据以记录的形式进行组织。<strong>对数据的访问必须按特定的线性顺序进行</strong>。<strong>磁带存储器</strong>采用顺序存取的方式<br> （2）直接存取：与顺序存取相似，直接存取也使用一个共享的读写装置对所有的数据进行访问。但是，<strong>每个数据块都拥有唯一的地址标识</strong>， 读写装置可以直接移动到目的数据块的所在位置进行访问。存取时间也是可变的。<strong>磁盘存储器</strong>采用直接存取的方式。<br>  3）随机存取：存储器的每一个可寻址单元都具有自己唯一的地址和读写装置，<strong>系统可以在相同的时间内对任意一个存储单元的数据进行访问</strong>， 而与先前的访问序列无关。<strong>主存储器</strong>采用随机存取的方式<br>  （4） 相联存取：相联存取也是一种随机存取的形式，<strong>但是选择某一单元进行读写是取决于其内容而不是其地址</strong>。与普通的随机存取方式一样，每个单元都有自己的读写装置，读写时间也是一个常数。使用相联存取方式，可以对所有的存储单元的特定位进行比较，选择符合条件的单元进行访问。为了提高地址映射的速度，<strong>Cache采取相联存取</strong>的方式</p>
+<p>20、DRAM:动态随机存取存储器；计算机系统主存主要由DRAM构成，又叫主存，是与CPU直接交换数据的内部存储器。它可以随时读写 （刷新时除外），而且速度很快，通常作为操作系统或其他正在运行中的程序的临时数据存储媒介，通过周期性刷新来保持数据的存储器件，断电丢失。<br>SRAM:静态随机存取存储器；指这种存储器只要保持通电，里面储存的数据就可以恒常保持，Cache构成<br>EEPROM： 电可擦可编程只读存储器。与EPROM相似， EEPROM中的内容既可以读出，也可以进行改写</p>
+<p>FLASH：闪存，也可以使用电信号进行信息的擦除操作。整块闪存可以在数秒内删除</p>
+<p>21、高速缓冲存储器是存在于主存与CPU之间的一级存储器，由静态存储芯片 （SRAM） 组成，容量比较小但速度比主存高得多，接近于CPU的速度。Cache通常保存看一份内存储器中部分内容的副本，该内容副本是最近曾被CPU使用过的数据和程序代码</p>
+<p>22、Cache是一种介于主存和微处理器 （CPU）之间的高速存储器， 用于主存和CPU之间的缓冲存储。其命中率必须很高， 一般要达90%~95%以上， 才能使访存的速度跟得上CPU的速度</p>
+<p>23、cpu对其访问速度最快，题目中的存储设备按访问速度排序为：通用寄存器&gt;Cache&gt;内存&gt;硬盘</p>
+<p>24、中断向量就是中断服务程序的入口地址， 因此中断向量的地址就是中断服务程序的入口地址的地址</p>
+<p>25、直接存储器访问 Direct MemoryAccessDMA）是指数据在主存与I/O设备间的直接成块传送， 即在主存与V/O设备间传送数据块的过程中，不需要CPU作任何干涉，只需在过程开始启动  （即向设备发出“传送一块数据”的命令） 与过程结束 CPU通过轮询或中断得知过程是否结束和下次操作是否准备就绪）  时由CPU进行处理， 实际操作由DMA硬件直接完成， CPU在传送过程中可做其他事情。</p>
+<p>26、对于a，数据格式的转换是接口应具有的功能，也是设置接口的原因之一</p>
+<p>对于b，过程中错误与状态检测，对应反应I/O设备工作状态的功能</p>
+<p>对于c，操作的控制与定时，对应传送命令功能。操作就是一些命令</p>
+<p>对于d， 与主机和外设通信对应传送数据功能。通信就是要传送数据</p>
+<p>27、在UNIX操作系统中，把输入/输出设备看作是特殊文件</p>
+<p>28、影响计算机系统IO设备传输速度的主要因素，数据总线的宽度</p>
+<p>29、指令周期（nstructionCycle):取出并执行一条指令的时间。<br>总线周期 （BUSCycle）：也就是一个访存储器或V/O端口操作所用的时间<br>时钟周期 （ClockCycle）：又称震荡周期，是处理操作的最基本单位。<br>指令周期、总线周期和时钟周期之间的关系：一个指令周期由若干个总线周期组成，而一个总线周期时间又包含有若干个时钟周期。<br>一个总线周期包含一个 （只有取址周期） 或多个机器周期<br>机器周期：在计算机中，为了便于管理，常把一条指令的执行过程划分为若个阶段，每一阶段完成一项工作。例如，取指令、存储器读、存储器写等，这每一项工作称为一个基本操作。完成一个基本操作所需要的时间称为机器周期。<br>DMA响应过程为：DMA控制器对DMA请求判别优先级及屏蔽，向总线裁决逻辑提出总线请求。 当CPU执行完当前总线周期即可释放总线控制权。此时总线裁决逻辑输出总线应答，表示DMA已经响应，通过DMA控制器通知/O接口开始DMA传输。</p>
+<p>存储周期：通常指连续启动两次操作所需间隔的最小时间， 体现主存的速度DMA获得内存总线的控制权，单纯的是为了做内存访问， 所以仅需要一个存取周期</p>
+<p>30、<img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/1.jpg" alt="1"></p>
+<p>31、中断，程序现场信息保存在堆栈</p>
+<p>32、磁盘驱动器是不是IO接口，可编程中断控制是IO接口</p>
+<p>33、RISC精简指令系统CPU中的通用寄存器数量多，一般在32个以上，有的可达上个。优化编译，更好的支持高级语言</p>
+<p>34、Flynn分类法根据指令流和数据流分为4类</p>
+<p>35、突发传输：在一个总线周期内， 可以传输多个存储地址连续的数据，即一次传输一个地址和一批地址连续的数据。<br>并行传输：在传输中有多个数据位同时在设备之间进行的传输<br>串行传输：数据的二进制代码在一条物理信道上以位为单位按时间顺序逐位传输<br>同步传输：传输过程中由统一的时钟控制</p>
+<p>36、计算机使用总线结构便于增减外设，同时减少信息传输线的条数。</p>
+<p>37、串行总线适宜长距离传输数据。但串行总线有半双工、全双工之分，全双工是条线发一条线收。<br> 串行总线传输的波特率在使用中可以改变<br>串行总线的数据发送和接收可以使用多种方式， 程序查询方式和中断方式都可以</p>
+<p>38、公钥加密，非对称加密：RSA，EIGAMA，背包算法，ECC，DSA</p>
+<p>流加密：RC4，ORYX，SEAL</p>
+<p>分组加密：对称密钥分组加密：DES，AES，IDEA</p>
+<p>39、浏览器和服务器属于会话密钥+公钥加密</p>
+<p>40、公钥体系，非对称加密，私钥用于解密加签名，公钥用于加密和认证</p>
+<p>41、在PKI系统体系中，证书机构CA负责生成和签署数字证书，注册机构RA负责验证申请数学证书用户的身份。</p>
+<p>42、我们可以通过验证CA对数字证书的签名来核实数字证书的有效性。如果证书有效， 说明此网站经过CA中心的认证，是可信的网站，所以这个动作是用来验证网站真伪的</p>
+<p>43、消息摘要防止篡改，对消息摘要加密，防止抵赖</p>
+<p>44、假设系统中有n个进程共享3台打印机， 意味着每次只允许3个进程进入互段，那么信号量的初值应为3。可见， 根据排除法只有选项B中含有3。第2空的正确答案为选项D。信号量S的物理意义为：当S0时，表示资源的可用数；当S&lt;0时，其绝对值表示等待资源的进程数。</p>
+<p>45、矩阵A10011001总共有100行、100列， 若矩阵A按行序存放，那么每一个页面可以存放2行，也就是说矩阵的2行刚好放在1页内，  访问他们需要中断1次， 这样100行总共需要中断50次，若矩阵A按列序存放， 那么每一个页面可以存放2列，  也就是说矩阵的2列刚好放在1页内，由于内循环“FORi:=1toDo”是按照列序变化， 访问它们需要中断50次， 这样100行总共需要中断5000次。</p>
+<p>46、若操作系统正在将修改后的系统目录文件写回磁盘时系统发生崩溃， 则对系统的影响相对较大</p>
+<p>47、逻辑地址为十六进制5148H其页号为5， 页内地址为148H， 查页表后可知页顿号  （物理块号） 为3， 该地址经过变换后， 其物理地址应为页顿号3拼上页内地址148H  即十六进制3148H.</p>
+<p>系统应该首先淘未被访问的页面， 因为根据程序的局部性原理，最近未被访问的页面下次被访问的概率更小 如果页面最近都被访问过，应该先淘汰未修改过的页面， 因为未修改过的页面内存与辅存一致，故淘汰时无须写回辅存，使系统页面置换代价更小</p>
+<p>48、如果客户端发出一个请求，然后DNS服务器自己负责与其他服务器通信，最终将结果返回给客户端，这是递归查询。如果客户端在查询过程中多次收到指向不同DNS服务器的指引，并且需要自己去联系这些服务器，这是迭代查询。这里面你看箭头方向就能看出来</p>
+<p>49、DNS服务器的IP地址都存放在/etc/resolv.conf文件中。</p>
+<p>50、RAID5采取的是N+1的方案。1就是校验信息。以一共6个500G的盘，实际存原始数据的容量是：5*500=2500G<br>当一组盘的容量大小不一时，所有盘按最小容量进行计算。故5块500G的盘和1块250G的盘相当于5块250G的硬盘。</p>
+<p>51、网络几余设计主要是通过重复设置网络链路和网络设备，以提高网络的可用性。</p>
+<p>52、根据交换机的转发方式，交换机可以分为3类<br>  （1） 直接交换方式 （cut-throughswitching）；交换机只接收并检测目的地址，就立即将该顿转发出去， <strong>而不用判断这顿数据是否出错</strong>。顿出错检测任务由节点完成。这种交换方式的优点就是交换延退低；缺点就是缺乏差错检测能力，不支持不同速率端口之间的顿转发。<br> （2）存储转发交换方式 （Store-and-Forwardswitching）；交换机需要完成接收并进行差错检测。如果接收顿正确，则根据的地址确定输出端口，然后再转发出去。<strong>这种交换方式的优点是具有差错检测能力，并支持不同速率端口间的转发</strong>；缺点就是交换延迟会增长<br> （3）改进直接交换方式 （segment-freeswitching，无碎片转发方式）。改进的直接交换方式就是上述两种方式的结合。在接收到顿的前64B后，判断顿头字段是否正确，如果正确则转发出去。长度小于64字节。冲突碎片并不是有效的数据顿，应该被丢弃。这种方式对于短的顿来说，交换延退与直接交换方式比较接近；对于长的顿来说， 由于它只对的地址字段与控制字段进行差错检测， 因此交换延退将会减少。采用相关命令改变顿转发方式</p>
+<p>53、SDN （Software Defined Network）  的网络架构中包含：控制层、转发层和应用层。</p>
+<p>54、大型局域网通常划分为核心层、汇聚层和接入层，其中核心层在逻辑上只有一个，只负责高速转发以及出口路由；汇聚层定义的网络的访问策略，访问控制列表检查；接入层提供局域网络接入功能， 可以使用集线器代替交换机</p>
+<p>55、配置DHCP服务器有如下优点<br>  （1） 管理员可以集中为某网段指定TCP/IP参数，并且可以定义使用保留地址的客户机的参数。<br>  （2） 客户机无须手工配置TCP/IP，提供安全可信的配置。DHCP避免了在每台计算机上手工输入数值引起的配置错误， 还能防止网络上计算机配置地址的冲突。<br>  （3） 使用DHCP服务器能大大减少配置花费的开销和重新配置网络上计算机的时间，服务器可以在指派地址租约时配置所有的附加配置值。<br>  （4） 客户机在子网间移动时，旧的IP地址自动释放以便再次使用。再次启动客户机时，DHCP服务器会自动为客户机重新配置TCP/IP<br>  （5） 大部分路由器可以转发DHCP配置请求，因此， 互联网的每个子网并不都需要DHCP服务器。</p>
+<p>56、MPEG-1标准用于数字存储体上活动图像及其伴音的编码，其数码率为1.5Mb/s。为了提高压缩比，内/顿间图像数据压缩技术必须同时使用。帧内压缩算法与JPEG压缩算法大致相同， 采用基于DCT的变换编码技术，月用以减少空域几余信息。帧间压缩算法，采用预测法和插补法。预测误差可在通过DCT变幻码处理，进一步压缩。顿间编码技术可减少时间轴方向的余信息</p>
+<p>57、H.261标准中，视频图像的顿序列包括顿内图像（I帧） 和预测图像（P顿），而在MPEG-1标准中，增加了插补图像 （B帧， 或称双向预测图像）I帧不参照任何过去的或者将来的其他图像顿，压缩编码直接采用类JPEG的压缩算法，P使用单向预测编码，而B使用双向预测编码。由此可知，I可以直接被索引和访问，其编码数据量最大；P顿和B顿不能作为直接访问点， B的编码数据量最小。</p>
+<p>58、彩色视频信号数字化的过程中，利用图像子采样技术通过降低对色差信号的采样频率，以达到减少数据量的目的</p>
+<p>59、总线是一个大家都能使用的数据传输通道，大家都可以使用这个通道，但<strong>发送数据时，是采用的分时机制，</strong>而接收数据时可以同时<br>接收，也就是说，同一个数据，可以并行的被多个客户收取。如果该数据不是传给自己的，数据包将被丢弃。</p>
+<p>60、IO接口与CPU交换信息是异步的</p>
+<p>61、嵌入式系统通常采用接口中的移位寄存器来实现数据的串/并和并/串转换操作</p>
+<p>62、嵌入式操作系统特点：系统内核小，专用性强，高实时性，多任务的操作系统，需要开发工具和环境</p>
+<p>63、JTAG （JointTestActionGroup，联合测试工作组）是一种国际标准测试协议（IEEE1149.1兼容），主要用于芯片内部测试。现在多数的高级器件都支持JTAG协议， 如DSP、FPGA器件等。标准的JTAG接口是4线：TMS、TCK、TDI、TDO.分别为模式选择、时钟、数据输入和数据输出线。</p>
+<p>64、真实程序、核心程序、小型基准程序和合成基准程序，其评测准确程度依次递减。其中评测准确度最高的是真实程序</p>
+<p>65、把应用程序中用得最多、最频繁的那部分<strong>核心程序</strong>作为评估计算机系统性能的标准程序，称为基准测试程序 （benchmark）。基准程序法是目前一致承认的测试系统性能的较好方法</p>
+<p>66、业务处理系统包含的五个活动是数据输入、 业务处理、文件和数据库处理、文件和报告产生、查询处理活动。</p>
+<p>67、BI关键是从许多来自不同的企业运作系统的数据中提取出有用的数据并进行清理， 以保证数据的正确性， 其核心是构建数据仓库<br>BI系统主要包括数据预处理、建立数据仓库、数据分析和数据展现四个主要阶段。</p>
+<p>数据预处理是整合企业原始数据的第一步，它包括数据的抽取 （Extraction）、转换Transformation） 和加载 (Load） 三个过程 （ETL过程）；</p>
+<p>建立数据仓库则是处理海量数据的基础；</p>
+<p>数据分析是体现系统智能的关键，一般采用OLAP和数据挖掘两大技术。</p>
+<p>OLAP不仅进行数据汇总/聚集，同时还提供切片、切块、下钻、上卷和旋转等数据分析功能，用户可以方便地对海量数据进行多维分析。数据挖掘的目标则是挖数据背后隐藏的知识， 通过关联分析、聚类和分类等方法建立分析模型，预测企业未来发展超势和将要面临的问题；在海量数据和分析手段增多的情况下，数据展现则主要保障系统分析结果的可视化</p>
+<p>68、人口信息处理和采集属于政府对政府</p>
+<p>69、ERP中的企业资源包括企业的*三流”资源，即物流资源、资金流资源和信息流资源。ERP实际上就是对这“三流”资源进行全面集成管理的管理信息系统。</p>
+<p>70、现有的企业门户大致可以分为企业信息门户、企业知识门户和企业应用门户三种。</p>
+<p>其中企业信息门户重点强调为访问结构数据和无结构数据提供统一入口，实现收集、访问、管理和无缝集成。</p>
+<p>企业知识门户提供了一个创造、搜集和传播企业知识的平台，通过企业知识门户，员工可以与工作团队中的其他成员取得联系，寻找能够提供帮助的专家。</p>
+<p>企业应用门户是一个用来提高企业的集中贸易能力、协同能力和信息管理能力的平台。它以商业流程和企业应用为核心，将商业流程中功能不同的应用模块通过门户集成在一起， 提高公司的集中贸易能力、协同能力和信息管理能力。</p>
+<p>71、企业应用集成通过采用多种集成模式，构建统一标准的基础平台，将具有不同功能和目的而又独立运行的企业信息系统联合起来。目前市场上主流的集成模式有三种，分别是面向信息的集成、面向过程的集成和面向服务的集成。</p>
+<p>其中面向过程的集成模式强调处理不同应用系统之间的交互逻辑，与核心业务逻辑相分离，并通过不同应用系统之间的协作共同完成某项业务功能</p>
+<p>72、</p>
+<p>1.关键成功因素法  （CSF）通过对关键成功因素的识别 找出实现目标所需的关键信息集合，从而确定系统开发的优先次序。<br>关键成功因素来自于组织的目标， 通过组织的目标分解和关键成功因素识别、性能指标识别， 一直到产生数据字典。</p>
+<p>2.战略目标集转化法 （SST）战略目标集转化法从另一个角度识别管理目标，它反映了各种人的要求，而且给出了按这种要求的分层，然后转化为信息系统目标的结构化方法。它能保证目标比较全面，疏漏较少，但它在突出重点方面不如关键成功因素法。</p>
+<p>3.企业系统规划法  （BSP）通过自上而下地识别企业目标、企业过程和数据，然后对数据进行分析，自下而上地设计信息系统。该管理信息系统支持企业目标的实现， 表达所有管理层次的要求，向企业提供一致性信息，对组织机构的变动具有适应性企业系统规划法虽然也首先强调目标，但它没有明显的目标导引过程。它通过识别企业“过程”引出了系统目标，企业目标到系统目标的转化是通过企业过程/数据类等矩的分析得到的。</p>
+<p>73、</p>
+<p>属性冲突：包括属性域冲突和属性取值冲突。<br>命名冲突：包括同名异义和异名同义。<br>结构冲突：包括同一对象在不同应用中具有不同的抽象，以及同一实体在不同局部E-R图中所包含的属性个数和属性排列次序不完全相同。</p>
+<p>74、</p>
+<p>数据库设计主要分为用户需求分析、概念结构、逻辑结构和物理结构设计四个阶段。</p>
+<p>在用户需求分析阶段中，数据库设计人员采用一定的辅助工具对应用对象的功能、性能、限制等要求进行科学分析，并形成需求说明文档、数据字典和数据流程图。用户需求分析阶段形成的相关文档用以作为概念结构设计的设计依据。</p>
+<p>逻辑设计阶段的任务是将概念模型设计阶段得到的基本E-R图，转换为与选用的DBMS产品所支持的数据模型相符合的逻辑结构，关系规范化</p>
+<p>75、数据库运行的基本工作单位是事务</p>
+<p>76、风险评估的基本要素为脆弱性、资产、威、风险和安全措施， 与这些要素相关的属性分别为业务战略、资产价值、安全需求、安全事件和残余风险，这些也是风险评估要素的一部分。</p>
+<p>77、能力表：对应于访问控制表，这种实现技术实际上是按行保存访问矩阵。每个主体有一个能力表，是该主体对系统中每一个客体的访问权限信息。使用能力表实现的访问控制系统可以很方便地查询某一个主体的所有访问权限</p>
+<p>78、访问控制表 (ACL)。 目前最流行、使用最多的访问控制实现技术。每个客体有一个访问控制表， 是系统中每一个有权访问这个客体的主体的信息。这种实现技术实际上是按列保存访问矩阵</p>
+<p>79、一个密码系统至少由明文、密文、加密算法、 解密算法和密钥五个部分组成， 而在密码系统的设计中，有一条很重要的原则就是Kerckhoff原则，也就是密码系统的安全性只依赖于密钥</p>
+<p>80、机密性是指网络信息不泄露给非授权的用户、实体或程序，能够防止非授权者获取信息。<br>完整性是指网络信息或系统未经授权不能进行更改的特性。<br>可用性是指合法许可的用户能够及时获取网络信息或服务的特性。<br>抗抵赖性是指防正网络信息系统相关用户否认其活动行为的特性。</p>
+<p>81、实现数字签名最常见的方法：公钥密码体制和单向安全Hash函数算法相结合</p>
+<p>82、X.509数字证书内容包括：版本号、序列号、签名算法标识、发行者名称、有效期、主体名称、主体公钥信息、发行者唯一标识符、主体唯一识别符、扩充域、CA的签名等，不包括加密算法标识</p>
+<p>83、软件的维护并不只是修正错误。为了满足用户提出的增加新功能、修改现有功能以及一般性的改进要求和建议，需要进行完善性维护，它是软件维护工作的主要部分；软件测试不可能揭露旧系统中所有潜在的错误，所以这些程序在使用过程中还可能发生错误，诊断和更正这些错误的过程称为改正性维护；为了改进软件未来的可维护性或可靠性，或者为了给未来的改进提供更好的基础而对软件进行修改，这类活动称为预防性维护。</p>
+<p>84、<img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/2.jpg" alt="1"></p>
+<p>85、净室软件工程是软件开发的一种形式化方法， 可以开发较高质量的软件。它使用盒结构规约进行分析和建模，并将正确性验证作为发现和排除错误的主要机制，采用统计测试来获取验证软件可靠性所需要的信息</p>
+<p>86、用例及用例图表示需求，利用包图和类图表示目标软件系统的总体框架结构</p>
+<p>87、逻辑构件模型用功能包描述系统的抽象设计，用接口描述每个服务集合，以及功能之间如何交互以满足用户需求，  作为系统的设计蓝图以保证系统提供适当的功能。</p>
+<p>物理构件模型用技术设施产品、硬件分布和拓扑结构、以及用于绑定的网络和通信协议描述系统的物理设计，这种架构用于了解系统的性能、吞吐率等许多非功能性属性</p>
+<p>88、RUP统一过程把一个项目分为四个不同的阶段：<br>构思阶段 （初始/初启阶段）：定义最终产品视图和业务模型、确定系统范围。</p>
+<p>细化阶段 （精化阶段）：设计及确定系统架构、制定工作计划及资源要求。<br>构造阶段：开发剩余构件和应用程序功能，把这些构件集成为产品，并进行详细测试。<br>移交阶段：确保软件对最终用户是可用的，进行测试，制作产品发布版本</p>
+<p>6个核心过程工作流：业务建模、需求、分析与设计、实现、测试、部署。3个核心支持工作流：配置与变更管理、项目管理、环境。</p>
+<p>其核心特点是：以架构为中心，用例驱动，送代与增量</p>
+<p>89、结构化分析就是一种建立模型的活动，通常建立数据模型、功能模型和行为模型三种模型。</p>
+<p>流程图一般用于描述活动流程或程序执行流程，程序流程图是设计阶段的工具，与结构化分析无关<br>买体-关系图（E-R图）：用于建立数据模型，其中包含了实体、关系、属性。<br>数据流图 （DFD）：描绘信息流和数据输入输出的移动过程。是结构化分析过程中使用的主要功能建模工具<br>状态转换图：通过描述系统的状态及引起系统状态转换的事件，表示系统的行为，提供了行为建模的机制<br>数据字典：描述在数据模型、功能模型和行为模型中出现的数据对象和控制信息的特征，给出这些对象的精确定义。数据字典是分析模型的核心，通常使用CASE工具来创建和维护数据字典数据字典是结构化分析方法 （SA方法） 的核心。它通常包括五个部分，即数据项、数据结构、数据流、数据存储、处理过程。</p>
+<p>90、CBSE（Component-BasedSoftwareEngineering）是指用装配可重用软件构件的方法来构造应用程序。CBSE不仅仅是简单地应用对象要求代理建立一个代码库，或从Internet上下载相关控件，还需要策略而系统地进行全局考虑和规划。它包含了系统分析、构造、维护和扩展等各个方面。它具有即插即用，为接口为核心及标准化等特点。</p>
+<p>91、功用驱动开发方法（FDD）中，会把编程开发人员分成两类：“首席”程序员和“类”程序员。</p>
+<p>92、逆向工程导出的信息可分为如下4个抽象层次<br>实现级：包括程序的抽象语法树、符号表等信息<br>结构级：包括反映程序分量之间相互依赖关系的信息，例如调用图、结构图等。</p>
+<p>功能级：包括反映程序段功能及程序段之间关系的信息。<br>领域级： 包括反映程序分量或程序与应用领域概念之间对应关系的信息。</p>
+<p>93、与逆向工程相关的概念有重构、设计恢复、再工程和正向工程<br>  （1） 重构 （restructuring）。重构是指在同一抽象级别上转换系统描述形式。<br>  （2） 设计恢复 （designrecovery）。设计恢复是指借助工具从已有程序中抽象出有关数据设计、总体结构设计和过程设计等方面的信息。<br>  （3） 逆向工程 （reverseengineering）：逆向工程是分析程序，力图在比源代码更高抽象层次上建立程序的表示过程， 逆向工程是设计的恢复过程<br>  （4） 正向工程 （fonwardengineering）。正向工程是指不仅从现有系统中恢复设计信息， 而且使用该信息去改变或重构现有系统， 以改善其整体质量。<br>  （5） 再工程（re-engineering）。再工程是对现有系统的重新开发过程， 包括逆向工程、新需求的考虑过程和正向工程三个步骤。</p>
+<p>94、输入应该尽可能地简单，以降低错误发生的可能性，如对于范围可控的数据，使用选择的方式替代用户输入；只输入变化的数据等。输入应该尽可能使用已有含义明确的设计，需要采用模仿的方式而非创新</p>
+<p>95、系统设计的主要内容包括概要设计和详细设计。</p>
+<p>概要设计又称为系统总体结构设计它是系统开发过程中很关键的一步，其主要任务是将系统的功能需求分配给软件模块，确定每个模块的功能和调用关系，形成软件的模块结构图，即系统结构图。在要设计中，将系统开发的总任务分解成许多个基本的、具体的任务，为每个具体任务选择适当的技术手段和处理方法的过程称为详细设计。</p>
+<p>根据任务的不同，详细设计可分为多种，例如，网络设计、代码设计、输入/输出设计、处理流程设计、数据存储设计、用户界面设计、安全性和可靠性设计等。</p>
+<p>96、软件设计包括体系结构设计、接口设计、数据设计和过程设计</p>
+<p>97、需求变更管理的过程主要包括问题分析和变更描述、变更分析和成本计算、变更实现</p>
+<p>98、软件开发环境应支持多种集成机制，根据功能的不同，集成机制可以划分为环境信息库、过程控制与消息服务器、环境用户界面三个部分</p>
+<p>99、只有java子类和父类是单继承，c++可以多继承</p>
+<p>100、关于面向对象的开发阶段。<br>面向对象分析阶段：认定对象、组织对象、对象间的相互作用、基于对象的操作。</p>
+<p>面向对象设计阶段：识别类及对象、定义属性、定义服务、识别关系、识别包。<br>面向对象程序设计：程序设计范型、选择一种OOPL<br>面向对象测试：算法层、类层、模板层、系统层。</p>
+<p>101、策略模式（Strategy）：定义一系列算法，把它们一个个封装起来，并且使它们之间可互相替换， 从而让算法可以独立于使用它的用户而变化。<br>抽象工厂模式 （AbstractFactory）：提供一个接口， 可以创建一系列相关或相互依赖的对象， 而无需指定它们具体的类。<br>观察者模式（有时又被称为发布-订阅Subscribe&gt;模式、模型-视图View&gt;模式、源-收听者Listener&gt;模式或从属者模式） 是软件设计模式的一种。在此种模式中，一个目标物件管理所有相依于它的观察者物件，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实作事件处理系统。<br>状态模式 （State）：允许一个对象在其内部状态改变时改变它的行为。</p>
+<p>102、适配器模式将一个接口转换成客户希望的另一个接口， 从而使接口不兼容的那些类可以一起工作，将类自己的接口包裹在一个已存在的类中。适配器模式既可以作为类结构型模式， 也可以作为对象结构型模式</p>
+<p>桥接 （bridge） 模式。桥接模式将抽象部分与它的实现部分分离，使它们都可以独立地变化。 它是一种对象结构型模式，又称为柄体 handleand body） 模式或interface） 模式。桥接模式类似于多重继承方案，但是多重继承方案往往违背了类的单一职责原则  其复用性比较差，桥接模式是比多重继承方案更好的解决方法。</p>
+<p>组合（composite） 模式。组合模式又称为整体-部分  （part-whole） 模式，属于对象的结构模式。在组合模式中，通过组合多个对象形成树形结构以表示整体-部分的结构层次。组合模式对单个对象 （即叶子对象）和组合对象 （即容器对象）的使用具有一致性。<br>装饰（decorator）模式。装饰模式是一种对象结构型模式，可动态地给一个对象增加-些额外的职责，就增加对象功能来说，装饰模式比生成子类实现更为灵活。通过装饰模式， 可以在不影响其他对象的情况下，以动态、透明的方式给单个对象添加职责当需要动态地给一个对象增加功能，这些功能可以再动态地被撤销时可使用装饰模式；当不能采用生成子类的方法进行扩充时也可使用装饰模式</p>
+<p>103、<img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/3.jpg" alt="1"></p>
+<p>104、软件只有开发完成并固定下来才能享有软件著作权， 自复制成光盘出售，其行为是侵犯著作权</p>
+<p>105、专利权仅在申请了专利权的国家受到法律保护，在其他地方并不受保护。题中提到未在中国和其他国家申请专利，所以中国销售不受法律保护。在中国不享有专利权，因此， 不能禁止他人在中国制造、使用、销售、进口、许诺销售。</p>
+<p>106、著作权的保护范围不涵盖国家的法律法规及官方正式译文， 所以从2014年1月5日定为官方正式译文时，就不保护了</p>
+<p>107、软件著作权属于自然人的，该自然人死亡后，在软件著作权的保护期内，软件著作权的继承人可以继承除名权的其他各项软件著作权</p>
+<p>108、在著作权法中规定：署名权、修改权、保护作品完整权的保护期是不受时间限制的。而发表权、使用权和获得报酬权的保护期限为：作者终生及其死亡后的50年（第50年的12月31日）。</p>
+<p>109、软件架构维护过程：</p>
+<p>架构知识管理：架构设计+架构设计决策</p>
+<p>架构修改管理：主要建立一个隔离区域</p>
+<p>架构版本管理：版本维护</p>
+<p>110、<img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/4.jpg" alt="1"></p>
+<p>111、<img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/5.jpg" alt="1"></p>
+<p>112、软件架构演化时期：<br>1.设计时演化：发生在体系结构模型和与之相关的代码编译之前的软件架构演化。2.运行前演化：发生在执行之前、编译之后的软件架构演化<br>3.有限制运行时演化：在某些特定约满足时，进行的一些规定好的演化操作。<br>4.运行时演化：系统的体系结构在运行时不能满足要求时发生的软件架构演化，此<br>时的演化是最难实现的</p>
+<p>113、伺服对象 （Servant）：CORBA对象的真正实现， 负责完成客户端请求<br>对象适配器 ObjectAdapter）：用于屏蔽ORB内核的实现细节，为服务器对象的实现者提供抽象接口，  以便他们使用ORB内部的某些功能。<br>对象请求代理 （ObjectRequestBroker）：解释调用并负责查找实现该请求的对象，将参数传给找到的对象，并调用方法返回结果。客户方不需要了解服务对象的位置、通信方式、实现、激活或存储机制</p>
+<p>114、成熟性是指系统避免因错误的发生而导致失效的能力；</p>
+<p>容错性是指在系统发生故障或违反指定接口的情况下，系统维持规定的性能级别的能力；</p>
+<p>易恢复性是指在系统发生失效的情况下，重建规定的性能级别并恢复受直接影响的数据的能力；</p>
+<p>可靠性的依从性是指系统依附于与可靠性相关的标准、约定或规定的能力。</p>
+<p>115、软件备份是属于软件冗余。信息冗余是在实现正常功能所需要的信息之外再添加一些信息，以保证运行的结果正确。所有的纠错码和检错码都属于信息余技术。</p>
+<p>程序卷回是从出错的地方重新执行程序，属于时间冗余技术。指令复执也是时间冗余技术， 就是重新执行出错的指令。</p>
+<p>116、MTTF/（1+MTTF）可靠性和可用性</p>
+<p>117、可维护性指标，那么M=1/（1+MTTR）</p>
+<p>118、构件组装技术大致可分为基于功能的组装技术、基于数据的组装技术和面向对象的组装技术</p>
+<p>119、传统的编译器一般采用数据流架构风格，“管道-过滤器”和“顺序批处理”，这就需要进一步分析哪个更合适，由于题目中提到“程序源代码作为一个整体，依次在不同模快中进行传递”，而顺序批处理是强调把数据整体处理的</p>
+<p>120、IDE是一种集成式的开发环境，在这种环境中，多种工具是围绕同一数据进行处理这种情况适合用数据共享架构风格</p>
+<p>121、IDE环境是一种交互式编程  用户在修改程序代码后  会同时触发语法高亮显示、语法错误提示、程序结构更新等多种功能的调用与结果呈现。在做一件事情时， 同时触发一系列的行为，这是典型的隐式调用风格 （事件驱动系统）</p>
+<p>122、使IDE能够生成符合新操作系统要求的运行代码”，这一要求是可以通过适配策略满足的，像设计模式中的适配器模式便是采用适配的方式，形成一致的接口</p>
+<p>123、模拟新操作系统的运行环境”是典型的虚拟机架构风格的特长</p>
+<p>124、多视图体现的是关注点分离的想法，“4+1”视图中的“4”，指的是：逻辑视图、开发视图、过程视图、 物理视图，“1”指的是场景视图。<br>场景视图又称为用例视图， 显示外部参与者观察到的系统功能<br>逻辑视图从系统的静态结构和动态行为角度显示系统内部如何实现系统的功能，对象和对象模型的关系<br>开发视图文称为实现视图，显示的是源代码以及实际执行代码的组织结构，模块的组织管理<br>处理视图又称为过程视图，显示程序执行时并发的状态<br>物理视图展示软件到硬件的映射</p>
+<p>125、已有的构件分类方法可以分为三大类，分别是关键字分类法、刻面分类法和超文本组织方法。</p>
+<p>关键字分类法：是一种最简单的构件库组织方法， 其基本思想是：根据领域分析的结果将应用领域的概念按照从抽象到具体的顺序逐次分解为树状或有向无回路图结构。每个概念用一个描述性的关键字表示。不可分解的原子级关键字包含隶属于它的某些构件。</p>
+<p>刻面分类法：在刻面分类机制中，定义若干用于刻画构件特征的“面” （facet），每个面包含若干概念，这些概念表述构件在面上的特征。刻画可以描述构件执行的功能、被操作的数据、构件应用的语境或任意其他特征。</p>
+<p>超文本组织方法：超文本组织方法与基于数据库系统的构件库组织方法不同， 它基于全文检索技术，主要思想是：所有构件必须辅以详尽的功能或行为说明文档；说明中出现的重要概念或构件以网状链接方式相互连接；检索者在阅读文档的过程中可按照人类的联系思维方式任意跳转到包含相关概念或构件的文档；全文检索系统将用户给出的关键字与说明文档中的文字进行匹配，实现构件的浏览式检索。</p>
+<p>126、基于架构的软件设计 （ABSD） 强调由商业、质量和功能需求的组合驱动软件架构设计。</p>
+<p>使用ABSD方法， 设计活动可以从项目总体功能框架明确就开始，并且设计活动的开始并不意味着需求抽取和分析活动可以终止， 而是应该与设计活动并行。<br>ABSD方法有三个基础：</p>
+<p>第一个基础是功能分解，在功能分解中使用已有的基于模块的内聚和耦合技术。</p>
+<p>第二个基础是通过选择体系结构风格来实现质量和商业需求。</p>
+<p>第三个基础是软件模板的使用。ABSD方法是一个自顶向下，递归细化的过程，软件系统的架构通过该方法得到细化， 直到能产生软件构件的类。</p>
+<p>127、由于Web服务在数据传输方面具有协议分层的特征，即底层协议会包装上层协议 （HTTP协议体中包含整个SOAP消息内容），因此需要数据内容的逐步分解与分阶段处理。比较选项中的架构风格，由于管道一过滤器的架构风格支持分阶段数据处理</p>
+<p>128、 该软件系统特别强调用户定义系统中对象的关系和行为这一特性，这需要在软件架构层面提供一种运行时的系统行为定义与改变的能力，根据常见架构风格的特点和适用环境，可以知道最合适的架构设计风格应该是解释器风格</p>
+<p>129、根据题目描述， 调温器需要实时获取外界的温度信息， 并与用户定义的温度进行比较并作出动作。根据该系统的应用领域实际需求， 可以看出这是一个典型的过程控制架构风格的应用场景</p>
+<p>130、分布式表示架构是将表示层和表示逻辑层迁移到客户机， 应用逻辑层、数据处理层和数据层仍保留在服务器上；</p>
+<p>分布式数据架构是将数据层和数据处理层放置于服务器，应用逻辑层、表示逻辑层和表示层放置于客户机；</p>
+<p>分布式数据和应用架构数据层和数据处理层放置在数据服务器上，应用逻辑层放置在应用服务器上， 表示逻辑层和表示层放置在客户机。</p>
+<p>131、管道过滤器风格常常用于实现编译器。以规则为中心的虚拟机风格适合于实现专家系统。黑板风格适合于自然语言处理、语音处理、模式识别、图像处理。</p>
+<p>132、系统架构的给出必须建立在需求明确的基础上</p>
+<p>133、横向重用是指重用不同应用领域中的软件元素，例如数据结构、分类算法和人机界面构建等。标准函数是一种典型的、原始的横向重用机制<br>纵向重用是指在一类具有较多公共性的应用领域之间进行软部件重用。纵向重用活动的主要关键点是域分析：根据应用领域的特征及相似性预测软部件的可重用性</p>
+<p>134、需要将现有的业务功能进行多种组合，形成新的业务功能。而解释器在程序语言定义的计算和有效硬件操作确定的计算之间建立对应的联系。通过一个解析引擎进行解释和执行。所以可以用到解释器风格。</p>
+<p>135、架构风格往往是从全局的角度来考虑问题，他是一种独立于实际问题的通用组织纪构，设计模式着眼于解决某一特定的局部问题，是一种局部解决方案的应用</p>
+<p>136、ABSDM模型把整个基于体系结构的软件过程划分为体系结构需求、设计、文档化、复审、实现和演化等6个过程</p>
+<p>137、特定领域软件架构（DSSA）是在一个特定应用领域为一组应用提供组织结构参考的标准软件架构。实施DSSA的过程中包括一系列基本的活动，其中领域设计活动的主要目的是为了获得DSSA。该活动参加人员中，领域专家的主要任务是提供关于领域中系统的需求规约和实现的知识</p>
+<p>138、软件元素包括需求分析文档、设计过程、设计文档、程序代码、测试用例领域知识等</p>
+<p>139、语音识别系统是一个十分典型的专家系统， 其特点是求解的正确结果不止一个，求解过程比较复杂， 需要通过专家知识和反馈逐步得到正确结果。因此对比4个候选项  黑板结构特别适合求解这类问题</p>
+<p>140、现代编译器的集成开发环境一般采用数据仓储（即以数据为中心的架构风格）架构风格进行开发，其中心数据就是程序的语法树。</p>
+<p>141、ATAM被分为四个主要的活动领域 （或阶段），分别是场景和需求收集、体系结构视图和场景实现、属性模型构造和分析、折中。</p>
+<p>142、体系结构权衡分析方法 (Architecture TradeoffAnalysisMethod,ATAM） 是在SAAM的基础上发展起来的，主要针对性能、 可用性、 安全性和可修改性， 在系统开发之前，对这些质量属性进行评价和折中。</p>
+<p>143、ADL即架构描述语言，其基本构成要素包括：组件、组件接口、 连接件、架构配置。</p>
+<p>144、软件系统架构是关于软件系统的结构、行为和属性的高级抽象。在描述阶段，主要描述直接构成系统的抽象组件以及各个组件之间的连接规则， 特别是相对细致地描述组件之间的交互关系。在实现阶段，这些抽象组件被细化为实际的组件，比如具体类或者对象。软件系统架构不仅指定了软件系统的组织结构和拓扑结构， 而且显示了系统需求和构成组件之间的对应关系，  包括设计决策的基本方法和基本原理。</p>
+<p>145、中间件基本功能包括，为客户机和服务器提供连接和通信，提供交易管理机制保证交易的一致性，提供应用的负载均衡和高可用性。</p>
+<p>146、采用闭环结构的软件通常由几个协作构件共同构成，且其中的主要构件彼此分开能够进行替换与重用，但闭环结构通常适用于处理简单任务 （如机器装配等），并不适用于复杂任务。分层结构的特点是通过引入抽象层，在较低层次不确定的实现细节在较高层次会变得确定，并能够组织层间构件的协作，系统结构更加清晰</p>
+<p>147、其中敏感点是实现一个特定质量属性的关键特征，该特征为一个或多个软件构件所共有。系统权衡点会影响一个或多个属性，并对于多个属性来说都是敏感点。基于该定义</p>
+<p>148、Ping/Echo主要提高系统的可用性； </p>
+<p>限制访问主要提高系统的安全性；</p>
+<p>运行时注册主要提高系统的可修改性；</p>
+<p>接口-实现分离主要提高系统的可修改性；</p>
+<p>主动余提高系统的可用性；</p>
+<p>队列调度主要提高系统的性能；</p>
+<p>信息隐藏主要提高系统的可修改性，可测试性，可移植性；</p>
+<p>记录-回放主要提高系统的可测试性，</p>
+<p>149、从题干中*提高加密级别可以提高安全性，但可能要耗费更多的处理时间， 影响系统性能。”可以看出改变加密级别可能会对安全性和性能这两个质量属性产生非常重要的影响，注意题目的属性影响的个数</p>
+<p>150、系统构件组装分为三个不同的层次：定制 （Customization）、集成（integration）、扩展 （Extension）。这三个层次对应于构件组装过程中的不同任务。</p>
+<p>151、J2EE应用系统支持五种不同类型的构件模型：Applet、  Servlet、JSP、  EJB、  Application Client</p>
+<p>152、IDL是一种接口定义语言，具体的定义会涉及接口以及相关部分。文件包含的主要元素有：接口描述、模块定义、类型定义、常量定义、异常、值类型。接口描述是IDL文件中最核心的内容。所以IDL的数据类型要与实现语言进行映射。以Java为例，IDL接口映射为Java类， 而该接口的操作映射为相应的成员函数。模块定义映射为Java语言中的包 （Package） 或C++中的Namespace</p>
+<p>153、构件是一组通常需要同时部署的原子构件。构件和原子构件之间的区别在于，大多数原子构件永远都不会被单独部署，尽管它们可以被单独部署。相反，大多数原子构件都属于一个构件家族，一次部往往涉及整个家族。<br> 一个原子构件是一个模块和一组资源。<br>原子构件是部署、版本控制和替换的基本单位。原子构件通常成组地部署，但是它也能够被单独部署。</p>
+<p>一个模块是不带单独资源的原子构件 （在这个严格定义下Java包不是模块一一在Java中部署的原子单元是类文件。一个单独的包被编译成多个单独的类文件一一每个公共类都有一个）模块是一组类和可能的非面向对象的结构体，比如过程或者函数。</p>
+<p>154、在构件组装阶段失配问题主要包括<br>   （1） 由构件引起的失配，包括由于系统对构件基础设施、构件控制模型和构件数据模型的假设存在冲突引起的失配；<br>     （2） 由连接子引起的失配，包括由于系统对构件交互协议、连接子数据模型的假设存在冲突引起的失配；<br>     （3） 由于系统成分对全局体系结构的假设存在冲突引起的失配等。要解决失配问题， 首先需要检测出失配问题，并在此基础上通过适当的手段消除检测出的失配问题。</p>
+<p>155、项目管理，变更控制过程：</p>
+<p>①可以定义变更请求的数据项。<br>2可以定义变更请求生存期的状态转换图。<br>3可以加强状态转换图使经授权的用户仅能作出所允许的状态变更。<br>④记录每一种状态变更的数据，确认作出变更的人员。<br>5可以定义在提交新请求或请求状态被更新后应该自动通知的设计人员。<br>6可以根据需要生成标准的或定制的报告和图表。</p>
+<p>156、项目时间管理中的过程包括：活动定义、活动排序、活动的资源估算、活动历时估算、制定进度计划以及进度控制。</p>
+<p>157、为了得到工作分解结构 （Work Breakdown StructureWBS） 中最底层的交付物必须执行一系列的活动。对这些活动的识别以及归档的过程就是活动定义<br>鱼骨图（也称为lshikawa图） 是一种发现问题“根本原因”的方法， 通常用来进行因果分析。</p>
+<p>158、成本估算工具就是一种典型的项目管理工具，项目管理工具不能指导设计工作</p>
+<p>159、配置项是构成产品配置的主要元素， 配置项主要有以下两大类：<br>  （1） 属于产品组成部分的工作成果：如需求文档、设计文档、源代码和测试用例等；<br>  （2） 属于项目管理和机构支撑过程域产生的文档：如工作计划、项目质量报告和<br>项目跟踪报告等。</p>
+<p>160、产品配置是指一个产品在其生命周期各个阶段所产生的各种形式 （机器可读或人工可读） 和各种版本的文档、计算机程序、部件及数据的集合。该集合中的每一个元素称为该产品配置的一个配置项，而工具操作手册是指导升发人员使用CASE工具操做升发的一个说明文档， 它与软件产品并无直接关联，不是配置项</p>
+<p>161、软件质量保证是软件质量管理的重要组成部分。软件质量保证主要是从软件产品的过程规范性角度来保证软件的品质。其主要活动包括：质量审计 （包括软件评审和过程分析。</p>
+<p>162、规划质量管理 提供了指导，以及如何在整个项目中管理和验证质量。</p>
+<p>163、项目范围定义是生产项目计划的基础 ，在整个项目的生命周期中，会有多轮的精化，在进行其他方面分计划制定时，范围是基础。</p>
+<p>164、控制图用于确定一个过程是否稳定，或者是否具有可预测的绩效。。控制图可用于监测各种类型的输出变量。虽然控制图最常用来跟踪批量生产中的重复性活动，但也可用来监测成本与进度偏差、产量、范围变更频率或其他管理工作成果，以便帮助确定项目管理过程是否受控。</p>
+<p>165、HarmonyoS系统架构整体上遵从分层设计，从下向上分为内核层、系统服务层、框架层和应用层。HarmonyOS系统功能按照“系统-&gt;子系统-&gt;功能/模块”逐步逐级展开，在多设备部署场景下，支持根据实际需求裁剪或增加子系统或功能/模块。</p>
+<p>内核层：鸿蒙系统分为内核子系统和驱动子系统。在内核子系统中鸿蒙系统采用多为核设计，支持针对不同资源受限设备选用合适的OS内核；鸿蒙系统驱动框架是鸿蒙系统硬件生态开放的基础，它提供统一外设访问能力和驱动开发、管理框架</p>
+<p>系统服务层：系统服务层是鸿蒙系统的核心能力集合，通过框架层对应用程序提供服务。包含了系统基本能力子系统集、基础软件服务子系统集、增强软件服务子系统集、硬件服务子系统四个部分。<br>框架层：框架层为鸿蒙系统应用程序提供Java/c/C++/JS等多语言用户程序框架和Ability框架，及各种软硬件服务对外开放的多语言框架API，也为搭载鸿蒙系统的电子设备提供C/C++/JS等多语言框架API<br>应用层：应用层包括系统应用和第三方非系统应用，鸿蒙系统应用由一个或多个FA或PA组成。</p>
+<p>系统安全：在搭载鸿蒙系统的分布式终端上课保证正确的人通过正确的电子设备正确地使用数据。通过分布式多段协同身份认证保证“正确的人”通过在分布式终端构筑可信运行环境保证“正确的电子设备”通过分布式数据在跨终端流动的过程中对数据进行分类分级管理来保证“正确地使用数据”</p>
+<p>166、AI芯片主要有三种技术架构<br>第一种是GPU， 可以高效支持AI应用的通用芯片，但是相对于FPGA和ASIC来说价格和功耗过高<br>第二种是FPGA（现场可编程门阵列），可对芯片硬件层进行编程和配置，实现半定制化， 相对于GPU有更低的功耗<br>第三种是ASIC（专用集成电路），，专门为特定的AI产品或者服务而设计，主要是侧重加速机器学习（无其是神经网络、深度学习），它针对特定的计算网络结构采用了硬件电路实现的方式，  能够在很低的功耗下实现非常高的能效比，这也是自前A芯片中最多的形式。</p>
+<p>167、POP3：110端口， 邮件收取<br>SMTP:25端口， 邮件发送<br>HTTP: 80端口，超文本传输协议，网页传输<br>IMAP：143端口，邮件客户端可以通过这种协议从邮件服务器上获取邮件的信息，下载邮件等</p>
+<p>168、可靠性：指在规定的时间内和规定条件下能有效地实现规定功能的能力。它不仅取决于规定的使用条件等因素， 还与设计技术有关。常用的度量指标主要有故障率（或失效率）、平均失效等待时间、平均失效间隔时间和可靠度等。</p>
+<p>其中，可靠度是系统在规定工作时间内无故障的概率。</p>
+<p>可用性是系统能够正常运行的时间比例。经常用两次故障之间的时间长度或出现故障时系统能够恢复正常的速度来表示<br>可测试性：是指验证软件程序正确的难易程度。可测试性好的软件，通常意味看软件设计简单，复杂性低。因为软件的复杂性越大， 测试的难度也就越大。</p>
+<p>可理解性：通过阅读源代码和相关文档  了解程序功能及其如何运行的容易程度。</p>
+<p>169、DCMM定义了数据战、数据治理、数据架构、数据应用、数据安全、 数据质量、数据标准和数据生存周期等8个核心能力域，细分为28个过程域和445条能力等级标准，</p>
+<p>将企业数据管理能力成熟度划分为五个等级， 自低向高依次为： 初始级（1级）、受管理级（2级）、稳健级（3级） 量化管理级（4级）和优化级（5级）。</p>
+<p>170、在一个分布式系统中，中间件通常提供两种不同类型的支持：</p>
+<p>1、交互支持，中间件协调系统中的不同组件之间的交互。</p>
+<p>2、提供公共服务，即中间件提供对服务的可复用的实现。这些服务可能会被分布式系统中的很多组件所需要。公共服务是指被不同组件需求的服务，不管这些组件的功能是什么。这些服务，你可以把这些服务看做是中间件容器提供的。可以在这个容器中部署你的组件并且这些组件可以访问和使用这些公共服务。</p>
+<p>171、配置管理工具的常见功能包括版本控制、变更管理、配置状态管理，访问控制和安全控制等。配置管理工具是包含了版本控制工具的。版本控制工具用来存储、更新、恢复和管理有个软件的多个版本</p>
+<p>172、UML2.0基础结构的设计目标是定义一个元语言的核心 LnfrastructureLibrary通过对此核心的复用，除了可以定义一个自展的UML元模型， 也可以定义其他元模型，包括MOF和CWM （CommonWarehouseModel， 公共仓库模型）。</p>
+<p>由于共用核心库， 所以UML和MOF、CWM在体系结构上更加一致。同时，InfrastructureLibrary还提供了定制UML更强有力的机制，允许用户定义针对不同平台 （如.NET、、J2EE等） 和领域 （如电信、金融、系统工程） 的语言。</p>
+<p>173、序列图 （顺序图） 是用来显示参与者如何以一系列顺序的步骤与系统的对象交互的模型。</p>
+<p>顺序图可以用来展示对象之间是如何进行交互的。顺序图将显示的重点放在消息序列上， 即强调消息是如何在对象之间被发送和接收的， 其中循环、选择等复杂交互使用序列片段表示，</p>
+<p>对象之间的消息类型包括同步消息、异步消息、返回消息、参与者创建消息、参与者销毁消息，</p>
+<p>同步消息的发送者等待消息接收对象将消息处理完成后再继续，</p>
+<p>异步消息的发送者在发送完消息后不等待接收方就继续自己的处理。</p>
+<p>返回消息是指当一个对象将消息发送给另一个对象后，另一个对象返回的虚线有向边， 表示原消息已处理的消息。</p>
+<p>创建消息是表示对消息传递目标对象的创建。</p>
+<p>销毁消息是表示对消息传递目标对象的删除。</p>
+<p>174、构件的定义<br>定义1：软件构件是一种组装单元， 它具有规范的接口规约和显式的语境依赖。软件构件可以被独立地部署并由第三方任意地组装。<br>定义2： 构件是某系统中有价值的、几乎独立的并可替换的一个部分，它在良好定义的体系构语境内满足某清晰的功能。<br>定义3：构件是一个独立发布的功能部分，可以通过其接口访问它的服务。<br>构件的特性<br>1、独立部署单元<br>2、作为第三方的组装单元<br>3、没有（外部的） 可见状态。构件的特性只有以上三点</p>
+<p>175、关于服务端构件模型的典型解决方案包括适用于应用服务器的EJB模型（Sun公司J2EE的一部分）和COM+模型（微软公司）， 以及适用于Web服务器的servlet模型（基于Sun公司JSP技术）和VisualBasic及其他技术（基于微软公司ASP技术）微软的NET框架还引入了一种新的同时适用于客户端和服务端的基于CL（CommandLineInterface）的构件模型。</p>
+<p>176、基于架构的软件设计（Architecture-BasedSoftwareDesign，ABSD方法强调由<strong>商业、质量和功能需求</strong>的组合驱动软件架构设计。ABSD是  个<strong>自顶向下，递归细化</strong>的软件开发方法，软件系统的体系结构通过该方法得到细化，  直到能产生<strong>软件构件和</strong>类。它以软件系统功能的分解为基础，通过选择架构风格实现质量和商业需求，并强调在架构设计过程中使用软件架构模板。</p>
+<p>ABSD方法有三个基础：</p>
+<p>第一个基础是功能分解，在功能分解中使用已有的基于模块的内聚和耦合技术。</p>
+<p>第二个基础是通过选择体系结构风格来实现质量和商业需求。</p>
+<p>第三个基础是软件模板的使用。所以第一空答案为B选项， 第二空答案也为B选项</p>
+<p>177、软件架构复用的类型包括机会复用和系统复用，机会复用是指开发过程中，只要发现有可复用的资产，就对其进行复用。系统复用是指在开发之前，就要进行规划，以决定哪些需要复用。</p>
+<p>178、特定领域软件架构（Domain SpecificSoftwareArchitecture，DSSA）以一个特定问题领域为对象，形成由领域参考模型、参考需求、参考架构等组成的开发基础架构，其目标是支持一个特定领域中多个应用的生成。</p>
+<p>DSSA的基本活动包括领域分析、领域设计和领域实现。</p>
+<p>其中领域分析的主要目的是获得领域模型</p>
+<p>领域模型描述领域中系统之间共同的需求，即领域需求：</p>
+<p>领域设计的主要目标是获得DSSA，DSSA描述领域模型中表示需求的解决方案：</p>
+<p>领域实现的主要目标是依据领域模型和DSSA开发和组织可重用信息，并对基础软件架构进行实现。</p>
+<p>179、场景 （scenarios）：在进行体系结构评估时，一般首先要精确地得出具体的质量目标，并以之作为判定该体系结构优劣的标准。为得出这些自标而采用的机制叫做场景。场景是从<strong>风险承担者</strong>的角度对与系统的交互的简短描述。</p>
+<p>在体系结构评估中一般采用刺激 （stimulus）、环境 （environment） 和响应 （response） 三方面来对场景进行描述。</p>
+<p>180、项目管理问题：赶工最短天数，最少费用</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/30.jpg" alt="1"></p>
+<p>先根据依赖关系得到关键路径的天数ACD是12天</p>
+<p>然后计算：总成本=直接成本+间接成本</p>
+<p>总成本是10+15+12+18=55万元，加上关键路径的天数x间接成本，12x5=60，总共是115</p>
+<p>赶工的必要性：每压缩一天工期可以节约间接成本5万元，赶工会增加直接成本，只要赶工增加的成本不超过间接成本就可以安排赶工</p>
+<p>赶工是要压缩项目工期，只有压缩关键路径上的才有用</p>
+<p>根据关键路径A-C-D （12天），选择代价最小的作业进行压缩，也就是D活动， 当D活动压缩2天之后，  A-C-D工期为10天， 与A-B工期一样；<br>此时关键路径发生了改变，有2条关键路径，分别是A-C-D和A-B，此时若要压缩工期，必须2条路径同时压缩，那么此时的压缩方案有多种：压缩相交结点A， 每天增加直接成本4万元； 同时压缩B和D， 每天增加成本2+2-4万。由于A原本需要3天最少需要1天， 可压缩的空间是2天， B活动原本需要7天最少需要3天， 可压缩空间4天，D活<br>动原本需要5天最少需要2天，  可压缩空间是3天，之前已经对D压缩了2天，也就是说<br>B和D同时压缩的方案，由于D的限制， 还有1天可压缩。<br>此时可压缩方案分别是A压缩2天， B和D同时压缩1天， 项目工期为10-2-1=7天<br>综上：赶工的全部过程如下，  </p>
+<p> （1D压缩2天；     （2） A压缩2天；    （3） B和D压缩1天。 </p>
+<p>然后计算成本</p>
+<p>181、Soc称为片上系统， 它是一个产品，是一个有专用目标的集成电路，其中包含完整系统并有嵌入软件的全部内容。SoC不是一块处理器芯片。同时它又是一种技术，用以实现从确定系统功能开始，到软/硬件划分，并完成设计的整个过程。<br>从狭义角度讲，它是信息系统核心的芯片集成，是将系统关键部件集成在一块芯片上；<br>从广义角度讲，SoC是一个微小型系统，如果说中央处理器（CPU）是大脑，那么SoC就是包括大脑、心脏、眼睛和手的系统。国内外学术界一般倾向将SoC定义为将微处理器、模拟IP核、数字IP核和存储器 （或片外存储控制接口） 集成在单一芯片上， 它通常是客户定制的， 或是面向特定用途的标准产品。  </p>
+<p>182、基于网络的数据库系统 （NetwareDatabaseSystemNDB） 是基于4G/5G的移动通信之上，主要由客户端、 通信协议和远程服务器等三部分组成。NDB的客户端主要负责提供接口给嵌入式程序，在逻辑上可以把嵌入式设备看作远程服务器的一个客户端；通信协议负责规范客户端与远程服务器之间的通信；远程服务器负责维护服务器上的数据库数据。<br>基于文件的数据库一般以文件方式存储数据库数据。即数据按照一定格式储存在磁盘中这里描述的是基于文件的数据库的定义而不是基于网络的数据库系统。</p>
+<p>183、信息化需求包含3个层次， 即战略需求、运作需求和技术需求<br>战略需求。组织信息化的目标是提升组织的竞争能力、为组织的可持续发展提供一个支持环境。从某种意义上来说，信息化对组织不仅仅是服务的手段和实现现有战路的辅助工具：信息化可以把组织战略提升到一个新的水平，为组织带来新的发展契机。特别是对于企业，信息化战略是企业竞争的基础。<br>运作需求。组织信息化的运作需求是组织信息化需求非常重要且关键的一环，它包含三方面的内容：<br>一是实现信息化战略目标的需要；<br>二是运作策略的需要。<br>三是人才培养的需要。<br>技术需求。由于系统开发时间过长等问题在信息技术层面上对系统的完善、升级、集成和整合提出了需求。也有的组织，原来基本上没有大型的信息系统项目，有的也只是一些单机应用，这样的组织的信息化需求，一般是从头开发新的系统。</p>
+<p>184、根据软件产品管理办法第一章第四条：软件产品的开发、生产、销售、进出口等活动应遵守我国有关法律、法规和标准规范。任何单位和个人不得开发、生产、销售、进出口含有以下内容的软件产品<br>一）侵犯他人知识产权的：<br>二）含有计算机病毒的：<br>（三）可能危害计算机系统安全的<br>四）含有国家规定禁止传播的内容的<br>五）不符合我国软件标准规范的。<br>可以开发未经国家正式批准的软件。其中进口软件，是指在我国境外开发，以各种形式在我国生产、经营的软件产品</p>
+<p>185、需求跟踪是将单个需求和其他系统元素之间的依赖关系和逻辑联系建立跟踪 这些元素包括各种类型的需求、业务规则、系统架构和构件、源代码、测试用例 以及帮助文件等。需求跟踪一般采用需求跟踪矩阵做跟进工作，跟踪矩阵将从需求源头一直跟进到最终的软件产品。</p>
+<p>186、UML2.0中一共定义了14种图。<br>其中结构图 （静态图） 包括：用例图、类图、对象图、构件图、部署图、制品图、包图、组合结构图；</p>
+<p>行为图 （动态图） 包括：顺序图、通信图 （协作图）、定时图、交互概览图、活动图、状态图。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/32.jpg" alt="1"></p>
+<p>用例图：静态图，展现了一组用例、参与者以及它们之间的关系。用例图中的参与者是人、硬件或其他系统可以扮演的角色;用例是参与者完成的一系列操作，用例之间的关系有扩展(extend)、包含(include)、泛化</p>
+<p>类图：静态图，为系统的静态设计视图，展现一组对象、接口、协作和它们之间的关系</p>
+<p>状态图：动态图，展现了一个状态机，描述单个对象在多个用例中的行为，包括简单状态和组合状态。转换可以通过事件触发器触发，事件触发后相应的监护条件会进行检查。状态图中转换和状态是两个独立的概念，如下：图中方框代表状态，箭头上的代表触发事件，实心圆点为起点和终点</p>
+<p>活动图：动态图，是一种特殊的状态图，展现了在系统内从一个活动到另一个活动的流程。活动的分岔和汇合线是一条水平粗线。牢记下图中并发分岔、并发汇合、监护表达式、分支、流等名词及含义。每个分岔的分支数代表了可同时运行的线程数。活动图中能够并行执行的是在一个分岔粗线下的分支上的活动</p>
+<p>序列图：即顺序图，动态图，是场景的图形化表示，描述了以时间顺序组织的对象之间的交互活动。</p>
+<p>• 同步消息（进行阻塞调用，调用者中止执行，等待控制权返回，需要等待返回消息，用实心三角箭头表示）</p>
+<p>• 异步消息（发出消<strong>息后继</strong>续执行，不引起调用者阻塞，也不等待返回消息，由空心箭头表示）</p>
+<p>• 返回消息（由从右到左的虚线箭头表示）</p>
+<p>通信图：动态图，即协作图，强调参加交互的对象的组织。</p>
+<p>187、COM不支持任何形式的实现继承<br>COM支持两种形式的对象组装：包含  Containment 和聚集 (Aggregation）<br>包含是一个对象拥有指向另一个对象的唯一引用。外部对象只是把请求转发给内部对象，所请转发就是调用内部对象的方法。<br>包含能重用内含于其他构件的实现，是完全透明的<br>如果包含层次较深， 或者被转发的方法本身相对简单，包含会存在性能上的问题因此COM定义第二类重用形式， 聚集。<br>聚集直接把内部对象接口引用传给外部对象的客户，而不是再转发请求。保持透明性是很重要的，因为外部对象的客户无法别哪个特定接口是从内部对象聚集而来的。</p>
+<p>188、改编、翻译、注释、整理已有作品而产生的作品，其著作权由改编、翻译、注释、整理人享有，但行使著作权时不得侵犯原作品的著作权<br>B选项职务作品的作权不一定归属于企业法人，有可能归属于个人， 企业有优先使用权。<br>C选项委托作品的著作权可以由合同约定归属人，不一定都归属于委托人。<br>D选项合作作品的著作权归属于所有参与人不含组织创作的人。</p>
+<p>189、三点估算法的公式是“活动历时均值（或估计值，期望值）=（乐观估计+4×最可能估计+悲观估计）/6</p>
+<p>来计算项目作业完成期望天数，乐观估计5天，最多14天，保守17天，得到期望天数13天</p>
+<p>190、软件开发生命周期（新版本）：</p>
+<p>• 需求分析</p>
+<p>• 软件设计</p>
+<p>• 软件开发</p>
+<p>• 运行维护</p>
+<p>• 淘汰</p>
+<p>软件系统工具通常可以按软件过程活动将软件工具分为软件开发工具、软件维护工具、软件管理和软件支持工具。</p>
+<p>• 软件开发工具：需求分析工具、设计工具、编码与排错工具、测试工具等。</p>
+<p>• 软件维护工具：版本控制工具、文档分析工具、开发信息库工具、逆向工程工具、再工程工具。</p>
+<p>• 软件管理和软件支持工具：项目管理工具、配置管理工具、软件评价工具、软件开发工具的评价和选择。</p>
+<p>191、软件活动主要如下一些。</p>
+<p>软件描述。必须定义软件功能以及使用的限制。</p>
+<p>软件开发。也就是软件的设计和实现，软件工程人员制作出能满足描述的软件。</p>
+<p>软件有效性验证。软件必须经过严格的验证，以保证能够满足客户的需求。</p>
+<p>软件进化。软件随着客户需求的变化不断改进。</p>
+<p>192、(1)逻辑视图。逻辑视图也称为设计视图，它表示了设计模型中在架构方面具有重要意义的部分，即类、子系统</p>
+<p>、包和用例实现的子集。主要支持系统的功能需求，即系统提供给最终用户的服务</p>
+<p>(2)进程视图。进程视图是可执行线程和进程作为活动类的建模,它是逻辑视图的一次执行实例，描述了并发与同步结构。</p>
+<p>(3)实现视图。实现视图对组成基于系统的物理代码的文件和构件进行建模。<strong>也叫开发视图</strong></p>
+<p>(4)部署视图。部署视图把构件部署到一组物理节点上，表示软件到硬件的映射和分布结构。<strong>也叫物理视图</strong></p>
+<p>(5)用例视图。用例视图是最基本的需求分析模型。<strong>也叫场景</strong></p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/31.jpg" alt="1"></p>
+<p>194、(1)对象:由数据及其操作所构成的封装体，是系统中用来描述客观事务的一个实体，是构成系统的一个基本单位。一个对象通常</p>
+<p>可以由对象名、属性和方法3个部分组成。</p>
+<p>(2)类:现实世界中实体的形式化描述，类将该实体的属性（数据）和操作(函数）封装在一起。对象是类的实例，类是对象的模板。</p>
+<p>类可以分为三种:实体类、接口类(边界类）和控制类。</p>
+<p>实体类（Entity Class）：</p>
+<p>实体类就像是描述真实世界中的事物一样。想象你在做一个图书馆管理系统，每本书都是一个实体，每本书都有自己的属性，</p>
+<p>比如书名、作者和出版年份。在这个例子中，每本书就是一个实体类，它们描述了真实世界中的图书。</p>
+<p>接口类（Interface Class，边界类）：</p>
+<p>接口类就像是设定规则的地方，它定义了系统如何与外部世界进行交互。想象你在设计一个游戏，你需要一个玩家登录的功能</p>
+<p>。这时候，你可以创建一个登录界面的接口，规定了登录应该有的方法和行为。这个接口就像是一份使用说明书，告诉其他部</p>
+<p>分如何与登录界面进行通信。</p>
+<p>控制类（Control Class）：</p>
+<p>控制类就像是系统的大脑，它们负责协调和管理不同的活动。假设你正在开发一个点餐系统，你需要一个地方来处理用户下单</p>
+<p>的过程。这时候，你可以创建一个点餐处理的控制类，它会负责接收用户的点餐请求，检查库存，然后通知厨房开始准备食物</p>
+<p>。这个控制类就像是一个调度员，把不同的任务分配给不同的部门来完成。</p>
+<p>195、面向对象设计原则：</p>
+<p>单一责任原则：这个原则就是让一个类只做一件事情，不要把太多的任务放在一个类里。这样做的好处是，当你需要修改某个功能时，只需要关注一个类，而不用担心影响其他功能</p>
+<p>开放封闭原则：这个原则意味着你可以扩展现有的代码，但不需要修改已有的代码。你应该允许新功能的添加，而不会影响到已经运行良好的功能。</p>
+<p>里氏替换原则：这个原则强调子类应该能够替换父类而不会影响程序的正确性。换句话说，你应该能够使用子类的实例来替代父类的实例，而不引发错误</p>
+<p>依赖倒置原则：这个原则强调抽象应该依赖于细节，而不是相反。高层模块不应该直接依赖于低层模块的细节，而应该通过抽象进行交互。</p>
+<p>接口分离原则：这个原则强调客户端不应该被强制依赖它们不需要的方法。接口应该只包含客户端需要的方法，避免造成冗余和不必要的复杂性</p>
+<p>196、组合和聚合是部分与整体的关系，组合是部分与整体同生命周期，聚合是不同生命周期，部分不会随着整体的消亡而消失，</p>
+<p>组合是强关系，实心菱形， 聚合是弱关系，空心菱形</p>
+<p>泛化：一般/特殊的关系，子类和父类之间的关系，空心三角</p>
+<p>197、威胁可以看成从系统外部对系统产生的作用而导致系统功能及目标受阻的现象。用脆弱性可以看成是系统内部的薄弱点。脆弱性是客观存在的，但它本身没有实际伤害。B选项“层与层之间引入通信机制势必造成性能下降”是客观存在的系统薄弱点， 而A选项的描述是一种可能性，并不是客观存在的，所以B选项是系统脆弱性的体现。</p>
+<p>198、从操作系统中去掉尽可能多的东西，而只留下一个最小的核心，称之为微内核。微内核技术的主要优点如下：<br>统一的接口，在用户态和核心态之间无需进程识别<br>可伸缩性好，能适应硬件更新和应用变化<br>可移植性好，所有与具体机器特征相关的代码，全部隔离在微内核中，如果操作系统要移植到不同的硬件平台上，只需修改微内核中极少代码即可<br>实时性好，微内核可以方便地支持实时处理<br>安全可靠性高，微内核将安全性作为系统内部特性来进行设计，对外仅使用少量应用编程接口。<br>支持分布式系统，支持多处理器的体系结构和高度并行的应用程序<br>微内核的缺点：</p>
+<p>一是难以进行良好的整体优化，</p>
+<p>二是进程间互相通信的开销大、内核功能代码不能被相互调用而带来服务的效率低。但总体而言，微内核在效率上的损小于其在结构上获得的收益</p>
+<h3 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h3><h4 id="架构风格"><a href="#架构风格" class="headerlink" title="架构风格"></a>架构风格</h4><p>1、<img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/6.jpg" alt="1"></p>
+<p>2、<img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/7.jpg" alt="1"></p>
+<h5 id="面向数据流风格的优缺点"><a href="#面向数据流风格的优缺点" class="headerlink" title="面向数据流风格的优缺点"></a>面向数据流风格的优缺点</h5><ol>
+<li><strong>并行处理</strong>：面向数据流架构支持数据的并行处理，可以有效利用多核处理器和分布式系统的优势，提高系统的性能和吞吐量。</li>
+<li><strong>实时处理</strong>：数据流架构适合实时处理场景，能够及时响应和处理数据流，适用于需要快速处理大量数据的应用。</li>
+<li><strong>灵活性</strong>：数据流架构具有较高的灵活性，能够根据需求动态调整数据流的处理逻辑，适应不同的业务场景和需求变化。</li>
+<li><strong>容错性</strong>：数据流架构通常具有较好的容错性，能够处理数据流中的异常情况，并具备一定程度的容错和恢复机制。</li>
+<li><strong>资源利用率</strong>：数据流架构可以根据需求动态分配资源，提高资源的利用率，避免资源浪费和性能瓶颈。</li>
+</ol>
+<h5 id="面向对象风格的优缺点"><a href="#面向对象风格的优缺点" class="headerlink" title="面向对象风格的优缺点"></a>面向对象风格的优缺点</h5><ol>
+<li><strong>模块化和可重用性</strong>：面向对象架构通过将系统分解为独立的对象，提高了模块化和组件化能力，使得代码更易于理解、维护和重用。</li>
+<li><strong>封装性</strong>：对象封装了数据和行为，隐藏了内部实现细节，提供了良好的抽象层，使得对象可以独立地被使用和修改，增强了系统的安全性和可靠性。</li>
+<li><strong>继承和多态</strong>：继承和多态是面向对象编程的两个重要特性，通过继承可以实现代码重用和扩展，通过多态可以实现接口的灵活性和可扩展性。</li>
+<li><strong>易于维护和扩展</strong>：面向对象架构使得系统的各个部分相互独立，降低了模块之间的耦合度，使得系统更易于维护和扩展。</li>
+<li><strong>可靠性和可重用性</strong>：面向对象编程强调代码的封装性和复用性，提高了代码的可靠性和可重用性，减少了重复编码的可能性。</li>
+</ol>
+<h5 id="层次架构的优缺点"><a href="#层次架构的优缺点" class="headerlink" title="层次架构的优缺点"></a>层次架构的优缺点</h5><ol>
+<li><strong>模块化</strong>：层次架构通过将系统分解为多个独立的层次，提高了系统的模块化程度，使得各个部分相互独立，易于理解、维护和扩展。</li>
+<li><strong>可扩展性</strong>：由于各个层次之间的松耦合性，层次架构具有较好的可扩展性，可以方便地添加新的功能或修改现有功能而不影响其他部分。</li>
+<li><strong>易于测试</strong>：层次架构将系统分解为多个独立的层次，使得单元测试和集成测试更加容易进行，可以针对每个层次进行测试，保证系统的稳定性和质量。</li>
+<li><strong>重用性</strong>：层次架构鼓励代码的重用，各个层次可以独立设计和实现，提高了代码的可重用性，减少了重复编码的可能性。</li>
+<li><strong>分工明确</strong>：层次架构将系统分解为不同的层次，每个层次负责特定的功能，使得开发人员可以根据各自的专长和职责进行开发，提高了团队协作效率。</li>
+</ol>
+<h5 id="以数据为中心的架构风格的优缺点"><a href="#以数据为中心的架构风格的优缺点" class="headerlink" title="以数据为中心的架构风格的优缺点"></a>以数据为中心的架构风格的优缺点</h5><ol>
+<li><strong>数据一致性</strong>：以数据为中心的架构风格可以确保数据的一致性，因为所有的业务逻辑都围绕着数据进行操作，避免了数据的分散和冗余。</li>
+<li><strong>易于维护和管理</strong>：将数据放在系统设计的核心位置，使得系统的维护和管理更加简单，因为所有的操作都是围绕数据展开的，易于追踪和调试问题。</li>
+<li><strong>数据共享</strong>：以数据为中心的架构可以促进数据的共享和重用，不同部分的系统可以共享同一份数据，避免了数据孤岛效应，提高了数据的利用率。</li>
+<li><strong>性能优化</strong>：通过以数据为中心的架构，可以更好地优化数据的存储和访问方式，提高系统的性能和响应速度。</li>
+<li><strong>适应复杂数据需求</strong>：对于需要处理复杂数据结构和关系的系统，以数据为中心的架构可以更好地应对这种复杂性，保证数据的完整性和准确性。</li>
+</ol>
+<h5 id="隐式调用架构风格的优缺点"><a href="#隐式调用架构风格的优缺点" class="headerlink" title="隐式调用架构风格的优缺点"></a>隐式调用架构风格的优缺点</h5><ol>
+<li><strong>简化通信</strong>：降低通信复杂度。</li>
+<li><strong>松耦合</strong>：各组件间耦合度低，独立演化。</li>
+<li><strong>灵活性</strong>：系统更易适应需求变化。</li>
+<li><strong>简化开发</strong>：减少开发量，提高效率。</li>
+<li><strong>容易维护和修改</strong>：修改一个组件不影响其他组件。</li>
+</ol>
+<h5 id="解释器架构风格优缺点"><a href="#解释器架构风格优缺点" class="headerlink" title="解释器架构风格优缺点"></a>解释器架构风格优缺点</h5><ol>
+<li>灵活性：解释器架构风格可以很容易地添加新的指令和功能，因此非常灵活。这意味着开发人员可以快速地修改和扩展软件，以满足客户的需求。</li>
+<li>可移植性：解释器架构不需要编译器来将程序编译成特定平台上的机器码。相反，解释器可以在任何平台上直接运行。这样，开发人员就可以轻松地将应用程序移植到不同的平台上。</li>
+<li>交互性：解释器架构非常适合实现交互式应用程序，例如控制台程序和脚本解释器。由于指令可以逐个执行，因此用户可以在执行期间与程序交互，输入或输出数据，或修改程序的行为。</li>
+</ol>
+<h5 id="基于规则的架构风格的优缺点"><a href="#基于规则的架构风格的优缺点" class="headerlink" title="基于规则的架构风格的优缺点"></a>基于规则的架构风格的优缺点</h5><ol>
+<li><strong>灵活性</strong>：规则系统允许系统行为根据规则的变化而灵活调整，适应需求变化。</li>
+<li><strong>易于维护和修改</strong>：规则的独立性使得系统的某个方面的修改不会影响整个系统，易于维护和扩展。</li>
+<li><strong>逻辑清晰</strong>：规则系统的行为是由一系列规则组成，逻辑清晰，易于理解和管理。</li>
+<li><strong>快速开发</strong>：通过定义规则，可以快速开发系统，而不需要从头开始编写代码。</li>
+<li><strong>规则重用</strong>：规则可以被重复使用，提高了系统的可维护性和可重用性。</li>
+</ol>
+<h5 id="BS架构和CS架构的优缺点"><a href="#BS架构和CS架构的优缺点" class="headerlink" title="BS架构和CS架构的优缺点"></a>BS架构和CS架构的优缺点</h5><p>CS：</p>
+<p>1、能充分发挥客户端PC的处理能力，很多工作可以在客户端处理后再提交给服务器，所以CS客户端响应速度快。</p>
+<p>2、操作界面漂亮、形式多样，可以充分满足客户自身的个性化要求。  </p>
+<p>3、C/S结构的管理信息系统具有较强的事务处理能力，能实现复杂的业务流程。</p>
+<p>4、安全性能可以很容易保证，C/S一般面向相对固定的用户群，程序更加注重流程，它可以对权限进行多层次校验，提供了更安全的存取模式，对信息安全的控制能力很强。一般高度机密的信息系统采用C/S结构适宜。</p>
+<p>BS：</p>
+<p>1、分布性强，客户端零维护。只要有网络、浏览器，可以随时随地进行查询、浏览等业务处理。 </p>
+<p>2、业务扩展简单方便，通过增加网页即可增加服务器功能。  </p>
+<p>3、维护简单方便，只需要改变网页，即可实现所有用户的同步更新。 </p>
+<p>4、开发简单，共享性强。</p>
+<h4 id="CS架构，BS架构，RIA"><a href="#CS架构，BS架构，RIA" class="headerlink" title="CS架构，BS架构，RIA"></a>CS架构，BS架构，RIA</h4><p>两层C/S架构：客户端和服务器都有处理功能，现在已经不常用，原因有：开发成本较高、客户端程序设计复杂、信息内容和形式单一、用户界面风格不一、软件移植困难、软件维护和升级困难、新技术不能轻易应用、安全问题、服务器端压力大难以复用。</p>
+<p>三层C/S架构：将处理功能独立出来，表示层和数据层都变得简单。表示层在客户机上，功能层在应用服务器上数据层在数据库服务器上。即将两层C/S架构中的数据从服务器中独立出来了。其优点下面四点：</p>
+<p> 各层在逻辑上保持相对独立，整个系统的逻辑结构更为清晰，能提高系统和软件的可维护性和可扩展性；</p>
+<p> 允许灵活有效的选用相应的平台和硬件系统，具有良好的可升级性和开放性；</p>
+<p> 各层可以并行开发，各层也可以选择各自最适合的开发语言；</p>
+<p> 功能层有效的隔离表示层与数据层，为严格的安全管理奠定了坚实的基础，整个系统的管理层次也更加合理和可控制。 </p>
+<p>三层C/S架构设计的关键在于各层之间的通信效率，要慎重考虑三层间的通信方法、通信频度和数据量，否则即使分配给各层的硬件能力很强，性能也不高</p>
+<p>三层B/S架构：是三层C/S架构的变种，将客户端变为用户客户端上的浏览器，将应用服务器变为网络上的WEB</p>
+<p>服务器，又称为0客户端架构，虽然不用开发客户端，但有很多缺点：</p>
+<p>• 使用浏览器作为客户端的话安全性难以控制；</p>
+<p>• 在数据查询等响应速度上，要远远低于C/S架构，因为C/S架构有部分数据存储在本地；</p>
+<p>• 数据提交一般以页面为单位，数据的动态交互性不强。 </p>
+<p>混合架构风格</p>
+<p>• 内外有别模型：企业内部使用C/S,外部人员访问使用B/S。</p>
+<p>• 查改有别模型：采用B/S查询，采用C/S修改。</p>
+<p>• 混合架构实现困难，且成本高</p>
+<p>富互联网应用RIA：弥补三层B/S架构存在的问题，RIA是一种用户接口，比用HTML实现的接口更</p>
+<p>加健壮，且有可视化内容，本质还是网站模式，其优点如下：</p>
+<p> RIA结合了C/S架构反应速度快、交互性强的优点与B/S架构传播范围广及容易传播的特性；</p>
+<p> RIA简化并改进了B/S架构的用户交互；</p>
+<p> 数据能够被缓存在客户端，从而可以实现一个比基于HTML的响应速度更快且数据往返于服务器的次数更少的</p>
+<p>用户界面。</p>
+<p> 本质还是0客户端，借助于高速网速实现必要插件在本地的快速缓存，增强页面对动态页面的支持能力，典型</p>
+<p>的如小程序。</p>
+<h4 id="MVC，MVP架构"><a href="#MVC，MVP架构" class="headerlink" title="MVC，MVP架构"></a>MVC，MVP架构</h4><p>MVC：</p>
+<p>控制器(Controller) ：是应用程序中处理用户交互的部分。通常控制器负责从视图读取数据，控制用户输入,并向模型发送数据。</p>
+<p>模型(Model)：是应用程序中用于处理应用程序数据逻辑的部分。通常模型对象负责在数据库中存取数据。模型表示业务数据和业务逻辑。</p>
+<p>视图(View)：是应用程序中处理数据显示的部分。通常视图是依据模型数据创建的。是用户看到并与之交互的界面。视图向用户显示相关的数据，并能接收用户的输入数据，但是它并不进行在何实际的业务处理：</p>
+<p>软件架构设计-MVC架构</p>
+<p>MVC分层的好处：</p>
+<p>• MVC分层有助于管理复杂的应用程序，因为您可以在一个时间内专门关注一个方面。例如，您可以在不依赖业务逻辑的情况下专注于视图设计。同时也让应用程序的测试更加容易。</p>
+<p>• MVC分层同时也简化了分组开发。不同的开发人员可同时开发视图、控制器逻辑和业务逻辑</p>
+<p>MVP：</p>
+<p>MVP<strong>是把MVC中的Controller换成了Presenter(呈现)，目的就是为了完全切断View跟Model之间的联系，由</strong>Presenter<strong>充当桥梁，做到View-Model之间通信的完全隔离。</strong></p>
+<p>MVP特点：</p>
+<p> M、V、P之间双向通信。</p>
+<p> View 与Model不通信，都通过Presenter传递。Presenter完全把Model和View进行了分离，主要的程序逻辑在Presenter里实现。</p>
+<p> View非常薄，不部署任何业务逻辑，称为”被动视图”(PassiveView)，即没有任何主动性，而Presenter非常厚，所有逻辑都部署在那里。</p>
+<p> Presenter与具体的View是没有直接关联的，而是通过定义好的接口进行交互，从而使得在变更View时候可以保持Presenter的不变，这样就可以重用。</p>
+<p>MVVM：</p>
+<p>MVVM模式和MVC模式类似，主要目的是分离视图(View)和模型(Model)，实现双向绑定，有几大优点：</p>
+<p> 低耦合，视图(View)可以独立于Model变化和修改，一个ViewModel可以绑定到不同的”View”上，当View变化的时候Model可以不变，当Model变化的时候View也可以不变。</p>
+<p> 可重用性，可以把一些视图逻辑放在一个ViewModel里面，让很多view重用这段视图逻辑。</p>
+<p> 独立开发，开发人员可以专注于业务逻辑和数据的开发(ViewModel) ，设计人员可以专注于页面设计。</p>
+<p> 可测试，界面向来是比较难于测试的，而现在测试可以针对ViewModel来写。</p>
+<h4 id="软件工程"><a href="#软件工程" class="headerlink" title="软件工程"></a>软件工程</h4><h5 id="结构化分析方法"><a href="#结构化分析方法" class="headerlink" title="结构化分析方法"></a>结构化分析方法</h5><p>结构化特点：自顶向下，逐步分解，面向数据。</p>
+<p>三大模型：功能模型(数据流图)、行为模型(状态转换图)、数据模型(E-R图)以及数据字典。</p>
+<p>数据字典：数据字典是在DFD的基础上，对DFD中出现的所有命名元素都加以定义，使得每个图形元素的名字都有一个确切的解释。DFD和数据字典等工具相配合，就可以从图形和文字两个方面对系统的逻辑模型进行完整的描述</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/8.jpg" alt="1"></p>
+<p>数据流：由一组固定成分的数据组成，表示数据的流向。在DFD中，数据流的流向必须经过加工。</p>
+<p>加工：描述了输入数据流到输出数据流之间的变换，数据流图中常见的三种错误如图所示：</p>
+<p> 加工3.1 .2有输入但是没有输出，称之为“黑洞”</p>
+<p> 加工3.1 .3有输出但没有输入。称之为“奇迹”。</p>
+<p> 加工3.1 .1 中输入不足以产生输出，我们称之为“灰洞”。 </p>
+<p>数据存储：用来存储数据。</p>
+<p>外部实体(外部主体):是指存在于软件系统之外的人员或组织，</p>
+<p>它指出系统所需数据的发源地(源)和系统所产生的数据的归宿地(宿)。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/9.jpg" alt="1"></p>
+<h5 id="面向对象分析方法"><a href="#面向对象分析方法" class="headerlink" title="面向对象分析方法"></a>面向对象分析方法</h5><p>面向对象的分析:是为了确定问题域，理解问题。包含五个活动:认定对象、组织对象、描述对象间的相互作用、确定对象的操作、定义对象的内部信息。</p>
+<p>面向对象需求建模：</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/10.jpg" alt="1"></p>
+<p>依赖:一个事物的语义依赖于另一个事物的语义的变化而变化</p>
+<p>关联:是一种结构关系，描述了一组链，链是对象之间的连接。分为组合和聚合，都是部分和整体的关系，其中组合事物之间关系更强，具有共通的生命周期，如果整体不存在，那么部分肯定也不存在，比如人和人的大脑。聚合就是整体和部分没有共同的生命周期，比如大雁和雁群之间的关系。两个类之间的关联，实际上是两个类所扮演角色的关联，因此，两个类之间可以有多个由不同角色标识的关联。</p>
+<p>泛化:一般/特殊的关系,子类和父类之间的关系，比如学生和高中生、研究生、大学生的关系</p>
+<p>实现:一个类元指定了另一个类元保证执行的契约。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/11.jpg" alt="1"></p>
+<p>UML图：尤其以用例图、类图、活动图、状态图最为重要。用例之间的关系有扩展(extend)、包含(include)、泛化。如下:</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/12.jpg" alt="1"></p>
+<p>实体用于数据建模，而类用于面向对象建模。实体只有属性，而类有属性和操作，</p>
+<p>Essential Use Cases 可翻译为抽象用例，而Real Use Cases可翻译为基础用例。他们是区别在于：基础用例是实实在在与用户需求有对应关系的用例，是从用户需求获取的渠道得到的，而抽象用例是从基础用例中抽取的用例的公共部分，是为了避免重复工作，优化结构而提出的用例</p>
+<p>抽象，封装，基础</p>
+<h4 id="项目管理"><a href="#项目管理" class="headerlink" title="项目管理"></a>项目管理</h4><p>进度安排的常用图形描述方法有：</p>
+<p>• Gantt图(甘特图)：反应了任务与任务之间的并行关系。</p>
+<p>• 项目计划评审技术(Program Evaluation&amp; Review Technique， PERT)图：反应了任务与任务之间的先后关系(依赖关系)</p>
+<p>关键路径：是项目的最短工期，但却是<strong>从开始到结束时间最长的路径</strong>。进度网络图中可能有多条关键路径，因为活动会变化，因此关键路径也在不断变化中。</p>
+<p>关键活动：关键路径上的活动，最早开始时间=最晚开始时间。通常，每个节点的活动会有如下几个时间：</p>
+<p>(1)最早开始时间(ES)，某项活动能够开始的最早时间。</p>
+<p>(2)最早结束时间(EF)，某项活动能够完成的最早时间。EF=ES+工期</p>
+<p>(3)最迟结束时间(LF)。为了使项目按时完成，某项活动必须完成的最迟时间。</p>
+<p>(4)最迟开始时间(LS)。为了使项目按时完成，某项活动必须开始的最迟时间。LS=LF-工期</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/13.jpg" alt="1"></p>
+<h4 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h4><p>创建型：</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/14.jpg" alt="1"></p>
+<p>结构型：</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/15.jpg" alt="1"></p>
+<p>行为型：</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/16.jpg" alt="1"></p>
+<h4 id="数据库相关"><a href="#数据库相关" class="headerlink" title="数据库相关"></a>数据库相关</h4><h5 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h5><p>• <strong>第一范式：</strong>要求数据库表中的所有字段都是不可分割的原子值<strong>。</strong>通俗地说，第一范式就是表中不允许有小表的存在。</p>
+<p>• <strong>第二范式</strong>：在1NF的基础上，要求数据库表中的每个非主属性完全依赖于某一个候选键。通俗地说，就是表中不能存在联合主键</p>
+<p>• <strong>第三范式：</strong>在2NF的基础上，要求数据库表中的每个非主属性不依赖于其它非主属性<strong>。</strong>也就是说，数据表中的每一列都和主键直接相关，而不依赖于其它列，即不能存在传递依赖</p>
+<p>• <strong>BC范式：</strong>也称之为第三范式的补充范式，在3NF的基础上，要求数据库表中的所有属性都只依赖主键。也就是说，3nf要求每一个非主属性即不传递也不部分依赖于任一个码，而bcnf在此基础上要求主属性也不能传递或部分依赖于码，即：bcnf中不允许有除了码之外的其它元素之间存在任何函数关系</p>
+<p>• <strong>第四范式：</strong>在3NF的基础上，要求一个表的主键只对应一个多值<strong>。</strong>例如，学生信息表(学生ID, 住址, 电话号码)，这个表中住址和电话号码表示学生可以有多个，它们与学生存在多值依赖关系。这个表不满足4NF，因为在这个表中，住址和电话号码是独立的多值依赖，这意味着它们各自都直接依赖于学生ID，并且彼此之间是独立的。解决办法有两种，一种是通过程序来控制，二种是拆成两张表，每张表里面只拥有一个多值。</p>
+<h5 id="主从与读写分离"><a href="#主从与读写分离" class="headerlink" title="主从与读写分离"></a>主从与读写分离</h5><p>主从数据库架构是一种数据库冗余解决方案，它允许一个数据库服务器（称为“主”服务器）复制数据到一个或多个数据库服务器（称为“从”服务器）。在这种架构中，所有的数据更新操作（如INSERT、UPDATE、DELETE）首先在主服务器上执行，然后这些更改会被同步到从服务器。</p>
+<p>特点包括：</p>
+<p>• 数据冗余和读取负载均衡：通过部署多个从服务器，可以在从服务器上处理读取请求，从而减轻主服务器的负载。</p>
+<p>• 高可用性：如果主服务器失败，可以快速将从服务器提升为新的主服务器，以确保服务继续运行。</p>
+<p>• 备份和恢复：从服务器可以用于备份，避免在主服务器上执行备份操作影响性能。</p>
+<p>读写分离是数据层面的一种优化工程，目的是将数据库的读操作和写操作分散到不同的服务器上。通常结合主从复制技术一起使用，其中主数据库处理写请求，而从数据库则处理读请求。</p>
+<p>主要优势包括：</p>
+<p>• 提高并发性能：分开处理读和写操作可以减少锁竞争，提高数据库的并发处理能力。</p>
+<p>• 扩展性：能够通过添加更多的从数据库来水平扩展读取能力，适应大量的读请求。</p>
+<p>• 降低延迟：读请求可以由最接近用户的服务器处理，减少了数据访问的延迟时间</p>
+<p><strong>同步复制</strong>（Synchronous Replication）:在同步复制中，任何对主数据库的写操作都必须在从数据库上完成复制后才能确认完成。这确保了主数据库和从数据库始终保持一致。然而，这种方法可能会增加延迟，因为它要求在返回写操作成功之前，必须等待从数据库确认接收到数据。</p>
+<p><strong>半同步复制</strong>（Semi-Synchronous Replication）:半同步复制是同步复制和异步复制之间的折衷方案，其中写操作在主数据库上完成后会立即返回成功，但是主数据库在执行下一个写操作之前必须确保至少一个从数据库已经收到了前一个操作的数据。这可以在保持较低延迟的同时提供较强的数据一致性保证。</p>
+<p><strong>多版本并发控制</strong>（MVCC）:使用支持多版本并发控制的数据库系统可以减少读写冲突，每个读操作都可以访问到一致性时间点的数据快照，这样，读操作不会被写操作中的锁所阻塞，同时仍然能保证读取数据的一致性。</p>
+<p><strong>事务级别的一致性读取</strong>:使用事务来确保一致性是另一种方法。应用可以启动一个事务，在此事务中进行的读取将会看到写事务的最终结果，即使读取实际上是在从服务器上进行的。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/17.jpg" alt="1"></p>
+<h5 id="数据库分类，缓存技术比较"><a href="#数据库分类，缓存技术比较" class="headerlink" title="数据库分类，缓存技术比较"></a>数据库分类，缓存技术比较</h5><p><strong>内存数据库：将数据库整体存储在内存中，提高性能。</strong></p>
+<p> MemCache： Memcache是一个高性能的分布式的内存对象缓存系统，用于动态Web应用以减轻数据库负载。</p>
+<p>Memcache通过在内存里维护一个统一的巨大的hash表，它能够用来存储各种格式的数据，包括图像、规频、文件以及数</p>
+<p>据库检索的结果等。</p>
+<p> Redis： Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提</p>
+<p>供多种语言的API。</p>
+<p><strong>Redis与Memcache的差异</strong></p>
+<p> Redis和Memcache都是将数据存放在内存中，都是内存数据库。他们都支持key-value数据类型。同时Memcache还可用</p>
+<p>于缓存其他东西，例如图片、视频等等，Redis还支持list、set、hash等数据结构的存储。</p>
+<p> Redis中，并不是所有的数据都一直存储在内存中的。这是和Memcache相比一个最大的区别。当物理内存用完时，Redis</p>
+<p>可以将一些很久没用到的value交换到磁盘。</p>
+<p> Redis在很多方面支持数据库的特性，可以这样说他就是一个数据库系统，而Memcache只是简单地K/V缓存</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/18.jpg" alt="1"></p>
+<h5 id="分布式数据库"><a href="#分布式数据库" class="headerlink" title="分布式数据库"></a>分布式数据库</h5><p>分布式数据库是一种将数据分布在多个节点或计算机上的数据库系统。这些节点通过网络连接，每个节点存储一部分数据，并可以独立运行，具有如下特点：</p>
+<p> 可扩展性：分布式数据库可以通过添加更多的服务器（节点）来扩展系统的存储和计算能力。这种水平扩展性使得分布式数据库能够应对大数据量和高并发请求的挑战。</p>
+<p> 高可用性和可靠性：由于数据分散存储在多个服务器上，即使其中一台或几台服务器出现故障，其他服务器仍可正常工作。通过备份和冗余策略，分布式数据库可提供更高的数据可用性和可靠性。</p>
+<p> 分布式处理：分布式数据库可以并行处理多个查询和事务，提升系统性能，缩短响应时间。</p>
+<p> 数据局部性：通过将数据存储在地理接近最常访问它的用户的服务器，分布式数据库可以减少网络延迟，提升性能。</p>
+<p> 灵活性：分布式数据库允许在不同的服务器、操作系统和网络环境中存储和处理数据</p>
+<h5 id="数据仓库"><a href="#数据仓库" class="headerlink" title="数据仓库"></a>数据仓库</h5><p>数据仓库集成是把多种来源的数据集中在一起，建立数据仓库，所有数据都驻留在单个数据库服务器上，配置大型处理器和存储容量。数据仓库主要用于决策支持，在数据处理过程中强调分析。其特点是：</p>
+<p> 集成的数据：数据仓库中的数据来自多个来源，包括交易系统、运营系统、外部数据源等。这些数据经过清洗、整合和转换，使其具有统一的格式、结构和语义。数据集成是数据仓库建设的基础，它可以消除数据冗余和不一致，提高数据质量。</p>
+<p> 面向主题：数据按照主题组织，例如销售、客户、产品等。每个主题的数据都存储在一个单独的维度表和事实表中。面向主题的组织方式使数据仓库更加易于理解和使用。</p>
+<p> 数据相对稳定：数据一旦被加载，就不会经常更新。数据仓库主要用于分析历史数据，因此数据相对稳定是数据仓库的重要特征</p>
+<p> 包含历史信息：数据仓库存储了大量历史数据，这些数据可以用于分析趋势、发现模式和做出决策。历史数据是数据仓库的核心价值所在。 </p>
+<p>数据仓库的结构通常包含四个层次：</p>
+<p> 数据源：是数据仓库系统的基础，是整个系统的数据源泉。</p>
+<p> 数据的存储与管理：是整个数据仓库系统的核心。</p>
+<p> OLAP(联机分析处理)服务器：对分析需要的数据进行有效集成，按多维模型组织，以便进行多角度、多层次的分析，并发现趋势。</p>
+<p> 前端工具：主要包括各种报表工具、查询工具、数据分析工具、数据挖掘工具以及各种基于数据仓库或数据集市的应用开发工具。 </p>
+<p>商业智能：</p>
+<p> Bl系统主要包括数据预处理、建立数据仓库、数据分析和数据展现四个主要阶段</p>
+<h5 id="封锁协议"><a href="#封锁协议" class="headerlink" title="封锁协议"></a>封锁协议</h5><p>一级封锁协议：事务T在修改数据A之前必须先对其加X锁，直到事务结束才释放。事务结束包括正常结束（COMMIT）和非正常结束（ROLLBACK）。 1级封锁协议可防止丢失修改，并保证事务T是可恢复的。在1级封锁协议中，如果仅仅是读数据不对其进行修改，是不需要加锁的，所以它不能保证可重复读和不读”脏”数据</p>
+<p>二级封锁协议：一级封锁协议的基础上加上事务T2在读数据A之前必须先对其加S锁，读完后即可释放S锁。可解决丢失更新、读脏数据问题。</p>
+<p>三级封锁协议：一级封锁协议加上事务T在读取数据A之前先对其加S锁，直到事务结束才释放。可解决丢失更新、读脏数据、数据重复读问题。</p>
+<h5 id="反规范化技术"><a href="#反规范化技术" class="headerlink" title="反规范化技术"></a>反规范化技术</h5><p>反规范化技术：规范化设计后，数据库设计者希望牺牲部分规范化来提高性能。</p>
+<p>采用反规范化技术的益处：降低连接操作的需求、降低外码和索引的数目，还可能减少表的数目，能够提高查询效率。</p>
+<p>具体方法：</p>
+<p> 增加冗余列：在多个表中保留相同的列，通过增加数据冗余减少或避免查询时勺连接操作。</p>
+<p> 增加派生列：在表中增加可以由本表或其它表中数据计算生成的列，减少查询的连接操作并避免计算或使用集合函数。</p>
+<p> 重新组表：如果许多用户需要查看两个表连接出来的结果数据，则把这两个表重新组成一个表来减少连接而提高性能。</p>
+<p> 水平分割表：根据一列或多列数据的值，把数据放到多个独立的表中，主要用于表数据规模很大、表中数据相对独立或数据需要存放到多个介质上时使用。</p>
+<p> 垂直分割表：对表进行分割，将主键与部分列放到一个表中，主键与其它列放到另一个表中，在查询时减少I/O次数</p>
+<p>反规范化技术可能带来的问题：数据的重复存储，浪费了磁盘空间;可能出现数据的完整性问题，为了保障数据的一致性，增加了数据维护的复杂性，会降低修改速度。</p>
+<p>反规范化带来的数据不一致性问题主要有以下两种：</p>
+<p> 更新异常: 当需要更新冗余数据时，如果更新操作不同步，可能会导致数据不一致。</p>
+<p> 插入异常: 当向冗余表中插入新数据时，如果插入操作不符合相关规则，也可能会导致数据不一致。</p>
+<p>解决数据不一致性的几种常规解决方案：</p>
+<p> 应用触发器: 触发器是一种存储过程，它会在对数据库中的数据进行增、删、改操作时自动执行。可以使用触发器来确保冗余数据的一致性。</p>
+<p> 使用并发控制机制: 并发控制机制可以确保多个用户同时对数据库进行操作时数据的安全性一致性。</p>
+<p> 采用应用程序逻辑: 应用程序逻辑也可以用来确保冗余数据的一致性。</p>
+<p>选择合适的方法：</p>
+<p> 在实际应用中，可以根据具体情况选择合适的方法来解决反规范化带来的数据不一致性问题。一般来说，如果数据更新频繁，则可以使用触发器或并发控制机制；如果数据更新不频繁，则可以使用应用程序逻辑</p>
+<h5 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h5><p>面向对象编程把所有实体看成对象(object)，关系型数据库则是采用实体之间的关系(relation)连接数据。很早就有人提出，关系也可以用对象表达，这样的话，就能使用面向对象编程，来操作关系型数据库。</p>
+<p><strong>ORM把数据库映射成对象。</strong></p>
+<p> 数据库的表(table) –&gt;类(class)</p>
+<p> 记录(record，行数据)–&gt;对象(object)</p>
+<p> 字段(field) –&gt;对象的属性(attribute)</p>
+<p><strong>ORM优点：</strong></p>
+<p> 使用ORM可以大大降低学习和开发成本。</p>
+<p> 程序员不用再写SQL来进行数据库操作。</p>
+<p> 减少程序的代码量。</p>
+<p> 降低由于SQL代码质量差而带来的影响。</p>
+<p><strong>ORM缺点</strong></p>
+<p> 不太容易处理复杂查询语句。</p>
+<p> 性能教直接用SQL差。</p>
+<h4 id="信息系统架构ISA"><a href="#信息系统架构ISA" class="headerlink" title="信息系统架构ISA"></a>信息系统架构ISA</h4><p>信息系统架构(ISA)是指对某一特定内容里的信息进行统筹、规划、设计、安排等一系列有机处理的活动</p>
+<p>信息系统架构可分为物理结构与逻辑结构两种，物理结构是指不考虑系统各部分的实际工作与功能结构，只抽象地考察其硬件系统的空间分布情况。</p>
+<p>• 逻辑结构是指信息系统各种功能子系统的综合体。</p>
+<p>• 物理结构一般分为集中式与分布式两大类。</p>
+<p>信息系统常用四种架构模型</p>
+<p>• 单机应用模式：是最简单的软件结构，是指运行在一台物理机器上的独立应用程序。单机系统本身也可以很复杂。</p>
+<p>• 客户机/服务器模式：即两层、三层C/S、B/S模式、MVC模式等。</p>
+<p>• 面向服务架构(SOA)模式。</p>
+<p>• 企业数据交换总线：不同的企业应用之间进行信息交换的公共通道</p>
+<p>要在企业中建立一个有效集成的ISA，必须考虑企业中的四个方面：</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/19.jpg" alt="1"></p>
+<p>1.战略系统：是指企业中与战略制定、高层决策有关的管理活动和计算机辅助系统。</p>
+<p>• 在ISA中战略系统由两个部分组成，其一是为以计算机为基础的高层决策支持系统，比如DSS(决策支持系统)，其二是企业的战略规划体系。</p>
+<p>• 在ISA中设立战略系统有两重含义：一是它表示信息系统对企业高层管理者的决策支持能力;二是它表示企业战略规划对信息系统建设的影响和要求。</p>
+<p>2.业务系统：是指企业中完成一定业务功能的各部分(物质、能量、信息和人)组成的系统。</p>
+<p>作用：对企业现有业务系统、业务过程和业务活动进行建模，并在企业战略的指导下，采用业务流程管理(BPM)和业务流程重组(BPR)。</p>
+<p>3.应用系统：即应用软件系统，指信息系统中的应用软件部分。如TPS(业务处理系统)、MIS(管理信息系统)等。包含两个基本组成部分：内部功能实现部分和外部界面<strong>部分。</strong></p>
+<p><strong>4</strong>.企业信息基础设施(EII)：是指根据企业当前业务和可预见的发展趋势，及对信息采集、处理、存储和流通的要求，构筑由信息设备、通信网络、数据库、系统软件和支持性软件等组成的环境。这里可以将企业信息基础设施分成三部分：技术基础设施、信息资源设施和管理基础设施。</p>
+<p>• 技术基础设施：由计算机、网络、系统软件、支持性软件、数据交换协议等组成; </p>
+<p>• 信息资源设施：由数据与信息本身、数据交换的形式与标准、信息处理方法等组成; </p>
+<p>• 管理基础设施：指企业中信息系统部门的组织结构、信息资源设施管理人员的分工、企业信息基础设施的管理方法与规章制度等。</p>
+<h5 id="架构案例"><a href="#架构案例" class="headerlink" title="架构案例"></a>架构案例</h5><p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/36.jpg" alt="1"></p>
+<p>信息系统常用四种架构：</p>
+<p>1.单机应用系统：单机应用系统是最简单的软件结构，是指运行在一台物理机器上的独立应用程序。当然，该应用可以是多进程或多线程的。</p>
+<p>2.两层、多层C/S：C/S 概念可理解为基于TCP/IP 协议的进程间通信IPC 编程的“发送”与“反射”程序结构，即 Client方 向Server方发送一个TCP 或UDP 包，然后Server方根据接收到的请求向 Client方回送TCP 或 UDP 数据包</p>
+<p>3.MVC 结构：MVC(Model-View-Controller)的概念在目前信息系统设计中非常流行，严格来讲， MVC实际上是上述多层 C/S 结构的一种常用的标准化模式，或者可以说是从另一个角度去抽象这种多层C/S 结构</p>
+<p>4.面向服务的 SOA：上面所论述的客户机/服务器模式，无论多少层的C/S 软件结，对外来讲，都只是一个单结点应用(无论它由多个不同层的“服务”相互配合来完成其功能),具体表现为一个门户网站、一个应用系统等。而多个单点应用相互通信的服务结构也是一种信息系统常用的架构模式。</p>
+<h4 id="层次架构"><a href="#层次架构" class="headerlink" title="层次架构"></a>层次架构</h4><p>软件层次式体系结构是<strong>最通用</strong>的架构，也被叫作N层架构模式。大部分的用会分成表现层(或称为展示层)、中间层(或称为业务层)、数据访问层(或称为持久层)和数据层。</p>
+<h5 id="表现层框架设计"><a href="#表现层框架设计" class="headerlink" title="表现层框架设计"></a>表现层框架设计</h5><h6 id="UIP"><a href="#UIP" class="headerlink" title="UIP"></a>UIP</h6><p>使用UIP框架的应用程序把表现层分为了以下几层。</p>
+<p>• User Interface Components（用户界面组件）：这个组件就是原来的表现层，用户看到的和进行交互都是这个组件，它负责获取用户的数据并且返回结果。</p>
+<p>• User Interface Process Components（用户界面过程组件）：这个组件用于协调用户界面的各部分，使其配合后台的活动，例如导航和工作流控制，以及状态和视图的管理。用户看不到这一组件，但是这些组件为User lnterfaceComponents提供了重要的支持功能。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/37.jpg" alt="1"></p>
+<p>UIP的组件主要负责的功能是：</p>
+<p> 管理经过User Interface Components 的信息流；</p>
+<p> 管理UIP 中各个事件之间的事务；</p>
+<p> 修改用户过程的流程以响应异常；</p>
+<p> 将概念上的用户交互流程从实现或者涉及的设备上分离出来；</p>
+<p> 保持内部的事务关联状态，通常是持有一个或者多个的与用户交互的事务实因此，这些组件也能从U I 组件收集数据，执行服务器的成组的升级或是跟踪UIP中的任务过程的管理。</p>
+<h6 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h6><p>基于 XML界面管理技术，包括界面配置、界面动态生成和界面定制三部分</p>
+<p> 界面配置是对用户界面的静态定义，通过读取配置文件的初始值对界面配置。由界面配置对软件功能进行裁剪、重组和扩充，以实现特殊需求。</p>
+<p> 界面定制是对用户界面的动态修改过程，在软件运行过程中，用户可按需求和使用习惯，对界面元素(如菜单、工具栏、键盘命令)的属性(如文字、图标、大小和位置等)进行修改。软件运行结束，界面定制的结果被保存。</p>
+<p> 系统通过 DOM API读取XML配置文件的表示层信息(如初始界面大小、位置等),通过据存取类读取数据库中的数据层信息，运行时由界面元素动态生成界面。界面配置和定制模块在软件运行前后修改配置文件、更改界面内容。</p>
+<p>基于XML的界面管理技术实现的管理信息系统实现了用户界面描述信息与功能实现代码的分离，可针对不同用户需求进行界面配置和定制，能适应一定程度内的数据库结构改动。只须对 XML文件稍加修改，即可实现系统的移植</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/20.jpg" alt="1"></p>
+<h5 id="中间层框架设计"><a href="#中间层框架设计" class="headerlink" title="中间层框架设计"></a>中间层框架设计</h5><p>业务框架位于系统架构的中间层，是实现系统功能的核心组件。采用容器的形式，便于系统功能的开发、代码重用和管理。</p>
+<p>下图便是在吸收了SOA 思想之后的一个三层体系结构的简图。</p>
+<p> 业务层采用业务容器的方式存在于整个系统当中，采用此方可以大大降低业务层和相邻各层的耦合，表示层代码只需要将业务参数传递给业务容器，而不需要业务层多余的干预。如此一来，可以有效地防止业务层代码渗透到表示层。</p>
+<p> 在业务容器中，业务逻辑是按照Domain Model—Service—Control思想来实现的。</p>
+<p> Domain Model：是领域层业务对象，它仅仅包含<strong>业务</strong>相关的属性。</p>
+<p> Service：是 业务过程实现的组成部分，是应用程序的不同功能单元，通过在这些服务之间定义良好的接口和</p>
+<p>契约联系起来。</p>
+<p> Control：服务控制器，是服务之间的纽带，不同服务之间的切换就是通过它来实现的。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/21.jpg" alt="1"></p>
+<p>如果没有明显的数据访问层设计。这样的设计虽然提高了数据访问的性能，但也同时导致了业务逻辑层与数据访问的职责混乱</p>
+<p>引入了缓存和异步处理机制，在数据访问层中，完全采用了“面向接口编程”思想。抽象出来的IDA L模块，脱离了</p>
+<p>与具体数据库的依赖，从而使得整个数据访问层有利于数据库迁移。BLL是业务逻辑层的核心模块，它包含了整个系统的核心业务。在业务逻辑层中，不能直接访问数据库，而必须</p>
+<p>通过数据访问层。注意，图13-20中对数据访问业务的调用，是通过接口模块IDAL来完成的。既然与具体的数据访问逻辑无关，则层与层之间的关系就是松散耦合的</p>
+<h5 id="数据访问层设计"><a href="#数据访问层设计" class="headerlink" title="数据访问层设计"></a>数据访问层设计</h5><p>5种数据访问模式：</p>
+<p>• 在线访问：会占用一个数据库连接，读取数据，每个数据库操作都会通过这个连接不断地与后台的数据源进行交互。比如使用pl/sql或者navicat连接数据库</p>
+<p>• Data Access Object：是标准J2EE设计模式之一，开发人员常常用这种模式将底层数据访问操作与高层业务逻辑分离开。</p>
+<p>• Data Transfer Object：是经典EJB设计模式之一。DTO本身是这样一组对象或是数据的容器，它需要跨不同的进程或是网络的边界来传输数据。这类对象本身应该不包含具体的业务逻辑，并且通常这些对象内部只能进行一些诸如内部一致性检查和基本验证之类的方法，而且这些方法最好不要再调用其他的对象行为。</p>
+<p>• 离线数据模式是以数据为中心，数据从数据源获取之后，将按照某种预定义的结构存放在系统中，成为应用的中心。离线，对数据的各种操作独立于各种与后台数据源之间的连接或是事务</p>
+<p>• 对象/关系映射(Object/Relation Mapping，0/R Mapping)：大多数应用中的数据都是依据关系模型存储在关系型数据库中;而很多应用程序中的数据在开发或是运行时则是以对象的形式组织起来的。那么，对象/关系映射就提供了这样一种工具或是平台，能够帮助将应用程序中的数据转换成关系型数据库中的记录;或是将关系数据库中的记录转换成应用程序中代码便于操作的对象</p>
+<p><strong>工厂模式</strong>在数据库访问层的应用：首先定义一个操纵数据库的接口DataAccess，然后根据数据库的不同，由类工厂决定实例化哪个类</p>
+<p><strong>事务处理设计</strong>：JavaBean中使用JDBC方式进行事务处理：在JDBC中，打开一个连接对象Connection时，默认是auto-commit模式，每个SQL语句都被当作一个事务，即每次执行一个语句，都会自动地得到事务确认</p>
+<p><strong>连接对象管理设计（数据库连接池）</strong>：通过资源池解决资源频繁分配、释放所造成的问题</p>
+<h5 id="数据架构规划与设计"><a href="#数据架构规划与设计" class="headerlink" title="数据架构规划与设计"></a>数据架构规划与设计</h5><p>• 基于文件的存储方式。基于文件的存储方式是指将XML文档按其原始文本形式存储，主要存储技术包括操作系统文件库、通用文档管理系统和传统数据库的列。这种存储方式需维护某种类型的附加索引，以建立文件之间的层次结构。基于文件的存储方式的特点：无法获取XML文档中的结构化数据;通过附加索引可以定位具有某些关键字的XML文档，一旦关键字不确定，将很难定位;查询时，只能以原始文档的形式返回，即不能获取文档内部信息;文件管理存在容量大、管理难的缺点。</p>
+<p>• 数据库存储方式。数据库在数据管理方面具有管理方便、存储占用空间小、检索速度快、修改效率高和安全性好等优点。一种比较自然的想法是采用数据库对XML文档进行存取和操作，这样可以利用相对成熟的数据库技术处理XML文档内部的数据。数据库存储方式的特点：能够管理结构化和半结构化数据;具有管理和控制整个文档集合本身的能力;可以对文档内部的数据进行操作;具有数据库技术的特性，如多用户、并发控制和一致性约束等;管理方便，易于操作。</p>
+<h5 id="各层设计中可能遇到的问题以及解决方案"><a href="#各层设计中可能遇到的问题以及解决方案" class="headerlink" title="各层设计中可能遇到的问题以及解决方案"></a>各层设计中可能遇到的问题以及解决方案</h5><h6 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h6><p>问题：</p>
+<ol>
+<li><strong>耦合度过高</strong>：表示层与业务逻辑层或数据访问层之间的耦合度过高，导致修改一个层可能影响到其他层。</li>
+<li><strong>过度复杂</strong>：表示层包含过多的业务逻辑或处理逻辑，使得代码难以理解和维护。</li>
+<li><strong>性能问题</strong>：界面响应速度慢，加载时间长，影响用户体验。</li>
+<li><strong>不一致的用户体验</strong>：不同部分的界面设计风格、交互方式不一致，给用户造成困惑。</li>
+</ol>
+<p>解决方案：</p>
+<ol>
+<li><strong>分离关注点</strong>：采用MVC（Model-View-Controller）或MVVM（Model-View-ViewModel）等设计模式，将表示层、业务逻辑层和数据访问层分离，降低耦合度。</li>
+<li><strong>单一职责原则</strong>：确保表示层只负责展示数据和处理用户交互，将复杂的业务逻辑放在业务逻辑层中处理。</li>
+<li><strong>性能优化</strong>：使用合适的技术和工具进行性能优化，如异步加载数据、缓存数据、减少页面加载时间等。</li>
+<li><strong>统一设计风格</strong>：制定统一的UI设计规范和交互设计原则，确保整个应用的界面风格和交互方式一致。</li>
+<li><strong>用户反馈和测试</strong>：与用户进行反馈交流，不断优化和改进界面设计，进行用户体验测试，及时发现和解决问题。</li>
+<li><strong>使用前端框架</strong>：使用现代的前端框架如React、Angular、Vue等，可以提高开发效率，减少代码复杂度，并提供更好的用户体验。</li>
+<li><strong>模块化设计</strong>：将界面拆分成多个独立的模块，每个模块负责特定的功能，便于维护和扩展。</li>
+</ol>
+<p>通过以上解决方案，可以帮助解决表示层设计中可能遇到的问题，提高系统的可维护性、性能和用户体验。</p>
+<h6 id="业务逻辑层"><a href="#业务逻辑层" class="headerlink" title="业务逻辑层"></a>业务逻辑层</h6><p>问题：</p>
+<ol>
+<li><strong>复杂性过高</strong>：业务逻辑层包含大量复杂的业务规则和逻辑，使得代码难以理解和维护。</li>
+<li><strong>耦合度过高</strong>：业务逻辑层与表示层或数据访问层之间的耦合度过高，导致修改一个层可能影响到其他层。</li>
+<li><strong>业务规则冗余</strong>：业务规则重复定义或分散在多个地方，导致难以管理和维护。</li>
+<li><strong>性能问题</strong>：业务逻辑处理效率低下，影响系统的性能表现。</li>
+</ol>
+<p>解决方案：</p>
+<ol>
+<li><strong>分层设计</strong>：遵循分层架构原则，将业务逻辑层与其他层分离，降低耦合度，提高可维护性。</li>
+<li><strong>单一职责原则</strong>：确保每个业务逻辑组件只负责一个特定的业务功能，避免功能交叉和重复。</li>
+<li><strong>业务规则集中管理</strong>：将业务规则集中管理，避免规则的重复定义，可以使用规则引擎或业务规则管理系统来管理业务规则。</li>
+<li><strong>模块化设计</strong>：将业务逻辑拆分成多个模块或服务，每个模块负责特定的业务功能，便于管理和维护。</li>
+<li><strong>使用设计模式</strong>：使用设计模式如策略模式、观察者模式等，可以更好地组织和管理业务逻辑。</li>
+<li><strong>性能优化</strong>：优化业务逻辑处理的算法和流程，避免不必要的计算和数据访问，提高系统性能。</li>
+<li><strong>单元测试</strong>：编写单元测试用例来验证业务逻辑的正确性，确保业务逻辑的稳定性和可靠性。</li>
+<li><strong>版本控制和文档</strong>：对业务逻辑进行版本控制，及时更新文档，确保团队成员了解业务规则和逻辑。</li>
+</ol>
+<h6 id="数据访问层"><a href="#数据访问层" class="headerlink" title="数据访问层"></a>数据访问层</h6><p>问题：</p>
+<ol>
+<li><strong>性能问题</strong>：数据访问层的性能不佳，导致数据查询或更新操作耗时过长。</li>
+<li><strong>复杂性过高</strong>：数据访问层包含大量复杂的数据访问逻辑，使得代码难以理解和维护。</li>
+<li><strong>耦合度过高</strong>：业务数据访问层与业务逻辑层之间的耦合度过高，导致修改一个层可能影响到其他层。</li>
+<li><strong>数据一致性问题</strong>：数据访问层的操作不符合事务性要求，导致数据不一致或丢失。</li>
+</ol>
+<p>解决方案：</p>
+<ol>
+<li><strong>分离关注点</strong>：采用数据访问对象（DAO）模式或存储库模式，将数据访问层与业务逻辑层分离，降低耦合度。</li>
+<li><strong>使用ORM框架</strong>：使用ORM（对象关系映射）框架可以简化数据访问层的开发，减少手动编写SQL的工作量，提高开发效率。</li>
+<li><strong>性能优化</strong>：优化数据库查询语句、建立合适的索引、使用缓存等方法来提高数据访问层的性能。</li>
+<li><strong>事务管理</strong>：确保数据访问层的操作符合事务性要求，可以使用数据库事务或编程事务来保证数据的一致性。</li>
+<li><strong>单一职责原则</strong>：确保每个数据访问对象只负责特定数据表或实体的操作，避免功能交叉和重复。</li>
+<li><strong>数据访问层的抽象</strong>：使用接口或抽象类来定义数据访问层的操作，便于替换或扩展具体实现。</li>
+<li><strong>错误处理</strong>：在数据访问层进行合适的错误处理和异常处理，确保系统的稳定性和可靠性。</li>
+<li><strong>使用连接池</strong>：使用连接池来管理数据库连接，避免频繁创建和销毁连接，提高系统的性能和资源利用率。</li>
+</ol>
+<h5 id="层次架构的关键设计策略"><a href="#层次架构的关键设计策略" class="headerlink" title="层次架构的关键设计策略"></a>层次架构的关键设计策略</h5><p>以下是层次架构中的一些关键策略：</p>
+<ol>
+<li><strong>分层设计</strong>：将系统分解为多个层次，如表示层、业务逻辑层和数据访问层，每个层次负责特定的功能，降低耦合度，提高模块化和复用性。</li>
+<li><strong>单一职责原则</strong>：确保每个组件或模块只负责一个特定的功能，避免功能交叉和复杂性过高。</li>
+<li><strong>明确定义的接口</strong>：每个层次之间通过明确定义的接口进行通信，降低耦合度，提高灵活性和可替代性。</li>
+<li><strong>依赖反转原则</strong>：依赖反转原则（Dependency Inversion Principle）要求高层模块不应依赖于低层模块的具体实现，而是依赖于抽象，通过接口来解耦。</li>
+<li><strong>模块化设计</strong>：将系统拆分为多个独立的模块或组件，每个模块负责特定的功能，便于管理、维护和扩展。</li>
+<li><strong>设计模式</strong>：使用设计模式如工厂模式、观察者模式、策略模式等，可以提高系统的灵活性、可维护性和可扩展性。</li>
+<li><strong>分布式架构</strong>：在需要时考虑使用分布式架构，将系统拆分为多个独立的服务，可以提高系统的性能、可伸缩性和容错性。</li>
+<li><strong>安全性</strong>：在设计层次架构时要考虑系统的安全性，包括数据加密、访问控制、身份验证等安全措施。</li>
+<li><strong>性能优化</strong>：在系统设计阶段考虑性能优化策略，如缓存、异步处理、数据库索引等，以提高系统的性能和响应速度。</li>
+<li><strong>单一职责原则（Single Responsibility Principle，SRP）</strong>：每个模块或组件应该只有一个单一的责任，避免功能交叉和复杂性过高。</li>
+<li><strong>开放封闭原则（Open/Closed Principle，OCP）</strong>：模块应该对扩展开放，对修改关闭，通过扩展现有模块来添加新功能，而不是修改已有模块。</li>
+<li><strong>依赖倒置原则（Dependency Inversion Principle，DIP）</strong>：高层模块不应该依赖于低层模块的具体实现，而是应该依赖于抽象，通过接口来解耦。</li>
+<li><strong>接口隔离原则（Interface Segregation Principle，ISP）</strong>：接口应该细化，一个类不应该强迫其客户端实现其不需要的接口，避免接口臃肿和不必要依赖。</li>
+</ol>
+<h5 id="层次架构的主要作用"><a href="#层次架构的主要作用" class="headerlink" title="层次架构的主要作用"></a>层次架构的主要作用</h5><ol>
+<li><strong>模块化和组织性</strong>：层次架构将系统分解为多个层次，每个层次负责特定的功能，使得系统更易于理解、维护和扩展。</li>
+<li><strong>降低耦合度</strong>：不同层次之间通过定义清晰的接口进行通信，降低了各个模块之间的耦合度，使得修改一个模块不会对其他模块产生影响。</li>
+<li><strong>提高可维护性</strong>：通过将系统分解为多个层次，每个层次都有明确的责任，使得系统更易于定位问题、进行调试和修改。</li>
+<li><strong>提高可扩展性</strong>：层次架构使得系统的功能模块化，通过添加新的层次或扩展现有层次，可以更容易地实现系统的功能扩展。</li>
+<li><strong>提高复用性</strong>：模块化的设计使得各个层次中的功能可以被重复使用，提高了代码的复用性和开发效率。</li>
+<li><strong>分工协作</strong>：不同的团队可以专注于开发不同层次的功能，降低了团队成员之间的协作成本，提高了开发效率。</li>
+<li><strong>提高系统的可靠性和稳定性</strong>：通过清晰的层次划分和模块化设计，可以降低系统出错的可能性，提高系统的稳定性和可靠性。</li>
+<li><strong>性能优化</strong>：通过层次架构可以更容易地对系统进行性能优化，例如在数据访问层添加缓存、在表示层进行页面静态化等。</li>
+</ol>
+<p>层次架构解决了诸多问题，包括：</p>
+<ul>
+<li><strong>耦合度过高</strong>：通过定义清晰的接口，降低了各个模块之间的耦合度。</li>
+<li><strong>功能交叉</strong>：每个层次只负责特定的功能，避免了功能交叉和重复。</li>
+<li><strong>复杂性过高</strong>：将系统分解为多个层次，降低了系统整体的复杂性，使得系统更易于管理和维护。</li>
+<li><strong>可维护性差</strong>：通过模块化的设计，提高了系统的可维护性，使得修改和扩展更加容易。</li>
+<li><strong>可扩展性差</strong>：层次架构使得系统更易于扩展，通过添加新的层次或扩展现有层次，可以更容易地实现系统的功能扩展。</li>
+</ul>
+<h5 id="物联网层次规划设计"><a href="#物联网层次规划设计" class="headerlink" title="物联网层次规划设计"></a>物联网层次规划设计</h5><p>物联网可以分为三个层次，底层是用来感知数据的感知层，即利用传感器、二维码、RFID等设备随时随地获取物体的信息。第二层是数据传输处理的网络层，即通过各种传感网络与互联网的融合，将对象当前的信息实时准确地传递出去。第三层则是与行业需求结合的应用层，即通过智能计算、云计算等将对象进行智能化控制。</p>
+<p>• 感知层：用于识别物体、采集信息。感知层包括二维码标签和识读器、RFID标签和读写器、摄像头、GPS、传感器、M2M终端、传感器网关等，<strong>主要功能是识别对象、采集信息，与人体结构中皮肤和五官的作用类似。感知层解决的是人类世界和物理世界的数据获取问题</strong>。</p>
+<p>• 网络层：用于传递信息和处理信息。网络层包括通信网与互联网的融合网络、网络管理中心、信息中心和智能处理中心等。<strong>网络层将感知层获取的信息进行传递和处理，类似于人体结构中的神经中枢和大脑。网络层解决的是传输和预处理感知层所获得数据的问题</strong>。</p>
+<p>• 应用层：实现广泛智能化。应用层是物联网与行业专业技术的深度融合，结合行业需求实现行业智能化，这类似于人们的社会分工。<strong>物联网应用层利用经过分析处理的感知数据，为用户提供丰富的特定服务。应用层解决的是信息处理和人机交互的问题</strong>。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/22.jpg" alt="1"></p>
+<h4 id="云原生架构"><a href="#云原生架构" class="headerlink" title="云原生架构"></a>云原生架构</h4><h5 id="云计算"><a href="#云计算" class="headerlink" title="云计算"></a>云计算</h5><p>云计算是一种通过互联网向用户提供计算资源的服务模式。用户无需购买、维护和管理硬件和软件，而是根据需求从云服务提供商处租赁资源，并按使用量付费。</p>
+<p>云计算的主要特点包括：</p>
+<p> 按需服务：用户可以根据需求随时随地获取和使用计算资源，无需提前进行规划和采购。</p>
+<p> 弹性扩展：用户可以根据业务需求快速扩展或缩减计算资源，无需进行额外的硬件或软件投资。</p>
+<p> 低成本：用户无需购买和维护昂贵的硬件和软件，可以降低 IT 成本。</p>
+<p> 高可用性：云服务提供商通常拥有多个数据中心，可以确保应用程序的高可用性。</p>
+<p> 易于管理：用户无需管理复杂的 IT 基础架构，可以将更多精力集中在业务创新上。 </p>
+<p>云计算的服务方式</p>
+<p> 基础设施即服务(IaaS)。在IaaS模式下，服务提供商将多台服务器组成的“云端”基础设施作为计量服务提供给客户。</p>
+<p> 平台即服务(PaaS)。在PaaS模式下，服务提供商将分布式开发环境与平台作为一种服务来提供。</p>
+<p> 软件即服务(Saas)。在Saas的服务模式下，服务提供商将应用软件统一部署在云计算平台上，客户根据需要通过互联网向服务提供商</p>
+<p>订购应用软件服务，服务提供商根据客户所订购软件的数量、时间的长短等因素收费，并且通过标准浏览器向客户提供应用服务</p>
+<p>云计算的部署模式：</p>
+<p> 公有云。在公有云模式下，云基础设施是公开的，可以自由地分配给公众。企业、学术界与政府机构都可以拥有和管理公用云，并实现对公有云的操作。公有云能够以低廉的价格为最终用户提供有吸引力的服务，创造新的业务价值。</p>
+<p> 社区云。在社区云模式下，云基础设施分配给一些社区组织所专有，这些组织共同关注任务、安全需求、政策等信。云基础设施被社区内的一个或多个组织所拥有、管理及操作。“社区云”是”公有云”范畴内的一个组成部分。</p>
+<p> 私有云。在私有云模式下，云基础服务设施分配给由多种用户组成的单个组织。它可以被这个组织或其他第三方组织所拥有、管理及操作。</p>
+<p> 混合云。混合云是公有云、私有云和社区云的组合。由于安全和控制原因，并非所有的企业信息都能放置在公有云上，因此企业将会使用混合云模式</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/26.jpg" alt="1"></p>
+<h5 id="云原生架构原则"><a href="#云原生架构原则" class="headerlink" title="云原生架构原则"></a>云原生架构原则</h5><p>云原生架构是基于云原生技术的一组架构原则和设计模式的集合，旨在将云应用中的非业务代码部分进行最大化的剥离，从而让云设施接管应用中原有的大量非功能特性(如弹性、韧性、安全、可观测性、灰度等)，使业务不再有非功能性业务中断困扰的同时，具备轻量、敏捷、高度自动化的特点。</p>
+<p> 云原生架构原则</p>
+<p>• 服务化原则：拆分为微服务架构、小服务架构，分别迭代。</p>
+<p>• 弹性原则：系统的部署规模可以随着业务量的变化而自动伸缩。</p>
+<p>• 可观测原则：通过日志、链路跟踪和度量等手段。</p>
+<p>• 韧性原则：当软件所依赖的软硬件组件出现各种异常时，软件表现出来的抵御能力。</p>
+<p>• 所有过程自动化原则：一方面标准化企业内部的软件交付过程，另一方面在标准化的基础上进行自动化，通过配置数据自描述和面向终态的交付过程。</p>
+<p>• 零信任原则：默认情况下不应该信任网络内部和外部的任何人/设备/系统，需要基于认证和授权重构访问控制的信任基础，以身份为中心。</p>
+<p>• 架构持续演进原则：我们做设计的时候就要考虑到业务有可能高速演进，所以架构设计时也要保证架构和变化的业务能保持平衡</p>
+<h5 id="云原生架构模式"><a href="#云原生架构模式" class="headerlink" title="云原生架构模式"></a>云原生架构模式</h5><p>服务化架构模式：典型模式是微服务和小服务模式。通过服务化架构，把代码模块关系和部署关系进行分离，每个接口可以署不同数量的实例，单独扩缩容，从而使得整体的部署更经济。这种是最主流的模式，例如：一个电商平台可以拆分为多个服务，例如商品服务、订单服务、支付服务和物流服务。每个服务都可以独立部署和扩展，以满足不同的需求。</p>
+<p> Mesh化架构模式：把中间件框架(如RPC、缓存、异步消息等)从业务进程中分离，这部分的功能都交给Mesh完成。分离后在业务进程中只保留很“薄”的Client部分。举例： Istio是一个流行的Mesh平台，可以提供服务发现、流量管理、安全性和可观察性等功能。</p>
+<p> Serverless模式：无服务器模式，将“部署”这个动作从运维中“收走”，使开发者不用关心应用运行地点、操作系统、网络配置、CPU性能等，也就是把应用的整个运行都委托给云。云端再根据代码运行情况自动分配和回收资源，并仅对使用的资源进行计费。</p>
+<p> 存储计算分离模式：是一种将存储和计算资源分离的架构模式。在云环境中，推荐把各类暂态数据（如session）、结构化和非结构化持久数据都采用云服务来保存，从而实现存储计算分离。</p>
+<p> 分布式事务模式：用来解决微服务架构模式中访问多个数据源所带来的分布式事务问题。架构师需要根据不同的场景选择合适的分布式事务模式。举例： 一个电商平台的订单处理可能涉及多个服务，例如库存服务、支付服务和物流服务。这服务都可能需要访问数据库，如果这些数据库都处于不同数据源上，就需要使用分布式事务模式来确保事务的一致性。</p>
+<p> 可观测架构：引入一些技术让架构变得可观测，主要包括Logging、Tracing、Metrics 三个方面</p>
+<p> 事件驱动架构：本质上是一种应用/组件间的集成架构模式。可用于服务解耦、增强服务韧性、数据变化通知等场景中。</p>
+<h5 id="云原生架构技术"><a href="#云原生架构技术" class="headerlink" title="云原生架构技术"></a>云原生架构技术</h5><p><strong>容器技术</strong>：容器作为标准化软件单元，它将应用及其所有依赖项打包，使应用不再受环境限制，在不同计算环境间快速、可靠地运行。通过容器技术，企业可以充分发挥云计算弹性优势，降低运维成本。</p>
+<p><strong>云原生微服务</strong>：微服务模式将后端单体应用拆分为松耦合的多个子应用，每个子应用负责一组子功能。这些子应用称为“微服务”，多个“微服务”共同形成了一个物理独立但逻辑完整的分布式微服务体系。这些微服务相对独立，通过解耦研发、测试与部署流程，提高整体迭代效率</p>
+<p>Apache Dubbo，Eclipse MicroProfile，Tars，SOFAStack，DAPR</p>
+<p>Spring Cloud作为开发者的主要微服务选择之一，为开发者提供了分布式系统需要的配置管理、服务发现、断路器、智能路由、微代理、控制总线、一次性Token、全局锁、决策竞选、分布式会话与集群状态管理等能力和开发工具。</p>
+<p><strong>无服务器技术</strong>(Serverless)因为屏蔽了服务器的各种运维复杂度，让开发人员可以将更多精力用于业务逻辑设计与实现，而逐渐成为云原生主流技术之一。无服务器技术关注点：计算资源弹性调度、负载均衡和流控、安全性</p>
+<p>Serverless技术包含以下特征：</p>
+<p>• 全托管的计算服务：这意味着用户无需担心底层服务器的维护和管理。 云平台会负责处理所有基础设施方面的细节，例如服务器配置、网络管理和操作系统更新。 用户只需专注于编写代码并构建应用程序，而无需担心服务器的管理工作。这种全托管的服务模式可以显著降低开发人员的运维负担，并提高开发效率。</p>
+<p>• 通用性：可以支持云上所有重要类型的应用，包括 Web 应用、移动后端、数据处理、物联网、事件驱动应用程序等。它可以与各种其他云服务无缝集成，例如数据库、存储、分析和机器学习。Serverless计算的通用性使其成为各种应用场景的理想选择。</p>
+<p>• 自动弹性伸缩：可以根据应用程序的负载自动弹性伸缩资源。 当应用程序的流量增加时，云平台会自动启动更多实例来处理负载。 当流量减少时，云平台会自动释放闲置资源。这种自动弹性伸缩功能可以让用户避免为闲置资源付费，并确保应用程序始终保持高可用性。</p>
+<p>• 按量计费：采用按量计费模式，这意味着用户只需为实际使用的资源付费。 云平台会根据应用程序的实际使用情况进行计费</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/27.jpg" alt="1"></p>
+<h5 id="架构案例-1"><a href="#架构案例-1" class="headerlink" title="架构案例"></a>架构案例</h5><p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/35.jpg" alt="1"></p>
+<p>云原生技术助力某汽车公司数字化转型实践：</p>
+<p>• 战略性构建容器云平台。通过平台实现对某云行App、二手车、在线支付、优惠券等核心互联网应用承载。以多租户的式提供弹性计算、数据持久化、应用发布等面向敏捷业务服务，并实现高水平资源隔离。标准化交付部署，快速实现业务扩展，满足弹性要求。</p>
+<p>• 数字混合云交付。采用私有云+公有云的混合交付模式，按照服务的敏态/稳态特性和管控要求划分部署，灵活调度公有云资源来满足临时突发或短期高TPS业务支撑的需求。</p>
+<p>• 深度融合微服务治理体系，实现架构的革新和能力的沉淀，逐步形成支撑数字化应用的业务中台</p>
+<h4 id="面向服务架构SOA"><a href="#面向服务架构SOA" class="headerlink" title="面向服务架构SOA"></a>面向服务架构SOA</h4><h5 id="SOA与微服务"><a href="#SOA与微服务" class="headerlink" title="SOA与微服务"></a>SOA与微服务</h5><p>在面向服务的体系结构(SOA)中，服务的概念有了延伸，泛指系统对外提供的功能集</p>
+<p>从应用的角度定义，可以认为SOA是一种应用框架，它着眼于日常的业务应用，并将它们划分为单独的业务功能和流程</p>
+<p>从软件的基本原理定义，可以认为SOA是一个组件模型</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/23.jpg" alt="1"></p>
+<h5 id="服务分类"><a href="#服务分类" class="headerlink" title="服务分类"></a>服务分类</h5><p>典型的以服务为中心的企业集成架构如下图所示，采用“<strong>关注点分离</strong>”的方法规划企业集成中的各种架构元素，同时从服务视角规划每种架构元素提供的服务，以及服务如何被组合在一起完成某种类型的集成。可划分为六大类：</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/24.jpg" alt="1"></p>
+<p>1、业务逻辑服务 (Business Logic Service)： 包括用于实现业务逻辑的服务和执行业务逻辑的能力，其中包括业务应用服务 (Business Application Service)、 业务伙伴服务 (PartnerService) 以及应用和信息资产 (Application and Informationasset)。</p>
+<p>• 整合已有应用(应用和信息访问服务)：实现对已有应用和信息的集成，主要有两类访问服务：可接入服务、事件发现服务。</p>
+<p>• 整合新开发的应用(业务应用服务)：实现新应用集成，主要有三类业务应用服务：组件服务(可重用）、核心服务（运行时）、接口服务。</p>
+<p>• 整合客户和业务伙伴(B2C/B2B，伙伴服务)：提供与企业外部的B2B的集成能力，包括：社区服务、文档服务、协议服务。</p>
+<p>2、控制服务 (Control Service)： 包括实现人 (People)、 流程 (Process) 和信息(Information) 集成的服务，以及执行这些集成逻辑的能力。</p>
+<p>• 数据整合(信息服务)：提供集成数据的能力，目前主要包括如下集中信息服务：联邦服务(不同类型数据聚合)、复制服务(远程数据本地访问)、转换服务(格式转换)、搜索服务。</p>
+<p>• 流程整合(流程服务)：完成业务流程集成，包括：编排服务(预定义流程顺序)、事务服务(保证ACID)、人工服务(人工活动集成到流程中)。</p>
+<p>• 用户访问整合(交互服务)：实现用户访问集成，包括：交付服务(运行时交互框架)、体验服务、资源服务(运行时交互组件的管理)。</p>
+<p>3、连接服务 (Connectivity Service)： 通过提供企业服务总线提供分布在各种架构元素中服务间的连接性。</p>
+<p> 通过企业服务总线(ESB)来实现，它的基本特征和能力包括：</p>
+<p>• 描述服务的元数据和服务注册管理; </p>
+<p>• 在服务请求者和提供者之间传递数据，以及对这些数据进行转换的能力，并支持由实践中总结出来的一些模式如同步</p>
+<p>模式、异步模式等; </p>
+<p>• 发现、路由、匹配和选择的能力，以支持服务之间的动态交互，解耦服务请求者和服务提供者。</p>
+<p>• 高级一些的能力，包括对安全的支持、服务质量保证、可管理性和负载平衡等</p>
+<p>4、业务创新和优化服务 (Business Innovation and Optimization Service)： 用于监控业务系统运行时服务的业务性能，并通过及时了解到的业务性能和变化，取措施适应变化的市场。</p>
+<p>5、开发服务 (Development Service)： 贯彻整个软件开发生命周期的开发平台，从需求分析，到建模、设计、开发、测试和维护等全面的工具支持。</p>
+<p>6、IT服务管理 (IT Service Management)： 支持业务系统运行的各种基础设施管理能力或服务，如安全服务、目录服务、系统管理和资源虚拟化。</p>
+<h5 id="SOA协议"><a href="#SOA协议" class="headerlink" title="SOA协议"></a>SOA协议</h5><p>Web服务最基本的协议包括UDDI、WSDL和SOAP，通过它们，可以提供直接而又简单的Web Service支持,如图所示。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/25.jpg" alt="1"></p>
+<p>• UDDI：UDDI 是用于服务的注册和发现。它允许提供者将其 Web 服务描述注册到 UDDI 注册中心，以便其他用户可以发现并访问这些服务。便其他电子商务网站或应用程序可以查找并使用这些服务。</p>
+<p>• WSDL：WSDL 是用于用于描述服务的接口和操作。它提供了一种标准方式来定义服务的输入、输出以及如何与服务进行交互。</p>
+<p>• SOAP：SOAP 是一种用于在不同计算机之间进行通信的协议(在不同服务之间进行消息交换)。它允许 Web 服务之间的消息交换，并提供了一种标准的、跨平台的通信机制。一般来说是一个XML文件</p>
+<h5 id="SOA的设计原则"><a href="#SOA的设计原则" class="headerlink" title="SOA的设计原则"></a>SOA的设计原则</h5><p> SOA的设计原则</p>
+<p>• <strong>无状态</strong>。调用服务的时候不用考虑到它还需要其他的状态及数据，以避免服务请求者依赖于服务提供者的状态。</p>
+<p>• <strong>单一实例</strong>。每个服务都只提供单一的功能，避免功能冗余。</p>
+<p>• <strong>明确定义的接口</strong>。使用者依赖服务规约调用服务，所以服务定义必须长时间稳定，一旦公布，不能随意更改;服务的定义应尽可能明确，减少使用者的不适当使用;不要让使用者看到服务内部的私有数据。</p>
+<p>• <strong>自包含和模块化</strong>。服务封装了那些在业务上稳定、重复出现的活动和组件，实现服务的功能实体是完全独立自主的，独立进行部署、版本控制、自我管理和恢复。</p>
+<p>• <strong>粗粒度</strong>。服务数量不应该太大，依靠消息交互而不是远程过程调用(RPC)，通常消息量比较大，但是服务之间的交互频度较低。</p>
+<p>• <strong>服务之间的松耦合性</strong>。服务使用者看到的是服务的接口，其位置、实现技术和当前状态等对使用者是不可见的，服务私有数据对服务使用者是不可见的。</p>
+<p>• <strong>重用能力</strong>。服务应该是可以重用的。</p>
+<p>• <strong>互操作性、兼容和策略声明</strong>。为了确保服务规约的全面和明确，策略成为一个越来越重要的方面。这可以是技术相关的内容，例如一个服务对安全性方面的要求;也可以是跟业务有关的语义方面的内容，例如需要满足的费用或者服务级别方面的要求，这些策略对于服务在交互时是非常重要的。</p>
+<h5 id="SOA设计模式"><a href="#SOA设计模式" class="headerlink" title="SOA设计模式"></a>SOA设计模式</h5><p>1、服务注册表模式，支持如下SOA治理功能：</p>
+<p>• 服务注册：应用开发者，也叫服务提供者，向注册表公布他们的功能。</p>
+<p>• 服务位置：也就是服务应用开发者，帮助他们查询注册服务，寻找符合自身要求的服务。</p>
+<p>• 服务绑定：服务的消费者利用检索到的服务合同来开发代码，开发的代码将与注册的服务绑定、调用注册的服务以及与它们实现互动。</p>
+<p>2、企业服务总线模式ESB，由中间件技术实现的支持面向服务架构的基础软件平台，支持异构环境中的服务以基于消息和事件驱动模式的交互，并且具有适当的服务质量和可管理性。</p>
+<p>一个典型的在ESB环境中组件之间的交互过程是：首先由服务请求者触发一次交互过程，产生一个服务请求消息，并将该消息按照ESB的要求标准化，然后标准化的消息被发送给服务总线。ESB根据请求消息中的服务名或者接口名进行目的组件查找，将消息转发至目的组件，并最终将处理结果逆向返回给服务请求者。这种交互过程不再是点对点的直接交互模式，而是由事件驱动的消息交互模式。</p>
+<p> ESB的核心功能如下。</p>
+<p>• 提供位置透明性的消息路由和寻址服务。</p>
+<p>• 提供服务注册和命名的管理功能。</p>
+<p>• 支持多种消息传递范型(如请求/响应、发布/订阅等)。</p>
+<p>• 支持多种可以广泛使用的传输协议。</p>
+<p>• 支持多种数据格式及其相互转换。</p>
+<p>• 提供日志和监控功能</p>
+<p>3、微服务模式，不再强调传统SOA架构里面比较重的ESB企业服务总线，同时SOA 的思想进入到单个业务系统内部实现真正的组件化。</p>
+<p> 微服务模式特点：复杂应用解耦、独立、技术选型灵活、容错、松耦合易扩展。</p>
+<p> 常见的微服务设计模式：</p>
+<p>• 聚合器微服务：聚合器调用多个微服务实现系统应用程序所需功能，具体有两种形式，一种是将检索到的数据信息进行处理并直接展示;另一种是对获取到的数据信息增加业务逻辑处理后，再进一步发布成一个新的微服务作为一个更高层次的组合微服务，相当于从服务消费者转换成服务提供者。</p>
+<p>• 链式微服务：客户端或服务在收到请求后，会返回一个经过合并处理的响应，服务之间形成一条调用链。</p>
+<p>• 数据共享微服务：当服务之间存在强耦合关系时，可能存在多个微服务共享缓存与数据库存储的现象。</p>
+<p>• 异步消息传递微服务：消息队列将消息写入一个消息队列中，实现业务逻辑以异步方式运行，从而加快系统响应速度。</p>
+<p> 微服务架构的问题与挑战：</p>
+<p>• 微服务架构分布式特点带来的复杂性; </p>
+<p>• 微服务架构的分区数据库体系，不同服务拥有不同数据库; </p>
+<p>• 增加了测试的复杂性; </p>
+<p>• 在大规模应用部署中，在监控、管理、分发及扩容等方面,也带来了不少复杂性</p>
+<h4 id="安全架构"><a href="#安全架构" class="headerlink" title="安全架构"></a>安全架构</h4><p>安全架构是架构面向安全性方向上的一种细分，通常的产品安全架构、安全技术体系架构和审计架构可组成三道安全防线。</p>
+<p>• 产品安全架构：构建产品安全质量属性的主要组成部分以及它们之间的关系。产品安全架构的目标是如何在不依赖外部防御系统的情况下，从源头打造自身安全的产品。</p>
+<p>• 安全技术体系架构：构建安全技术体系的主要组成部分以及它们之间的关系。安全技术体系架构的任务是构建通用的安全技术基础设施，包括安全基础设施、安全工具和技术、安全组件与支持系统等，系统性地增强各产品的安全防御能力。</p>
+<p>• 审计架构：独立的审计部门或其所能提供的风险发现能力，审计的范围主要包括安全风险在内的所有风险</p>
+<h5 id="安全体系架构规划框架"><a href="#安全体系架构规划框架" class="headerlink" title="安全体系架构规划框架"></a>安全体系架构规划框架</h5><p>对组织机构信息技术系统的安全体系结构的整体描述。安全技术体系架构的目标是建立可持续改进的安全技术体系架构的能力。根据风险威胁的存在实体划分出5个层次的实体对象：应用、存储、主机、网络和物理。</p>
+<p>信息系统安全体系主要是由技术体系(技术)、组织机构体系(人)和管理体系(制度)三部分共同构成的。</p>
+<p>• 技术体系是全面提供信息系统安全保护的技术保障系统，该体系由物理安全技术和系统安全技术两大类构成。</p>
+<p>• 组织体系是信息系统的组织保障系统，由机构、岗位和人事三个模块构成。</p>
+<p>• 管理体系由法律管理、制度管理和培训管理三部分组成</p>
+<p>信息系统安全规划需要围绕技术安全、管理安全、组织安全考虑</p>
+<p>信息系统安全规划以信息系统与信息资源的安全保护为核心，规划工作需要围绕着信息系统与信息资源的开发、利用和保护工作进行，要包括蓝图、现状、需求和措施4个方面</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/28.jpg" alt="1"></p>
+<h5 id="信息安全整体架构设计"><a href="#信息安全整体架构设计" class="headerlink" title="信息安全整体架构设计"></a>信息安全整体架构设计</h5><p>WPDRRC(Waring/Protect/Detect/React/Restore/Counterattack)是我国针对美国提出的PDRR的基础上新增了预警和反击功能的信息安全模型，它有6个环节和3大要素</p>
+<p>6个环节包括：预警、保护、检测、响应、恢复和反击，它们具有较强的时序性和动态性，能够较好地反映出信息系统安全保障体系的预警能力、保护能力、检测能力、响应能力、恢复能力和反击能力。</p>
+<p>3大要素包括：人员、策略和技术。人员是核心，策略是桥梁，技术是保证，落实在WPDRRC 的6个环节的各个方面，将安全策预警略变为安全现实</p>
+<p>W(Waring)：预警主要是指利用远程安全评估系统提供的模拟攻击技术来检查系统存在的、可能被利用的薄弱环节，收集和测试网络与信息的安全风险所在，并以直观的方式进行报告，提供解决方案的建议，在经过分析后，分解网络的风险变化趋势和严重风险点，从而有效降低网络的总体风险，保护关键业务和数据。</p>
+<p>P(Protect)：防护通常是通过采用成熟的信息安全技术及方法来实现网络与信息的安全。主要内容有加密机制，数字签名机制，访问控制机制，认证机制，信息隐藏和防火墙技术等。</p>
+<p>D(Detect)：检测通过检测和监控网络以及系统，来发现新的威胁和弱点，强制执行安全策略。在这个过程中采用入侵检测、恶意代码过滤等技术，形成动态检测的制度，奖励报告协调机制，提高检测的实时性。主要内容有入侵检测，系统脆弱性检测，数据完整性检测和攻击性检测等。</p>
+<p>R(React)：响应是指在检测到安全漏洞和安全事件之后必须及时做出正确的响应，从而把系统调整到安全状态。为此需要相应的报警、跟踪、处理系统，其中处理包括了封堵、隔离、报告等能力。主要内容有应急策略、应急机制、应急手段、入侵过程分析和安全状态评估等。</p>
+<p>R(Restore)：恢复灾难恢复系统是当前网络、数据、服务受到黑客攻击并遭到破坏或影响后，通过必要技术手段，在尽可能短的时间内使系统恢复正常。主要内容有容错、冗余、备份、替换、修复和恢复等。</p>
+<p>C(Counterattack)：反击是指采用一切可能的高新技术手段，侦察、提取计算机犯罪分子的作案线索与犯罪证据，形成强有力的取证能力和依法打击手段</p>
+<p>信息系统安全设计重点考虑两个方面：系统安全保障体系和信息安全体系架构。</p>
+<p>1.系统安全保障体系：是由安全服务、协议层次和系统单元等三个层面组成，且每个层都涵盖了安全管理的内容。系统安全保障体系设计工作主要考虑以下几点：</p>
+<p>• 安全区域策略的确定：根据安全区域的划分，主管部门应制定针对性的安全策略，比如涉及到金钱和隐私信息的区域的安全级别更高，涉及到外部人员的区域安全级别低一些。</p>
+<p>• 统一配置和管理防病毒系统：主管部门应当建立整体防御策略，以实现统一的配置和管理。</p>
+<p>• 网络安全管理：加强网络安全管理，制定有关规章制度。</p>
+<p>2.信息安全体系架构：具体在安全控制系统，我们可以从下面5个方面开展分析和设计工作。</p>
+<p>• 物理安全：保证计算机信息系统各种设备的物理安全是保障整个网络系统安全的前提。包括：环境安全、设备安全、媒体安全等。</p>
+<p>• 系统安全：主要是指对信息系统组成中各个部件的安全要求。系统安全是系统整体安全的基础。它主要包括：网络结构安全、操作系统安全和应用系统安全。</p>
+<p>• 网络安全：是整个安全解决方案的关键。它主要包括：访问控制、通信保密、入侵检测、网络安全扫描系统和防病毒等。</p>
+<p>• 应用安全：主要是指多个用户使用网络系统时，对共享资源和信息存储操作所带来的安全问题。它主要包括资源共享和信息存储两个方面。</p>
+<p>• 安全管理：主要体现在三个方面。其一是制定健全的安全管理体制;其二是构建安全管理平台;其三是增强人员的安全防范意识</p>
+<h5 id="网络安全体系架构设计"><a href="#网络安全体系架构设计" class="headerlink" title="网络安全体系架构设计"></a>网络安全体系架构设计</h5><p>0SI定义了7层协议，其中除第5层(会话层)外，每一层均能提供相应的安全服务。实际上，最适合配置安全服务的是物理层、网络层、运输层及应用层上，其他层都不宜配置安全服务。</p>
+<p>0SI开放系统互联安全体系的5类安全服务包括：鉴别、访问控制、数据机密性、数据完整性和抗抵赖性。</p>
+<p>0SI定义分层多点安全技术体系架构，也称为深度防御安全技术体系架构，它通过以下三种方式将防御能力分布至整个信息系统中。</p>
+<p>• 多点技术防御：在对手可以从内部或外部多点攻击一个目标的前提下，多点技术防御通过对网络和基础设施、边界、计算环境这三个防御核心区域的防御达到抵御所有方式的攻击目的。</p>
+<p>• 分层技术防御：即使最好的可得到的信息保障产品也有弱点，其最终结果将使对手能找到一个可探查的脆弱性，一个有效的措施是在对手和目标间使用多个防御机制。</p>
+<p>• 支撑性基础设施：为网络、边界和计算环境中信息保障机制运行基础的支撑性基础设施，包括公钥基础设施以及检测和响应基础设施。</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/29.jpg" alt="1"></p>
+<h5 id="数据库系统的安全设计"><a href="#数据库系统的安全设计" class="headerlink" title="数据库系统的安全设计"></a>数据库系统的安全设计</h5><p>数据库的完整性约束：</p>
+<p>数据库完整性是指数据库中数据的正确性和相容性</p>
+<p>• 在需求分析阶段就必须制定完整性约束的命名规范</p>
+<p>• 要根据业务规则对数据库完整性进行细致的测试，以尽早排除隐含的完整性约束间的冲突和对性能的影响。</p>
+<p>• 要有专职的数据库设计小组，自始至终负责数据库的分析、设计、测试、实施及早期维护。</p>
+<p>• 应采用合适的CASE工具来降低数据库设计各阶段的工作量。</p>
+<p>利用基于DBMS的完整性控制机制来实现业务规则，易于定义，容易理解，而且可以降低应用程序的复杂性</p>
+<h5 id="系统架构的脆弱性分析"><a href="#系统架构的脆弱性分析" class="headerlink" title="系统架构的脆弱性分析"></a>系统架构的脆弱性分析</h5><p>1.分层架构的脆弱性主要表现在两个方面：</p>
+<p>• 层间的脆弱性。一旦某个底层发生错误，那么整个程序将会无法正常运行。</p>
+<p>• 层间通信的脆弱性。将系统隔离为多个相对独立的层，这就要求在层与层之间引入通信机制。本来“直来直去”的操作现在要层层传递，势必造成性能下降。</p>
+<p>2.C/S架构的脆弱性主要表现在以下几个方面：</p>
+<p>• 客户端软件的脆弱性。因为在用户计算机上安装了客户端软件，所以这个系统就面临着程序被分析、数据被截取的安全隐患。</p>
+<p>• 网络开放性的脆弱性。目前很多传统的C/S系统还是采用二层结构，也就是说所有客户端直接读取服务器端中的数据，在客户端包括了数据的用户名，密码等致命的信息，这样会给系统带来安全隐患。</p>
+<p>• 网络协议的脆弱性</p>
+<p>3.B/S 架构的脆弱性主要表现在：系统如果使用HTTP协议，B/S架构相对C/S架构而言更容易被病毒入侵，虽然最新的HTTP协议在安全性方面有所提升，但还是弱于C/S。</p>
+<p>4.事件驱动架构的脆弱性主要表现在：</p>
+<p>• 组件的脆弱性。组件削弱了自身对系统的控制能力，一个组件触发事件，并不能确定响应该事件的其他组件及各组建的执行顺序。</p>
+<p>• 组件间交换数据的脆弱性。组件不能很好地解决数据交换问题，事件触发时，一个组件有可能需要将参数传递给另一个组件，而数据量很大的时候，如何有效传递是一个脆弱性问题。</p>
+<p>• 组件间逻辑关系的脆弱性。事件架构使系统中各组件的逻辑关系变得更加复杂。</p>
+<p>• 事件驱动容易进入死循环，这是由编程逻辑决定的。</p>
+<p>• 高并发的脆弱性。虽然事件驱动可实现有效利用CPU资源，但是存在高并发事件处理造成的系统响应问题，而且，高并发容易导致系统数据不正确、丢失数据等现象。</p>
+<p>• 固定流程的脆弱性。因为事件驱动的可响应流程基本都是固定的，如果操作不当，容易引发安全问题</p>
+<p>5.MVC架构的脆弱性主要表现在：</p>
+<p>• MVC架构的复杂性带来脆弱性。MVC架构增加了系统结构和实现的复杂性。比如说一个简单的界面，如果严格遵循MVC方式，使得模型、视图与控制器分离，会增加结构的复杂性，并可能产生过多的更新操作，降低运行效率。</p>
+<p>• 视图与控制器间紧密连接的脆弱性。视图与控制器是相互分离但确是联系紧密的部件，没有控制器的存在，视图应用是很有限的。反之亦然，这样就妨碍了它们的独立重用。</p>
+<p>• 视图对模型数据的低效率访问的脆弱性。依据模型操作接口的不同，视图可能需要多次调用才能获得足够的显示数据。对未变化数据的不必要的频繁访问也将损害操作性能。</p>
+<p>6.微内核架构的脆弱性主要表现在：</p>
+<p>• 微内核架构难以进行良好的整体化优化。由于微内核系统的核心态只实现了最基本的系统操作，这样内核以外的外部程序之间的独立运行使得系统难以进行良好的整体优化。</p>
+<p>• 微内核系统的进程间通信开销也较单一内核系统要大得多。从整体上看，在当前硬件条件下，微内核在效率上的损失小于其在结构上获得的收益。</p>
+<p>• 通信损失率高。微内核把系统分为各个小的功能块，从而降低了设计难度，系统的维护与修改也容易，但通信带来的效率损失是一个问题。</p>
+<p>7.微服务架构的脆弱性主要表现在：</p>
+<p>• 开发人员需要处理分布式系统的复杂结构。</p>
+<p>• 开发人员要设计服务之间的通信机制，通过写代码来处理消息传递中速度过慢或者不可用等局部实效问题。</p>
+<p>• 服务管理的复杂性，在生产环境中要管理多个不同的服务实例，这意味着开发团队需要全局统筹</p>
+<h5 id="架构案例-2"><a href="#架构案例-2" class="headerlink" title="架构案例"></a>架构案例</h5><p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/34.jpg" alt="1"></p>
+<p>整个安全生产管理系统架构由四层组成：</p>
+<p>• 设备层：主要是指用于智能工厂生产产品所需的相关设备; </p>
+<p>• 控制层：主要是指智能工厂生产产品所需要建立的一套自动控制系统，控制智能设备完成生产工作; </p>
+<p>• 设计/管理层：是指智能工厂各种开发、业务控制和数据管理功能的集合，实现数据集成与应用; </p>
+<p>• 应用层：主要是指在云计算平台上进行信息处理，有两个核心功能，一是“数据”，二是“应用”。</p>
+<h4 id="鸿蒙架构"><a href="#鸿蒙架构" class="headerlink" title="鸿蒙架构"></a>鸿蒙架构</h4><p><strong>鸿蒙(</strong> HarmonyOS) 整体采用分层的层次化设计，从下向上依次为： 内核层、系统服务层、框架层和应用层*<em>。</em>系统功能按照“系统” → “子系统” → “功能/模块”逐级展开，在多设备部署场景下，支持根据实际需求裁剪某些非必要的子系统或功能/模块</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/33.jpg" alt="1"></p>
+<p>1)内核层：主要由内核子系统和驱动子系统组成。</p>
+<p>• 内核子系统：HarmonyOS采用多内核设计，支持针对不同资源受限设备选用适合的OS内核。内核抽象层通过屏蔽多内核差异，对上层提供基础的内核能力。</p>
+<p>• 驱动子系统：提供统一外设访问能力和驱动开发、管理框架。</p>
+<p>2)系统服务层：是Harmony0S的 核心能力集合，通过框架层对应用程序提供服务。该层包含4个部分：</p>
+<p>• 系统基本能力子系统集：为分布式应用在HarmonyOS多设备上的运行、调度、迁移等操作提供了基础能力。</p>
+<p>• 基础软件服务子系统集：为HarmonyOS提供公共的、通用的软件服务。</p>
+<p>• 增强软件服务子系统集：为HarmonyOS提供针对不同设备的、差异化的能力增强型软件服务。</p>
+<p>• 硬件服务子系统集：为Harmony0S 提供硬件服务。</p>
+<p>3)框架层：为HarmonyOS的应用程序提供了Java/C/C++/JS等 多语言的用户程序框架和Ability框架，以及各种软硬件服务对外开放的多语言框架API; 同时为采用Harmony0S的设备提供了C/C++/JS等多语言的框架API,不同设备支持的API与系统的组件化裁剪程度相关。</p>
+<p>4)应用层：包括系统应用和第三方非系统应用。HarmonyOS的应用由一个或多个FA(Feature Ability)或PA(Particle Ability) 组成。其中，FA有UI界面，提供与用户交互的能力；而PA无UI界面，提供后台运行任务的能力以及统一 的数据访问抽象。</p>
+<p><strong>鸿蒙操作系统架构具有4个技术特性</strong>：</p>
+<p>• 分布式架构首次用于终端OS, 实现跨终端无缝协同体验 。</p>
+<p>• 确定时延引擎和高性能IPC技术实现系统天生流畅。</p>
+<p>• 基于微内核架构重塑终端设备可信安全。</p>
+<p>• 通过统一的IDE支撑一次开发， 多端部署， 实现跨终端生态共享。</p>
+<p><strong>在HarmonyOS架构中， 重点关注于分布式架构所带来的优势， 主要体现在下面四个方面</strong>：</p>
+<p>• 分布式软总线是多种终端设备的统一基座， 为设备之间的互联互通提供了统一 的分布式通信能力；</p>
+<p>• 分布式设备虚拟化平台可以实现不同设备的资源融合 、设备管理 、数据处理 ， 多种设备共同形成一个超级虚拟</p>
+<p>终端 。针对不同类型的任务 ， 为用户匹配并选择能力合适的执行硬件；</p>
+<p>• 分布式数据管理基于分布式软总线的能力 实现应用程序数据和用户数据的分布式管理用户数据不再与单一物理设备绑定 ，业务逻辑与数据存储分离 ， 应用跨设备运行时数据无 缝衔接</p>
+<p>• 分布式任务调度构建统一的分布式服务管理 (发现 、同步 、注册 调用 )机制，支持对跨设备的应用进行远程启动 、远程调用 、远程连接以及迁移等操作 ， 选择合适的设备运行分布式任务。</p>
+<p>HarmonyOS 架构的系统安全性主要体现在搭载HarmonyOS 的分布式终端上 ， 可以保证 “ 正确的人通过正确的设备， 正确地使用数据” 。这里通过 “ 分布式多端协同身份认证” 来保证 “ 正确的人 “ , 通过 “ 在分布式终端上构筑可信运行环境 “ 来保证 “ 正确的设备” ,通过 “分布式数据在跨终端流动的过程中 ， 对数据进行分类分级管理” 来保证 “ 正确地使用数据”</p>
+<h4 id="大数据架构"><a href="#大数据架构" class="headerlink" title="大数据架构"></a>大数据架构</h4><h5 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h5><p>Lambda架构设计目的在于提供一个能满足大数据系统关键特性的架构，包括高容错、低延迟、可扩展等。其整合离线计算与实时计算，融合不可变性、读写分离和复杂性隔离等原则。Lambda是用于同时处理离线和实时数据的，可容错的，可扩展的分布式系统。它具备强鲁棒性，提供低延迟和持续更新。</p>
+<p> Lambda架构应用场景：机器学习、物联网、流处理。</p>
+<p> 如图所示，Lambda架构可分解为三层，即批处理层、加速层和服务层。</p>
+<h5 id="Kappa"><a href="#Kappa" class="headerlink" title="Kappa"></a>Kappa</h5><p>Kappa架构的原理就是：在Lambda的基础上进行了优化，删除了Batch Layer 的架构，将数据通道以消息队列进行替代。因此对于Kappa架构来说，依旧以流处理为主，但是数据却在数据湖层面进行了存储，当需要进行离线分析或者再次计算的时候，则将数据湖的数据再次经过消息队列重播一次则可。</p>
+<p>输入数据直接由实时层的实时数据处理引擎对源源不断的源数据进行处理，再由服务层的服务后端进一步处理以提供上层的业务查询。而中间结果的数据都是需要存储的，这些数据包括历史数据与结果数据，统一存储在存储介质中</p>
+<p><img src="/2000/01/01/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9F%BA%E7%A1%80%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/38.jpg" alt="1"></p>
+<h3 id="论文"><a href="#论文" class="headerlink" title="论文"></a>论文</h3><h4 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h4><p><strong>摘要</strong>：(300~330字) </p>
+<p>• 项目背景与信息系统的介绍</p>
+<p>• 你的岗位与职责</p>
+<p>• 根据不同论文的主题进行概括你的项目</p>
+<p>• 项目成果</p>
+<p><strong>搭建自己的万能模板-万能模板公式</strong>正文：</p>
+<ol>
+<li><strong>项目背景、系统功能介绍</strong>（400字，体现项目的真实性）</li>
+</ol>
+<p>• 项目背景与系统功能的详细介绍</p>
+<p>• 项目开发时间</p>
+<p>• 项目组的规模</p>
+<p>• 在项目的岗位与职责</p>
+<ol start="2">
+<li>题目问题回答（400字，衔接项目背景与论文主题）</li>
+</ol>
+<p>• 回答题目中的知识点问题</p>
+<p>• 引出论文主体内容</p>
+<ol start="3">
+<li><p>论文主体内容（1000-1500字，最重要的部分）</p>
+</li>
+<li><p><strong>总结</strong>（400-500字）</p>
+</li>
+</ol>
+<p>• 项目上线及运行效果</p>
+<p>• 客户评价</p>
+<p>• 项目收获</p>
+<p>• 项目不足和解决思路</p>
+<p>举例：</p>
+<p>论微服务架构及其应用</p>
+<p>微服务提倡将单一应用程序划分成一组小的服务，服务之间互相协调、互相配合，为用户提供最终价值。每个服务运行在其独立的进程中，服务与服务间采用轻量级的通信机制互相沟通。在微服务架构中，每个服务都是一个相对独立的个体，每个服务都可以选择适合于自身的技术来实现。每个服务的部署都是独立的，这样就可以更快地对特定部分的代码进行部署。</p>
+<p>请围绕“论微服务架构及其应用”论题，依次从以下三个方面进行论述。</p>
+<p>1、概要叙述你所参与管理或开发的软件项目，以及你在其中所承担的主要工作。</p>
+<p>2、简要描述微服务优点。</p>
+<p>3、具体阐述如何基于微服务架构进行软件设计实现的。</p>
+<p>第一问：对应公式中”1. 项目背景、系统功能介绍” </p>
+<p>第二问：对应公式中”2. 题目知识点问题回答” </p>
+<p>第三问：对应公式中”3. 论文主体内容</p>
+<p>1、摘要</p>
+<p>摘要自己参考范文或者下面的格式，根据自己选择的项目准备一个就可以了。建议逻辑上分两段，第一段是通用的介绍项目背景，第二段是根据不同的论文题目发挥的，简单回应子题目并介绍论文结构。</p>
+<p>包含内容：项目名称、(项目金额、项目历时)、项目简介、我的责任、本文讨论主题概括。</p>
+<p>摘要模板（时间+项目+项目简介+个人岗位+工作职责+投入+历时+成功交付客户好评+结合具体题目说明本文结构）</p>
+<p>示例1：</p>
+<p>2018年3月，我参与了某航天研究所某型号卫星的全数字仿真验证平台项目的建设，并担任系统架构设计师，负责系统架构设计工作。该系统包括虚拟目标机仿真、动力学模型仿真、同步时序控制三大功能模块，能够模拟卫星在太空中运行所需的所有硬件及外部力学环境，从而可以在虚拟平台中充分测试卫星软件的功能及性能以提高卫星软件的可靠性。该项目总投入565万元人民币，历时15个月，于2019年06月正式交付运行至今，受到了客户的一致好评。本文结合笔者的实际工作经验就该项目的…（根据不同论文思目去简进概括本文内容）</p>
+<p>2、项目背景</p>
+<p>项目背景模板(为什么要做这个项目+岗位职责+项目规模+开发周期+项目功能和技术介绍+回应子题目并过渡到主体)</p>
+<p>3、正文</p>
+<p>正文应该按照论文题目和子题目的要求来写作，并且一定要回应论文子题目。</p>
+<p>正文需要写1200字左右。</p>
+<p>4、结尾</p>
+<p>项目结尾模板(项目上线及运行效果、客户评价、项目收获、项目不足和解决思路)</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>系统架构风格(system Architecture style〉是描述某一特定应用领域中系统组织方式的惯用模式.架构风格定义了一个词汇表和一组约束，词汇表中包含一些构件和连接件类型，而这组约束指出系统是如何将这些构件和连接件组合起来的口软件系统架构风格反映了领域中众多软件系统所共有的结构和语义特性并指导如何将各个模块和子系统有效地组织成一个完整的系统。软件系统架构风格的共有部分可以使得不同系统共享同一个实现代码，系统能够按照常用的、规范化的方式来组织，便于不同设计者很容易地理解系统架构。</p>
+<p>请以“软件系统架构风格”论题，依次从以下三个方面进行论述:</p>
+<p>1.概要叙述你参与分析和开发的软件系统开发项目以及你所担任的主要工作。</p>
+<p>2.分析软件系统开发中常用的软件系统架构风格有哪些?详细阐述每种风格的具体含义。</p>
+<p>3.详细说明在你所参与的软件系统开发项目中，采用了哪种软件系统架构风格，具体实施效果如何。</p>
+<p>摘要：</p>
+<p>2022年5月，我参与了某公司承接某银行的智能运维统一告警管理平台项目的建设，并在项目中担任系统架构师，负责该项目的系统设计工作。该系统主要包括告警接入流式处理，告警通知中心，告警智能检测分析三大功能模块，能够对银行各种监控系统的告警事件与业务性能指标进行统一的接入与处理，实现告警的全生命周期管控，帮助一线，二线运维人员快速了解告警分布，可疑故障组件和应用，快速识别关键告警信息及假告警，处理告警风暴，解决告警多无所适从的困境，提高运维效率。</p>
+<p>该项目总计投入820万人民币，历时14个月，于2023年7月正式验收交付，并投入生产环境稳定运行至今，协助客户高效率解决了十二起告警风暴，受到了客户一致好评。本文结合笔者的实际工作经验就该项目的架构设计风格进行讨论，论多种架构风格在该项目中的应用以及实施效果。</p>
+<p>正文：</p>
+<p>某银行的告警监控系统庞杂，需要同时应对多个系统的告警管理，存在诸多问题，当告警风暴来临的时候，缺乏统一数据采集与存储工具，工具分散、信息杂乱，数据标准化程度低；缺乏统一数据查询分析工具，数据孤岛效应明显，没有有效的关联分析手段，这些就会导致告警易读性差，告警数量、字段多，有效告警识别困难，异常发现时效性慢，告警误报漏报多，故障排查依赖于专家经验，无法快速准确的定界根因。为了解决当前的运维困境，该行领导决定使用项目经费采购一套统一告警智能运维管理平台，整合各个监控工具的告警事件，进行告警的集中化管理与处理，增加告警的关联分析功能，提高一线二线人员的运维效率。</p>
+<p>我所在的公司成功中标该项目，并于2022年5月正式启动该项目的建设工作，我被任命为该项目的系统架构设计师，负责该系统的架构设计工作。该项目总计投入820万人民币，历时14个月，于2023年7月正式验收交付。该系统包含三大主要功能模块告警接入处理功能、告警通知中心功能、告警智能分析检测功能和一些次要功能模块。一、告警接入处理功能，主要对多个监控工具产生的告警数据进行统一接入和标准化，用户可以根据不同的接入源配置不同的字段映射，经过标准化的告警会进入告警的流式处理流程，可以对告警事件进行过滤，屏蔽，压缩，丰富，定级，处置，跟踪，实现告警事件全生命周期管控。二、告警事件通知中心功能，用户可以自定义配置通知规则，多个通知规则构成通知规则池，告警在流式处理流程中，会流入通知规则池，根据通知规则去匹配触发通知，比如告警等级达到某个级别，某一段时间内告警数量突增等条件会发送通知到对应的处理人，并提供通知记录管理、通知人管理等功能。三、告警事件智能检测分析功能，通过不同的分析组件对指定时间段内的告警数据进行模型训练、指标统计、算法检测、风暴定界、基带分析，然后将这些分析结果进行汇总得到一份摘要报告呈现给用户，帮助用户快速高效准确的进行故障排查。</p>
+<p>作为项目的架构设计师，我需要根据常用的架构风格进行选择与设计。常用的架构风格包括数据流风格，面向数据流的架构设计，按照一定的顺序从前向后执行，要一步一步处理的，可以参考此架构风格；调用返回风格，构件之间存在相互调用的关系，比如显示调用，主程序/子程序调用，面向对象，对象间的调用，分层，层与层之间的调用等；独立构件风格，构件之间相互独立，不存在显示调用关系，而是通过某个事件驱动触发，可以是异步调用，进程通信等的隐式调用，优点是利于软件复用为构件的维护和演化带来方便，缺点是只能被动控制；虚拟机风格，可以自定义流程，按流程执行，规则随时改变，灵活定义，业务灵活组合；以数据为中心的风格，以数据为中心进行数据共享，在处理复杂问题和协作方面有一定的优势；闭环控制风格，发出控制命令并接受反馈，通过反馈循环达到控制平衡。</p>
+<p>根据以上功能需求以及常用架构风格考虑，参考产品总负责人的指导建议，每个功能模块我们选用了不同的架构风格进行设计。</p>
+<p>告警接入处理功能我们选用了数据流风格，来满足该功能模块的需求。数据流风格的特点是面向数据流，按照一定的顺序从前向后执行，其中的管道过滤风格适用于该功能的设计。我们提供多种接入方式，Kafka接入，Post接口接入，接入后的告警数据按照我们定义好的流程按顺序执行，将整个流程分为不同阶段，接入标准化、丰富、定级、过滤，屏蔽，压缩，关闭等，前一个阶段的输出，作为后一个阶段的输入，在每一个阶段中用户可以自定义筛选条件，按照设置好的筛选条件当告警流入这一阶段时只要满足筛选条件就会触发相应的动作，技术选择上使用Redis5.0以上版本的stream流消息结构，作为各个阶段的流队列中间件衔接，该结构相比于kafka等队列更加轻量化，并能够提供消息确认机制确保各个阶段的业务逻辑正确处理。通过该架构设计实现了告警流程的全自动处理和告警生命周期的全阶段管控。</p>
+<p>告警通知中心功能我们选用了虚拟机风格，来满足功能模块的需求。虚拟机风格的特点是可以自定义规则，规则随时改变，灵活定义，灵活组合，其中虚拟机规则系统风格适用于该功能的设计。我们提供用户可以自定义通知规则的配置功能，构建通知规则池，告警数据流入规则池后，会触发各种规则的匹配，匹配后会触发通知，实现基于规则集匹配的自动化智能通知功能，规则引擎选用Drools实现，该引擎规则设置灵活，可以实时修改规则并实时生效，实现通知规则的实时匹配，实时生效。当某一告警同时命中多个规则时，可以根据用户的配置设置执行策略，通过Drools引擎可以设置按优先级执行、全部执行、将规则分组，按组执行等，实现规则的灵活组合以满足用户的不同需求。</p>
+<p>告警智能检测分析功能我们选用了以数据为中心风格，来满足功能模块的需求。以数据为中心风格的特点是进行数据共享，根据共享信息多个组件进行通信和协作，适用于该功能的设计。将告警数据统一存储在ElasticSearch数据搜索引擎中，利用ElasticSearch的搜索特性、丰富，高效的查询聚合、分值权重排序等功能，对数据进行统计计算，并提供各个功能组件对这一批数据进行模型训练，算法检测，风暴定界，基带分析，通过组件之间的数据共享，综合各个组件的运算结果，得到一份最终的摘要报告存储在ElasticSearch中，不同的组件会不断的对ElasticSearch中的报告结果进行计算，更新，并提供实时查看功能。用户可以通这个报告，快速、综合的了解这一批告警数据的分布与风暴特征，并给出智能推荐，协助用户决策。</p>
+<p>该项目于2023年7月正式验收交付，某银行客户投入生产环境使用，运行至今，期间服务稳定运行，无重大事故，并协助客户解决十二起告警事件风暴，准确对告警进行降噪，定位，根因分析，客户反馈良好，得到客户的邮件表扬，并将本项目在该银行的应用作为本公司的优秀案例进行推广，在近期基于本优秀案例又中标了三家新银行客户，受到客户的一致好评。不过由于客户的逐渐增多，不同客户的需求存在差异性，这也导致我们的功能设计、架构设计存在互不兼容的情况，在今后的工作中，我们会对项目的架构设计、功能设计不断完善，以兼容不同客户的需求，同时随着项目在生产环境的稳定运行，告警量日益增多，我们也会对大数据量告警的存储、计算、查询等性能问题不断优化。</p>
+<p>摘要：</p>
+<p>2022年5月，我参与了某公司承接某银行的智能运维统一告警管理平台项目的建设，并在项目中担任系统架构设计师，负责该项目的系统设计工作。该系统主要包括告警规则处理与展示，告警通知中心，告警智能检测分析三大功能模块，能够对银行的各种监控系统的告警事件和性能业务指标进行统一的接入与处理。实现告警的全生命周期管控，帮助一线、二线人员快速了解告警分布，可疑故障组件和应用，快速识别关键告警信息和假告警，处理告警风暴，解决告警多无所适从的困境，提高运维效率。</p>
+<p>该项目总计投入820万人民币，历时14个月，于2023年7月正式验收交付，并投入生产环境稳定运行至今，协助客户高效率解决十二起告警风暴，受到客户的一致好评。本文结合笔者的实际工作经验就该项目的层次架构设计进行讨论，论层次架构在该项目中的应用以及实施效果。</p>
+<p>正文：</p>
+<p>某银行的告警监控系统庞杂，需要同时应对多个系统的告警管理，存在诸多问题，当告警风暴来临的时候，缺乏统一的数据采集与存储工具，工具分散，信息杂乱，数据标准化程度低；缺乏统一的数据查询分析工具，数据孤岛效应明显，没有有效的关联分析手段，这样会导致告警易读性差，告警数量多，字段多，有效告警识别困难，异常发现时效性慢，故障解决依赖专家经验，无法快速准确的定界根因。为了解决当前的运维困境，某行领导决定采购一套统一告警智能运维管理平台，整合各个监控的告警事件，进行告警的集中化管理与处理，增加告警的关联分析功能，提高一线二线人员的运维效率。</p>
+<p>我所在的公司成功中标该项目，由我负责该系统的架构设计工作。该系统包含三大主要功能模块，一、告警规则处理展示功能模块，主要对多个监控工具产生的告警进行采集、标准化、丰富、定级、压缩、屏蔽等规则处理，经过处理的数据通过告警列表进行展示、操作，并提供各种图表统计，帮助运维人员快速了解告警分布。二、告警通知中心功能，用户可以自定义各种通知规则，构成通知规则集，告警数据在处理过程中会匹配规则触发通知，并提供通知记录，通知人的管理页面。三、告警智能检测分析功能，通过不同的分析组件对指定时间段内的告警数据进行模型训练，指标统计，算法检测，风暴定界，基带分析，然后将这些分析结果进行汇总得到一份摘要报告呈现给用户，帮助用户快速高效准确的进行故障排查。</p>
+<p>作为该项目的系统架构设计师，参考产品总负责人的指导建议，我们决定选用层次架构进行设计。层次架构是一种最通用的体系架构，也叫N层架构模式，分为表示层，业务逻辑层，数据访问层，它的优势在于将系统分为多个独立的层次，提高系统的模块化程度，易于理解，扩展和维护，同时每个层次独立设计和实现，提高了代码的可重用性，高内聚，低耦合，可以降低层与层之间的依赖。根据该项目系统功能特性，我们将告警的展示，图表统计展示，通知记录管理，分析报告的呈现置于表示层，告警的处理逻辑，通知逻辑，分析，计算等置于业务逻辑层，告警数据的存储，报告的存储，告警数据的查询与统计，置于数据访问层。采用MVC的设计模式，将各层分离，降低耦合度。</p>
+<p>接下来我将详细阐述表示层，业务逻辑层，数据访问层的设计思路，以及遇到问题和解决方案。</p>
+<p>表示层，就是我们呈现给用户的界面，用于显示告警数据，图表展示，报告展示，记录展示等，并接受用户的输入对告警数据，记录进行操作。由于告警数据展示，图表展示等涉及统计计算，为了避免表示层过于复杂，采用单一职责原则，确保展示层只负责处理数据和用户交互，将复杂的统计计算放在中间层处理。同时前端采用React框架，提高开发效率，减少代码复杂度。告警列表，图表展示时涉及数据量大，多图渲染等性能问题，为了提高性能采用异步加载技术，LocalStory缓存数据，列表虚拟滚动的技术来优化用户体验。在界面展示交互方面制定统一的UI设计规范和交互原则，让用户少输入多选择，避免给用户带来困惑。</p>
+<p>业务逻辑层，作为表示层和数据访问层的中间层，负责处理告警规则处理逻辑，告警通知逻辑，与各种分析智能检测的计算逻辑。该层包含了大量复杂的处理规则逻辑，和分析计算逻辑，使得代码难以维护和扩展，为了应对这种情况，我们采用规则引擎Drools对告警处理规则进行集中管理，避免规则的重复定义。对于分析计算，采用模块化组件设计，分为模型训练，算法检测，风暴定界，基带分析多个功能组件，每个组件进行特定的业务功能，便于管理和维护，通过组件间的协作，最终生成一份分析摘要报告，帮助用户快速地、综合地了解这批告警数据的分布和风暴特征，并给出智能推荐，协助用户决策。</p>
+<p>数据访问层，对数据库存储的告警数据，配置数据，缓存数据等进行增删改查，我们采用DAO的数据对象模式，将数据访问层与业务逻辑层进行分离，降低耦合度。但是这三种类型的数据并不能用一个数据库去解决，为了发挥多种数据库的优势，多种数据库搭配使用，我们对这三种场景的数据访问进行抽象封装，配置数据数据量较少，但要求实时更新生效，采用Mysql数据库，告警数据数据量大，要进行各种聚合查询，同时满足查询性能，采用Elasticsearch存储，还有一些业务逻辑层可能会用到的缓存数据，用Redis存储，以达到最快的访问速度。并且每一种都用对应的连接池来管理，避免频繁创建和销毁连接，提高系统的性能和资源利用率。</p>
+<p>该项目于2023年7月正式验收交付，某银行客户投入生产环境使用，运行至今，期间服务稳定运行，无重大事故，并协助客户高效快速的解决十二起告警风暴事件，准确对告警进行降噪，定位，根因分析，客户反馈良好，得到客户的邮件表扬，并将本项目在该银行的应用作为本公司的优秀案例进行推广，在近期基于本优秀案例又中标了三家新银行客户，受到客户的一致好评。不过由于客户的逐渐增多，不同客户的需求存在差异性，这也导致我们的功能设计，架构设计存在不兼容的情况。在今后的工作中，我们将对项目的功能设计，架构设计不断完善，以兼容客户的不同需求。同时随着项目的稳定运行，告警量日益增多，我们也会对大数据量告警的存储，计算，查询展示等性能不断进行优化。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/01/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" rel="next" title="我的第一篇博客">
+                  我的第一篇博客 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

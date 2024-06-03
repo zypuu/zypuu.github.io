@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="数据库设计，函数模式，代数关系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库设计">
+<meta property="og:url" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="数据库设计，函数模式，代数关系">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/2.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/3.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/4.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/5.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/6.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/7.jpg">
+<meta property="article:published_time" content="2024-02-17T18:32:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.061Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/","path":"2024/02/18/数据库设计/","title":"数据库设计"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据库设计 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">数据库模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">数据库设计步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%EF%BC%88%E5%AE%9E%E4%BD%93%E2%80%94%E8%81%94%E7%B3%BB%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">概念数据模型（实体—联系模型）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%EF%BC%88%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">基本数据模型（结构数据模型）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.2.1.</span> <span class="nav-text">数据的约束条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.2.</span> <span class="nav-text">关系模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text">模型转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">关系代数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96%E8%8C%83%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">函数依赖范式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="nav-number">5.1.</span> <span class="nav-text">函数依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8C%83%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">范式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8C%83%E5%BC%8F"><span class="nav-number">5.2.1.</span> <span class="nav-text">第一范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8C%83%E5%BC%8F"><span class="nav-number">5.2.2.</span> <span class="nav-text">第二范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8F"><span class="nav-number">5.2.3.</span> <span class="nav-text">第三范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BC%E8%8C%83%E5%BC%8F"><span class="nav-number">5.2.4.</span> <span class="nav-text">BC范式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%88%86%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">模式分解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E6%8C%81%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="nav-number">6.1.</span> <span class="nav-text">保持函数依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%8D%9F%E8%BF%9E%E6%8E%A5%E5%88%86%E8%A7%A3"><span class="nav-number">6.2.</span> <span class="nav-text">无损连接分解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E8%A7%84%E8%8C%83%E6%8A%80%E6%9C%AF"><span class="nav-number">7.</span> <span class="nav-text">反规范技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-number">8.</span> <span class="nav-text">并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ACID"><span class="nav-number">8.1.</span> <span class="nav-text">ACID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">8.2.</span> <span class="nav-text">封锁协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%92%E4%BB%96%E5%9E%8B%E5%B0%81%E9%94%81"><span class="nav-number">8.2.1.</span> <span class="nav-text">排他型封锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%9E%8B%E5%B0%81%E9%94%81"><span class="nav-number">8.2.2.</span> <span class="nav-text">共享型封锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">8.2.3.</span> <span class="nav-text">协议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-number">9.</span> <span class="nav-text">数据库安全备份与恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%89%A9%E5%B1%95"><span class="nav-number">10.</span> <span class="nav-text">数据库扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">10.1.</span> <span class="nav-text">分布式数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E6%8A%80%E6%9C%AF"><span class="nav-number">10.2.</span> <span class="nav-text">数据仓库技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF"><span class="nav-number">10.3.</span> <span class="nav-text">大数据技术</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据库设计 | All-Nothing">
+      <meta itemprop="description" content="数据库设计，函数模式，代数关系">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库设计
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-02-18 02:32:00" itemprop="dateCreated datePublished" datetime="2024-02-18T02:32:00+08:00">2024-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">数据库设计，函数模式，代数关系</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="数据库模式"><a href="#数据库模式" class="headerlink" title="数据库模式"></a>数据库模式</h2><p>内模式：简单点说就是管理如何存储物理的数据 ， 对应具体物理存储文件</p>
+<p>模式 ： 又称为概念模式，简单点说就是我们通常使用的基本表 ， 根据应用 、 需求将物理数据划分成一 张张表</p>
+<p>外模式：也称用户模式或子模式，对应数据库中的视图这个级别 ， 将表进行一定的处理后再提供给用户使用，外模式可以有很多，内模式，模式只有一个</p>
+<p>外模式/概念模式映像：是表和视图之间的映射 ， 存在于概念级和外部级之间 ， 若表中数据发生了修改 ， 只需要修改此映射 ， 而无需修改应用程序 ，修改逻辑独立性。</p>
+<p>概念模式/内模式映像：是表和数据的物理存储之间的映射 存在于概念级和内部级之间 ， 若修改了数据存储方式 ， 只需要修改此映射 ，而不需要去修改应用程序，修改物理独立性。</p>
+<h2 id="数据库设计步骤"><a href="#数据库设计步骤" class="headerlink" title="数据库设计步骤"></a>数据库设计步骤</h2><p>1、需求分析<br>产出物有数据流图 DFD、数据字典DD 、需求说明书SRS 。 获得用户对系统的三个要求 ： 信息要求 、处理要求 、 系统要求<br>2、概念结构设计<br>设计E-R图， 也即实体-联系图，产出ER模型<br>3、逻辑结构设计<br>将 E-R 图，转换成关系模式，产出关系模型<br>4、物理设计<br>步骤包括确定数据分布 、存储结构和访问方式</p>
+<h2 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h2><h3 id="概念数据模型（实体—联系模型）"><a href="#概念数据模型（实体—联系模型）" class="headerlink" title="概念数据模型（实体—联系模型）"></a>概念数据模型（实体—联系模型）</h3><p>按照用户的观点来对数据和信息建模，主要用于数据 库设计。概念模型主要用实体—联系方法（Entity-Relationship Approach）表示，所以也称 E-R 模型</p>
+<p>概念模型是从用户的角度进行建模的</p>
+<p>在E-R模型中，使用椭圆表示属性 ( 一般没有) 、长方形表示实体（强实体）、长方形里两道竖岗表示弱实体 、菱形表示联系 ， 联系的两端要填写联系类型</p>
+<h3 id="基本数据模型（结构数据模型）"><a href="#基本数据模型（结构数据模型）" class="headerlink" title="基本数据模型（结构数据模型）"></a>基本数据模型（结构数据模型）</h3><p>是按照计算机系统的观点来对数据和信息建模，主要用于 DBMS 的实现。基本数据模型是数据库系统的核心和基础</p>
+<p>关系模型是二维表的形式表示的实体-联系模型</p>
+<p>网状模型表示实体类型及其实体之间的联系</p>
+<p>面向对象模型是采用面向对象的方法设计数据库，以对象为单位，每个对象包括属性和方法 ， 具有类和继承等特点</p>
+<p>数据模型三要素： </p>
+<p>数据结构 (所研究的对象类型的集合) </p>
+<p>数据操作 (对数据库中各种对象的实例允许执行的操作的集合) </p>
+<p>数据的约束条件 ( 一组完整性规则的集合)</p>
+<h4 id="数据的约束条件"><a href="#数据的约束条件" class="headerlink" title="数据的约束条件"></a>数据的约束条件</h4><p>实体完整性。实体完整性是指实体的主属性不 能取空值</p>
+<p>参照完整性。在关系数据库中主要是值得外键参照的 完整性。若A关系中的某个或者某些属性参照B或其他几个关系中的属性，那么在关系A中该属性要么为空，要么必须出现B或者其他的关系的对应属性中</p>
+<p>用户定义完整性。用户定义完整性反映的某一个具 体应用所对应的数据必须满足一定的约束条件</p>
+<h4 id="关系模型"><a href="#关系模型" class="headerlink" title="关系模型"></a>关系模型</h4><p>优点 ：建立在严格的数学概念基础上； 概念单一、结构简单 、清晰 ， 用户易懂易用 ； 存取路径对用户透明 ， 从而数据独立性 、 安全性好 ， 简化数据库开发工作 。<br>缺点： 由于存取路径透明，查询效率往往不如非关系数据模型</p>
+<p>关系：可以理解为一张二维表，每个关系都具有一个关系名， 就是通常说的表名。<br>元组：可以理解为二维表中的一行，在数据库中经常被称为记 录。<br>属性：可以理解为二维表中的一列，在数据库中经常被称为字 段。<br>域：属性的取值范围，也就是数据库中某一列的取值限制。<br>关键字：一组可以唯一标识元组的属性，数据库中常称为主键， 由一个或多个列组成。<br>关系模式：指对关系的描述。其格式为：关系名（属性1，属性<br>2 ，……，属性N），在数据库中成为表结构。</p>
+<h3 id="模型转换"><a href="#模型转换" class="headerlink" title="模型转换"></a>模型转换</h3><p>ER图是全局设计概念，不适合计算机处理，为了适应关系型数据库处理，必须将ER图转换为关系模型</p>
+<p>E-R模型转换为关系模型 ：每个实体都对应一个关系模式，实体名对应关系模型的名称，实体属性对应关系模型的属性，实体标识符（联系）对应关系模型的码</p>
+<p>1:1联系中 ，联系可以放到任意的两端实体中， 作为一个属性 (要保证1:1 的两端关联) ， 也可以转换为一个单独的关系模式；<br>1:N 的联系中 ， 联系可以单独作为一个关系模式， 也可以在N端中加入1端实体的主键；<br>M:N的联系中 ，联系必须作为 一个单独的关系模式 ，其主键是M和N端的联合主键</p>
+<h2 id="关系代数"><a href="#关系代数" class="headerlink" title="关系代数"></a>关系代数</h2><p><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/1.jpg" alt="1"></p>
+<p>并：S1 U S2， 结果是两张表中所有记录数合并 ，相同记录只显示一次。<br>交：S1 ∩ S2 ,结果是两张表中相同的记录 。<br>差：S1 - S2 ，结果是S1表中有而S2表中没有的那些记录。</p>
+<p>笛卡尔积 ：S1<em>S2 ，产生的结果包括S1和S2的所有属性列 ，并且S1 中每条记录依次和S2 中所有记录组合成一条记录，最终属性列为S1+S2属性列，记录数为 S1</em>S2记录数<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/2.jpg" alt="1"></p>
+<p>查询年龄小于22岁的学生 σSage&lt;22(student)<br>查询学生的姓名和所在系πSname,Sdept(Student)</p>
+<p>自然连接的结果显示全部的属性列 ， 但是相同属性列只显示一次 ， 显示两个关系模式中属性相同且值相同的记录。<br>设有关系R、S如下左图所示， 自然连接结果如下右图所示：<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/3.jpg" alt="1"></p>
+<p>注意RxS，和R自然连接S</p>
+<h2 id="函数依赖范式"><a href="#函数依赖范式" class="headerlink" title="函数依赖范式"></a>函数依赖范式</h2><h3 id="函数依赖"><a href="#函数依赖" class="headerlink" title="函数依赖"></a>函数依赖</h3><p>给定一个X， 能唯一确定一个Y， 就称X确定Y，或者说Y依赖于X ，例如Y=X*X 函数 。<br>函数依赖又可扩展以下两种规则 :<br>部分函数依赖 ：A可确定C，(A,B)也可确定C，(A,B)中的一部分 (即A ) 可以确定C ，称为部分函数依赖。<br>传递函数依赖：当A和B不等价时，A可确定B，B可确定C，则A可确定C，是传递函数依赖；<br>若A和B等价，则不存在传递，直接就可确定C</p>
+<p>设关系模式R&lt;U，F&gt; ,U是关系模式R 的属性全集，F是关系模式R的一个函数依赖集 。<br>对于R&lt;U，F&gt;来说有以下的：<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/4.jpg" alt="1"></p>
+<p>超键 ： 能唯一标识此表的属性的组合 。<br>候选键： 超键中去掉冗余的属性 ， 剩余的属性就是候选键。<br>主键 ：任选一 个候选键 ， 即可作为主键。<br>外键 ： 其他表中的主键。<br>主属性和非主属性： 候选键内的属性为主属性 ， 其他属性为非主属性</p>
+<p>候选键：候选码，可以作为主键的字段<br>根据依赖集，没有出现在右边的字段，且能推导出所有的字段的是候选码<br>然后确定主属性，非主属性</p>
+<h3 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h3><h4 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h4><p>关系中的每一个分量必须是一个不可分的数据项 。通俗地说 ，第一范式就是表中不允许有小表的存在</p>
+<h4 id="第二范式"><a href="#第二范式" class="headerlink" title="第二范式"></a>第二范式</h4><p>如果关系R属于1NF， 且每一个非主属性完全函数依赖于任何一个候选码 ，则R属于2NF。<br>2NF就是在1NF的基础上 ，表中的每一个非主属性不会依赖复合主键中的某一个列，</p>
+<p>通俗的说就是表中不能存在联合主键</p>
+<h4 id="第三范式"><a href="#第三范式" class="headerlink" title="第三范式"></a>第三范式</h4><p>在满足1NF的基础上 ， 表中不存在非主属性对码的传递依赖。每一列都和主键直接相关</p>
+<h4 id="BC范式"><a href="#BC范式" class="headerlink" title="BC范式"></a>BC范式</h4><p>在第三范式的基础上进一步消除主属性对于码的部分函数依赖和传递依赖。<br>通俗的来说 ，就是在每一种情况下 每一个依赖的左边决定因素都必然包含候选键 </p>
+<h2 id="模式分解"><a href="#模式分解" class="headerlink" title="模式分解"></a>模式分解</h2><p>把一个关系模式分解成若干个关系模式的过程，也就是由低范式转换为高范式的过程，称为关系模式的分解，简称模式分解。<br>模式分解具体是通过将原关系模式的属性集进行拆分来实现 ，拆分后的关系模式包含新的属性集，以及新的函数依赖集。<br>为使分解后的模式与原模式等价，一般要求模式分解具有无损连接性（属性）与保持依赖性（函数依赖）</p>
+<p>对于关系模式R， 有依赖集F ，若对R进行分解， 分解出来的多个关系模式，都有对应的函<br>数依赖集。</p>
+<h3 id="保持函数依赖"><a href="#保持函数依赖" class="headerlink" title="保持函数依赖"></a>保持函数依赖</h3><p>所谓的保持函数依赖就是将分解之后的函数依赖集合并起来（令其等于G），与原来的函数依赖集F是保持等价的，也就是我们就会说是保持函数依赖的。</p>
+<p>判断函数依赖集等价公式为：G+（函数依赖集G的闭包） = F+（函数依赖集F的闭包）。注意：拆分前后的函数依赖集判断是否等价时，不需要考虑冗余依赖(如传递依赖) 。</p>
+<p>闭包：说属性的闭包就是由一个属性直接或间接推导出的所有属性的集合。<br>例如： f={a-&gt;b,b-&gt;c,a-&gt;d,e-&gt;f} 由a可直接得到b和d，间接得到c，则a的闭包就是{a,b,c,d}，<br>可以写出a+={a,b,c,d}</p>
+<p>完整的判断保持函数依赖的方法：<br>① 先求函数依赖集投影到分解后的Ri上的函数依赖子集Fi。<br>② 求分解后关系模式函数依赖集的并集，并令其等于G。<br>③ 判断F是否包含在G的闭包中。（此处不需要判断G是否包含在F的闭包中，因为G中的每个函数依赖都是由F根据Armstrong公理推导出来的，所以G必定包含于F闭包）</p>
+<p>关系模式R(U,F),其中U={A,B,C,D},F={A→B,B→C,C→D,D→A},分解<br>ρ={R1(A,B),R2(B,C),R3(C,D)}是否具有函数依赖保持性?<br>解：<br>① 求函数依赖子集<br>F1 = πU1(F)=(A→B,B→A);<br>F2 = πU2(F)=(B→C,C→B);<br>F3 = πU3(F)=(C→D,D→C);<br>② 求分解后函数依赖的并集，令其等于G<br>G=F1∪F2∪F3={A→B,B→A,B→C,C→B,C→D,D→C};<br>F={A→B,B→C,C→D,D→A}。<br>③ 判断F是否包含在G的闭包中<br>经过初步观察，F中的{D-&gt;A}不包含在G中，但是通过求G的闭包后，也就是根据G中的依<br>赖集D-&gt;C，C-&gt;B，B-&gt;A，得出G中是包含{D-&gt;A}这个依赖的，所以F包含于G的闭包中。<br>因此，有G+=F+，即ρ具有函数依赖保持性。</p>
+<h3 id="无损连接分解"><a href="#无损连接分解" class="headerlink" title="无损连接分解"></a>无损连接分解</h3><p>分解后的关系模式能够还原出原关系模式，就是无损连接分解 ，不能还原就是有损连接分解</p>
+<p>如何判断是否无损连接？<br>公式法：判断分解为两个关系模式的情况：如果R 的分解为ρ={R1，R2} ，F为R所<br>满足的函数依赖集合，分解ρ具有无损连接性的充分必要条件是：R1∩R2-&gt;(R1- R2)或者R1∩R2-&gt;(R2-R1)。<br>表格法：当分解为三个及以上关系模式时 ， 可以通过表格法求解<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/5.jpg" alt="1"></p>
+<p><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/6.jpg" alt="1"></p>
+<h2 id="反规范技术"><a href="#反规范技术" class="headerlink" title="反规范技术"></a>反规范技术</h2><p>反规范化技术：规范化设计后，会导致关系的概念愈来愈单一化，在查询时往往需要涉及更多表的关联操作，导致查询性能下降。数据库设计者希望牺牲部分规范化设计（比如对部分影响性能的关系模式进行处理，包括分解、合并、增加冗余属性等）来提高读操作性能 。<br>采用反规范化技术的益处：降低过多连接操作的需求、 降低外码和索引的数目，还可能减少表的数目，进而能够提高查询效率 。<br>采用反规范化技术的问题： 数据的重复存储， 浪费了磁盘空间； 可能出现数据的完整性问题 ， 为了保障数据的一致性， 增加了数据维护的复杂性， 会降低修改速度</p>
+<p>增加冗余列<br>增加派生列<br>重新组表<br>分割表<br>水平分割：根据一列或多列数据的值把数据行放到两个独立的表中<br>垂直分割:  把主码和一些列放到一个表，然后把主码和另外的列放到另一个表中</p>
+<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><h3 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h3><p>原子性，一致性，隔离性，持续性</p>
+<p>并发问题：丢失更新，不可重复读，脏读</p>
+<h3 id="封锁协议"><a href="#封锁协议" class="headerlink" title="封锁协议"></a>封锁协议</h3><h4 id="排他型封锁"><a href="#排他型封锁" class="headerlink" title="排他型封锁"></a>排他型封锁</h4><p>（简称 X 封锁，也叫写锁）。若事务T对数据对象A加上X锁 ，则只允许T读取和修改A ， 其他事务都不能再对A加任何类型的锁，直到T释放A上的锁。可见 X 封锁只允许一个事务独锁某个数据，有排他性。</p>
+<h4 id="共享型封锁"><a href="#共享型封锁" class="headerlink" title="共享型封锁"></a>共享型封锁</h4><p>（简称 S 封锁，也叫读锁）。若事务T对数据对象A加上S锁，则只允许T读取A ，但不能修改A ，其他事务只能再对A加S锁 (也即能读不能修改) ，直到T释放A上的S锁</p>
+<h4 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h4><p>共分为三级封锁协议 ， 分别是：一级封锁协议 ，二级封锁协议和三级封锁协议<br><img src="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/7.jpg" alt="1"></p>
+<p>一级封锁协议 ：事务在修改数据R之前必须先对其加X锁， 直到事务结束才释放。<br>可解决丢失更新问题</p>
+<p>二级封锁协议 ：一级封锁协议的基础上加上事务T在读数据R之前必须先对其加S锁 ，读<br>完后即可释放S锁。<br>可解决丢失更新 、读脏数据问题</p>
+<p>三级封锁协议 ：一级封锁协议加上事务T在读取数据R之前先对其加S锁， 直到事务结束<br>才释放。<br>可解决丢失更新、读脏数据、数据重复读问题</p>
+<h2 id="数据库安全备份与恢复"><a href="#数据库安全备份与恢复" class="headerlink" title="数据库安全备份与恢复"></a>数据库安全备份与恢复</h2><p>静态转储：即冷备份 ，指在转储期间不允许对数据库进行任何存取 、修改操作；<br>优点是非常快速的备份方法 、容易归档 (直接物理复制操作)<br>缺点是只能提供到某一时间点上的恢复， 不能做其他工作， 不能按表或按用户恢复。</p>
+<p>动态转储：即热备份，在转储期间允许对数据库进行存取、修改操作， 因此转储和用户事务可并发执行；<br>优点是可在表空间或数据库文件级备份，数据库扔可使用，可达到秒级恢复；<br>缺点是不能出错，否则后果严重， 若热备份不成功， 所得结果几乎全部无效。</p>
+<p>完全备份 ： 备份所有数据 。<br>差量备份： 仅备份上一次完全备份之后变化的数据。<br>增量备份： 备份上一次备份之后变化的数据。</p>
+<h2 id="数据库扩展"><a href="#数据库扩展" class="headerlink" title="数据库扩展"></a>数据库扩展</h2><h3 id="分布式数据库"><a href="#分布式数据库" class="headerlink" title="分布式数据库"></a>分布式数据库</h3><p>分片模式<br>水平分片：将表中水平的记录分别存放在不同的地方。<br>垂直分片：将表中垂直的列值分别存放在不同的地方。</p>
+<p>分布透明性<br>分片透明性： 用户或应用程序不需要知道逻辑上访问的表具体是如何分块存储的。<br>位置透明性：应用程序不关心数据存储物理位置的改变。<br>逻辑透明性： 用户或应用程序无需知道局部使用的是哪种数据模型。<br>复制透明性： 用户或应用程序不关心复制的数据从何而来。</p>
+<h3 id="数据仓库技术"><a href="#数据仓库技术" class="headerlink" title="数据仓库技术"></a>数据仓库技术</h3><p>数据仓库是一个面向主题的、集成的、 非易失的、 且随时间变化的数据集合， 用于支持管理决策</p>
+<p>数据仓库的结构通常包含四个层次，</p>
+<ol>
+<li>数据源 ：是数据仓库系统的基础 ，是整个系统的数据源泉。</li>
+<li>数据的存储与管理 ：是整个数据仓库系统的核心。</li>
+<li>OLAP (联机分析处理) 服务器：对分析需要的数据进行有效集成 ，按多维模型组织 ，以便进行多角度 、多层次的分析 ， 并发现趋势。</li>
+<li>前端工具 ：主要包括各种报表工具 、查询工具 、数据分析工具 、数据挖掘工具以及各种基于数据仓库或数据集市的应用开发工具。</li>
+</ol>
+<p>BI系统主要包括数据预处理 、建立数据仓库 、数据分析和数据展现四个主要阶段</p>
+<p>1、数据预处理是整合企业原始数据的第一步 ， 它包括数据的抽取(Extraction) 、转换 (Transformation) 和加载 (Load) 三个过程 (ETL过程) ；<br>2、建立数据仓库则是处理海量数据的基础；<br>3、数据分析是体现系统智能的关键， 一般采用联机分析处理 (OLAP) 和数据挖掘两大技术 。<br>1）联机分析处理不仅进行数据汇总/聚集， 同时还提供切片、切块、下钻、上卷和旋转等数据分析功能 ， 用户可以方便地对海量数据进行多维分析 。<br>2）数据挖掘的目标则是挖掘数据背后隐藏的知识 ， 通过关联分析 、聚类和分类等方法建立分析模型 ， 预测企业未来发展趋势和将要面临的问题；<br>4、在海量数据和分析手段增多的情况下， 数据展现则主要保障系统分析结果的可视化</p>
+<h3 id="大数据技术"><a href="#大数据技术" class="headerlink" title="大数据技术"></a>大数据技术</h3><p>特点： 大量化、多样化、价值密度低、快速化</p>
+<p>要处理大数据 ， 一般使用集成平台 ， 称为大数据处理系统 ， 其特征为：高度可扩展性 、高性能 、高度容错 、支持异构环境 、较短的分析延迟、易用且开放的接口 、较低成本 、 向下兼容性</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/02/04/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" rel="prev" title="信息安全技术">
+                  <i class="fa fa-angle-left"></i> 信息安全技术
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/" rel="next" title="系统软件过程模型">
+                  系统软件过程模型 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

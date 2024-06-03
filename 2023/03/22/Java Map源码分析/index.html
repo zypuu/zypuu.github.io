@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关于java的Map， HashMap， TreeMap， ConcurrentHashMap，HashTable， TreeMap ，LinkHashMap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Map源码分析">
+<meta property="og:url" content="https://zypuu.github.io/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="关于java的Map， HashMap， TreeMap， ConcurrentHashMap，HashTable， TreeMap ，LinkHashMap">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/1.jpg">
+<meta property="article:published_time" content="2023-03-22T11:50:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.982Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="源码">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/","path":"2023/03/22/Java Map源码分析/","title":"Java Map源码分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java Map源码分析 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java7%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.1.</span> <span class="nav-text">Java7实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#put%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.1.</span> <span class="nav-text">put方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96ensureSegment"><span class="nav-number">2.1.2.</span> <span class="nav-text">初始化ensureSegment</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%86%99%E5%85%A5%E9%94%81scanAndLockForPut"><span class="nav-number">2.1.3.</span> <span class="nav-text">获取写入锁scanAndLockForPut</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%AE%B9rehash"><span class="nav-number">2.1.4.</span> <span class="nav-text">扩容rehash</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.5.</span> <span class="nav-text">get方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#size%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.6.</span> <span class="nav-text">size方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java8%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.</span> <span class="nav-text">Java8实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#put%E6%96%B9%E6%B3%95-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">put方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get%E6%96%B9%E6%B3%95-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">get方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#size%E6%96%B9%E6%B3%95-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">size方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TreeMap"><span class="nav-number">3.</span> <span class="nav-text">TreeMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LinkHashMap"><span class="nav-number">4.</span> <span class="nav-text">LinkHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%8F%82%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">成员变量参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0"><span class="nav-number">4.2.</span> <span class="nav-text">构造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#put%E6%96%B9%E6%B3%95-2"><span class="nav-number">4.3.</span> <span class="nav-text">put方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#get%E6%96%B9%E6%B3%95-2"><span class="nav-number">4.4.</span> <span class="nav-text">get方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#remove%E6%96%B9%E6%B3%95"><span class="nav-number">4.5.</span> <span class="nav-text">remove方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java Map源码分析 | All-Nothing">
+      <meta itemprop="description" content="关于java的Map， HashMap， TreeMap， ConcurrentHashMap，HashTable， TreeMap ，LinkHashMap">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java Map源码分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-03-22 19:50:00" itemprop="dateCreated datePublished" datetime="2023-03-22T19:50:00+08:00">2023-03-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">关于java的Map， HashMap， TreeMap， ConcurrentHashMap，HashTable， TreeMap ，LinkHashMap</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><p>Java8 对 HashMap 进行了一些修改，最大的不同就是利用了红黑树，所以其由 数组+链表+红黑树 组成，</p>
+<p>根据 hash 值我们能够快速定位到数组的具体下标，但是之后的话，需要顺着链表一个个比较下去才能找到我们需要的，时间复杂度取决于链表的长度，为 O(n)。为了降低这部分的开销，在 Java8 中，当链表中的元素超过了 8 个以后，会将链表转换为红黑树，在这些位置进行查找的时候可以降低时间复杂度为 O(logN)</p>
+<p>源码分析详情见： <a href="https://zypuu.github.io/2023/02/06/Java%20Set%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Java Set源码分析</a> 的HashSet部分</p>
+<p>HashMap并非线程安全：线程不安全主要体现在resize的死循环，和使用迭代器时的Fast-Fail机制上</p>
+<p>Fast-Fail事件机制</p>
+<p>fail-fast 机制是java集合(Collection)中的一种错误机制。当多个线程对同一个集合的内容进行操作时，就可能会产生fail-fast事件。在使用迭代器的过程中如果HashMap被修改，那么ConcurrentModificationException将被抛出，也即Fast-fail策略。</p>
+<p>当HashMap的iterator()方法被调用时，会构造并返回一个新的EntryIterator对象，并将EntryIterator的expectedModCount设置为HashMap的modCount（该变量记录了HashMap被修改的次数）。</p>
+<p>在通过该Iterator的next方法访问下一个Entry时，它会先检查自己的expectedModCount与HashMap的modCount是否相等，如果不相等，说明HashMap被修改，直接抛出<code>ConcurrentModificationException</code>。该Iterator的remove方法也会做类似的检查</p>
+<h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><p>为了解决HashMap的并发安全问题，可以使用concurrentHashMap</p>
+<h3 id="Java7实现"><a href="#Java7实现" class="headerlink" title="Java7实现"></a>Java7实现</h3><p>基于散列的Map，并不是将每个方法都在同一个锁上同步使得每次只能有一个线程访问线程，而使用一种更细粒度的加锁机制来实现更大程度的共享。这种机制称为分段锁（Lock Striping）。在这种机制中，任意数量的读取线程可以并发地访问map<strong>，</strong>执行读取操作的线程和执行写入操作的线程可以并发地访问map，并且一定数量的写入线程可以并发地修改map。ConcurrentHashMap带来的结果是，在并发访问的环境下将实现更高的吞吐量，而在单线程环境中只损失非常小的性能。</p>
+<p>ConcurrentHashMap返回的迭代器具有<strong>弱一致性</strong>。弱一致性的迭代器可以容忍并发的修改，当创建迭代器时会遍历已有的元素，并可以（但是不保证）在迭代器被构造后将修改操作反应给容器</p>
+<p>ConcurrentHashMap 是一个 Segment 数组，Segment 通过继承 ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个 segment，这样只要保证每个 Segment 是线程安全的，也就实现了全局的线程安全。</p>
+<p>concurrencyLevel：并行级别（Segment 的数量），默认是 16。</p>
+<p>也就是说 ConcurrentHashMap 有 16 个 Segments，所以理论上，这个时候，最多可以同时支持 16 个线程并发写，只要它们的操作分别分布在不同的 Segment 上。</p>
+<p>这个值可以在初始化的时候设置为其他值，但是一旦初始化以后，它是不可以扩容的</p>
+<p><img src="/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/1.jpg" alt="1"></p>
+<h4 id="put方法"><a href="#put方法" class="headerlink" title="put方法"></a>put方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> public V put(K key, V value) &#123;</span><br><span class="line">      Segment&lt;K,V&gt; s;</span><br><span class="line">      if (value &#x3D;&#x3D; null)</span><br><span class="line">          throw new NullPointerException();</span><br><span class="line">      &#x2F;&#x2F; 1. 计算 key 的 hash 值</span><br><span class="line">      int hash &#x3D; hash(key);</span><br><span class="line">      &#x2F;&#x2F; 2. 根据 hash 值找到 Segment 数组中的位置 j</span><br><span class="line">      &#x2F;&#x2F;    hash 是 32 位，无符号右移 segmentShift(28) 位</span><br><span class="line">      &#x2F;&#x2F;    然后和 segmentMask(15) 做一次与操作，也就是说 j 是 hash 值的最后 4 位，也就是槽的数组下标</span><br><span class="line">     int j &#x3D; (hash &gt;&gt;&gt; segmentShift) &amp; segmentMask;</span><br><span class="line">     &#x2F;&#x2F; 刚刚说了，初始化的时候初始化了 segment[0]，但是其他位置还是 null，</span><br><span class="line">     &#x2F;&#x2F; ensureSegment(j) 对 segment[j] 进行初始化</span><br><span class="line">     if ((s &#x3D; (Segment&lt;K,V&gt;)UNSAFE.getObject          &#x2F;&#x2F; nonvolatile; recheck</span><br><span class="line">          (segments, (j &lt;&lt; SSHIFT) + SBASE)) &#x3D;&#x3D; null) &#x2F;&#x2F;  in ensureSegment</span><br><span class="line">         s &#x3D; ensureSegment(j);</span><br><span class="line">     &#x2F;&#x2F; 3. 插入新值到 槽 s 中</span><br><span class="line">     return s.put(key, hash, value, false);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用下面的put方法，put会将新的值放入链表头</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"> 1 final V put(K key, int hash, V value, boolean onlyIfAbsent) &#123;</span><br><span class="line"> 2     &#x2F;&#x2F; 在往该 segment 写入前，需要先获取该 segment 的独占锁</span><br><span class="line"> 3     &#x2F;&#x2F;    先看主流程，后面还会具体介绍这部分内容</span><br><span class="line"> 4     HashEntry&lt;K,V&gt; node &#x3D; tryLock() ? null :</span><br><span class="line"> 5         scanAndLockForPut(key, hash, value);</span><br><span class="line"> 6     V oldValue;</span><br><span class="line"> 7     try &#123;</span><br><span class="line"> 8         &#x2F;&#x2F; 这个是 segment 内部的数组</span><br><span class="line"> 9         HashEntry&lt;K,V&gt;[] tab &#x3D; table;</span><br><span class="line">10         &#x2F;&#x2F; 再利用 hash 值，求应该放置的数组下标</span><br><span class="line">11         int index &#x3D; (tab.length - 1) &amp; hash;</span><br><span class="line">12         &#x2F;&#x2F; first 是数组该位置处的链表的表头</span><br><span class="line">13         HashEntry&lt;K,V&gt; first &#x3D; entryAt(tab, index);</span><br><span class="line">14  </span><br><span class="line">15         &#x2F;&#x2F; 下面这串 for 循环虽然很长，不过也很好理解，想想该位置没有任何元素和已经存在一个链表这两种情况</span><br><span class="line">16         for (HashEntry&lt;K,V&gt; e &#x3D; first;;) &#123;</span><br><span class="line">17             if (e !&#x3D; null) &#123;</span><br><span class="line">18                 K k;</span><br><span class="line">19                 if ((k &#x3D; e.key) &#x3D;&#x3D; key ||</span><br><span class="line">20                     (e.hash &#x3D;&#x3D; hash &amp;&amp; key.equals(k))) &#123;</span><br><span class="line">21                     oldValue &#x3D; e.value;</span><br><span class="line">22                     if (!onlyIfAbsent) &#123;</span><br><span class="line">23                         &#x2F;&#x2F; 覆盖旧值</span><br><span class="line">24                         e.value &#x3D; value;</span><br><span class="line">25                         ++modCount;</span><br><span class="line">26                     &#125;</span><br><span class="line">27                     break;</span><br><span class="line">28                 &#125;</span><br><span class="line">29                 &#x2F;&#x2F; 继续顺着链表走</span><br><span class="line">30                 e &#x3D; e.next;</span><br><span class="line">31             &#125;</span><br><span class="line">32             else &#123;</span><br><span class="line">33                 &#x2F;&#x2F; node 到底是不是 null，这个要看获取锁的过程，不过和这里都没有关系。</span><br><span class="line">34                 &#x2F;&#x2F; 如果不为 null，那就直接将它设置为链表表头；如果是null，初始化并设置为链表表头。</span><br><span class="line">35                 if (node !&#x3D; null)</span><br><span class="line">36                     node.setNext(first);</span><br><span class="line">37                 else</span><br><span class="line">38                     node &#x3D; new HashEntry&lt;K,V&gt;(hash, key, value, first);</span><br><span class="line">39  </span><br><span class="line">40                 int c &#x3D; count + 1;</span><br><span class="line">41                 &#x2F;&#x2F; 如果超过了该 segment 的阈值，这个 segment 需要扩容</span><br><span class="line">42                 if (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)</span><br><span class="line">43                     rehash(node); &#x2F;&#x2F; 扩容后面也会具体分析</span><br><span class="line">44                 else</span><br><span class="line">45                     &#x2F;&#x2F; 没有达到阈值，将 node 放到数组 tab 的 index 位置，</span><br><span class="line">46                     &#x2F;&#x2F; 其实就是将新的节点设置成原链表的表头</span><br><span class="line">47                     setEntryAt(tab, index, node);</span><br><span class="line">48                 ++modCount;</span><br><span class="line">49                 count &#x3D; c;</span><br><span class="line">50                 oldValue &#x3D; null;</span><br><span class="line">51                 break;</span><br><span class="line">52             &#125;</span><br><span class="line">53         &#125;</span><br><span class="line">54     &#125; finally &#123;</span><br><span class="line">55         &#x2F;&#x2F; 解锁</span><br><span class="line">56         unlock();</span><br><span class="line">57     &#125;</span><br><span class="line">58     return oldValue;</span><br><span class="line">59 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后看一下其中的两个方法ensureSegment，scanAndLockForPut</p>
+<h4 id="初始化ensureSegment"><a href="#初始化ensureSegment" class="headerlink" title="初始化ensureSegment"></a>初始化ensureSegment</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1 private Segment&lt;K,V&gt; ensureSegment(int k) &#123;</span><br><span class="line"> 2     final Segment&lt;K,V&gt;[] ss &#x3D; this.segments;</span><br><span class="line"> 3     long u &#x3D; (k &lt;&lt; SSHIFT) + SBASE; &#x2F;&#x2F; raw offset</span><br><span class="line"> 4     Segment&lt;K,V&gt; seg;</span><br><span class="line"> 5     if ((seg &#x3D; (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(ss, u)) &#x3D;&#x3D; null) &#123;</span><br><span class="line"> 6         &#x2F;&#x2F; 这里看到为什么之前要初始化 segment[0] 了，</span><br><span class="line"> 7         &#x2F;&#x2F; 使用当前 segment[0] 处的数组长度和负载因子来初始化 segment[k]</span><br><span class="line"> 8         &#x2F;&#x2F; 为什么要用“当前”，因为 segment[0] 可能早就扩容过了</span><br><span class="line"> 9         Segment&lt;K,V&gt; proto &#x3D; ss[0];</span><br><span class="line">10         int cap &#x3D; proto.table.length;</span><br><span class="line">11         float lf &#x3D; proto.loadFactor;</span><br><span class="line">12         int threshold &#x3D; (int)(cap * lf);</span><br><span class="line">13  </span><br><span class="line">14         &#x2F;&#x2F; 初始化 segment[k] 内部的数组</span><br><span class="line">15         HashEntry&lt;K,V&gt;[] tab &#x3D; (HashEntry&lt;K,V&gt;[])new HashEntry[cap];</span><br><span class="line">16         if ((seg &#x3D; (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(ss, u))</span><br><span class="line">17             &#x3D;&#x3D; null) &#123; &#x2F;&#x2F; 再次检查一遍该槽是否被其他线程初始化了。</span><br><span class="line">18  </span><br><span class="line">19             Segment&lt;K,V&gt; s &#x3D; new Segment&lt;K,V&gt;(lf, threshold, tab);</span><br><span class="line">20             &#x2F;&#x2F; 使用 while 循环，内部用 CAS，当前线程成功设值或其他线程成功设值后，退出</span><br><span class="line">21             while ((seg &#x3D; (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(ss, u))</span><br><span class="line">22                    &#x3D;&#x3D; null) &#123;</span><br><span class="line">23                 if (UNSAFE.compareAndSwapObject(ss, u, null, seg &#x3D; s))</span><br><span class="line">24                     break;</span><br><span class="line">25             &#125;</span><br><span class="line">26         &#125;</span><br><span class="line">27     &#125;</span><br><span class="line">28     return seg;</span><br><span class="line">29 &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="获取写入锁scanAndLockForPut"><a href="#获取写入锁scanAndLockForPut" class="headerlink" title="获取写入锁scanAndLockForPut"></a>获取写入锁scanAndLockForPut</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"> 1     </span><br><span class="line"> 2 private HashEntry&lt;K,V&gt; scanAndLockForPut(K key, int hash, V value) &#123;</span><br><span class="line"> 3     HashEntry&lt;K,V&gt; first &#x3D; entryForHash(this, hash);</span><br><span class="line"> 4     HashEntry&lt;K,V&gt; e &#x3D; first;</span><br><span class="line"> 5     HashEntry&lt;K,V&gt; node &#x3D; null;</span><br><span class="line"> 6     int retries &#x3D; -1; &#x2F;&#x2F; negative while locating node</span><br><span class="line"> 7  </span><br><span class="line"> 8     &#x2F;&#x2F; 循环获取锁 失败则循环  成功则跳出循环</span><br><span class="line"> 9     while (!tryLock()) &#123;</span><br><span class="line">10         HashEntry&lt;K,V&gt; f; &#x2F;&#x2F; to recheck first below</span><br><span class="line">11         if (retries &lt; 0) &#123;</span><br><span class="line">12             if (e &#x3D;&#x3D; null) &#123;</span><br><span class="line">13                 if (node &#x3D;&#x3D; null) &#x2F;&#x2F; speculatively create node</span><br><span class="line">14                     &#x2F;&#x2F; 进到这里说明数组该位置的链表是空的，没有任何元素</span><br><span class="line">15                     &#x2F;&#x2F; 当然，进到这里的另一个原因是 tryLock() 失败，所以该槽存在并发，不一定是该位置</span><br><span class="line">16                     node &#x3D; new HashEntry&lt;K,V&gt;(hash, key, value, null);</span><br><span class="line">17                 retries &#x3D; 0;</span><br><span class="line">18             &#125;</span><br><span class="line">19             else if (key.equals(e.key))</span><br><span class="line">20                 retries &#x3D; 0;</span><br><span class="line">21             else</span><br><span class="line">22                 &#x2F;&#x2F; 顺着链表往下走</span><br><span class="line">23                 e &#x3D; e.next;</span><br><span class="line">24         &#125;</span><br><span class="line">25         &#x2F;&#x2F; 重试次数如果超过 MAX_SCAN_RETRIES（单核1多核64），那么不抢了，进入到阻塞队列等待锁</span><br><span class="line">26         &#x2F;&#x2F;    lock() 是阻塞方法，直到获取锁后返回</span><br><span class="line">27         else if (++retries &gt; MAX_SCAN_RETRIES) &#123;</span><br><span class="line">28             lock();</span><br><span class="line">29             break;</span><br><span class="line">30         &#125;</span><br><span class="line">31         else if ((retries &amp; 1) &#x3D;&#x3D; 0 &amp;&amp;</span><br><span class="line">32                  &#x2F;&#x2F; 这个时候是有大问题了，那就是有新的元素进到了链表，成为了新的表头</span><br><span class="line">33                  &#x2F;&#x2F;     所以这边的策略是，相当于重新走一遍这个 scanAndLockForPut 方法</span><br><span class="line">34                  (f &#x3D; entryForHash(this, hash)) !&#x3D; first) &#123;</span><br><span class="line">35             e &#x3D; first &#x3D; f; &#x2F;&#x2F; re-traverse if entry changed</span><br><span class="line">36             retries &#x3D; -1;</span><br><span class="line">37         &#125;</span><br><span class="line">38     &#125;</span><br><span class="line">39     return node;</span><br><span class="line">40 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取锁时，并不直接使用lock来获取，因为该方法获取锁失败时会挂起。</p>
+<p>如果tryLock获取锁失败，说明锁被其它线程占用，此时通过循环再次以tryLock的方式申请锁。</p>
+<p>如果在循环过程中该Key所对应的链表头被修改，则重置retry次数。如果retry次数超过一定值，则使用lock方法申请锁。</p>
+<h4 id="扩容rehash"><a href="#扩容rehash" class="headerlink" title="扩容rehash"></a>扩容rehash</h4><p>put 的时候，如果判断该值的插入会导致该 segment 的元素个数超过阈值，那么先进行扩容，再插值。扩容后，容量为原来的 2 倍。</p>
+<h4 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h4><p>get 过程中是没有加锁的,除非读到的值是空的才会加锁重读.ConcurrentHashMap使用如下方法保证可见性，取得最新的Segment：Segment&lt;K,V&gt; s = (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(segments, u)get方法里将要使用的共享变量都定义成volatile,能够在线程之间保持可见性，能够被多线程同时读，并且保证不会读到过期的值之所以不会读到过期的值，是根据java内存模型的happen before原则，对volatile字段的写入操作先于读操作</p>
+<h4 id="size方法"><a href="#size方法" class="headerlink" title="size方法"></a>size方法</h4><p>ConcurrentHashMap会在不上锁的前提逐个Segment计算3次size，如果某相邻两次计算，所有Segment的更新次数之和相等，说明这两次计算过程中无更新操作，则这两次计算出的总size相等，可直接作为最终结果返回。如果这三次计算过程中Map有更新，则对所有Segment加锁重新计算Size。</p>
+<h3 id="Java8实现"><a href="#Java8实现" class="headerlink" title="Java8实现"></a>Java8实现</h3><p>Java 8为进一步提高并发性，摒弃了分段锁的方案，而是直接使用一个大的数组，基于CAS的ConcurrentHashMap</p>
+<h4 id="put方法-1"><a href="#put方法-1" class="headerlink" title="put方法"></a>put方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">1 public V put(K key, V value) &#123;</span><br><span class="line"> 2     return putVal(key, value, false);</span><br><span class="line"> 3 &#125;</span><br><span class="line"> 4 final V putVal(K key, V value, boolean onlyIfAbsent) &#123;</span><br><span class="line"> 5     if (key &#x3D;&#x3D; null || value &#x3D;&#x3D; null) throw new NullPointerException();</span><br><span class="line"> 6     &#x2F;&#x2F; 得到 hash 值</span><br><span class="line"> 7     int hash &#x3D; spread(key.hashCode());</span><br><span class="line"> 8     &#x2F;&#x2F; 用于记录相应链表的长度</span><br><span class="line"> 9     int binCount &#x3D; 0;</span><br><span class="line">10     for (Node&lt;K,V&gt;[] tab &#x3D; table;;) &#123;</span><br><span class="line">11         Node&lt;K,V&gt; f; int n, i, fh;</span><br><span class="line">12         &#x2F;&#x2F; 如果数组&quot;空&quot;，进行数组初始化</span><br><span class="line">13         if (tab &#x3D;&#x3D; null || (n &#x3D; tab.length) &#x3D;&#x3D; 0)</span><br><span class="line">14             &#x2F;&#x2F; 初始化数组，后面会详细介绍</span><br><span class="line">15             tab &#x3D; initTable();</span><br><span class="line">16  </span><br><span class="line">17         &#x2F;&#x2F; 找该 hash 值对应的数组下标，得到第一个节点 f</span><br><span class="line">18         else if ((f &#x3D; tabAt(tab, i &#x3D; (n - 1) &amp; hash)) &#x3D;&#x3D; null) &#123;</span><br><span class="line">19             &#x2F;&#x2F; 如果数组该位置为空，</span><br><span class="line">20             &#x2F;&#x2F;    用一次 CAS 操作将这个新值放入其中即可，这个 put 操作差不多就结束了，可以拉到最后面了</span><br><span class="line">21             &#x2F;&#x2F;          如果 CAS 失败，那就是有并发操作，进到下一个循环就好了</span><br><span class="line">22             if (casTabAt(tab, i, null,</span><br><span class="line">23                          new Node&lt;K,V&gt;(hash, key, value, null)))</span><br><span class="line">24                 break;                   &#x2F;&#x2F; no lock when adding to empty bin</span><br><span class="line">25         &#125;</span><br><span class="line">26         &#x2F;&#x2F; hash 居然可以等于 MOVED，这个需要到后面才能看明白，不过从名字上也能猜到，肯定是因为在扩容</span><br><span class="line">27         else if ((fh &#x3D; f.hash) &#x3D;&#x3D; MOVED)</span><br><span class="line">28             &#x2F;&#x2F; 帮助数据迁移，这个等到看完数据迁移部分的介绍后，再理解这个就很简单了</span><br><span class="line">29             tab &#x3D; helpTransfer(tab, f);</span><br><span class="line">30  </span><br><span class="line">31         else &#123; &#x2F;&#x2F; 到这里就是说，f 是该位置的头结点，而且不为空</span><br><span class="line">32  </span><br><span class="line">33             V oldVal &#x3D; null;</span><br><span class="line">34             &#x2F;&#x2F; 获取数组该位置的头结点的监视器锁</span><br><span class="line">35             synchronized (f) &#123;</span><br><span class="line">36                 if (tabAt(tab, i) &#x3D;&#x3D; f) &#123;</span><br><span class="line">37                     if (fh &gt;&#x3D; 0) &#123; &#x2F;&#x2F; 头结点的 hash 值大于 0，说明是链表</span><br><span class="line">38                         &#x2F;&#x2F; 用于累加，记录链表的长度</span><br><span class="line">39                         binCount &#x3D; 1;</span><br><span class="line">40                         &#x2F;&#x2F; 遍历链表</span><br><span class="line">41                         for (Node&lt;K,V&gt; e &#x3D; f;; ++binCount) &#123;</span><br><span class="line">42                             K ek;</span><br><span class="line">43                             &#x2F;&#x2F; 如果发现了&quot;相等&quot;的 key，判断是否要进行值覆盖，然后也就可以 break 了</span><br><span class="line">44                             if (e.hash &#x3D;&#x3D; hash &amp;&amp;</span><br><span class="line">45                                 ((ek &#x3D; e.key) &#x3D;&#x3D; key ||</span><br><span class="line">46                                  (ek !&#x3D; null &amp;&amp; key.equals(ek)))) &#123;</span><br><span class="line">47                                 oldVal &#x3D; e.val;</span><br><span class="line">48                                 if (!onlyIfAbsent)</span><br><span class="line">49                                     e.val &#x3D; value;</span><br><span class="line">50                                 break;</span><br><span class="line">51                             &#125;</span><br><span class="line">52                             &#x2F;&#x2F; 到了链表的最末端，将这个新值放到链表的最后面</span><br><span class="line">53                             Node&lt;K,V&gt; pred &#x3D; e;</span><br><span class="line">54                             if ((e &#x3D; e.next) &#x3D;&#x3D; null) &#123;</span><br><span class="line">55                                 pred.next &#x3D; new Node&lt;K,V&gt;(hash, key,</span><br><span class="line">56                                                           value, null);</span><br><span class="line">57                                 break;</span><br><span class="line">58                             &#125;</span><br><span class="line">59                         &#125;</span><br><span class="line">60                     &#125;</span><br><span class="line">61                     else if (f instanceof TreeBin) &#123; &#x2F;&#x2F; 红黑树</span><br><span class="line">62                         Node&lt;K,V&gt; p;</span><br><span class="line">63                         binCount &#x3D; 2;</span><br><span class="line">64                         &#x2F;&#x2F; 调用红黑树的插值方法插入新节点</span><br><span class="line">65                         if ((p &#x3D; ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,</span><br><span class="line">66                                                        value)) !&#x3D; null) &#123;</span><br><span class="line">67                             oldVal &#x3D; p.val;</span><br><span class="line">68                             if (!onlyIfAbsent)</span><br><span class="line">69                                 p.val &#x3D; value;</span><br><span class="line">70                         &#125;</span><br><span class="line">71                     &#125;</span><br><span class="line">72                 &#125;</span><br><span class="line">73             &#125;</span><br><span class="line">74             &#x2F;&#x2F; binCount !&#x3D; 0 说明上面在做链表操作</span><br><span class="line">75             if (binCount !&#x3D; 0) &#123;</span><br><span class="line">76                 &#x2F;&#x2F; 判断是否要将链表转换为红黑树，临界值和 HashMap 一样，也是 8</span><br><span class="line">77                 if (binCount &gt;&#x3D; TREEIFY_THRESHOLD)</span><br><span class="line">78                     &#x2F;&#x2F; 这个方法和 HashMap 中稍微有一点点不同，那就是它不是一定会进行红黑树转换，</span><br><span class="line">79                     &#x2F;&#x2F; 如果当前数组的长度小于 64，那么会选择进行数组扩容，而不是转换为红黑树</span><br><span class="line">80                     &#x2F;&#x2F;    具体源码我们就不看了，扩容部分后面说</span><br><span class="line">81                     treeifyBin(tab, i);</span><br><span class="line">82                 if (oldVal !&#x3D; null)</span><br><span class="line">83                     return oldVal;</span><br><span class="line">84                 break;</span><br><span class="line">85             &#125;</span><br><span class="line">86         &#125;</span><br><span class="line">87     &#125;</span><br><span class="line">88     &#x2F;&#x2F; </span><br><span class="line">89     addCount(1L, binCount);</span><br><span class="line">90     return null;</span><br><span class="line">91 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于put操作，如果Key对应的数组元素为null，则通过CAS操作将其设置为当前值。</p>
+<p>如果Key对应的数组元素（也即链表表头或者树的根元素）不为null，则对该元素使用synchronized关键字申请锁，然后进行操作。</p>
+<p>如果该put操作使得当前链表长度超过一定阈值，则将该链表转换为树，从而提高寻址效率。</p>
+<h4 id="get方法-1"><a href="#get方法-1" class="headerlink" title="get方法"></a>get方法</h4><p>对于读操作，由于数组被volatile关键字修饰，因此不用担心数组的可见性问题。</p>
+<p>同时每个元素是一个Node实例（Java 7中每个元素是一个HashEntry），它的Key值和hash值都由final修饰，不可变更，无须关心它们被修改后的可见性问题。而其Value及对下一个元素的引用由volatile修饰，可见性也有保障。</p>
+<h4 id="size方法-1"><a href="#size方法-1" class="headerlink" title="size方法"></a>size方法</h4><p>put方法和remove方法都会通过addCount方法维护Map的size。size方法通过sumCount获取由addCount方法维护的Map的size。</p>
+<h2 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h2><p>TreeMap 实现 SortedMap 接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用 Iterator 遍历 TreeMap 时，得到的记录是排过序的。</p>
+<p>如果使用排序的映射，建议使用 TreeMap。</p>
+<p>在使用 TreeMap 时，key 必须实现 Comparable 接口或者在构造 TreeMap 传入自定义的Comparator，否则会在运行时抛出 java.lang.ClassCastException 类型的异常</p>
+<h2 id="LinkHashMap"><a href="#LinkHashMap" class="headerlink" title="LinkHashMap"></a>LinkHashMap</h2><p>LinkedHashMap 是 HashMap 的一个子类，保存了记录的插入顺序，在用 Iterator 遍历</p>
+<p>LinkedHashMap 时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序</p>
+<p>linkedhashmap继承了hashmap的所有方法和属性，在hashmap数据结构，数组+单项链表+红黑树的原理上加上了双向链表，通过双向链表保证输出的时候按照插入顺序或者自己指定的顺序进行输出</p>
+<h3 id="成员变量参数"><a href="#成员变量参数" class="headerlink" title="成员变量参数"></a>成员变量参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class LinkedHashMap&lt;K,V&gt; extends HashMap&lt;K,V&gt; implements Map&lt;K,V&gt;&#123;</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 序列化唯一表示 UID</span><br><span class="line">    private static final long serialVersionUID &#x3D; 3801124242820219131L;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 双向链表的头节点</span><br><span class="line">    transient LinkedHashMapEntry&lt;K,V&gt; head;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 双向链表的尾节点</span><br><span class="line">    transient LinkedHashMapEntry&lt;K,V&gt; tail;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 默认是 false，则迭代时输出的顺序是插入节点的顺序。</span><br><span class="line">    &#x2F;&#x2F; 若为 true，则输出的顺序是按照访问节点的顺序（最近最少使用原则）。</span><br><span class="line">    &#x2F;&#x2F; accessOrder 为 true 时，可以在这基础之上构建一个 LruCache。</span><br><span class="line">    final boolean accessOrder;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">public class LinkedHashMap&lt;K,V&gt; extends HashMap&lt;K,V&gt; implements Map&lt;K,V&gt;&#123;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 无参构造函数</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public LinkedHashMap() &#123;</span><br><span class="line">        super();</span><br><span class="line">        accessOrder &#x3D; false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 有参构造函数</span><br><span class="line">     *</span><br><span class="line">     * @param initialCapacity 初始化时的容量</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public LinkedHashMap(int initialCapacity) &#123;</span><br><span class="line">        super(initialCapacity);</span><br><span class="line">        accessOrder &#x3D; false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 有参构造函数</span><br><span class="line">     *</span><br><span class="line">     * @param initialCapacity 初始化时的容量</span><br><span class="line">     * @param loadFactor      扩容的加载因子</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public LinkedHashMap(int initialCapacity, float loadFactor) &#123;</span><br><span class="line">        super(initialCapacity, loadFactor);</span><br><span class="line">        accessOrder &#x3D; false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 有参构造函数</span><br><span class="line">     *</span><br><span class="line">     * @param initialCapacity 初始化时的容量</span><br><span class="line">     * @param loadFactor      扩容的加载因子</span><br><span class="line">     * @param accessOrder     迭代输出节点的顺序</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) &#123;</span><br><span class="line">        super(initialCapacity, loadFactor);</span><br><span class="line">        this.accessOrder &#x3D; accessOrder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 有参构造函数</span><br><span class="line">     *</span><br><span class="line">     * @param m 利用另一个Map 来构建</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public LinkedHashMap(Map&lt;? extends K, ? extends V&gt; m) &#123;</span><br><span class="line">        super();</span><br><span class="line">        accessOrder &#x3D; false;</span><br><span class="line">        &#x2F;&#x2F; 批量插入一个 map 中的所有数据到本集合中。</span><br><span class="line">        putMapEntries(m, false);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="put方法-2"><a href="#put方法-2" class="headerlink" title="put方法"></a>put方法</h3><p>当前方法重写了hashmap中的Node方法，当创建的时候会调用当前方法中的类进行创建，根据添加顺序为双向链表添加位置。在hashmap的put()调用中会生成前后项指针。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Node&lt;K,V&gt; newNode(int hash, K key, V value, Node&lt;K,V&gt; e) &#123;</span><br><span class="line">       LinkedHashMap.Entry&lt;K,V&gt; p &#x3D;</span><br><span class="line">           new LinkedHashMap.Entry&lt;K,V&gt;(hash, key, value, e);</span><br><span class="line">       linkNodeLast(p);</span><br><span class="line">       return p;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   TreeNode&lt;K,V&gt; newTreeNode(int hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">       TreeNode&lt;K,V&gt; p &#x3D; new TreeNode&lt;K,V&gt;(hash, key, value, next);</span><br><span class="line">       linkNodeLast(p);</span><br><span class="line">       return p;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   private void linkNodeLast(LinkedHashMap.Entry&lt;K,V&gt; p) &#123;</span><br><span class="line">       LinkedHashMap.Entry&lt;K,V&gt; last &#x3D; tail;</span><br><span class="line">       tail &#x3D; p;</span><br><span class="line">       if (last &#x3D;&#x3D; null)</span><br><span class="line">           head &#x3D; p;</span><br><span class="line">       else &#123;</span><br><span class="line">           p.before &#x3D; last;</span><br><span class="line">           last.after &#x3D; p;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   static class Entry&lt;K,V&gt; extends HashMap.Node&lt;K,V&gt; &#123;</span><br><span class="line">       Entry&lt;K,V&gt; before, after;</span><br><span class="line">       Entry(int hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">           super(hash, key, value, next);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后调用putVal方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) &#123;</span><br><span class="line">            ...</span><br><span class="line">            if (e !&#x3D; null) &#123; &#x2F;&#x2F; existing mapping for key</span><br><span class="line">                V oldValue &#x3D; e.value;</span><br><span class="line">                if (!onlyIfAbsent || oldValue &#x3D;&#x3D; null)</span><br><span class="line">                    e.value &#x3D; value;</span><br><span class="line">                afterNodeAccess(e); &#x2F;&#x2F;</span><br><span class="line">                return oldValue;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ++modCount;</span><br><span class="line">        if (++size &gt; threshold)</span><br><span class="line">            resize();</span><br><span class="line">        afterNodeInsertion(evict);</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>linkedhashmap直接使用了hashmap的put()方法，因为继承了hashmap并且重写了afterNodeInsertion()方法,在accessOrder为true的时候调用，会破坏原先的顺序存储，会把最近访问的放到链表的最后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 此方法的作用是将刚刚访问的节点e放到链表的尾端</span><br><span class="line"> *&#x2F;</span><br><span class="line">void afterNodeAccess(Node&lt;K,V&gt; e) &#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; last;</span><br><span class="line">    &#x2F;&#x2F; accessOrder &#x3D; true 时 访问节点后才需要置于尾端</span><br><span class="line">    &#x2F;&#x2F; 如果e本身就在尾端，那就不需要操作</span><br><span class="line">    if (accessOrder &amp;&amp; (last &#x3D; tail) !&#x3D; e) &#123;</span><br><span class="line">        &#x2F;&#x2F; 记录节点e、e的前驱、e的后继</span><br><span class="line">        LinkedHashMap.Entry&lt;K,V&gt; p &#x3D; (LinkedHashMap.Entry&lt;K,V&gt;)e, b &#x3D; p.before, a &#x3D; p.after;</span><br><span class="line">        &#x2F;&#x2F;   b&lt;-&gt;p  &lt;--&gt; a</span><br><span class="line">        &#x2F;&#x2F; 第一步：现将p.after置空</span><br><span class="line">        &#x2F;&#x2F;断开p的后节点</span><br><span class="line">        p.after &#x3D; null;</span><br><span class="line">        &#x2F;&#x2F; 第二步：将e的前驱.after 连接上e的后继</span><br><span class="line">        if (b &#x3D;&#x3D; null)</span><br><span class="line">          &#x2F;&#x2F;如果没有头节点      b&lt;---&gt; p  </span><br><span class="line">          直接把head指向a</span><br><span class="line">            head &#x3D; a;</span><br><span class="line">        else</span><br><span class="line">          &#x2F;&#x2F;如果有前驱的话，把b&lt;  ---&gt; a</span><br><span class="line">            b.after &#x3D; a;</span><br><span class="line">        if (a !&#x3D; null)</span><br><span class="line">              &#x2F;&#x2F; 如果a不等于空的话，把a指向b</span><br><span class="line">            a.before &#x3D; b;</span><br><span class="line">        else</span><br><span class="line">            &#x2F;&#x2F;如果a等于空的话，把last指向b.</span><br><span class="line">            last &#x3D; b;</span><br><span class="line">        if (last &#x3D;&#x3D; null)</span><br><span class="line">          &#x2F;&#x2F;如果last 空把p插入到head节点。</span><br><span class="line">            head &#x3D; p;</span><br><span class="line">        else &#123;</span><br><span class="line">          &#x2F;&#x2F;把p插入到最后节点。</span><br><span class="line">            p.before &#x3D; last;</span><br><span class="line">            last.after &#x3D; p;</span><br><span class="line">        &#125;</span><br><span class="line">      &#x2F;&#x2F;更新节点为尾节点。</span><br><span class="line">        tail &#x3D; p;</span><br><span class="line">        &#x2F;&#x2F; 链表结构性调整，修改次数自增</span><br><span class="line">        ++modCount;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="get方法-2"><a href="#get方法-2" class="headerlink" title="get方法"></a>get方法</h3><p>与hashmap的区别在于，当accessOrder为true的话，会把当前访问的节点插入到双向链表的最后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">        Node&lt;K,V&gt; e;</span><br><span class="line">        <span class="keyword">if</span> ((e = getNode(hash(key), key)) == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (accessOrder)</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">        <span class="keyword">return</span> e.value;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="remove方法"><a href="#remove方法" class="headerlink" title="remove方法"></a>remove方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void afterNodeRemoval(Node&lt;K,V&gt; e) &#123; &#x2F;&#x2F; unlink</span><br><span class="line">        LinkedHashMap.Entry&lt;K,V&gt; p &#x3D;</span><br><span class="line">                (LinkedHashMap.Entry&lt;K,V&gt;)e, b &#x3D; p.before, a &#x3D; p.after; &#x2F;&#x2F; b是当前节点的前一个节点，a是后一个节点</span><br><span class="line">        p.before &#x3D; p.after &#x3D; null; &#x2F;&#x2F;先断开当前节点，把当前节点对上一个和下一个节点的引用置为空</span><br><span class="line">        if (b &#x3D;&#x3D; null) &#x2F;&#x2F;当前节点的前一个节点是null，说明当前节点是头节点，那去掉当前节点之后，当前节点的后一个节点成为了链第一个，</span><br><span class="line">            &#x2F;&#x2F; 也就是头节点，当然有可能a也是null，那整个链就是空链，这种写法兼容了a也是null的情况</span><br><span class="line">            head &#x3D; a;</span><br><span class="line">        else </span><br><span class="line">            b.after &#x3D; a; &#x2F;&#x2F;如果当前节点不是头节点，直接去掉当前节点，当前节点的前一个和后一个连起来</span><br><span class="line">        if (a &#x3D;&#x3D; null) &#x2F;&#x2F;如果当前节点的后一个节点是null，说明当前节点是尾节点，那把当前节点去掉后，当前节点的前一个节点成为了链的最后一个节点尾节点。</span><br><span class="line">            tail &#x3D; b;</span><br><span class="line">        else</span><br><span class="line">            a.before &#x3D; b;&#x2F;&#x2F;如果当前节点不是尾节点，直接去掉当前节点，当前节点的前一个和后一个连起来</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%BA%90%E7%A0%81/" rel="tag"># 源码</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/" rel="prev" title="消息队列的推拉模式">
+                  <i class="fa fa-angle-left"></i> 消息队列的推拉模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/04/15/Java%E5%B9%B6%E5%8F%91CAS/" rel="next" title="Java并发CAS">
+                  Java并发CAS <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

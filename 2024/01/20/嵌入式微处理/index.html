@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="嵌入式微处理器多核处理器嵌入式技术，简要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微处理">
+<meta property="og:url" content="https://zypuu.github.io/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="嵌入式微处理器多核处理器嵌入式技术，简要">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-01-20T02:36:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.057Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/","path":"2024/01/20/嵌入式微处理/","title":"微处理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微处理 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">嵌入式技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%A1%AC%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">嵌入式硬件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">处理体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.1.</span> <span class="nav-text">冯诺依曼结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%88%E4%BD%9B%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.2.</span> <span class="nav-text">哈佛结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94"><span class="nav-number">2.1.3.</span> <span class="nav-text">对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E5%A4%84%E7%90%86%E5%99%A8%E5%88%86%E7%B1%BB"><span class="nav-number">2.2.</span> <span class="nav-text">微处理器分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8MCU"><span class="nav-number">2.2.1.</span> <span class="nav-text">嵌入式微控制器MCU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86%E5%99%A8MPU"><span class="nav-number">2.2.2.</span> <span class="nav-text">嵌入式微处理器MPU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E5%99%A8DSP"><span class="nav-number">2.2.3.</span> <span class="nav-text">嵌入式数字信号处理器DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%89%87%E4%B8%8A%E7%B3%BB%E7%BB%9FSOC"><span class="nav-number">2.2.4.</span> <span class="nav-text">嵌入式片上系统SOC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-number">2.2.5.</span> <span class="nav-text">区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%A0%B8%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">2.3.</span> <span class="nav-text">多核处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">嵌入式软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BSP"><span class="nav-number">3.1.</span> <span class="nav-text">BSP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BootLoader"><span class="nav-number">3.2.</span> <span class="nav-text">BootLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">3.3.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.4.</span> <span class="nav-text">嵌入式系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">3.4.1.</span> <span class="nav-text">嵌入式处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%94%AF%E6%92%91%E7%A1%AC%E4%BB%B6"><span class="nav-number">3.4.2.</span> <span class="nav-text">相关支撑硬件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.4.3.</span> <span class="nav-text">嵌入式操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%92%91%E8%BD%AF%E4%BB%B6"><span class="nav-number">3.4.4.</span> <span class="nav-text">支撑软件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E8%BD%AF%E4%BB%B6"><span class="nav-number">3.4.5.</span> <span class="nav-text">应用软件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9FEDBMS"><span class="nav-number">3.5.</span> <span class="nav-text">嵌入式数据库系统EDBMS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-1"><span class="nav-number">3.6.</span> <span class="nav-text">嵌入式操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%AE%9E%E6%97%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.7.</span> <span class="nav-text">嵌入式实时操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.8.</span> <span class="nav-text">嵌入式软件设计</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="微处理 | All-Nothing">
+      <meta itemprop="description" content="嵌入式微处理器多核处理器嵌入式技术，简要">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-20 10:36:00" itemprop="dateCreated datePublished" datetime="2024-01-20T10:36:00+08:00">2024-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">嵌入式微处理器多核处理器嵌入式技术，简要</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="嵌入式技术"><a href="#嵌入式技术" class="headerlink" title="嵌入式技术"></a>嵌入式技术</h2><p>特定的硬件设备中集成计算机系统及软件，来实现某种特定功能技术</p>
+<p>特点：</p>
+<p>1、专用性</p>
+<p>2、实时性</p>
+<p>3、低成本</p>
+<p>4、可靠性</p>
+<p>5、体积小</p>
+<h2 id="嵌入式硬件"><a href="#嵌入式硬件" class="headerlink" title="嵌入式硬件"></a>嵌入式硬件</h2><h3 id="处理体系结构"><a href="#处理体系结构" class="headerlink" title="处理体系结构"></a>处理体系结构</h3><h4 id="冯诺依曼结构"><a href="#冯诺依曼结构" class="headerlink" title="冯诺依曼结构"></a>冯诺依曼结构</h4><p>传统计算机采用冯·诺依曼（Von Neumann）结构，也称普林斯顿结构，是一种将程序指令存储器和数据存储器合并在一起的存储器结构。<br>冯·诺依曼结构的计算机程序和数据共用一个存储空间，程序指令存储地址和数据存储地址指向同一个存储器的不同物理位置。<br>采用单一的地址及数据总线，程序指令和数据的宽度相同。<br>处理器执行指令时，先从储存器中取出指令解码，再取操作数执行运算，即使单条指令也要耗费几个甚至几十个周期，在高速运算时，在传输通道上会出现瓶颈效应。这是一种串行结构。相对比较低效</p>
+<p>指令数据存储在一个存储器中，只能串行读取，通过相同的数据总线传输</p>
+<p>AMD</p>
+<h4 id="哈佛结构"><a href="#哈佛结构" class="headerlink" title="哈佛结构"></a>哈佛结构</h4><p>是一种并行体系结构，它的主要特点是将程序和数据存储在不同的存储空间中，即程序存储器和数据存储器是两个相互独立的存储器，每个存储器独立编址、独立访问。<br>• 与两个存储器相对应的是系统中的两套独立的地址总线和数据总线。<br>• 这种分离的程序总线和数据总线可允许在一个机器周期内同时获取指令字（来自程序存储器）和操作数（来自数据存储器），从而提高了执行速度，使数据的吞吐率提高了1倍</p>
+<p>DSP</p>
+<p>指令和数据存在不同存储结构中，可并行读取，有较高的数据吞吐率，指令和数据的数据总线和地址总线</p>
+<h4 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h4><p>在冯诺依曼架构中，指令和数据共享同一个存储器，CPU 只能执行一条指令，因为它需要等待指令和数据都被读取到 CPU 中。而在哈佛架构中，指令和数据存储在不同的内存中，CPU 可以同时访问指令和数据内存，因此可以同时执行多条指令。所以，可以这样<br>理解，冯诺依曼架构是单车道，而哈佛架构是多车道。</p>
+<p>冯诺依曼架构的好处，就是简单、易于实现和设计。哈佛架构的好处，可以使用不同的技术来优化性能。</p>
+<p>冯·诺依曼架构适用于大多数通用计算机，因为它能够灵活地处理各种不同的计算任务，同时还可以使用缓存等技术来优化性能。而哈佛架构则适用于一些特定的应用领域，例如需要高效地处理大量数据的嵌入式系统，或数字信号处理器等领域。</p>
+<h3 id="微处理器分类"><a href="#微处理器分类" class="headerlink" title="微处理器分类"></a>微处理器分类</h3><p>字长宽度分类：16位以下MCU，32位以上MPU</p>
+<p>如果按系统集成度划分，可分为两类：一种是微处理器内部仅包含单纯的中央处理器单元，称为一般用途型微处理器：另一种则是将CPU、ROM、RAM及I/O等部件集成到同一个芯片上，称为单芯片微控制器（Single Chip Microcontroller）。</p>
+<p>• 如果根据用途分类，一般分为嵌入式微控制器MCU、嵌入式微处理器MPU、嵌入式数字信号处理器DSP、嵌入式片上系统SOC等</p>
+<h4 id="嵌入式微控制器MCU"><a href="#嵌入式微控制器MCU" class="headerlink" title="嵌入式微控制器MCU"></a>嵌入式微控制器MCU</h4><p>16位以下的，典型代表是单片机，是单片化，体积大大减小，从而使功耗和成本下降、可靠性提高，嵌入式系统工业的主流</p>
+<h4 id="嵌入式微处理器MPU"><a href="#嵌入式微处理器MPU" class="headerlink" title="嵌入式微处理器MPU"></a>嵌入式微处理器MPU</h4><p>通用计算机中的CPU演变而来。它的特征是具有32位以上的处理器，具有较高的性能，当然其价格也相应较高。但与计算机处理器不同的是，在实际嵌入式应用中，只保留和嵌入式应用紧密相关的功能硬件，去除其他的冗余功能部分，这样就以最低的功耗和资源实现嵌入式应用的特殊要求。与工业控制计算机相比，嵌入式微处理器具有体积小、重量轻、成本低、可靠性高的</p>
+<h4 id="嵌入式数字信号处理器DSP"><a href="#嵌入式数字信号处理器DSP" class="headerlink" title="嵌入式数字信号处理器DSP"></a>嵌入式数字信号处理器DSP</h4><p>哈佛结构， 运算性能最好，专门用于信号处理方面的处理器，其在系统结构和指令算法方面进行了特殊设计，具有很高的编译效率和指令的执行速度。采用哈佛结构，流水线处理，其处理速度比最快的CPU还快10—50倍。</p>
+<h4 id="嵌入式片上系统SOC"><a href="#嵌入式片上系统SOC" class="headerlink" title="嵌入式片上系统SOC"></a>嵌入式片上系统SOC</h4><p>集成度最高，追求产品系统最大包容的集成器件。SoC最大的特点是成功实现了软硬件无缝结合，直接在处理器片内嵌入操作系统的代码模块</p>
+<p>高端SoC芯片主要集中于手机、平板电脑、服务器市场等，次高端SoC芯片多应用于安防、智能音频、物联网等领域，专用型SoC芯片多应用于TWS耳机和智能手表等</p>
+<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><p>性能与功能：dsp，mpu，soc，mcu</p>
+<p>集成度：soc，mcu</p>
+<p>成本：dsp，mpu，soc，mcu</p>
+<p>适用场景：</p>
+<p>1、mcu用于简单控制与接口</p>
+<p>2、mpu高性能控制与应用</p>
+<p>3、dsp专业信号处理，运算性能最高</p>
+<p>4、soc单一智能设备，集成度最高</p>
+<h3 id="多核处理器"><a href="#多核处理器" class="headerlink" title="多核处理器"></a>多核处理器</h3><p>多核指多个微处理器内核，是将两个或更多的微处理器封装在一起，集成在一个电路中。多核处理器是单枚芯片，能够直接插入单一的处理器插槽中。多核与多CPU相比，很好的降低了计算机系统的功耗和体积。在多核技术中，由操作系统软件进行调度，多进程，多线程并发都可以。<br>2个或多个内核工作协调实现方式：<br>• 对称多处理技术SMP：将2颗完全一样的处理器封装在一个芯片内，达到双倍或接近双倍的处理性能，节省运算资源。<br>• 非对称处理技术AMP：2个处理内核彼此不同，各自处理和执行特定的功能，在软件的协调下分担不同的计算任务。</p>
+<p> 多核CPU的调度(当有多个任务运行时，如何进行CPU的分配)<br>• 多核CPU环境下进程的调度算法一般有全局队列调度和局部队列调度两种. </p>
+<p>• 全局队列调度是指操作系统维护一个全局的任务等待队列，当系统中有一个CPU空闲时，操作系统就从全局任务等待队列中选取就绪任务开始执行，CPU核心利用率高。<br>• 局部队列调度是操作系统为每个CPU内核维护一个局部的任务等待队列，当系统中有一个CPU内核空闲时，就从该核心的任务等待队列中选取适当的任务执行，优点是无需在多个CPU之间切换。</p>
+<h2 id="嵌入式软件"><a href="#嵌入式软件" class="headerlink" title="嵌入式软件"></a>嵌入式软件</h2><p>嵌入式软件是指应用在嵌入式计算机系统当中的各种软件，除了具有通用软件的一般特性，还具有一些与嵌入式系统相关的特点，包括：规模较小、开发难度大、实时性和可靠性要求高、要求固化存储。</p>
+<h3 id="BSP"><a href="#BSP" class="headerlink" title="BSP"></a>BSP</h3><p>板级支持包，包含了与硬件相关的驱动程序，引导程序，硬件抽象层。BSP主要负责底层硬件资源的管理和控制，提供给上层软件使用</p>
+<p>特点：</p>
+<p>硬件相关性：需要特定的硬件平台</p>
+<p>操作系统相关性：相同硬件平台的不同操作系统也需要不同的BSP软件包支持</p>
+<p>内容：</p>
+<p>引导加载程序BootLoader</p>
+<p>设备驱动器</p>
+<h3 id="BootLoader"><a href="#BootLoader" class="headerlink" title="BootLoader"></a>BootLoader</h3><p>嵌入式系统，加电后运行的第一段软件代码，是操作系统内核运行之前的一小段运行程序，以便为最终调用操作系统做好准备</p>
+<p>1、片段初始化：纯硬件的初始化，芯片</p>
+<p>2、板级初始化：同时包含软件和硬件的初始化</p>
+<p>3、加载内核，系统级初始化，将操作系统和应用程序的Flash内存复制到系统内存中</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>系统软件：控制和管理嵌入式系统资源，为嵌入式应用提供支持的各种软件，如设备驱动程序、嵌入式操作系统、嵌入式中间件等。<br>应用软件：嵌入式系统中的上层软件，定义了嵌入式设备的主要功能和用途，并负责与用户交互，一般面向特定的应用领域，如飞行控制软件、手机软件、地图等。<br>支撑软件：辅助软件开发的工具软件，如系统分析设计工具、在线仿真工具、交叉编译器等。</p>
+<h3 id="嵌入式系统"><a href="#嵌入式系统" class="headerlink" title="嵌入式系统"></a>嵌入式系统</h3><p>一般嵌入式系统由嵌入式处理器、相关支撑硬件、嵌入式操作系统、支撑软件以及应用软件组成<br>嵌入式系统分为硬件层、抽象层、操作系统层、中间件层和应用层<br>操作系统层主要由嵌入式操作系统、文件系统、图形用户接口、网络系统和通用组件等可配置模块组成</p>
+<p>嵌入式系统应具备以下特性：</p>
+<p>1、专用性强</p>
+<p>2、技术融合</p>
+<p>3、软硬一体，软件为主</p>
+<p>4、比通用计算机资源少</p>
+<p>5、程序化代码固化在非易失存储器中</p>
+<p>6、需专门开发工具和环境</p>
+<p>7、安全性和可靠性要求高</p>
+<p>8、体积小，实时性要求高</p>
+<h4 id="嵌入式处理器"><a href="#嵌入式处理器" class="headerlink" title="嵌入式处理器"></a>嵌入式处理器</h4><p>嵌入式处理器芯片除满足低功耗、体积小等需求外，根据不同环境需求，其工艺可分为民用、工业和军用等三个档次</p>
+<h4 id="相关支撑硬件"><a href="#相关支撑硬件" class="headerlink" title="相关支撑硬件"></a>相关支撑硬件</h4><p>括存储器、定时器、总线、I0接口以及相关专用硬件。</p>
+<h4 id="嵌入式操作系统"><a href="#嵌入式操作系统" class="headerlink" title="嵌入式操作系统"></a>嵌入式操作系统</h4><p>运行在嵌入式系统中的基础软件，主要用于管理计算机资源和应用软件。与通用操作系统不同，嵌入式操作系统应具备实时性、可剪裁性和安全性等特征</p>
+<h4 id="支撑软件"><a href="#支撑软件" class="headerlink" title="支撑软件"></a>支撑软件</h4><p>应用软件开发与运行提供公共服务、软件开发、调试能力</p>
+<h4 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h4><h3 id="嵌入式数据库系统EDBMS"><a href="#嵌入式数据库系统EDBMS" class="headerlink" title="嵌入式数据库系统EDBMS"></a>嵌入式数据库系统EDBMS</h3><p>设备随时移动性<br>网络频繁断接<br>网络条件多样化<br>通信能力不对称</p>
+<p>一个完整的EDBMS由若干子系统组成，包括主数据库、同步服务器、嵌入式数据库和连接网络等几个子系统</p>
+<p>嵌入式移动数据库在实际应用中必须解决好数据的一致性（复制性）、高效的事务处理和数据的安全性等关键问题</p>
+<h3 id="嵌入式操作系统-1"><a href="#嵌入式操作系统-1" class="headerlink" title="嵌入式操作系统"></a>嵌入式操作系统</h3><p>嵌入式操作系统EOS与通用操作系统相比，EOS主要有以下特点：<br>（1）微型化。EOS的运行平台不是通用计算机，而是嵌入式系统。这类系统一般没有大容量的内存，几乎没有外存，因此，EOS必须做得小巧，以占用尽量少的系统资源。<br>（2）代码质量高。在大多数嵌入式应用中，存储空间依然是宝贵的资源，这就要求程序代码的质量要高，代码要尽量精简。<br>（3）专业化。嵌入式系统的硬件平台多种多样，处理器的更新速度快，每种处理器都是针对不同的应用领域而专门设计的。因此，EOS要有很好适应性和移植性，还要支持多种开发平台。<br>（4）实时性强。嵌入式系统广泛应用于过程控制、数据采集、通信、多媒体信息处理等要求实时响应的场合，因此，实时性成为EOS的又一特点。<br>（5）可裁减和可配置。应用的多样性要求EOS具有较强的适应能力，能够根据应用的特点和具体要求进行灵活配置和合理裁减，以适应微型化和专业化的要求。</p>
+<h3 id="嵌入式实时操作系统"><a href="#嵌入式实时操作系统" class="headerlink" title="嵌入式实时操作系统"></a>嵌入式实时操作系统</h3><p>嵌入式实时系统是一种完全嵌入受控器件内部，为特定应用而设计的专用计算机系统。在嵌入式实时系统中，要求系统在投入运行前即具有确定性和可预测性。</p>
+<p>实时操作系统（RTOS）的特点<br>当外界事件或数据产生时，能够接受并以足够快的速度予以处理，其处理的结果又能在规定的时间之内来控制生产过程或对处理系统做出快速响应，并控制所有实时任务协调一致运行。因而，提供及时响应和高可靠性是其主要特点。<br>实时操作系统有硬实时和软实时之分，硬实时要求在规定的时间内必须完成操作，这是在操作系统设计时保证的；软实时则只要按照任务的优先级，尽可能快地完成操作即可</p>
+<p>实时操作系统的特征：<br>高精度计时系统<br>多级中断机制：需要建立多级中断嵌套处理机制，以确保对紧迫程度较高的实时事件进行及时响应和处理<br>实时调度机制：调度策略和算法上保证优先调度实时任务；建立更多“安全切换”时间点，保证及时调度实时任务</p>
+<h3 id="嵌入式软件设计"><a href="#嵌入式软件设计" class="headerlink" title="嵌入式软件设计"></a>嵌入式软件设计</h3><p>交叉平台开发环境，包含三个高度集成的部分：</p>
+<p>1、运行在宿主机强有力的交叉开发工具和程序</p>
+<p>2、运行在目标机的高性能，可剪裁的实时操作系统</p>
+<p>3、连接宿主机和目标机的多种通信方式</p>
+<p>嵌入式系统软件的特点：规模较小、开发难度大、实时性和可靠性要求高、要求固化存储</p>
+<p>嵌入式系统的开发需要借助宿主机（通用计算机）来编译出目标机的可执行代码</p>
+<p>嵌入式软件的开发可以分为几个阶段：编码、交叉编译、交叉调试。</p>
+<p>调试时采用的是在宿主机和目标机之间进行的交叉调试，调试器仍然运行在宿主机的通用操作系统之上，但被调试的进程却是运行在基于特定硬件平台的嵌入式操作系统中</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/" rel="prev" title="计算机操作存储，文件，设备管理">
+                  <i class="fa fa-angle-left"></i> 计算机操作存储，文件，设备管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="next" title="计算机网络">
+                  计算机网络 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

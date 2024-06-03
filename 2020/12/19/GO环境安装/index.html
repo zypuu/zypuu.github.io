@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="go服务本地开发环境安装，及相关环境参数，go mod相关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO环境安装">
+<meta property="og:url" content="https://zypuu.github.io/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="go服务本地开发环境安装，及相关环境参数，go mod相关">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-12-19T05:09:22.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.919Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/","path":"2020/12/19/GO环境安装/","title":"GO环境安装"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GO环境安装 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装包下载、安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">环境变量设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%82%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">相关环境变量参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GO111Module"><span class="nav-number">3.1.</span> <span class="nav-text">GO111Module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GOPATH"><span class="nav-number">3.2.</span> <span class="nav-text">GOPATH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GOROOT"><span class="nav-number">3.3.</span> <span class="nav-text">GOROOT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GOPROXY"><span class="nav-number">3.4.</span> <span class="nav-text">GOPROXY</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GO-MOD"><span class="nav-number">4.</span> <span class="nav-text">GO MOD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A8%A1%E5%9D%97"><span class="nav-number">4.1.</span> <span class="nav-text">初始化模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%A4%84%E7%90%86-%E6%A0%B9%E6%8D%AEgo-mod%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">依赖关系处理 ,根据go.mod文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E4%BE%9D%E8%B5%96%E5%8C%85%E5%A4%8D%E5%88%B6%E5%88%B0%E9%A1%B9%E7%9B%AE%E4%B8%8B%E7%9A%84-vendor%E7%9B%AE%E5%BD%95%E3%80%82"><span class="nav-number">4.3.</span> <span class="nav-text">将依赖包复制到项目下的 vendor目录。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="nav-number">4.4.</span> <span class="nav-text">显示依赖关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E8%AF%A6%E7%BB%86%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="nav-number">4.5.</span> <span class="nav-text">显示详细依赖关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E4%BE%9D%E8%B5%96"><span class="nav-number">4.6.</span> <span class="nav-text">下载依赖</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GO环境安装 | All-Nothing">
+      <meta itemprop="description" content="go服务本地开发环境安装，及相关环境参数，go mod相关">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO环境安装
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-12-19 13:09:22" itemprop="dateCreated datePublished" datetime="2020-12-19T13:09:22+08:00">2020-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">go服务本地开发环境安装，及相关环境参数，go mod相关</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="安装包下载、安装"><a href="#安装包下载、安装" class="headerlink" title="安装包下载、安装"></a>安装包下载、安装</h2><p>去官网下载go安装包即可，根据自己的操作系统。</p>
+<p>提取到 /usr/local 目录，在 /usr/local/go 中创建Go目录树</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz</span><br></pre></td></tr></table></figure>
+<p>sudo运行，或者root用户</p>
+<h2 id="环境变量设置"><a href="#环境变量设置" class="headerlink" title="环境变量设置"></a>环境变量设置</h2><p>要将 /usr/local/go/bin 添加到 PATH 环境变量， 你需要将此行添加到你的 /etc/profile（全系统安装）或 $HOME/.profile 文件中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> PATH=$PATH:<span class="regexp">/usr/</span>local/go/bin</span><br></pre></td></tr></table></figure>
+
+<p>如果安装到其他位置，则需要设置GOROOT</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br><span class="line"><span class="keyword">export</span> PATH=$PATH:$GOROOT/bin</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关环境变量参数"><a href="#相关环境变量参数" class="headerlink" title="相关环境变量参数"></a>相关环境变量参数</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go env</span><br><span class="line">go version</span><br></pre></td></tr></table></figure>
+
+<p>go env可查看go的环境变量参数，go version 可查看go的版本</p>
+<h3 id="GO111Module"><a href="#GO111Module" class="headerlink" title="GO111Module"></a>GO111Module</h3><p>go 1.11才有的特性</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GO111MODULE=on # 开启GoModule特性</span><br></pre></td></tr></table></figure>
+<p>GO111MODULE解释, 当为on时则使用Go Modules,go 会忽略 $GOPATH和 vendor文件夹,只根据go.mod下载依赖。</p>
+<p>当为 off时则不适用新特性 Go Modules支持，它会查找 vendor目录和 $GOPATH来查找依赖关系，也就是继续使用“GOPATH模式”。</p>
+<p>当为 auto时或未设置时则根据当前项目目录下是否存在 go.mod文件或 $GOPATH/src之外并且其本身包含go.mod文件时才会使用新特性 Go Modules模式，</p>
+<p>并且auto为 GO111MODULE的默认值。</p>
+<h3 id="GOPATH"><a href="#GOPATH" class="headerlink" title="GOPATH"></a>GOPATH</h3><p>表示go的工作目录，这个目录指定了需要从哪个地方寻找GO的包、可执行程序等，这个目录可以是多个目录表示</p>
+<h3 id="GOROOT"><a href="#GOROOT" class="headerlink" title="GOROOT"></a>GOROOT</h3><p>表示的是go语言编译、工具、标准库等的安装路径。</p>
+<p>在Linux下设置GOROOT目录：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br></pre></td></tr></table></figure>
+
+<h3 id="GOPROXY"><a href="#GOPROXY" class="headerlink" title="GOPROXY"></a>GOPROXY</h3><p>简单来说就是一个代理，让我们更方便的下载哪些由于墙的原因而导致无法下载的第三方包，</p>
+<p><a target="_blank" rel="noopener" href="http://proxy.golang.org/">http://proxy.golang.org</a> 在中国无法访问，故而建议使用 <a target="_blank" rel="noopener" href="http://goproxy.cn/">http://goproxy.cn</a> 作为替代</p>
+<h2 id="GO-MOD"><a href="#GO-MOD" class="headerlink" title="GO MOD"></a>GO MOD</h2><h3 id="初始化模块"><a href="#初始化模块" class="headerlink" title="初始化模块"></a>初始化模块</h3><p>go mod init &lt;项目模块名称&gt;</p>
+<h3 id="依赖关系处理-根据go-mod文件"><a href="#依赖关系处理-根据go-mod文件" class="headerlink" title="依赖关系处理 ,根据go.mod文件"></a>依赖关系处理 ,根据go.mod文件</h3><p>go mod tidy</p>
+<h3 id="将依赖包复制到项目下的-vendor目录。"><a href="#将依赖包复制到项目下的-vendor目录。" class="headerlink" title="将依赖包复制到项目下的 vendor目录。"></a>将依赖包复制到项目下的 vendor目录。</h3><p>go mod vendor<br>如果包被屏蔽(墙),可以使用这个命令，随后使用go build -mod=vendor编译</p>
+<h3 id="显示依赖关系"><a href="#显示依赖关系" class="headerlink" title="显示依赖关系"></a>显示依赖关系</h3><p>go list -m all</p>
+<h3 id="显示详细依赖关系"><a href="#显示详细依赖关系" class="headerlink" title="显示详细依赖关系"></a>显示详细依赖关系</h3><p>go list -m -json all</p>
+<h3 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h3><p>go mod download [path@version]<br>[path@version]是非必写的</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"># GO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/18/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" rel="prev" title="反转链表">
+                  <i class="fa fa-angle-left"></i> 反转链表
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/21/GO%E7%9A%84make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="next" title="GO的make和new的区别">
+                  GO的make和new的区别 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="质量属性和架构评估，中间件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="质量属性和架构评估">
+<meta property="og:url" content="https://zypuu.github.io/2024/04/17/%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7%E5%92%8C%E6%9E%B6%E6%9E%84%E8%AF%84%E4%BC%B0/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="质量属性和架构评估，中间件">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-04-17T02:10:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.230Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/04/17/%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7%E5%92%8C%E6%9E%B6%E6%9E%84%E8%AF%84%E4%BC%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/04/17/%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7%E5%92%8C%E6%9E%B6%E6%9E%84%E8%AF%84%E4%BC%B0/","path":"2024/04/17/质量属性和架构评估/","title":"质量属性和架构评估"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>质量属性和架构评估 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B1%9E%E6%80%A7-%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">软件系统属性-质量属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">质量属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%A8%E9%87%8F%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">质量场景描述</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AF%84%E4%BC%B0"><span class="nav-number">2.</span> <span class="nav-text">系统架构评估</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E4%BC%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">评估方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%9C%BA%E6%99%AF%E7%9A%84%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95SAAM"><span class="nav-number">2.2.1.</span> <span class="nav-text">基于场景的架构分析方法SAAM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E6%9D%83%E8%A1%A1%E5%88%86%E6%9E%90%E6%B3%95ATAM"><span class="nav-number">2.2.2.</span> <span class="nav-text">架构权衡分析法ATAM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%88%90%E6%9C%AC%E6%95%88%E7%9B%8A%E5%88%86%E6%9E%90%E6%B3%95CBAM"><span class="nav-number">2.2.3.</span> <span class="nav-text">成本效益分析法CBAM</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">中间件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/04/17/%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7%E5%92%8C%E6%9E%B6%E6%9E%84%E8%AF%84%E4%BC%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="质量属性和架构评估 | All-Nothing">
+      <meta itemprop="description" content="质量属性和架构评估，中间件">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          质量属性和架构评估
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-04-17 10:10:00" itemprop="dateCreated datePublished" datetime="2024-04-17T10:10:00+08:00">2024-04-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">质量属性和架构评估，中间件</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="软件系统属性-质量属性"><a href="#软件系统属性-质量属性" class="headerlink" title="软件系统属性-质量属性"></a>软件系统属性-质量属性</h3><p>软件系统属性包括功能属性和质量属性，软件架构重点关注的是质量属性</p>
+<p>架构的基本需求是在满足功能属性的前提下，关注软件系统质量属性，为了精确、定量地表达系统的质量属性，通常会采用<strong>质量属性场景</strong>的方式进行描述。在确定软件系统架构，精确描述质量属性场景后，就需要对<strong>系统架构进行评估。软件系统架构评估是在对架构分析、评估的基础上，对架构策略的选取进行决策</strong>。它也可以灵活地运用于软件架构评审等工作</p>
+<p>软件系统质量属性 (Quality Attribute) 是一个系统的可测量或者可测试的属性</p>
+<p>软件系统质量属性是指软件系统满足用户需求的程度，是衡量软件系统质量的重要指标。</p>
+<p>基于软件系统的生命周期，可以将软件系统的质量属性分为开发期质量属性和运行期质量属性2个部分</p>
+<p>开发期质量属性主要指在<strong>软件开发阶段所关注的质量属性，这个阶段关注人群主要是开发者</strong></p>
+<p>易理解性：指设计被开发人员理解的难易程度。</p>
+<p>可扩展性：软件因适应新需求或需求变化而增加新功能的能力，也称为灵活性。</p>
+<p>可重用性：指重用软件系统或某一部分的难易程度。</p>
+<p>可测试性：对软件测试以证明其满足需求规范的难易程度。</p>
+<p>可维护性：当需要修改缺陷、增加功能、提高质量属性时，识别修改点并实施修改的难易程度。</p>
+<p>可移植性：将软件系统从一个运行环境转移到另一个不同的运行环境的难易程度。</p>
+<p>运行期质量属性主要指在<strong>软件运行阶段所关注的质量属性，这个阶段关注人群主要是用户</strong></p>
+<p>性能：性能是指软件系统及时提供相应服务的能力，如速度、吞吐量和容量等的要求。</p>
+<p>安全性：指软件系统同时兼顾向合法用户提供服务，以及阻止非授权使用的能力。</p>
+<p>可伸缩性：指当用户数和数据量增加时，软件系统维持高服务质量的能力。例如，通过增加服务器来提高能力。</p>
+<p>互操作性：指本软件系统与其他系统交换数据和相互调用服务的难易程度。</p>
+<p>可靠性：软件系统在一定的时间内持续无故障运行的能力。</p>
+<p>可用性：指系统在一定时间内正常工作的时间所占的比例。可用性会受到系统错误，恶意攻击，高负载等问题的影响。</p>
+<p>鲁棒性：是指软件系统在非正常情况(用户进行了非法操作、相关软硬件系统发生了故障)下仍能够正常运行的能力，也称健壮性或容性。</p>
+<h4 id="质量属性"><a href="#质量属性" class="headerlink" title="质量属性"></a>质量属性</h4><ol>
+<li>性能：指系统的响应能力，即要经过多长时间才能对某个事件做出响应，或者在某段时间内系统所能处理的事件的个数。如响应时间、吞吐量。</li>
+</ol>
+<p>设计策略：优先级队列、增加计算资源、减少计算开销、引入并发机制、采用资源调度等。</p>
+<ol start="2">
+<li>可靠性：是指系统在一段时间内保持正常运行而不发生故障的能力。它强调了系统的稳定性和可靠性，通常是通过衡量系统在一段时间内发生故障的概率来评估的。一个可靠性高的系统意味着它很少出现故障，用户可以信任它的稳定性。可靠性有一些指标需要了解。如MTTF(平均无故障时间)、MTBF(平均故障间隔时间)、MTTR(平均故障修复时间)。MTBF=MTTF+MTTR</li>
+</ol>
+<p>设计策略：心跳、Ping/Echo、冗余、选举</p>
+<ol start="3">
+<li>可用性：是指系统在需要的时候可供使用的能力，即系统处于可操作状态的时间比例。可用性通常通过计算系统在一定时间内可操作的百分比来评估。一个高可用性的系统意味着它在大部分时间内都是可用的，用户可以随时访问和使用它。</li>
+</ol>
+<p>设计策略：心跳、Ping/Echo、冗余、选举。</p>
+<p>可靠性强调系统不发生故障，而可用性强调系统在需要时可供使用。两者都是衡量系统性能和质量的重要标准，但它们关注的方面略有不同</p>
+<ol start="4">
+<li>安全性：是指系统在向合法用户提供服务的同时能够阻止非授权用户使用的企图或拒绝服务的能力。如保密性、完整性、不可抵赖性、可控性。</li>
+</ol>
+<p>设计策略：入侵检测、用户认证、用户授权、追踪审计。</p>
+<ol start="5">
+<li>可修改性：指能够快速的以较高的性能价格比对系统进行变更的能力。通常以某些具体的变更为基准，通过考察这些变更的代价衡量。</li>
+</ol>
+<p>设计策略：接口-实现分类、抽象、信息隐藏（是不是感觉有点像结构化开发和面向对象开发的设计原则）。</p>
+<ol start="6">
+<li><p>功能性：是系统所能完成所期望的工作的能力。一项任务的完成需要系统中许多或大多数构件的相互协作。</p>
+</li>
+<li><p>可变性（可扩展）：指体系结构经扩充或变更而成为新体系结构的能力。这种新体系结构应该符合预先定义的规则，在某些具体方面不同于原有的体系结构。当要将某个体系结构作为一系列相关产品的基础时，可变性是很重要的。</p>
+</li>
+<li><p>互操作性：作为系统组成部分的软件不是独立存在的，经常与其他系统或自身环境相互作用。为了支持互操作性，软件体系结构必须为外部可视的功能特性和数据结构提供精心设计的软件入口。程序和用其他编程语言编写的软件系统的交互作用就是互操作性的问题，也影响应用的软件体系结构。</p>
+</li>
+<li><p>易用性：它关注的是软件系统的用户界面和交互设计，以确保用户能够轻松、高效地使用系统，并感到满意。易用性不仅关乎用户界面的外观，还包括用户体验、交互流程和用户学习曲线等方面</p>
+</li>
+</ol>
+<h4 id="质量场景描述"><a href="#质量场景描述" class="headerlink" title="质量场景描述"></a>质量场景描述</h4><p>通常采用质量属性场景 (Quality Attribute Scenario) 作为描述质量属性的手段。质量属性场景是一个具体的质量属性需求，是利益相关者与系统的交互的简短陈述。</p>
+<p>质量属性场景是一种用于描述系统如何满足特定质量属性需求的情境或情景。它由6部分组成：</p>
+<p>刺激源(谁)：这是某个生成该刺激的实体(人、计算机系统或者任何其他刺激器)。</p>
+<p>刺激(做什么)：该刺激是当刺激到达系统时需要考虑的条件。</p>
+<p>环境(在什么样的环境下)∶该刺激在某些条件内发生。当激励发生时，系统可能处于过载、运行或者其他情况。</p>
+<p>制品(对哪个功能)：某个制品被激励。这可能是整个系统，也可能是系统的一部分。</p>
+<p>响应(得到什么反馈)：该响应是在激励到达后所采取的行动。</p>
+<p>响应度量(对反馈进行度量)︰当响应发生时，应当能够以某种方式对其进行度量，以对需求进行测试。</p>
+<h3 id="系统架构评估"><a href="#系统架构评估" class="headerlink" title="系统架构评估"></a>系统架构评估</h3><p>敏感点：是指为了实现某一种特定的质量属性，一个或多个构件所具有的特性。</p>
+<p>权衡点：是影响多个质量属性的特性，是多个质量属性的敏感点</p>
+<p>软件架构评估在架构设计之后，系统设计之前，因此与设计、实现、测试都没有关系。评估的目的是为了评估所采用的架构是否能解决软件系统需求</p>
+<h4 id="评估方式"><a href="#评估方式" class="headerlink" title="评估方式"></a>评估方式</h4><p>1 . 基于调查问卷(检查表)的方式</p>
+<p>2、基于度量的方式</p>
+<p>3、基于场景的方式</p>
+<h4 id="评估方法"><a href="#评估方法" class="headerlink" title="评估方法"></a>评估方法</h4><h5 id="基于场景的架构分析方法SAAM"><a href="#基于场景的架构分析方法SAAM" class="headerlink" title="基于场景的架构分析方法SAAM"></a>基于场景的架构分析方法SAAM</h5><p>SAAM是一种非功能质量属性的架构分析方法，是最早形成文档并得到广泛应用的软件架构分析方法。针对可修改性</p>
+<p>SAAM的主要输入是问题描述、需求声明和架构描述</p>
+<h5 id="架构权衡分析法ATAM"><a href="#架构权衡分析法ATAM" class="headerlink" title="架构权衡分析法ATAM"></a>架构权衡分析法ATAM</h5><p>是一种系统架构评估方法，主要在系统开发之前，<strong>针对性能、可用性、安全性和可修改性等质量属性</strong>进行评价和折中，让架构师明确如何权衡多个质量目标，参与者有评估小组、项目决策者和其他项目相关人</p>
+<p>ATAM被分为四个主要的活动领域,分别是</p>
+<p>场景和需求收集、体系结构（架构）视图和场景实现、属性模型构造和分析以及架构评审与折中。</p>
+<p>整个评估过程强调以属性(质量属性)作为架构评估的核心概念</p>
+<p>ATAM 方法采用效用树 (Utility tree) 这一工具来对质量属性进行分类和优先级排序。效用树的结构包括：树根—质量属性—属性分类—质量属性场景(叶子节点)</p>
+<p>得到初始的效用树后，需要修剪这棵树，保留重要场景(通常不超过50个),再对场景按重要性给定优先级(用 H/M/L 的形式),再按场景实现的难易度来确定优先级(用 H/M/L的形式),这样对所选定的每个场景就有一个优先级对(重要度、难易度),如 (H、L) 表示该场景重要且易实现。</p>
+<p>ATAM的阶段解释：</p>
+<p><strong>1 .</strong> <strong>描述和介绍阶段：</strong></p>
+<p>目标： 此阶段的目标是收集相关架构材料，定义评估的目标和评估的软件架构，明确要优化的质量属性以及介绍ATAM方法的步骤和原则。</p>
+<p>活动： 在这个阶段，评估团队会与项目干系人一起定义评估的目标，确定评估的软件架构，并收集架构文档和相关信息。团队还会介绍ATAM方法的步骤，以确保所有参与者了解评估的过程。</p>
+<p>示例： 对于电子商务网站的架构评估，评估团队会与项目干系人合作，确定评估的目标是提高性能和安全性。他们收集有关网站架构的文档，如架构图和设计文档。</p>
+<p><strong>2.</strong> <strong>调查和分析阶段：</strong></p>
+<p>目标： 此阶段的目标是确定架构方法，分析架构并评估这些架构方法对质量属性的影响，同时识别潜在的问题和权衡决策。</p>
+<p>活动： 在这个阶段，评估团队会定义架构方法，分析不同的架构设计，生成质量属性效应树以表示不同决策对质量属性的影响。他们还会识别潜在的问题和决策权衡。</p>
+<p>产出： 在此阶段，<strong>产出质量属性效应树</strong>（Quality Attribute Utility Tree），用于表示不同架构决策对质量属性的影响以及它们之间的权衡关系。</p>
+<p>示例： 对于电子商务网站的架构评估，评估团队会定义不同的架构决策，如引入缓存或增加服务器资源。他们生成质量属性效应树，以分析这些决策对性能和安全性的影响。</p>
+<p><strong>3.</strong> <strong>测试阶段：</strong></p>
+<p>目标： 测试阶段旨在验证架构是否满足质量属性需求。</p>
+<p>活动： 团队创建测试用例来模拟质量属性场景，包括性能测试、安全性测试等。他们运行这些测试用例，测量系统的性能和行为，并记录测试结果。在此阶段，评估团队讨论各种质量属性场景，对它们进行分级，以确定哪些场景对系统的关键性最高。团队还会分析不同的架构方法，以确定哪种方法最有可能满足关键场景的需求。最后，项目干系人会对不同的架构方法和场景分级进行投票，以帮助团队确定最佳的架构方案。</p>
+<p>示例： 评估团队可能会讨论电子商务网站的性能、可伸缩性和安全性场景，分级它们的重要性，并分析引入缓存或增加服务器资源等不同架构方法的影响。项目干系人会进行投票，以选择最合适的架构方法。</p>
+<p><strong>4.</strong> <strong>报告阶段：</strong></p>
+<p>目标： 报告阶段的目标是总结评估的结果、提供改进建议，并为决策者提供决策依据。</p>
+<p>活动： 团队生成ATAM评估报告，其中包括评估的发现、性能数据、可能的改进建议以及权衡决策。报告应该清晰地传达关键信息，以便决策者可以做出明智的架构决策。</p>
+<p>示例： 电子商务网站的评估报告可能包括性能测试结果、安全性评估、建议的架构改进，以及与质量属性场景相关的权衡决策。报告将提供给项目管理团队，以指导后续的架构决策和改进。</p>
+<h5 id="成本效益分析法CBAM"><a href="#成本效益分析法CBAM" class="headerlink" title="成本效益分析法CBAM"></a>成本效益分析法CBAM</h5><p>用来对架构建立的成本来进行设计和建模，让决策者根据投资收益率来选择合适的架构，可以看做对ATAM的补充，在ATAM确定质量合理的基础上，再对效益进行分析</p>
+<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><p>在一个分布式系统环境中处于操作系统和应用程序之间的软件，可以在不同的技术之间共享资源，将不同的操作系统、数据库、异构的网络环境以及若干应用结合成一个有机的协同工作整体</p>
+<p>中间件位于客户机/服务器的操作系统之上，管理计算机资源和网络通信，</p>
+<p>中间件是一类软件，而非一种软件；</p>
+<p>中间件不仅仅实现互连，还要实现应用之间的互操作；</p>
+<p>中间件是基于分布式处理的软件，最突出的特点是网络通信</p>
+<p>使应用程序开发变得更容易，通过提供统一的程序抽象，隐藏异构系统和分布式系统下低级别编程的复杂度</p>
+<p>1、数据库访问中间件：通过一个抽象层访问数据库，从而允许使用相同或相似的代码访问不同的数据库资源。典型的技术如Windows平台的ODBC和Java平台的JDBC等。</p>
+<p>2、远程过程调用(RPC)：是一种广泛使用的分布式应用程序处理方法。一个应用程序使用RPC来“远程”执行一个位于不同地址空间内的过程，从效果上看和执行本地调用相同。</p>
+<p>3、面向消息中间件(MOM)：利用高效可靠的消息传递机制进行平台无关的数据交流，并可基于数据通信进行分布系统的集成。通过提供消息传递和消息排队模型，可在分布环境下扩展进程间的通信，并支持多种通信协议、语言、应用程序、硬件和软件平台。典型的产品如RabbitMQ。</p>
+<p>4、分布式对象中间件：随着对象技术与分布式计算技术的发展，两者相互结合形成了分布式对象技术，并发展成为当今软件技术的主流方向。典型的产品如OMG的CORBA、Sun的RMI/EJB、Microsoft的DCOM等。</p>
+<p>5、事务中间件：也称事务处理监控器(TPM)，最早出现在大型机上。事务处理监控程序位于客户和服务器之间，完成事务管理与协调、负载平衡、失效恢复等任务，提高系统的整体性能。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/14/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" rel="prev" title="系统架构设计">
+                  <i class="fa fa-angle-left"></i> 系统架构设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/18/%E6%9E%B6%E6%9E%84%E7%9A%84%E6%BC%94%E5%8C%96%E5%92%8C%E7%BB%B4%E6%8A%A4/" rel="next" title="架构的演化和维护">
+                  架构的演化和维护 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

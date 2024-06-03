@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="go的位运算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="位运算相关">
+<meta property="og:url" content="https://zypuu.github.io/2021/03/26/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="go的位运算">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-03-26T07:51:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.036Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/03/26/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9B%B8%E5%85%B3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/03/26/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9B%B8%E5%85%B3/","path":"2021/03/26/位运算相关/","title":"位运算相关"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>位运算相关 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">位运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8E-amp"><span class="nav-number">1.1.</span> <span class="nav-text">与 &amp;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%88%96"><span class="nav-number">1.2.</span> <span class="nav-text">或 |</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%88%96"><span class="nav-number">1.3.</span> <span class="nav-text">异或 ^</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#amp"><span class="nav-number">1.4.</span> <span class="nav-text">&amp;^</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lt-lt-%E5%B7%A6%E7%A7%BB-gt-gt-%E5%8F%B3%E7%A7%BB"><span class="nav-number">1.5.</span> <span class="nav-text">&lt;&lt; 左移 &gt;&gt; 右移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%A5%87%E5%81%B6"><span class="nav-number">1.6.</span> <span class="nav-text">判断奇偶</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%850%E6%9C%80%E4%BD%8E%E4%BD%8D%E7%9A%841"><span class="nav-number">1.7.</span> <span class="nav-text">清0最低位的1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%97%E5%88%B0%E6%9C%80%E4%BD%8E%E4%BD%8D%E7%9A%841"><span class="nav-number">1.8.</span> <span class="nav-text">得到最低位的1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E7%AC%ACn-1%E4%BD%8D%E7%BD%AE%E4%B8%BA1"><span class="nav-number">1.9.</span> <span class="nav-text">将第n+1位置为1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E7%AC%ACn-1%E4%B8%BA%E7%BD%AE%E4%B8%BA0"><span class="nav-number">1.10.</span> <span class="nav-text">将第n+1为置为0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%8F%B3n%E4%BD%8D%E6%B8%850"><span class="nav-number">1.11.</span> <span class="nav-text">将右n位清0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%AC%ACn-1%E4%BD%8D%E5%80%BC"><span class="nav-number">1.12.</span> <span class="nav-text">获取第n+1位值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%AC%ACn-1%E4%BD%8D%E7%9A%84%E5%B9%82%E5%80%BC"><span class="nav-number">1.13.</span> <span class="nav-text">获取第n+1位的幂值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E6%9C%80%E9%AB%98%E4%BD%8D%E8%87%B3%E7%AC%ACn-1%E4%BD%8D%EF%BC%88%E5%90%AB%EF%BC%89%E6%B8%850"><span class="nav-number">1.14.</span> <span class="nav-text">将最高位至第n+1位（含）清0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">颠倒二进制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E7%9A%84%E4%B8%AA%E4%BD%8D"><span class="nav-number">2.2.</span> <span class="nav-text">1的个位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E7%9A%84%E5%B9%82"><span class="nav-number">2.3.</span> <span class="nav-text">2的幂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E7%89%B9%E8%AE%A1%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">比特计数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N%E7%9A%87%E5%90%8E"><span class="nav-number">2.5.</span> <span class="nav-text">N皇后</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/03/26/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9B%B8%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="位运算相关 | All-Nothing">
+      <meta itemprop="description" content="go的位运算">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          位运算相关
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-26 15:51:00" itemprop="dateCreated datePublished" datetime="2021-03-26T15:51:00+08:00">2021-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">go的位运算</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h3><h4 id="与-amp"><a href="#与-amp" class="headerlink" title="与 &amp;"></a>与 &amp;</h4><p>有两个数都是1结果才为1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line"><span class="keyword">var</span> c uint8 = <span class="number">15</span> <span class="comment">// 00001111</span></span><br><span class="line">a := b &amp; c <span class="comment">// 00000100</span></span><br><span class="line">a = <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="或"><a href="#或" class="headerlink" title="或 |"></a>或 |</h4><p>两个数有一个是1 结果就是1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line"><span class="keyword">var</span> c uint8 = <span class="number">15</span> <span class="comment">// 00001111</span></span><br><span class="line">a := b &amp; c <span class="comment">// 00011111</span></span><br><span class="line">a = <span class="number">31</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="异或"><a href="#异或" class="headerlink" title="异或 ^"></a>异或 ^</h4><p> ^作二元运算符就是异或，相同为0，不相同为1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line"><span class="keyword">var</span> c uint8 = <span class="number">15</span> <span class="comment">// 00001111</span></span><br><span class="line">a := b &amp; c <span class="comment">// 00011011</span></span><br><span class="line">a = <span class="number">27</span></span><br></pre></td></tr></table></figure>
+
+<p>^作一元运算符表示是按位取反</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line"><span class="keyword">var</span> c uint8 = <span class="number">15</span> <span class="comment">// 00001111</span></span><br><span class="line">a := b &amp; c <span class="comment">// 00011011</span></span><br><span class="line">^a = <span class="number">228</span> <span class="comment">// 11100100</span></span><br></pre></td></tr></table></figure>
+
+<p>uint8与int</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line"><span class="keyword">var</span> c int = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line">^b = <span class="number">228</span> <span class="comment">// 11101011</span></span><br><span class="line">^c = -<span class="number">21</span> <span class="comment">// -10101</span></span><br></pre></td></tr></table></figure>
+
+<p>特殊情况</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line">b ^ b = <span class="number">0</span></span><br><span class="line">b ^ <span class="number">0</span> = b</span><br></pre></td></tr></table></figure>
+
+
+<p>int类型，故最高位是符号位，符号位取反，所以得到的结果是负数</p>
+<p>一个有符号位的^操作为 这个数+1的相反数</p>
+<h4 id="amp"><a href="#amp" class="headerlink" title="&amp;^"></a>&amp;^</h4><p>将运算符左边数据相异的位保留，相同位清零</p>
+<p>1&amp;^1  得0<br>1&amp;^0  得1<br>0&amp;^1  得0<br>0&amp;^0  得0</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line"><span class="keyword">var</span> c uint8 = <span class="number">15</span> <span class="comment">// 00001111</span></span><br><span class="line">a := b &amp;^ c</span><br><span class="line">a = <span class="number">16</span> <span class="comment">// 00010000</span></span><br></pre></td></tr></table></figure>
+<p>以b为准，相异保留b的位，相同，清零b的位</p>
+<h4 id="lt-lt-左移-gt-gt-右移"><a href="#lt-lt-左移-gt-gt-右移" class="headerlink" title="&lt;&lt; 左移 &gt;&gt; 右移"></a>&lt;&lt; 左移 &gt;&gt; 右移</h4><p>左移规则：右边空出的位用0填补，高位左移溢出则舍弃该高位</p>
+<p>右移规则：左边空出的位用0或者1填补。正数用0填补，负数用1填补。注：不同的环境填补方式可能不同。低位右移溢出则舍弃该位</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b uint8 = <span class="number">20</span> <span class="comment">// 00010100</span></span><br><span class="line">a := b &lt;&lt; <span class="number">1</span></span><br><span class="line">a = <span class="number">40</span> <span class="comment">// 00101000</span></span><br><span class="line">c：= b &gt;&gt; <span class="number">1</span></span><br><span class="line">c = <span class="number">10</span> <span class="comment">// 00001010</span></span><br></pre></td></tr></table></figure>
+<p>左移1相当于乘以2<br>右移1相当于除以2</p>
+<h4 id="判断奇偶"><a href="#判断奇偶" class="headerlink" title="判断奇偶"></a>判断奇偶</h4><p>同时也是获取最后一位的值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b &amp; <span class="number">1</span></span><br><span class="line">a == <span class="number">0</span> <span class="comment">// 偶数</span></span><br><span class="line">a == <span class="number">1</span> <span class="comment">// 奇数</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="清0最低位的1"><a href="#清0最低位的1" class="headerlink" title="清0最低位的1"></a>清0最低位的1</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b &amp; (b - <span class="number">1</span>)</span><br><span class="line">a = <span class="number">20</span> <span class="comment">// 10100</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="得到最低位的1"><a href="#得到最低位的1" class="headerlink" title="得到最低位的1"></a>得到最低位的1</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b &amp; (-b)</span><br><span class="line">a = <span class="number">2</span> <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="将第n-1位置为1"><a href="#将第n-1位置为1" class="headerlink" title="将第n+1位置为1"></a>将第n+1位置为1</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b | (<span class="number">1</span> &lt;&lt; <span class="number">0</span>) <span class="comment">// 将第0位置为1,1 &lt;&lt; n, 第n位</span></span><br><span class="line">a = <span class="number">23</span> <span class="comment">// 10111</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="将第n-1为置为0"><a href="#将第n-1为置为0" class="headerlink" title="将第n+1为置为0"></a>将第n+1为置为0</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b &amp; (^(<span class="number">1</span> &lt;&lt; <span class="number">1</span>)) <span class="comment">// 将第1位置为0,1 &lt;&lt; n, 第n位</span></span><br><span class="line">a = <span class="number">20</span> <span class="comment">// 10100</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="将右n位清0"><a href="#将右n位清0" class="headerlink" title="将右n位清0"></a>将右n位清0</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b &amp; (^<span class="number">0</span> &lt;&lt; <span class="number">2</span>)<span class="comment">// 将右边2位清0， n，右边n位</span></span><br><span class="line">a = <span class="number">20</span> <span class="comment">// 10100</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="获取第n-1位值"><a href="#获取第n-1位值" class="headerlink" title="获取第n+1位值"></a>获取第n+1位值</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := (b &gt;&gt; <span class="number">2</span>) &amp; <span class="number">1</span> <span class="comment">// 获取第2位值</span></span><br><span class="line">a = <span class="number">1</span> <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="获取第n-1位的幂值"><a href="#获取第n-1位的幂值" class="headerlink" title="获取第n+1位的幂值"></a>获取第n+1位的幂值</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b &amp; (<span class="number">1</span> &lt;&lt; <span class="number">2</span>) <span class="comment">// n=2，其实是从右边数第3位的</span></span><br><span class="line">a = <span class="number">4</span> <span class="comment">// 从右边开始算，第一位是0， n</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="将最高位至第n-1位（含）清0"><a href="#将最高位至第n-1位（含）清0" class="headerlink" title="将最高位至第n+1位（含）清0"></a>将最高位至第n+1位（含）清0</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b int = <span class="number">22</span> <span class="comment">// 10110</span></span><br><span class="line">a := b &amp; ((<span class="number">1</span> &lt;&lt; <span class="number">3</span>) - <span class="number">1</span>) <span class="comment">// n=3，其实是从左边数到第3位，不含第3位，前面的都清0</span></span><br><span class="line">a = <span class="number">6</span> <span class="comment">// 110</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><h4 id="颠倒二进制"><a href="#颠倒二进制" class="headerlink" title="颠倒二进制"></a>颠倒二进制</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">func reverseBits(num uint32) uint32 &#123;</span><br><span class="line">    <span class="keyword">var</span> res uint32 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">32</span>; i++ &#123;</span><br><span class="line">    	<span class="comment">// 新数字左移1位</span></span><br><span class="line">        res &lt;&lt;= <span class="number">1</span></span><br><span class="line">        <span class="comment">// num &amp; 1是获取num的最后一位，也可以判断奇偶</span></span><br><span class="line">        <span class="comment">// 最后一位加1，用或也可以，因为res最后一位肯定是0</span></span><br><span class="line">        res |= num &amp; <span class="number">1</span></span><br><span class="line">        <span class="comment">// 右移1位，更新num</span></span><br><span class="line">        num &gt;&gt;= <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 16位互相交换</span></span><br><span class="line">func reverseBits(num uint32) uint32 &#123;</span><br><span class="line">    <span class="keyword">var</span> res uint32 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">16</span>; i++ &#123;</span><br><span class="line">        res |= (num &amp; (<span class="number">1</span> &lt;&lt; i)) &lt;&lt; (<span class="number">31</span> - <span class="number">2</span> * i) </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">16</span>; i &lt; <span class="number">32</span>; i++ &#123;</span><br><span class="line">        res |= (num &amp; (<span class="number">1</span> &lt;&lt; i)) &gt;&gt; (<span class="number">2</span> * i -<span class="number">31</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1的个位"><a href="#1的个位" class="headerlink" title="1的个位"></a>1的个位</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 清0次数</span></span><br><span class="line">func hammingWeight(num uint32) int &#123;</span><br><span class="line">    count := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> num &gt; <span class="number">0</span> &#123;</span><br><span class="line">    	<span class="comment">// 将最低位的1清0</span></span><br><span class="line">        num &amp;= num - <span class="number">1</span></span><br><span class="line">        count++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 循环检查</span></span><br><span class="line">func hammingWeight(num uint32) int &#123;</span><br><span class="line">    count := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">32</span>; i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> (num &gt;&gt; i) &amp; <span class="number">1</span> == <span class="number">1</span>&#123;</span><br><span class="line">            count++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2的幂"><a href="#2的幂" class="headerlink" title="2的幂"></a>2的幂</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 得到最低位的1，看是不是等于本身，是这说明就一个1</span></span><br><span class="line">func isPowerOfTwo(n int) bool &#123;</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> &#123; <span class="keyword">return</span> <span class="literal">false</span> &#125;</span><br><span class="line">    <span class="keyword">return</span> n &amp; (-n) == n</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 清0最低位的1，看是不是等于0，是则说明只有1个1</span></span><br><span class="line">func isPowerOfTwo(n int) bool &#123;</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> &#123; <span class="keyword">return</span> <span class="literal">false</span> &#125;</span><br><span class="line">    <span class="keyword">return</span> n &amp; (n-<span class="number">1</span>) == <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 非位运算</span></span><br><span class="line">func isPowerOfTwo(n int) bool &#123;</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> &#123; <span class="keyword">return</span> <span class="literal">false</span> &#125;</span><br><span class="line">    <span class="keyword">for</span>  n % <span class="number">2</span> == <span class="number">0</span> &#123;</span><br><span class="line">        n /= <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n == <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="比特计数"><a href="#比特计数" class="headerlink" title="比特计数"></a>比特计数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非dp算法</span></span><br><span class="line">func countBits(num int) []int &#123;</span><br><span class="line">    res := make([]int, num+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= num; i++ &#123;</span><br><span class="line">        cur := i</span><br><span class="line">        <span class="keyword">for</span> cur != <span class="number">0</span> &#123;</span><br><span class="line">            cur &amp;= cur - <span class="number">1</span></span><br><span class="line">            res[i]++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 高有效位</span></span><br><span class="line">func countBits(num int) []int &#123;</span><br><span class="line">    dp := make([]int, num+<span class="number">1</span>)</span><br><span class="line">    hb := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= num; i++ &#123;</span><br><span class="line">        <span class="comment">// 如果是2的幂，则更新高有效位 </span></span><br><span class="line">        <span class="keyword">if</span> i &amp; (i - <span class="number">1</span>) == <span class="number">0</span> &#123; </span><br><span class="line">            hb = i</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 高有效位的下一位是+1，以此类推，直到下一个2的幂，并更新</span></span><br><span class="line">        dp[i] = dp[i - hb] + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 奇偶数，等于去掉最后一位前面的值 加上新的一位，是奇数就是1，偶数就是0</span></span><br><span class="line">func countBits(num int) []int &#123;</span><br><span class="line">    dp := make([]int, num+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= num; i++ &#123;</span><br><span class="line">        dp[i] = dp[i &gt;&gt; <span class="number">1</span>] + i &amp; <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="N皇后"><a href="#N皇后" class="headerlink" title="N皇后"></a>N皇后</h4><p>基于位运算的回溯递归</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基于位运算的递归</span></span><br><span class="line">func solveNQueens(n int) [][]string &#123;</span><br><span class="line">    <span class="comment">// 最终结果</span></span><br><span class="line">    res := [][]string&#123;&#125;</span><br><span class="line">    <span class="comment">// 初始化一个slice，记录每一行q的位置，初始化都为-1</span></span><br><span class="line">    bSlice := make([]int, n)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">        bSlice[i] = -<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> dfs func(int, int, int, int)</span><br><span class="line">    <span class="comment">// 递归函数</span></span><br><span class="line">    <span class="comment">// row行。 col列。 dia1.dia2两个对角线</span></span><br><span class="line">    dfs = <span class="function"><span class="title">func</span>(<span class="params">row, col, dia1, dia2 int</span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 递归终止条件,符合规则的一种结果</span></span><br><span class="line">        <span class="keyword">if</span> row == n &#123;</span><br><span class="line">            tmp := []string&#123;&#125;</span><br><span class="line">            <span class="comment">// 遍历每一行，每一列，初始化都为 .</span></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">                cur := make([]byte, n)</span><br><span class="line">                <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; n; j++ &#123;</span><br><span class="line">                    cur[j] = <span class="string">&#x27;.&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 根据每一行的q的位置，更新q</span></span><br><span class="line">                cur[bSlice[i]] = <span class="string">&#x27;Q&#x27;</span></span><br><span class="line">                <span class="comment">// byte数组转为string加入结果</span></span><br><span class="line">                tmp = append(tmp, string(cur))</span><br><span class="line">            &#125;</span><br><span class="line">            res = append(res, tmp)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 列，两个对角线，或运算(col | dia1 | dia2)，即所有使用了的位置</span></span><br><span class="line">        <span class="comment">// ^对以上结果取反，得到还未使用的位置，即可用的位置</span></span><br><span class="line">        <span class="comment">// (1 &lt;&lt; n) - 1)从最高位到第n位，都清0，得到n位二进制</span></span><br><span class="line">        availP := ((<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>) &amp; (^(col | dia1 | dia2))</span><br><span class="line">        <span class="comment">// 循环递归，可用位置不为0</span></span><br><span class="line">        <span class="keyword">for</span> availP != <span class="number">0</span> &#123;</span><br><span class="line">            <span class="comment">// 取最低位的可用位置</span></span><br><span class="line">            p := availP &amp; (-availP)</span><br><span class="line">            <span class="comment">// 最低位清0，更新可用位置</span></span><br><span class="line">            availP &amp;= availP - <span class="number">1</span></span><br><span class="line">            <span class="comment">// 减去1之后计算1的个数，得到这一行的q的索引位置，也就是p的1在第几位</span></span><br><span class="line">            <span class="comment">// 高位-&gt;低位就是bslice从左-&gt;右</span></span><br><span class="line">            bSlice[row] = bits.OnesCount(uint(p - <span class="number">1</span>))</span><br><span class="line">            <span class="comment">// 继续递归。行数+1， 列与最低位的可用位置取或，代表这一位已经使用了</span></span><br><span class="line">            <span class="comment">// 对角线与可用位置取或，再根据对角线方向，一个左移，一个右移</span></span><br><span class="line">            dfs(row + <span class="number">1</span>, col | p, (dia1 | p) &gt;&gt; <span class="number">1</span>, (dia2 | p) &lt;&lt; <span class="number">1</span>)</span><br><span class="line">            <span class="comment">// 回溯，这一行的q的位置为-1</span></span><br><span class="line">            bSlice[row] = -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    dfs(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/22/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/" rel="prev" title="滑动窗口最大值">
+                  <i class="fa fa-angle-left"></i> 滑动窗口最大值
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/26/%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%8C%E5%89%8D%E7%BC%80%E6%A0%91/" rel="next" title="字典树，前缀树">
+                  字典树，前缀树 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

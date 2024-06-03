@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="http状态保持，cookies的作用，session与jwt的认证机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于session与JWT的认证机制">
+<meta property="og:url" content="https://zypuu.github.io/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="http状态保持，cookies的作用，session与jwt的认证机制">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/2.jpg">
+<meta property="article:published_time" content="2018-03-21T06:45:42.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.050Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="session">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/","path":"2018/03/21/关于session与JWT的认证机制/","title":"关于session与JWT的认证机制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>关于session与JWT的认证机制 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%8A%B6%E6%80%81%E4%BF%9D%E6%8C%81"><span class="nav-number">1.</span> <span class="nav-text">什么是状态保持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">无状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%8A%B6%E6%80%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.2.</span> <span class="nav-text">无状态协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%8A%B6%E6%80%81"><span class="nav-number">1.3.</span> <span class="nav-text">有状态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie"><span class="nav-number">2.</span> <span class="nav-text">Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">Cookie的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8cookie%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.2.</span> <span class="nav-text">使用cookie的注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEcookie%E4%B8%8E%E8%8E%B7%E5%8F%96cookie"><span class="nav-number">2.3.</span> <span class="nav-text">设置cookie与获取cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEcookie"><span class="nav-number">2.3.1.</span> <span class="nav-text">设置cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96cookie"><span class="nav-number">2.3.2.</span> <span class="nav-text">获取cookie</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session"><span class="nav-number">3.</span> <span class="nav-text">Session</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%A7%A3session%E7%9A%84%E6%9C%BA%E5%88%B6"><span class="nav-number">3.1.</span> <span class="nav-text">理解session的机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session%E4%BE%9D%E8%B5%96%E4%BA%8Ecookie"><span class="nav-number">3.2.</span> <span class="nav-text">session依赖于cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#url%E9%87%8D%E5%86%99%E6%8A%80%E6%9C%AF"><span class="nav-number">3.2.1.</span> <span class="nav-text">url重写技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E5%8D%95%E9%9A%90%E8%97%8F%E5%AD%97%E6%AE%B5%E6%8A%80%E6%9C%AF"><span class="nav-number">3.2.2.</span> <span class="nav-text">表单隐藏字段技术</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session%E6%95%B0%E6%8D%AE%E7%9A%84%E8%AF%BB%E5%86%99"><span class="nav-number">3.3.</span> <span class="nav-text">session数据的读写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96session%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.1.</span> <span class="nav-text">读取session数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99%E5%85%A5session%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.2.</span> <span class="nav-text">写入session数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JWT"><span class="nav-number">4.</span> <span class="nav-text">JWT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#session%E8%AE%A4%E8%AF%81%E6%89%80%E6%98%BE%E9%9C%B2%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">4.1.</span> <span class="nav-text">session认证所显露的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFJWT"><span class="nav-number">4.2.</span> <span class="nav-text">什么是JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT%E7%9A%84%E6%9E%84%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">JWT的构成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#header%E5%A4%B4%E9%83%A8"><span class="nav-number">4.3.1.</span> <span class="nav-text">header头部</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#payload%E8%BD%BD%E8%8D%B7"><span class="nav-number">4.3.2.</span> <span class="nav-text">payload载荷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#signature"><span class="nav-number">4.3.3.</span> <span class="nav-text">signature</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">4.4.</span> <span class="nav-text">JWT的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85jwt%E5%BA%94%E7%94%A8"><span class="nav-number">4.4.1.</span> <span class="nav-text">安装jwt应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.4.2.</span> <span class="nav-text">配置设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8jwt%E8%BF%94%E5%9B%9Etoken"><span class="nav-number">4.4.3.</span> <span class="nav-text">使用jwt返回token</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD%E4%B8%AD%E4%BD%BF%E7%94%A8JWT%E8%BF%94%E5%9B%9E%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5"><span class="nav-number">4.4.4.</span> <span class="nav-text">登录功能中使用JWT返回指定字段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jwt%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">4.5.</span> <span class="nav-text">jwt的优点</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="关于session与JWT的认证机制 | All-Nothing">
+      <meta itemprop="description" content="http状态保持，cookies的作用，session与jwt的认证机制">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于session与JWT的认证机制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-21 14:45:42" itemprop="dateCreated datePublished" datetime="2018-03-21T14:45:42+08:00">2018-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">http状态保持，cookies的作用，session与jwt的认证机制</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="什么是状态保持"><a href="#什么是状态保持" class="headerlink" title="什么是状态保持"></a>什么是状态保持</h2><p>说到状态保持，首先要讲一下什么是无状态，http 就是一种无状态协议，浏览器请求服务器是无状态的。</p>
+<h3 id="无状态"><a href="#无状态" class="headerlink" title="无状态"></a>无状态</h3><p>指用户请求过一次后，浏览器与服务器无法知道这个用户做过什么，下一次请求还是新的请求。<br><br><br>发生无状态的原因：浏览器与服务器之间是使用socket套接字通讯的，在一次访问结束后，服务器将访问结果返回给浏览器之后，会关闭当前的socket连接，浏览器在关闭后，服务器也会销毁当前的页面对象。</p>
+<h3 id="无状态协议"><a href="#无状态协议" class="headerlink" title="无状态协议"></a>无状态协议</h3><p>1.协议对于事务处理没有记忆能力。<br>2.对同一个 url 请求没有上下文关系。<br>3.每次的请求都是独立的，它的执行情况和结果与前面的请求和之后的4请求是无直接关系的，它不会受前面的请求应答情况直接影响，也不会直接影响后面的请求应答情况。<br>4.服务器中没有保存客户端的状态，客户端必须每次带上自己的状态去请求服务器。</p>
+<h3 id="有状态"><a href="#有状态" class="headerlink" title="有状态"></a>有状态</h3><p>与无状态相反，相当于有记忆能力，可以记录之前用户的操作，即状态保持，那怎么实现状态保持呢？</p>
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><h3 id="Cookie的定义"><a href="#Cookie的定义" class="headerlink" title="Cookie的定义"></a>Cookie的定义</h3><p>指某些网站为了辨别用户身份、进行会话跟踪而储存在用户本地的数据。（通常经过加密）<br><br><br>cookie由服务器端生成，发送给客户端浏览器，浏览器可以将cookie的key/value进行保存，下次请求同一网站时就会将cookie同请求信息发送给服务器。<br><br><br>通过cookie就实现了状态保持，即用户登陆过的信息，访问过的页面数据，都会被放在cookie里进行记录，保存在浏览器，下次请求这个网站时会发送给服务器，服务器就能从cookie中快速获取信息，即知道了用户已经登陆过，访问了哪些数据，保持了用户的登录状态，将相关数据快速呈现。</p>
+<h3 id="使用cookie的注意事项"><a href="#使用cookie的注意事项" class="headerlink" title="使用cookie的注意事项"></a>使用cookie的注意事项</h3><ol>
+<li>cookie是基于域名安全的，不同域名的cookie是不能互相访问的，即同源策略。（在这个页面里可以嵌入窗口iframe，来访问其他域名的cookie）</li>
+<li>Cookie是存储在浏览器中的一段纯文本信息，建议不要存储敏感信息如密码，因为电脑上的浏览器可能被其它人使用。</li>
+<li>因为cookie被放在请求报文里发送给服务器，所以服务器端可以通过request对象来获取cookie信息，进行操作。</li>
+</ol>
+<h3 id="设置cookie与获取cookie"><a href="#设置cookie与获取cookie" class="headerlink" title="设置cookie与获取cookie"></a>设置cookie与获取cookie</h3><h4 id="设置cookie"><a href="#设置cookie" class="headerlink" title="设置cookie"></a>设置cookie</h4><p>获取response对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.set_cookie(‘键’，‘值’，max_age=<span class="number">3600</span>）</span><br></pre></td></tr></table></figure>
+<p>max_age为过期时间，即第一次访问产生cookie之后，3600秒会自动删除。</p>
+<h4 id="获取cookie"><a href="#获取cookie" class="headerlink" title="获取cookie"></a>获取cookie</h4><p>请求对象request</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.cookies.get(<span class="string">&#x27;键&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>根据之前设置的键就能获取到cookie的值。</p>
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><p>cookie说到建议不要保存用户的敏感信息，很容易会被破解，那么这些敏感信息怎么解决，比如用户登录的用户名，密码，这就要用到session来认证用户。</p>
+<h3 id="理解session的机制"><a href="#理解session的机制" class="headerlink" title="理解session的机制"></a>理解session的机制</h3><p>对于敏感的信息，要保存在服务器中，不能存储在浏览器中，而服务器采用的状态保持的方案就是session认证。<br><br>当程序需要为某个客户端的请求创建一个session的时候，服务器首先检查这个客户端的请求里是否已包含了一个session标识 - 称为session id，如果已包含一个session id则说明以前已经为此客户端创建过session，服务器就按照session id把这个session检索出来使用（如果检索不到，可能会新建一个），如果客户端请求不包含session id，则为此客户端创建一个session并且生成一个与此session相关联的session id，session id的值应该是一个既不会重复，又不容易被找到规律以仿造的字符串，这个session id将被在本次响应中返回给客户端保存。</p>
+<h3 id="session依赖于cookie"><a href="#session依赖于cookie" class="headerlink" title="session依赖于cookie"></a>session依赖于cookie</h3><p>客户端在访问后，由服务端生成session，根据每一个session都会生成它的唯一标识（uuid），然后以session为键，这个唯一标识为值，存放在cookie里。同时服务端本地也会存session（非关系型数据库存储，如redis），以uuid为键，session的键值对为值，存进服务端本地，访问时，根据这个唯一标识在本地进行读取操作。</p>
+<h4 id="url重写技术"><a href="#url重写技术" class="headerlink" title="url重写技术"></a>url重写技术</h4><p>由于cookie可以被人为的禁止，必须有其他机制以便在cookie被禁止时仍然能够把session id传递回服务器。经常被使用的一种技术叫做URL重写，就是把session id直接附加在URL路径的后面，附加方式也有两种，一种是作为URL路径的附加信息，表现形式为<code>http://...../xxx;jsessionid=ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764 </code><br>另一种是作为查询字符串附加在URL后面，表现形式为<code>http://...../xxx?jsessionid=ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764 </code><br>这两种方式对于用户来说是没有区别的，只是服务器在解析的时候处理的方式不同，采用第一种方式也有利于把session id的信息和正常程序参数区分开来。<br>为了在整个交互过程中始终保持状态，就必须在每个客户端可能请求的路径后面都包含这个session id。</p>
+<h4 id="表单隐藏字段技术"><a href="#表单隐藏字段技术" class="headerlink" title="表单隐藏字段技术"></a>表单隐藏字段技术</h4><p>另一种技术叫做表单隐藏字段。就是服务器会自动修改表单，添加一个隐藏字段，以便在表单提交时能够把session id传递回服务器。比如下面的表单： </p>
+<pre><code>&lt;form name=&quot;testform&quot; action=&quot;/xxx&quot;&gt; 
+&lt;input type=&quot;text&quot;&gt; 
+&lt;/form&gt; 
+
+在被传递给客户端之前将被改写成： 
+
+&lt;form name=&quot;testform&quot; action=&quot;/xxx&quot;&gt; 
+&lt;input type=&quot;hidden&quot; name=&quot;jsessionid&quot; value=&quot;ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764&quot;&gt; 
+&lt;input type=&quot;text&quot;&gt; 
+&lt;/form&gt; </code></pre>
+<p>这种技术使用相对较少了。</p>
+<h3 id="session数据的读写"><a href="#session数据的读写" class="headerlink" title="session数据的读写"></a>session数据的读写</h3><h4 id="读取session数据"><a href="#读取session数据" class="headerlink" title="读取session数据"></a>读取session数据</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.get(<span class="string">&#x27;键&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="写入session数据"><a href="#写入session数据" class="headerlink" title="写入session数据"></a>写入session数据</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session[<span class="string">&#x27;键&#x27;</span>] = <span class="string">&#x27;值&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h2><h3 id="session认证所显露的问题"><a href="#session认证所显露的问题" class="headerlink" title="session认证所显露的问题"></a>session认证所显露的问题</h3><p>1.用户通过session认证，都要在服务器端做一次记录，而session是保存在服务器端的内存中，随着用户的增多，服务器端的开销会明显增大。<br>2.而且用户下次请求还必须要请求在这台服务器上,这样才能拿到授权的资源，这样在分布式的应用上，相应的限制了负载均衡器的能力。这也意味着限制了应用的扩展能力。<br>3.session是依赖于cookie，如果cookie被截获，很容易受到跨站请求伪造的攻击（csrf），安全性不足。<br><br><br>这就引入了jwt认证机制</p>
+<h3 id="什么是JWT"><a href="#什么是JWT" class="headerlink" title="什么是JWT"></a>什么是JWT</h3><p>JWT，全名Json Web Token，是一种基于token的认证机制，类似于http协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。这就意味着基于token认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利。<br><br>流程上是这样的：</p>
+<ul>
+<li>用户使用用户名密码来请求服务器 </li>
+<li>服务器进行验证用户的信息 </li>
+<li>服务器通过验证发送给用户一个token</li>
+<li>客户端存储token，并在每次请求时附送上这个token值 </li>
+<li>服务端验证token值，并返回数据</li>
+</ul>
+<h3 id="JWT的构成"><a href="#JWT的构成" class="headerlink" title="JWT的构成"></a>JWT的构成</h3><p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</span><br></pre></td></tr></table></figure>
+<p>如上所示，是一个JWT的token，分为三个部分</p>
+<h4 id="header头部"><a href="#header头部" class="headerlink" title="header头部"></a>header头部</h4><p>第一部分header存两部分信息</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &#x27;typ&#x27;: &#x27;JWT&#x27;,  # 声明类型为jwt</span><br><span class="line">  &#x27;alg&#x27;: &#x27;HS256&#x27; # 加密算法 HMAC SHA256</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过base64算法加密构成第一部分，<code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</code></p>
+<h4 id="payload载荷"><a href="#payload载荷" class="headerlink" title="payload载荷"></a>payload载荷</h4><p>载荷是存放有效信息的地方，有效信息分为三部分：</p>
+<ol>
+<li>标准中注册的声明：<br>iss: jwt签发者<br>sub: jwt所面向的用户<br>aud: 接收jwt的一方<br>exp: jwt的过期时间，这个过期时间必须要大于签发时间<br>nbf: 定义在什么时间之前，该jwt都是不可用的.<br>iat: jwt的签发时间<br>jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。</li>
+<li>公共的声明：<br>添加用户信息，不建议添加敏感信息，因为base64算法是对称算法，可解密</li>
+<li>私有的声明：<br>私有声明是提供者和消费者所共同定义的声明。<br>定义一个payload</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;sub&quot;</span>: <span class="string">&quot;1234567890&quot;</span>,</span><br><span class="line"> 	 <span class="string">&quot;name&quot;</span>: <span class="string">&quot;John Doe&quot;</span>,</span><br><span class="line"> 	 <span class="string">&quot;admin&quot;</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>base64算法加密后就是第二段<code>eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9</code></p>
+<h4 id="signature"><a href="#signature" class="headerlink" title="signature"></a>signature</h4><p>jwt的第三部分是一个签证信息，签证信息由三部分组成：<br>header<br>payload<br>secret<br>这部分信息将header、payload中的base64加密后的信息连接成字符串，然后通过header里声明的HS256算法加上secret进行加密，就构成了jwt的第三部分。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> encodedString = base64UrlEncode(header) + <span class="string">&#x27;.&#x27;</span> + base64UrlEncode(payload);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> signature = HMACSHA256(encodedString, <span class="string">&#x27;secret&#x27;</span>); </span><br></pre></td></tr></table></figure>
+<p>构成第三部分<code>TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</code><br>三部分构成完整的JWT的token</p>
+<p>PS：secret是保存在服务端的，jwt签发也是在服务端，所以secret是服务端的私钥，不能泄露出去。虽然header和payload可以通过base64解密，但是没有secret是无法进行认证的，这就保证了安全性。</p>
+<h3 id="JWT的应用"><a href="#JWT的应用" class="headerlink" title="JWT的应用"></a>JWT的应用</h3><p>Django rest framework中应用jwt<br>详情可参考文档网站：<a target="_blank" rel="noopener" href="http://getblimp.github.io/django-rest-framework-jwt/">JWT官方文档</a></p>
+<h4 id="安装jwt应用"><a href="#安装jwt应用" class="headerlink" title="安装jwt应用"></a>安装jwt应用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install djangorestframework-jwt</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置设置"><a href="#配置设置" class="headerlink" title="配置设置"></a>配置设置</h4><p>指定jwt认证</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="string">&#x27;DEFAULT_AUTHENTICATION_CLASSES&#x27;</span>: (</span><br><span class="line">        <span class="string">&#x27;rest_framework_jwt.authentication.JSONWebTokenAuthentication&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;rest_framework.authentication.SessionAuthentication&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;rest_framework.authentication.BasicAuthentication&#x27;</span>,</span><br><span class="line">    ),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">JWT_AUTH = &#123;</span><br><span class="line">    <span class="string">&#x27;JWT_EXPIRATION_DELTA&#x27;</span>: datetime.timedelta(days=<span class="number">1</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>JWT_EXPIRATION_DELTA指明jwt的有效期</p>
+<h4 id="使用jwt返回token"><a href="#使用jwt返回token" class="headerlink" title="使用jwt返回token"></a>使用jwt返回token</h4><p>生成口令并返回</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework_jwt.settings <span class="keyword">import</span> api_settings</span><br><span class="line"></span><br><span class="line">jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER</span><br><span class="line">jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER</span><br><span class="line"></span><br><span class="line">payload = jwt_payload_handler(user)</span><br><span class="line">token = jwt_encode_handler(payload)</span><br></pre></td></tr></table></figure>
+<p>比如注册中使用token，因为token要返回输出，所以在定义序列化器时要添加token字段</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">token = serializers.CharField(label=&#x27;登录状态token&#x27;, read_only=True)  # 增加token字段</span><br></pre></td></tr></table></figure>
+
+<h4 id="登录功能中使用JWT返回指定字段"><a href="#登录功能中使用JWT返回指定字段" class="headerlink" title="登录功能中使用JWT返回指定字段"></a>登录功能中使用JWT返回指定字段</h4><p>将上面的jwt应用于登录认证时，登录成功后，发现api接口只返回了jwt的token，如图所示</p>
+<p><img src="/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/1.jpg" alt="1"><br>如果想将用户的其他字段比如用户名，怎么返回呢<br>jwt配合django的内部框架提供了登录验证功能，在Django框架中直接使用jwt的登录验证视图函数obtain_jwt_token</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework_jwt.views import obtain_jwt_token # 导入包</span><br><span class="line">url(r&#x27;^路由规则$&#x27;, obtain_jwt_token), # url中配置地址</span><br></pre></td></tr></table></figure>
+<p>定义以上路由地址即可，jwt自带的登录验证便可应用<br>jwt提供的视图obtain_jwt_token内部逻辑：<br>    1.定义视图类，继承自APIView<br>    2.定义序列化器，继承自Serializer，然后调用django内部贡献的authenticate()方法<br>    3.接收用户名、密码<br>    4.查询数据库，进行密码对比<br>    5.如果成功，则生成口令并返回<br>这是查看obtain_jwt_token的源码，和jwt的官方文档，就可以理解这个视图的工作原理。</p>
+<p>然后自定义接口响应值：<br>1.在users应用下新建utils.py。<br>2.创建函数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def jwt_response_payload_handler(token, user=None, request=None):</span><br><span class="line">		<span class="keyword">return</span> &#123;</span><br><span class="line">			<span class="string">&#x27;token&#x27;</span>: token,</span><br><span class="line">			<span class="string">&#x27;username&#x27;</span>:user.username</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<p>3.在settings.py中配置添加<br>    ‘JWT_RESPONSE_PAYLOAD_HANDLER’:’users.utils.jwt_response_payload_handler’,</p>
+<p>然后重新运行即可，效果如下</p>
+<p><img src="/2018/03/21/%E5%85%B3%E4%BA%8Esession%E4%B8%8EJWT%E7%9A%84%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/2.jpg" alt="2"></p>
+<h3 id="jwt的优点"><a href="#jwt的优点" class="headerlink" title="jwt的优点"></a>jwt的优点</h3><p>1.因为json的通用性，所以JWT是可以进行跨语言支持的，像JAVA,JavaScript,NodeJS,PHP等很多语言都可以使用。<br>2.因为有了payload部分，所以JWT可以在自身存储一些其他业务逻辑所必要的非敏感信息。<br>3.便于传输，jwt的构成非常简单，字节占用很小，所以它是非常便于传输的。<br>4.它不需要在服务端保存会话信息, 所以它易于应用的扩展</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/session/" rel="tag"># session</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%E4%B8%8E%E5%8E%9F%E5%88%99/" rel="prev" title="数据库设计规范与原则">
+                  <i class="fa fa-angle-left"></i> 数据库设计规范与原则
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/04/03/Mysql%E7%9A%84%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="next" title="Mysql的常用命令">
+                  Mysql的常用命令 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

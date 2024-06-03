@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="双向BFS与单向bfs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="双向BFS">
+<meta property="og:url" content="https://zypuu.github.io/2021/03/26/%E5%8F%8C%E5%90%91BFS/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="双向BFS与单向bfs">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-03-26T08:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.056Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/03/26/%E5%8F%8C%E5%90%91BFS/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/03/26/%E5%8F%8C%E5%90%91BFS/","path":"2021/03/26/双向BFS/","title":"双向BFS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>双向BFS | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DFS%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.</span> <span class="nav-text">DFS模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BFS%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.</span> <span class="nav-text">BFS模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E5%90%91BFS%E6%A8%A1%E6%9D%BF"><span class="nav-number">3.</span> <span class="nav-text">双向BFS模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-%E6%A8%A1%E6%9D%BF"><span class="nav-number">4.</span> <span class="nav-text">A* 模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E8%AF%8D%E6%8E%A5%E9%BE%99"><span class="nav-number">5.1.</span> <span class="nav-text">单词接龙</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%9F%BA%E5%9B%A0%E5%8F%98%E5%8C%96"><span class="nav-number">5.2.</span> <span class="nav-text">最小基因变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%8B%AC%E9%97%AE%E9%A2%98"><span class="nav-number">5.3.</span> <span class="nav-text">数独问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%AB%E9%9B%B7%E6%B8%B8%E6%88%8F"><span class="nav-number">5.4.</span> <span class="nav-text">扫雷游戏</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/03/26/%E5%8F%8C%E5%90%91BFS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="双向BFS | All-Nothing">
+      <meta itemprop="description" content="双向BFS与单向bfs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          双向BFS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-26 16:00:00" itemprop="dateCreated datePublished" datetime="2021-03-26T16:00:00+08:00">2021-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>9.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">双向BFS与单向bfs</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="DFS模板"><a href="#DFS模板" class="headerlink" title="DFS模板"></a>DFS模板</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 深度优先，栈遍历</span></span><br><span class="line">func <span class="function"><span class="title">dfs</span>(<span class="params">root *TreeNode</span>)</span> &#123;</span><br><span class="line">	<span class="comment">// root不存在则返回</span></span><br><span class="line">	<span class="keyword">if</span> root == nil &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> dfs func()</span><br><span class="line">	dfs = <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> visit[root] &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		visit[root] = <span class="literal">true</span></span><br><span class="line">		<span class="keyword">for</span> i := range root.Children &#123;</span><br><span class="line">			<span class="keyword">if</span> !visit[i] &#123;</span><br><span class="line">				dfs(i)</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="BFS模板"><a href="#BFS模板" class="headerlink" title="BFS模板"></a>BFS模板</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 广度优先，队列遍历</span></span><br><span class="line">func <span class="function"><span class="title">bfs</span>(<span class="params">root *TreeNode</span>)</span> &#123;</span><br><span class="line">	<span class="comment">// root不存在则返回</span></span><br><span class="line">	<span class="keyword">if</span> root == nil &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 手动维护一个队列，初始化，并放入root，还有一个visited的map</span></span><br><span class="line">	q := []*TreeNode&#123;root&#125;</span><br><span class="line">	visited := map[*TreeNode]bool&#123;&#125;</span><br><span class="line"> 	<span class="comment">// 未访问则记录,处理当前层</span></span><br><span class="line"> 	<span class="keyword">for</span> len(q) &gt; <span class="number">0</span> &#123;</span><br><span class="line"> 		<span class="comment">// 节点出队</span></span><br><span class="line"> 		node := q[<span class="number">0</span>]</span><br><span class="line"> 		q = q[<span class="number">1</span>:]</span><br><span class="line"> 		<span class="comment">// 访问记录</span></span><br><span class="line"> 		visited[node] = <span class="literal">true</span></span><br><span class="line"> 		<span class="comment">// 处理逻辑</span></span><br><span class="line"> 		process(node)</span><br><span class="line"> 		<span class="comment">// 更新q，更新node</span></span><br><span class="line"> 		nodes = related(node)</span><br><span class="line"> 		q = append(q, nodes...)</span><br><span class="line"> 	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="双向BFS模板"><a href="#双向BFS模板" class="headerlink" title="双向BFS模板"></a>双向BFS模板</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 双向bfs</span></span><br><span class="line">func <span class="function"><span class="title">tebfs</span>(<span class="params">root *TreeNode</span>)</span> &#123;</span><br><span class="line">	<span class="comment">// 开始队列</span></span><br><span class="line">	startQ := []interface&#123;&#125;</span><br><span class="line">	<span class="comment">// 结束队列</span></span><br><span class="line">	endQ := []interface&#123;&#125;</span><br><span class="line">	<span class="comment">// 开始使用过的记录</span></span><br><span class="line">	visitedStart := map[int]bool</span><br><span class="line">	<span class="comment">// 结束使用记录</span></span><br><span class="line">	visitedEnd := map[int]bool</span><br><span class="line">	<span class="comment">// 全局使用记录</span></span><br><span class="line">	visited := map[int]bool</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 遍历</span></span><br><span class="line">	<span class="keyword">for</span> len(startQ) &gt; <span class="number">0</span> &#123;</span><br><span class="line">		<span class="comment">// 遍历开始队列</span></span><br><span class="line">		qLen := len(startQ)</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; qLen; i++ &#123;</span><br><span class="line">			cur := q[<span class="number">0</span>]</span><br><span class="line">			q = q[<span class="number">1</span>:]</span><br><span class="line">			<span class="comment">// 处理逻辑</span></span><br><span class="line">			process()</span><br><span class="line">			<span class="comment">// 开始记录处理</span></span><br><span class="line">			visitedStart()</span><br><span class="line">			<span class="comment">// 放入队列</span></span><br><span class="line">			startQ = append(startQ, ...)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 层遍历完处理逻辑,互换队列，互换记录map</span></span><br><span class="line">		<span class="keyword">if</span> len(startQ) &gt; <span class="function"><span class="title">len</span>(<span class="params">endQ</span>)</span> &#123;</span><br><span class="line">			startQ, endQ = endQ, startQ</span><br><span class="line">			visitedStart, visitedEnd = visitedEnd, visitedStart</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="A-模板"><a href="#A-模板" class="headerlink" title="A* 模板"></a>A* 模板</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">ASearch</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="comment">// 初始化优先队列</span></span><br><span class="line">	pq = priorityQ()</span><br><span class="line"></span><br><span class="line">	pq =append(pq, start) <span class="comment">// 获取优先队列</span></span><br><span class="line"></span><br><span class="line">	visited := map[int]bool&#123;<span class="attr">start</span> : <span class="literal">true</span>&#125;</span><br><span class="line">	<span class="keyword">for</span> len(pq) &gt; <span class="number">0</span> &#123;</span><br><span class="line">		node := pq.get() <span class="comment">// 根据优先级获取</span></span><br><span class="line">		visited[node] = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">		process()</span><br><span class="line">		<span class="comment">// 添加进队列</span></span><br><span class="line">		pq = append(node.next)</span><br><span class="line">	&#125; 	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><h4 id="单词接龙"><a href="#单词接龙" class="headerlink" title="单词接龙"></a>单词接龙</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ladderLength </span></span><br><span class="line"><span class="comment">// 单向bfs</span></span><br><span class="line">func ladderLength(beginWord string, endWord string, wordList []string) int &#123;</span><br><span class="line">    vis := make(map[string]bool, len(wordList))</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(wordList); i++ &#123;</span><br><span class="line">        vis[wordList[i]] = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 初始化队列</span></span><br><span class="line">    q := []string&#123;beginWord&#125;</span><br><span class="line">    <span class="comment">// count是for之后++</span></span><br><span class="line">    count := <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> len(q) &gt; <span class="number">0</span> &#123;</span><br><span class="line">    	<span class="comment">// 记录当前队列长度，遍历当前队列，q长度会变</span></span><br><span class="line">        qLen := len(q)</span><br><span class="line">        <span class="keyword">for</span> k := <span class="number">0</span>; k &lt; qLen; k++ &#123;</span><br><span class="line">        	<span class="comment">// 出队</span></span><br><span class="line">            cur := q[<span class="number">0</span>]</span><br><span class="line">            q = q[<span class="number">1</span>:]</span><br><span class="line">            <span class="keyword">if</span> cur == endWord &#123;</span><br><span class="line">                <span class="keyword">return</span> count</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(cur); i++ &#123;</span><br><span class="line">                <span class="keyword">for</span> j := <span class="string">&#x27;a&#x27;</span>; j &lt;= <span class="string">&#x27;z&#x27;</span>; j++ &#123;</span><br><span class="line">                	<span class="comment">// 得到新单词</span></span><br><span class="line">                    newWord := cur[:i] + string(j) + cur[i+<span class="number">1</span>:]</span><br><span class="line">                    <span class="comment">// 在map里</span></span><br><span class="line">                    <span class="keyword">if</span> vis[newWord] &#123;</span><br><span class="line">                        q = append(q, newWord)</span><br><span class="line">                        vis[newWord] = <span class="literal">false</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        count++ </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 双向bfs</span></span><br><span class="line">func ladderLength(beginWord string, endWord string, wordList []string) int &#123;</span><br><span class="line">	<span class="comment">// 初始化startq， endq</span></span><br><span class="line">    startQ := []string&#123;beginWord&#125;</span><br><span class="line">    endQ := []string&#123;endWord&#125;</span><br><span class="line">    <span class="comment">// 初始化从前从后的两个map，记录是否使用过</span></span><br><span class="line">    visStart := make(map[string]bool, len(wordList))</span><br><span class="line">    visEnd := make(map[string]bool, len(wordList))</span><br><span class="line">    <span class="comment">// end是最终结果</span></span><br><span class="line">    visEnd[endWord] = <span class="literal">true</span></span><br><span class="line">    <span class="comment">// 单词map，用于判断是不是在库里</span></span><br><span class="line">    vis := make(map[string]bool, len(wordList))</span><br><span class="line">    <span class="keyword">for</span> _, <span class="attr">v</span> := range wordList &#123;</span><br><span class="line">        vis[v] = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果结尾不在库里，返回0</span></span><br><span class="line">    <span class="keyword">if</span> _, <span class="attr">ok</span> := vis[endWord]; !ok &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// count是for之后++</span></span><br><span class="line">    count := <span class="number">1</span></span><br><span class="line">    <span class="comment">// 遍历队列</span></span><br><span class="line">    <span class="keyword">for</span> len(startQ) &gt; <span class="number">0</span> &#123;</span><br><span class="line">        qLen := len(startQ)</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; qLen; i++ &#123;</span><br><span class="line">        	<span class="comment">// 出队</span></span><br><span class="line">            cur := startQ[<span class="number">0</span>]</span><br><span class="line">            startQ = startQ[<span class="number">1</span>:]</span><br><span class="line">            <span class="comment">// 拼新单词</span></span><br><span class="line">            <span class="keyword">for</span> c := <span class="number">0</span>; c &lt; len(cur); c++ &#123;</span><br><span class="line">                <span class="keyword">for</span> j := <span class="string">&#x27;a&#x27;</span>; j &lt;= <span class="string">&#x27;z&#x27;</span>; j++ &#123;</span><br><span class="line">                    <span class="keyword">new</span> := cur[:c] + string(j) + cur[c+<span class="number">1</span>:]</span><br><span class="line">                    <span class="comment">// 如果不在库里，或者起始的记录过则跳过</span></span><br><span class="line">                    <span class="keyword">if</span> !vis[<span class="keyword">new</span>] || visStart[<span class="keyword">new</span>] &#123;</span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 如果在结束的map里，这说明匹配到了</span></span><br><span class="line">                    <span class="keyword">if</span> visEnd[<span class="keyword">new</span>] &#123;</span><br><span class="line">                        <span class="keyword">return</span> count + <span class="number">1</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 加入队列，记录start</span></span><br><span class="line">                    startQ = append(startQ, <span class="keyword">new</span>)</span><br><span class="line">                    visStart[<span class="keyword">new</span>] = <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 层级遍历完++</span></span><br><span class="line">        count++</span><br><span class="line">        <span class="comment">// 互换队列，保证每次遍历的队列长度最小，互换记录</span></span><br><span class="line">        <span class="comment">// 每次遍历都是 startq</span></span><br><span class="line">        <span class="keyword">if</span> len(startQ) &gt; <span class="function"><span class="title">len</span>(<span class="params">endQ</span>)</span> &#123;</span><br><span class="line">            startQ, endQ = endQ, startQ</span><br><span class="line">            visStart, visEnd = visEnd, visStart</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="最小基因变化"><a href="#最小基因变化" class="headerlink" title="最小基因变化"></a>最小基因变化</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// minMutation ...</span></span><br><span class="line"><span class="comment">// 单向bfs</span></span><br><span class="line">func minMutation(start string, end string, bank []string) int &#123;</span><br><span class="line">    vis := make(map[string]bool, len(bank))</span><br><span class="line">    <span class="comment">// 判断是否重复，避免死循环</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(bank); i++ &#123;</span><br><span class="line">        vis[bank[i]] = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    q := []string&#123;start&#125;</span><br><span class="line">    item := []string&#123;<span class="string">&quot;A&quot;</span>, <span class="string">&quot;C&quot;</span>, <span class="string">&quot;G&quot;</span>, <span class="string">&quot;T&quot;</span>&#125;</span><br><span class="line">    <span class="comment">// 这是转换次数，单词接龙是单词数目，注意</span></span><br><span class="line">    res := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> len(q) &gt; <span class="number">0</span> &#123;</span><br><span class="line">        qLen := len(q)</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; qLen; i++ &#123;</span><br><span class="line">        	<span class="comment">// 出队</span></span><br><span class="line">            cur := q[<span class="number">0</span>]</span><br><span class="line">            q = q[<span class="number">1</span>:]</span><br><span class="line">            <span class="comment">// 找到结果</span></span><br><span class="line">            <span class="keyword">if</span> cur == end &#123;</span><br><span class="line">                <span class="keyword">return</span> res</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 循环每个字符</span></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(cur); i++ &#123;</span><br><span class="line">                <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">4</span>; j++ &#123;</span><br><span class="line">                    <span class="keyword">new</span> := cur[:i] + item[j] + cur[i+<span class="number">1</span>:]</span><br><span class="line">                    <span class="keyword">if</span> vis[<span class="keyword">new</span>] &#123;</span><br><span class="line">                        q = append(q, <span class="keyword">new</span>)</span><br><span class="line">                        vis[<span class="keyword">new</span>] = <span class="literal">false</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 遍历完一层，结果++</span></span><br><span class="line">        res++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 双向bfs</span></span><br><span class="line">func minMutation(start string, end string, bank []string) int &#123;</span><br><span class="line">	<span class="comment">// 初始化</span></span><br><span class="line">	startQ := []string&#123;start&#125;</span><br><span class="line">    endQ := []string&#123;end&#125;</span><br><span class="line"></span><br><span class="line">    visStart := make(map[string]bool, len(bank))</span><br><span class="line">    visEnd := make(map[string]bool, len(bank))</span><br><span class="line">    visEnd[end] = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断end在不在库，初始化库</span></span><br><span class="line">    vis := make(map[string]bool, len(bank))</span><br><span class="line">    <span class="keyword">for</span> _, <span class="attr">v</span> := range bank &#123;</span><br><span class="line">        vis[v] = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> _, <span class="attr">ok</span> := vis[end];!ok &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 可更改字符</span></span><br><span class="line">    item := []string&#123;<span class="string">&quot;A&quot;</span>, <span class="string">&quot;C&quot;</span>, <span class="string">&quot;G&quot;</span>, <span class="string">&quot;T&quot;</span>&#125;</span><br><span class="line">    res := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> len(startQ) &gt; <span class="number">0</span> &#123;</span><br><span class="line">        qLen := len(startQ)</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; qLen; i++ &#123;</span><br><span class="line">            cur := startQ[<span class="number">0</span>]</span><br><span class="line">            startQ = startQ[<span class="number">1</span>:]</span><br><span class="line">            <span class="keyword">for</span> c := <span class="number">0</span>; c &lt; len(cur); c++ &#123;</span><br><span class="line">                <span class="keyword">for</span> _, <span class="attr">v</span> := range item &#123;</span><br><span class="line">                    <span class="keyword">new</span> := cur[:c] + v + cur[c+<span class="number">1</span>:]</span><br><span class="line">                    <span class="comment">// 不在库里，或者已使用过则跳过</span></span><br><span class="line">                    <span class="keyword">if</span> !vis[<span class="keyword">new</span>] || visStart[<span class="keyword">new</span>] &#123;</span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 在结束里，返回结果+1</span></span><br><span class="line">                    <span class="keyword">if</span> visEnd[<span class="keyword">new</span>] &#123;</span><br><span class="line">                        <span class="keyword">return</span> res + <span class="number">1</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    startQ = append(startQ, <span class="keyword">new</span>)</span><br><span class="line">                    visStart[<span class="keyword">new</span>] = <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        res++</span><br><span class="line">        <span class="comment">// 互换队列</span></span><br><span class="line">        <span class="keyword">if</span> len(startQ) &gt; <span class="function"><span class="title">len</span>(<span class="params">endQ</span>)</span> &#123;</span><br><span class="line">            startQ, endQ = endQ, startQ</span><br><span class="line">            visStart, visEnd = visEnd, visStart</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="数独问题"><a href="#数独问题" class="headerlink" title="数独问题"></a>数独问题</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// isValidSudoku</span></span><br><span class="line"><span class="comment">// 遍历通过map判断字符是否已经使用过</span></span><br><span class="line"><span class="comment">// 外层i，里层j， ij顺序代表一行一行遍历， ji顺序代表一列一列遍历</span></span><br><span class="line"><span class="comment">// 分块 行(i%3)*3 + j%3 列(i/3)*3 + j/3，得到的是一块9个的索引</span></span><br><span class="line">func isValidSudoku(board [][]byte) bool &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">9</span>; i++ &#123;</span><br><span class="line">        visr := make(map[byte]bool, <span class="number">9</span>)</span><br><span class="line">        visc := make(map[byte]bool, <span class="number">9</span>)</span><br><span class="line">        visb := make(map[byte]bool, <span class="number">9</span>)</span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">9</span>; j++ &#123;</span><br><span class="line">            <span class="comment">// 行 ij</span></span><br><span class="line">            <span class="keyword">if</span> board[i][j] != <span class="string">&#x27;.&#x27;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> visr[board[i][j]] &#123; <span class="keyword">return</span> <span class="literal">false</span> &#125;</span><br><span class="line">                visr[board[i][j]] = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 列 ji</span></span><br><span class="line">            <span class="keyword">if</span> board[j][i] != <span class="string">&#x27;.&#x27;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> visc[board[j][i]] &#123; <span class="keyword">return</span> <span class="literal">false</span> &#125;</span><br><span class="line">                visc[board[j][i]] = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 分块</span></span><br><span class="line">            row := (i%<span class="number">3</span>)*<span class="number">3</span> + j%<span class="number">3</span></span><br><span class="line">            col := (i/<span class="number">3</span>)*<span class="number">3</span> + j/<span class="number">3</span></span><br><span class="line">            <span class="keyword">if</span> board[row][col] != <span class="string">&#x27;.&#x27;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> visb[board[row][col]] &#123; <span class="keyword">return</span> <span class="literal">false</span> &#125;</span><br><span class="line">                visb[board[row][col]] = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// solveSudoku</span></span><br><span class="line"><span class="comment">// 递归回溯</span></span><br><span class="line">func <span class="function"><span class="title">solveSudoku</span>(<span class="params">board [][]byte</span>)</span>  &#123;</span><br><span class="line">	<span class="comment">// 初始化，通过每一行的索引数字判断（每一列同理）</span></span><br><span class="line">    <span class="keyword">var</span> visr, visc [<span class="number">9</span>][<span class="number">9</span>]bool</span><br><span class="line">    <span class="comment">// 初始化块的，块的索引，以及里面的数字的索引判断</span></span><br><span class="line">    <span class="keyword">var</span> visb [<span class="number">3</span>][<span class="number">3</span>][<span class="number">9</span>]bool</span><br><span class="line">    <span class="comment">// 初始化需要填入的点</span></span><br><span class="line">    <span class="keyword">var</span> spaces [][<span class="number">2</span>]int</span><br><span class="line">    <span class="comment">// 预处理数据</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">9</span>; i++ &#123;</span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">9</span>; j++ &#123;</span><br><span class="line">        	<span class="comment">// 需要填入的点加入列表</span></span><br><span class="line">            <span class="keyword">if</span> board[i][j] == <span class="string">&#x27;.&#x27;</span> &#123;</span><br><span class="line">                spaces = append(spaces, [<span class="number">2</span>]int&#123;i, j&#125;)</span><br><span class="line">            <span class="comment">// 不需要填入的点，根据位置设置true</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            	<span class="comment">// byte转int，-1</span></span><br><span class="line">                b := board[i][j] - <span class="string">&#x27;1&#x27;</span></span><br><span class="line">                visr[i][b] = <span class="literal">true</span></span><br><span class="line">                visc[j][b] = <span class="literal">true</span></span><br><span class="line">                visb[i/<span class="number">3</span>][j/<span class="number">3</span>][b] = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 递归函数</span></span><br><span class="line">    <span class="keyword">var</span> dfs func(n int) bool</span><br><span class="line">    dfs= func(n int) bool &#123;</span><br><span class="line">    	<span class="comment">// 遍历到最后一个点结束后，终止</span></span><br><span class="line">        <span class="keyword">if</span> n == <span class="function"><span class="title">len</span>(<span class="params">spaces</span>)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 取要填入的点</span></span><br><span class="line">        i, <span class="attr">j</span> := spaces[n][<span class="number">0</span>], spaces[n][<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">for</span> k := byte(<span class="number">0</span>); k &lt; <span class="number">9</span>; k++ &#123;</span><br><span class="line">        	<span class="comment">// 判断是否已经使用过，有则跳过</span></span><br><span class="line">            <span class="keyword">if</span> visr[i][k] || visc[j][k] || visb[i/<span class="number">3</span>][j/<span class="number">3</span>][k] &#123;</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 没有记录</span></span><br><span class="line">            board[i][j] = k + <span class="string">&#x27;1&#x27;</span></span><br><span class="line">            visr[i][k] = <span class="literal">true</span></span><br><span class="line">            visc[j][k] = <span class="literal">true</span></span><br><span class="line">            visb[i/<span class="number">3</span>][j/<span class="number">3</span>][k] = <span class="literal">true</span></span><br><span class="line">            <span class="comment">// 递归下一个点，如果下一个点返回true，则返回true</span></span><br><span class="line">            <span class="keyword">if</span> <span class="function"><span class="title">dfs</span>(<span class="params">n + <span class="number">1</span></span>)</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 回溯</span></span><br><span class="line">            board[i][j] = <span class="string">&#x27;.&#x27;</span></span><br><span class="line">            visr[i][k] = <span class="literal">false</span></span><br><span class="line">            visc[j][k] = <span class="literal">false</span></span><br><span class="line">            visb[i/<span class="number">3</span>][j/<span class="number">3</span>][k] = <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最终如果都不返回true，则返回false，失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    dfs(<span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="扫雷游戏"><a href="#扫雷游戏" class="headerlink" title="扫雷游戏"></a>扫雷游戏</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 深度优先，递归</span></span><br><span class="line">func updateBoard(board [][]byte, click []int) [][]byte &#123;</span><br><span class="line">    <span class="comment">// 8个方向的使用</span></span><br><span class="line">    <span class="keyword">var</span> dirX = []int&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> dirY = []int&#123;<span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, -<span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果点击的是M，则是游戏结束，更新值</span></span><br><span class="line">    <span class="keyword">if</span> board[click[<span class="number">0</span>]][click[<span class="number">1</span>]] == <span class="string">&#x27;M&#x27;</span> &#123;</span><br><span class="line">        board[click[<span class="number">0</span>]][click[<span class="number">1</span>]] = <span class="string">&#x27;X&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> board</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 参数是坐标值，和每次递归更新后的board</span></span><br><span class="line">    <span class="keyword">var</span> dfs func([][]byte, int, int)</span><br><span class="line">    dfs = <span class="function"><span class="title">func</span>(<span class="params">board [][]byte, x, y int</span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 记录周围的M数量</span></span><br><span class="line">        mCount := <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">8</span>; i++ &#123;</span><br><span class="line">            tx := x + dirX[i]</span><br><span class="line">            ty := y + dirY[i]</span><br><span class="line">            <span class="comment">// 边界条件</span></span><br><span class="line">            <span class="keyword">if</span> tx &lt; <span class="number">0</span> || ty &lt; <span class="number">0</span> || tx &gt;= len(board) || ty &gt;= <span class="function"><span class="title">len</span>(<span class="params">board[<span class="number">0</span>]</span>)</span> &#123; <span class="keyword">continue</span> &#125;</span><br><span class="line">            <span class="comment">// 如果周围有M，则数字+1</span></span><br><span class="line">            <span class="keyword">if</span> board[tx][ty] == <span class="string">&#x27;M&#x27;</span> &#123;</span><br><span class="line">                mCount++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 周围有M，则更新为byte数字</span></span><br><span class="line">        <span class="keyword">if</span> mCount &gt; <span class="number">0</span> &#123;</span><br><span class="line">            board[x][y] = byte(mCount + <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 周围没有M则更新为B</span></span><br><span class="line">            board[x][y] = <span class="string">&#x27;B&#x27;</span></span><br><span class="line">            <span class="comment">// 向8个方向扩展</span></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">8</span>; i++ &#123;</span><br><span class="line">                tx := x + dirX[i]</span><br><span class="line">                ty := y + dirY[i]</span><br><span class="line">                <span class="comment">// 如果周边的不是E，说明已经被访问过了，则跳过</span></span><br><span class="line">                <span class="keyword">if</span> tx &lt; <span class="number">0</span> || ty &lt; <span class="number">0</span> || tx &gt;= len(board) || ty &gt;= len(board[<span class="number">0</span>]) || board[tx][ty] != <span class="string">&#x27;E&#x27;</span> &#123; <span class="keyword">continue</span> &#125;</span><br><span class="line">                dfs(board, tx, ty)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;        </span><br><span class="line">    &#125;</span><br><span class="line">    dfs(board, click[<span class="number">0</span>], click[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> board</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 广度优先，bfs</span></span><br><span class="line">func updateBoard(board [][]byte, click []int) [][]byte &#123;</span><br><span class="line">    <span class="comment">// 8个方向</span></span><br><span class="line">    <span class="keyword">var</span> dirX = []int&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> dirY = []int&#123;<span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, -<span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 点击到M结束</span></span><br><span class="line">    <span class="keyword">if</span> board[click[<span class="number">0</span>]][click[<span class="number">1</span>]] == <span class="string">&#x27;M&#x27;</span> &#123;</span><br><span class="line">        board[click[<span class="number">0</span>]][click[<span class="number">1</span>]] = <span class="string">&#x27;X&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> board</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> bfs func([][]byte, int, int)</span><br><span class="line">    bfs = <span class="function"><span class="title">func</span>(<span class="params">board [][]byte, x, y int</span>)</span> &#123;</span><br><span class="line">        q := [][]int&#123;&#125;</span><br><span class="line">        vis := make([][]bool, len(board))</span><br><span class="line">        <span class="comment">// 初始化所有的节点，是否被访问过</span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(vis); i++ &#123;</span><br><span class="line">            vis[i] = make([]bool, len(board[<span class="number">0</span>]))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当前点击加入队列</span></span><br><span class="line">        q = append(q, []int&#123;x, y&#125;)</span><br><span class="line">        <span class="comment">// 记录当前点击访问</span></span><br><span class="line">        vis[x][y] = <span class="literal">true</span></span><br><span class="line">        <span class="comment">// 遍历队列</span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(q); i++ &#123;</span><br><span class="line">            <span class="comment">// 获取当前坐标，初始化周围M的数量</span></span><br><span class="line">            mCount, cx, <span class="attr">cy</span> := <span class="number">0</span>, q[i][<span class="number">0</span>], q[i][<span class="number">1</span>]</span><br><span class="line">            <span class="comment">// 找周围的M</span></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">8</span>; i++ &#123;</span><br><span class="line">                tx, <span class="attr">ty</span> := cx + dirX[i], cy + dirY[i]</span><br><span class="line">                <span class="keyword">if</span> tx &lt; <span class="number">0</span> || tx &gt;= len(board) || ty &lt; <span class="number">0</span> || ty &gt;= <span class="function"><span class="title">len</span>(<span class="params">board[<span class="number">0</span>]</span>)</span> &#123;</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 记录周围的M</span></span><br><span class="line">                <span class="keyword">if</span> board[tx][ty] == <span class="string">&#x27;M&#x27;</span> &#123;</span><br><span class="line">                    mCount++</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 如果有M，更新值</span></span><br><span class="line">            <span class="keyword">if</span> mCount &gt; <span class="number">0</span> &#123;</span><br><span class="line">                board[cx][cy] = byte(mCount + <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 没有M更新为B</span></span><br><span class="line">                board[cx][cy] = <span class="string">&#x27;B&#x27;</span></span><br><span class="line">                <span class="comment">// 将周围的加入队列</span></span><br><span class="line">                <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">8</span>; i++ &#123;</span><br><span class="line">                    tx, <span class="attr">ty</span> := cx + dirX[i], cy + dirY[i]</span><br><span class="line">                    <span class="comment">// 这里不需要在存在 B 的时候继续扩展，因为 B 之前被点击的时候已经被扩展过了</span></span><br><span class="line">                    <span class="keyword">if</span> tx &lt; <span class="number">0</span> || tx &gt;= len(board) || ty &lt; <span class="number">0</span> || ty &gt;= len(board[<span class="number">0</span>]) || board[tx][ty] != <span class="string">&#x27;E&#x27;</span> || vis[tx][ty] &#123;</span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    q = append(q, []int&#123;tx, ty&#125;)</span><br><span class="line">                    vis[tx][ty] = <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    bfs(board, click[<span class="number">0</span>], click[<span class="number">1</span>])</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> board</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" rel="prev" title="AVL树和红黑树">
+                  <i class="fa fa-angle-left"></i> AVL树和红黑树
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/29/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" rel="next" title="贪心算法">
+                  贪心算法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="go的AVL树实现，红黑树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AVL树和红黑树">
+<meta property="og:url" content="https://zypuu.github.io/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="go的AVL树实现，红黑树">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/1.png">
+<meta property="og:image" content="https://zypuu.github.io/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/2.png">
+<meta property="article:published_time" content="2021-03-26T07:57:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.908Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/1.png">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/","path":"2021/03/26/AVL树实现，红黑树/","title":"AVL树和红黑树"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AVL树和红黑树 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AVL%E6%A0%91%EF%BC%88%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">AVL树（平衡二叉搜索树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text">红黑树</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AVL树和红黑树 | All-Nothing">
+      <meta itemprop="description" content="go的AVL树实现，红黑树">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AVL树和红黑树
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-26 15:57:00" itemprop="dateCreated datePublished" datetime="2021-03-26T15:57:00+08:00">2021-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">go的AVL树实现，红黑树</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="AVL树（平衡二叉搜索树）"><a href="#AVL树（平衡二叉搜索树）" class="headerlink" title="AVL树（平衡二叉搜索树）"></a>AVL树（平衡二叉搜索树）</h3><p>基于作者名字命名</p>
+<p>平衡因子： 某个结点的左子树的高度减去右子树的高度得到的差值</p>
+<p>AVL树的特点：<br>1、左右子树的高度差的绝对值小于1，即平衡因子{-1,0,1}<br>2、其每一颗子树均为平衡二叉树</p>
+<p>节点会储存额外的信息</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">type AVLTreeNode struct &#123;</span><br><span class="line">    value int</span><br><span class="line">    high  int</span><br><span class="line">    left  *AVLTreeNode</span><br><span class="line">    right *AVLTreeNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>AVL树具有监督机制：树的某一部分的不平衡度超过平衡因子后触发相应的平衡操作。保证树的平衡度在平衡因子范围内</p>
+<p>通过左旋、右旋操作，分为四种情况</p>
+<p>单次左右旋， 注意旋转的与被旋转的节点更换</p>
+<p><img src="/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/1.png" alt="1"></p>
+<p>双次旋转</p>
+<p><img src="/2021/03/26/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0%EF%BC%8C%E7%BA%A2%E9%BB%91%E6%A0%91/2.png" alt="2"></p>
+<p>case2情况下，需要先对y结点进行一次左旋转，然后再对z结点进行一次右旋转<br>case3情况下，需要先对y结点进行一次右旋转，然后再对z结点进行一次左旋转</p>
+<p>实现AVL树</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 树节点</span></span><br><span class="line">type AVLTreeNode struct &#123;</span><br><span class="line">    value int   <span class="comment">// 节点值</span></span><br><span class="line">    high  int   <span class="comment">// 节点高度，最底层新插入的高度是0</span></span><br><span class="line">    left  *AVLTreeNode</span><br><span class="line">    right *AVLTreeNode</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 初始化一个AVL树</span></span><br><span class="line">func NewAVLTreeRoot(root int) *AVLTreeNode &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;AVLTreeNode&#123;root, <span class="number">0</span>, nil, nil&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 插入节点</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) InsertNode(v int) *AVLTreeNode &#123;</span><br><span class="line">    <span class="comment">// 到叶子节点为nil时，插入v的值，递归终止条件</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">this</span> == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> &amp;AVLTreeNode&#123;v, <span class="number">0</span>, nil, nil&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// v小于当前节点的value，左子树往下</span></span><br><span class="line">    <span class="keyword">if</span> v &lt; <span class="built_in">this</span>.value &#123;</span><br><span class="line">        <span class="comment">// 左节点往下插入。开始递归，最终得到要插入的节点，就是this.left</span></span><br><span class="line">        <span class="comment">// 到最底层，此时的this是插入后的新节点的父节点，开始向上递归平衡</span></span><br><span class="line">        <span class="built_in">this</span>.left = <span class="built_in">this</span>.left.InsertNode(v)</span><br><span class="line">        <span class="comment">// 开始回溯时，从倒数第二层开始向上，更新新节点的父节点得到的高度</span></span><br><span class="line">        <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">        <span class="comment">// 检查高度差，高度差为2则复发平衡，触发第一次回溯时候就是新插入的节点的父父节点</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">this</span>.left.getNodeHigh()-<span class="built_in">this</span>.right.getNodeHigh() == <span class="number">2</span> &#123;</span><br><span class="line">            <span class="comment">// 如果要插入的值小于当前节点左节点的值，则右旋，否则 左右旋</span></span><br><span class="line">            <span class="keyword">if</span> v &lt; <span class="built_in">this</span>.left.value &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.rightRotation()</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.leftRightRotation()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">// 与上面相反，插入的时候左右交替比较插入，回溯的时候也是左右交替回溯</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.right = <span class="built_in">this</span>.right.InsertNode(v)</span><br><span class="line">        <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">this</span>.right.getNodeHigh()-<span class="built_in">this</span>.left.getNodeHigh() == <span class="number">2</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> v &lt; <span class="built_in">this</span>.right.value &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.rightLeftRotation()</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">this</span>.leftRotation()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 左旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) leftRotation() *AVLTreeNode &#123;</span><br><span class="line">    <span class="comment">// 更换节点</span></span><br><span class="line">    node := <span class="built_in">this</span>.right</span><br><span class="line">    <span class="built_in">this</span>.right = node.left</span><br><span class="line">    node.left = <span class="built_in">this</span></span><br><span class="line">    <span class="comment">// 更新高度</span></span><br><span class="line">    <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    node.high = getMax(node.left.getNodeHigh(), node.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 右旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) rightRotation() *AVLTreeNode &#123;</span><br><span class="line">    node := <span class="built_in">this</span>.left</span><br><span class="line">    <span class="built_in">this</span>.left = node.right</span><br><span class="line">    node.right = <span class="built_in">this</span></span><br><span class="line">    <span class="built_in">this</span>.high = getMax(<span class="built_in">this</span>.left.getNodeHigh(), <span class="built_in">this</span>.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    node.high = getMax(node.left.getNodeHigh(), node.right.getNodeHigh()) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 左右旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) leftRightRotation() *AVLTreeNode &#123;</span><br><span class="line">    <span class="built_in">this</span>.left = <span class="built_in">this</span>.left.leftRotation()</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.rightRotation()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 右左旋</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) rightLeftRotation() *AVLTreeNode &#123;</span><br><span class="line">    <span class="built_in">this</span>.right = <span class="built_in">this</span>.right.rightRotation()</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.leftRotation()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取节点高度</span></span><br><span class="line">func (<span class="built_in">this</span> *AVLTreeNode) getNodeHigh() int &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">this</span> == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.high</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 获取最大值</span></span><br><span class="line">func getMax(a, b int) int &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><p>红黑树是一种自平衡的二叉搜索树，它包含了二叉搜索树的特性，同时具备以下性质：</p>
+<p>1、所有节点的颜色不是红色就是黑色。<br>2、根节点是黑色。<br>3、每个叶子节点都是黑色的空节点(nil)。<br>4、每个红色节点的两个子节点都是黑色。(从每个叶子到根节点的所有路径上不能有两个连续的红色节点)<br>5、从任一节点到其叶子节点的所有路径上都包含相同数目的黑节点</p>
+<p>与AVL树相比，没有AVL树那么严格的自平衡，允许比较大的平衡因子</p>
+<p>查询多，更新少的用AVL， 更新多一点的用红黑树</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/26/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="prev" title="并查集">
+                  <i class="fa fa-angle-left"></i> 并查集
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/26/%E5%8F%8C%E5%90%91BFS/" rel="next" title="双向BFS">
+                  双向BFS <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

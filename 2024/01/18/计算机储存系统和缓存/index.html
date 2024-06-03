@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="计算机储存系统和缓存，磁盘等一些基础知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机储存系统和缓存">
+<meta property="og:url" content="https://zypuu.github.io/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%82%A8%E5%AD%98%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="计算机储存系统和缓存，磁盘等一些基础知识">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-01-18T08:49:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.209Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%82%A8%E5%AD%98%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%BC%93%E5%AD%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%82%A8%E5%AD%98%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%BC%93%E5%AD%98/","path":"2024/01/18/计算机储存系统和缓存/","title":"计算机储存系统和缓存"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机储存系统和缓存 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#cache%E7%BC%93%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">cache缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98cache"><span class="nav-number">1.1.</span> <span class="nav-text">高速缓存cache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cache"><span class="nav-number">1.2.</span> <span class="nav-text">cache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E6%98%A0%E5%B0%84"><span class="nav-number">1.3.</span> <span class="nav-text">地址映射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">替换算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cache%E8%AF%BB%E5%86%99%E8%BF%87%E7%A8%8B"><span class="nav-number">1.5.</span> <span class="nav-text">cache读写过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cache%E5%91%BD%E4%B8%AD%E7%8E%87"><span class="nav-number">1.6.</span> <span class="nav-text">cache命中率</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E7%A3%81%E7%9B%98"><span class="nav-number">2.</span> <span class="nav-text">存储磁盘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A3%81%E7%9B%98"><span class="nav-number">2.1.</span> <span class="nav-text">磁盘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">磁盘调度算法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%82%A8%E5%AD%98%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%BC%93%E5%AD%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机储存系统和缓存 | All-Nothing">
+      <meta itemprop="description" content="计算机储存系统和缓存，磁盘等一些基础知识">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机储存系统和缓存
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-18 16:49:00" itemprop="dateCreated datePublished" datetime="2024-01-18T16:49:00+08:00">2024-01-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">计算机储存系统和缓存，磁盘等一些基础知识</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>计算机采用分级存储体系的主要目的是为了 解决存储容量 、成本和速度之间的矛盾问题<br>两级存储： Cache-主存 、主存-辅存（虚拟存 储体系）</p>
+<p>寄存器 （cpu，64位比特位），Cache（SRAM相联存储器）， 内存（主存，DRAM，RAM，ROM（掉电不会丢失）），外存（辅存）</p>
+<h3 id="cache缓存"><a href="#cache缓存" class="headerlink" title="cache缓存"></a>cache缓存</h3><h4 id="高速缓存cache"><a href="#高速缓存cache" class="headerlink" title="高速缓存cache"></a>高速缓存cache</h4><p>用来存储当前最活跃的程序和数据， 直接与CPU交互， 位于<br>CPU和主存之间， 容量小， 速度为内存的5—10倍， 由半导体材料构成 。其内<br>容 是主存内存的副本拷贝， 对于程序员来说是透明的，不可操作的，其他的程序员都可操作</p>
+<h4 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h4><p>由控制部分和存储器组成， 存储器存储数据， 控制部分判断CPU要访问 的数据是否在Cache中， 在则命中， 不在则依据一定的算法从主存中替换，设置多级高速缓存Cache可以提高命中率（访问主存的效率）</p>
+<p>使用Cache改善性能的依据是程序的局部性原理</p>
+<p>时间局部性：被引用过一次的存储位置可能在未来会被多次引用 （for循环）</p>
+<p>空间局部性：如果一个存储器的位置被引用，那么将来它附近的位置也会被引用  （顺序执行过程）</p>
+<h4 id="地址映射"><a href="#地址映射" class="headerlink" title="地址映射"></a>地址映射</h4><p>在CPU工作时， 送出的是主存单元的地址， 而应从Cache存储器中 读／写信息 。这就需要将主存地址转换为Cache存储器地址， 这种地址的转换称为地址映射， 由硬件自动完成映射，Cache与主存的地址映射（主存与外存的地址映射是由软件和硬件结合完成的）</p>
+<p>1、直接映射： 将Cache存储器等分成块， 主存也等分成块并编号，二者块号相同才能命中</p>
+<p>2、全相联映射： 同样都等分成块并编号 。主 存中任意一块都与Cache中任意一块对应 。<br>因此可以随意调入Cache任意位置， 但地 址变换复杂， 速度较慢 。因为主存可以随 意调入Cache任意块， 只有当Cache满了 才会发生块冲突， 是最不容易发生块冲突 的映像方式</p>
+<p>3、组组相连映射： 前面两种方式的结合，组间采用直接映像， 即主 存中组号与Cache中组号相同的组才能命 中， 但是组内全相联映像， 也即组号相同 的两个组内的所有块可以任意调换</p>
+<table>
+<thead>
+<tr>
+<th>地址映像方法</th>
+<th>描述</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直接相联映像</td>
+<td>主存的块与Cache的块的关系是固定的</td>
+<td>硬件电路设计，地址变换简单</td>
+<td>冲突率较高，灵活性较差</td>
+</tr>
+<tr>
+<td>全相联映像</td>
+<td>主存与Cache均分大小相同的块，允许主存的任何一块可以调入Cache存储器的任何一块</td>
+<td>冲突率较低，主存的块调入Cache的位置不受限制，十分灵活</td>
+<td>电路难于设计和实现，只适用于小容量的Cache，无法从主存块号直接获得Cache块号，变换比较复杂，速度较慢</td>
+</tr>
+<tr>
+<td>组相联映像</td>
+<td>将Cache中的块再分组，组采用直接相联，块采用全相联</td>
+<td>折中</td>
+<td>折中</td>
+</tr>
+</tbody></table>
+<h4 id="替换算法"><a href="#替换算法" class="headerlink" title="替换算法"></a>替换算法</h4><p>替换算法的目标就是使Cache获得尽可能高的命中率，当发生冲突时，需要进行页面淘汰<br>1、随机替换算法 （RAND）。就是用随机数发生器产生一个要替换的块号， 将该块替换出去 。<br>2、先进先出算法 （FIFO）。就是将最先进入Cache的信息块替换出去 。<br>3、近期最少使用算法（LRU） 。这种方法是将近期最少使用的Cache中 的信息块替换出去 。<br>4、优化替换算法 。这种方法必须先执行一次程序， 统计Cache的替换情况 。有了这样的先验信息， 在第二次执行该程序时便可以 用最有效的方式来替换</p>
+<p>5、最不频繁使用算法（LFU），计数器，统计使用次数，计数器位数比较多，实现困难</p>
+<h4 id="cache读写过程"><a href="#cache读写过程" class="headerlink" title="cache读写过程"></a>cache读写过程</h4><p>写直达：同时写Cache和内存</p>
+<p>写回：只写cache，淘汰页面时写回内存</p>
+<p>标记法：只写入内存，并将标志位清零，若用到此数据，只需要再次调取</p>
+<h4 id="cache命中率"><a href="#cache命中率" class="headerlink" title="cache命中率"></a>cache命中率</h4><p>设读取一次Cache时间为1ns， 若 CPU访问的数据不在Cache中， 则需要从内存中读取， 设读取一次内 存的时间为1000ns， 若在CPU多次读取数据过程中， 有90％命中<br>Cache， 则CPU读取一次的平均时间为（ 90％＊ 1＋10％＊ 1000） ns</p>
+<h3 id="存储磁盘"><a href="#存储磁盘" class="headerlink" title="存储磁盘"></a>存储磁盘</h3><h4 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h4><p>磁盘有正反两个盘面， 每个盘面有多个同心圆， 每个同心圆是一个磁道， 每个同心 圆又被划分为多个扇区， 数据就被存放在一个个扇区中</p>
+<p>磁头首先要寻找到对应的磁道， 然后等待磁盘进行周期旋转， 旋转到指定的扇区 ， 才能读取到对应的数据，</p>
+<p>所以一般先进行移臂调度，切换不同磁道，再进行旋转调度，旋转到指定扇区</p>
+<p>因此， 会产生寻道时间和等待时间 。公式为： 存取时间 = 寻道时间＋等待时间（平均定位时间 ＋转动延迟） 。<br>注意： 寻道时间是指磁头移动到磁道所需的时间； 等待时间为等待读写的扇区转到磁头下方所用的时间 。</p>
+<h4 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h4><p>1、先来先服务FCFS： 根据进程请求访问磁盘的先后顺序进行调度<br>2、最短寻道时间优先SSTF： 请求访问的磁道与当前磁道最近的进程优先调度，使得<br>每 次的寻道时间最短 。会产生“饥饿 ”现象， 即远处进程可能永远无法访问 。<br>3、扫描算法SCAN： 又称“ 电梯算法 ”，磁头在磁盘上双向移动， 其会选择离磁头当 前所在磁道最近的请求访问的磁道， 并且与磁头移动方向一致，磁头永远都是从里 向外或者从外向里一直移动完才掉头， 与电梯类似<br>4、单向扫描调度算法CSCAN： 与SCAN不同的是， 其只做单向移动， 即只能从里向外 或者从外向里 。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8C%87%E4%BB%A4/" rel="prev" title="计算机指令系统">
+                  <i class="fa fa-angle-left"></i> 计算机指令系统
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/18/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%8A%80%E6%9C%AF%E3%80%81%E6%80%BB%E7%BA%BF/" rel="next" title="输入输出、总线技术">
+                  输入输出、总线技术 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

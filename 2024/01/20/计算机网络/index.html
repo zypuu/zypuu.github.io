@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="计算机网络相关，osi七层模型，ip地址等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络">
+<meta property="og:url" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="计算机网络相关，osi七层模型，ip地址等">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/4.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/5.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/6.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/7.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/8.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/9.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/10.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/11.jpg">
+<meta property="article:published_time" content="2024-01-20T08:20:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.219Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/","path":"2024/01/20/计算机网络/","title":"计算机网络"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机网络 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">拓扑分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BA%BF%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.1.</span> <span class="nav-text">总线型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.2.</span> <span class="nav-text">星型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.3.</span> <span class="nav-text">环型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91%E5%9E%8B%E6%8B%93%E6%89%91"><span class="nav-number">1.4.</span> <span class="nav-text">树型拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%8B%93%E6%89%91"><span class="nav-number">1.5.</span> <span class="nav-text">分布式拓扑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">通信技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92"><span class="nav-number">2.1.</span> <span class="nav-text">数据传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5G"><span class="nav-number">2.2.</span> <span class="nav-text">5G</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">OSI七层模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91%E5%B9%BF%E5%9F%9F%E7%BD%91%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.1.</span> <span class="nav-text">局域网广域网协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.</span> <span class="nav-text">网络协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.1.</span> <span class="nav-text">网络层协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.2.</span> <span class="nav-text">传输层协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.2.3.</span> <span class="nav-text">应用层协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%AF%B9%E7%85%A7"><span class="nav-number">3.2.4.</span> <span class="nav-text">端口对照</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF"><span class="nav-number">4.</span> <span class="nav-text">交换技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E6%8A%80%E6%9C%AF"><span class="nav-number">5.</span> <span class="nav-text">路由技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8"><span class="nav-number">6.</span> <span class="nav-text">传输介质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E7%BB%9E%E7%BA%BF"><span class="nav-number">6.1.</span> <span class="nav-text">双绞线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%BA%A4"><span class="nav-number">6.2.</span> <span class="nav-text">光纤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93"><span class="nav-number">6.3.</span> <span class="nav-text">无线信道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E6%96%B9%E5%90%91"><span class="nav-number">6.4.</span> <span class="nav-text">通信方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%96%B9%E5%BC%8F"><span class="nav-number">6.5.</span> <span class="nav-text">交换方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80"><span class="nav-number">7.</span> <span class="nav-text">IP地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">7.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">7.2.</span> <span class="nav-text">子网划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IPV6"><span class="nav-number">7.3.</span> <span class="nav-text">IPV6</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%89%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">8.</span> <span class="nav-text">网络三层模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%A7%84%E5%88%92%E4%B8%8E%E8%AE%BE%E8%AE%A1"><span class="nav-number">9.</span> <span class="nav-text">网络规划与设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%86%97%E4%BD%99%E9%98%B5%E5%88%97"><span class="nav-number">10.</span> <span class="nav-text">磁盘冗余阵列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">11.</span> <span class="nav-text">网络存储技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS"><span class="nav-number">12.</span> <span class="nav-text">DNS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS%E5%8D%8F%E8%AE%AE%E6%9F%A5%E8%AF%A2"><span class="nav-number">12.1.</span> <span class="nav-text">DNS协议查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2"><span class="nav-number">12.1.1.</span> <span class="nav-text">递归查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E6%9F%A5%E8%AF%A2"><span class="nav-number">12.1.2.</span> <span class="nav-text">迭代查询</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机网络 | All-Nothing">
+      <meta itemprop="description" content="计算机网络相关，osi七层模型，ip地址等">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-20 16:20:00" itemprop="dateCreated datePublished" datetime="2024-01-20T16:20:00+08:00">2024-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">计算机网络相关，osi七层模型，ip地址等</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>计算机网络的功能： 数据通信 、资源共享 、管理集中化 、实现分布式处理 、负 载均衡。<br>网络性能指标： 速率 、带宽(频带宽度或传送线路速率)、吞吐量 、时延 、往返时间 、利用率。<br>网络非性能指标： 费用 、质量 、标准化 、可靠性 、可扩展性 、可升级性 、易管理性和可维 护性。</p>
+<h2 id="拓扑分类"><a href="#拓扑分类" class="headerlink" title="拓扑分类"></a>拓扑分类</h2><h3 id="总线型拓扑"><a href="#总线型拓扑" class="headerlink" title="总线型拓扑"></a>总线型拓扑</h3><p>特点:采用总线的形式将所有计算机相连,信息只能在一条线路上传输。</p>
+<ul>
+<li>优点:成本低,实现简单。</li>
+<li>缺点:带宽低,延迟高,任何节点发生故障整条总线瘫痪。</li>
+<li>举例:一个简单的以太网线路就是总线型拓扑的一个例子 。所有计算机通过网线连接到交<br>换机的各个端口上,数据只能在这条总线上传输<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/1.jpg" alt="1"><h3 id="星型拓扑"><a href="#星型拓扑" class="headerlink" title="星型拓扑"></a>星型拓扑</h3></li>
+<li>特点:通过一个中心交换机将计算机互联,形成星型网络。</li>
+<li>优点:容易扩展,集中管理。</li>
+<li>缺点: 中央交换机单点故障会瘫痪全网。</li>
+<li>举例:一个小型办公室的网络就可以采用星型拓扑 。计算机通过网线连接到中心的交换机<br>上,形成星型结构<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.jpg" alt="1"><h3 id="环型拓扑"><a href="#环型拓扑" class="headerlink" title="环型拓扑"></a>环型拓扑</h3></li>
+<li>特点:计算机按环形连接,信息只能前进或后退进行传输。</li>
+<li>优点:故障启闭容易诊断。</li>
+<li>缺点:数据传输效率低,扩展性差<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.jpg" alt="1"><h3 id="树型拓扑"><a href="#树型拓扑" class="headerlink" title="树型拓扑"></a>树型拓扑</h3></li>
+<li>特点:采用分级交换机进行分层管理的方式构建局域网。</li>
+<li>优点:易于管理和扩展,并行数据传输,性能高。</li>
+<li>缺点:增加层次会降低效率。</li>
+<li>举例:一个大型的企业网络可能采用树型拓扑 。计算机先连接到分支交换机上,<br>分 支交换机再连接到主干交换机上,实现分级管理<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/4.jpg" alt="1"><h3 id="分布式拓扑"><a href="#分布式拓扑" class="headerlink" title="分布式拓扑"></a>分布式拓扑</h3></li>
+<li>特点:任何节点都能与其他节点互联,不存在集中交换。</li>
+<li>优点:无中心,任意节点故障不影响全网。</li>
+<li>缺点:管理复杂,成本高。</li>
+<li>举例: 比特币网络就是一个分布式拓扑的例子 。 网络中的每个节点都是对等的,<br>没 有中心机构 。任意两个节点都可以直接通信<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/5.jpg" alt="1"></li>
+</ul>
+<h2 id="通信技术"><a href="#通信技术" class="headerlink" title="通信技术"></a>通信技术</h2><p>计算机网络是利用通信技术将数据从一个结点传送到另一结点的过程。<br>通信技术是计算机网络的基础。<br>信道可分为物理信道和逻辑信道。<br>物理信道由传输介质和设备组成， 根据传输介质的不同， 分为无线信道和有线信道。<br>逻辑信道是指在数据发送端和接收端之间存在的一条虚拟线路， 可以是有连接的或无连接的 。逻辑信道以物理信 道为载体。</p>
+<p>发信机进行的信号处理包括信源编码，信道编码，交织，脉冲，调制</p>
+<p>收信机信号处理解调，采样判决，去交织，译码</p>
+<h3 id="数据传递"><a href="#数据传递" class="headerlink" title="数据传递"></a>数据传递</h3><p>如果同时传递多路数据就需要复用技术和多址技术 。</p>
+<p>复用技术是指在一条信道上同时传输多路数据的技术， 如DM时分复用 、FDM频分复用和CDM码分复用等 。</p>
+<p>多址技术是指在一条线上同时传输多个用户数据的技术， 在接收端把多个用户的数据分离(TDMA时分多址 、FDMA频分多址和CDMA码分多址)。</p>
+<h3 id="5G"><a href="#5G" class="headerlink" title="5G"></a>5G</h3><p>作为新一代的移动通信技术， 5G特征体现在以下方面。<br>1） 实现可扩展的OFDM间隔参数配直<br>2） 灵活框架设计<br>3） 毫米波:频率大于24GHz以上的频段<br>4） 基于OFDM优化的波形和多址接入<br>5） OFDM加窗提高多路传输效率<br>6） 大规模MIMO:最多256根天线<br>7）频谱共享 8）先进的信道编码设计<br>5G网络的主要特征:服务化架构 、 网络切片。</p>
+<h2 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h2><p><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/6.jpg" alt="1"></p>
+<p>中继器，集线器：物理层，对接收信号进行再生，发送，只起到扩展传输距离的作用</p>
+<p>网桥：数据链路层</p>
+<p>路由器：网络层，IP</p>
+<p>网关：高层协议</p>
+<p>二层交换机：数据链路层</p>
+<p>三层交换机：网络层</p>
+<p>多层交换机：高层协议</p>
+<h3 id="局域网广域网协议"><a href="#局域网广域网协议" class="headerlink" title="局域网广域网协议"></a>局域网广域网协议</h3><p>以太网，计算机局域网组网技术<br>IEEE802.3<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/7.jpg" alt="1"></p>
+<h3 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a>网络协议</h3><p>三要素，语法，语义，时序</p>
+<h4 id="网络层协议"><a href="#网络层协议" class="headerlink" title="网络层协议"></a>网络层协议</h4><p>◆IP:网络层最重要的核心协议，在源地址和目的地址之间传送数据报， 无连接 、不可靠。<br>◆ICMP:因特网控制报文协议， 用于在IP主机 、路由器之间传递控制消息 。控制消息是指网络通不通 、主机是否可达 、路由是否可用等网络本身的消息。<br>◆ARP和RARP:地址解析协议，ARP是将IP地址转换为物理地址， RARP是将物理地址转换为IP地址。<br>◆IGMP:网络组管理协议， 允许因特网中的计算机参加多播， 是计算机用做向相邻多目路由器报告多目组成员的协议， 支持组播。</p>
+<h4 id="传输层协议"><a href="#传输层协议" class="headerlink" title="传输层协议"></a>传输层协议</h4><p>◆TCP:整个TCP/IP协议族中最重要的协议之一，在IP协议提供的不可靠数据数据基础上，采 用了重发技术， 为应用程序提供了一个可靠的 、面向连接的 、全双工的数据传输服务 。一般 用于传输数据量比较少， 且对可靠性要求高的场合。</p>
+<p>1、使用序号对数据报进行标记</p>
+<p>2、TCP使用确认，校验，定时器系统提供可靠性</p>
+<p>3、tcp使用窗口机制调整数据流量</p>
+<p>◆UDP:是一种不可靠 、无连接的协议， 有助于提高传输速率， 一般用于传输数据量大，对可 靠性要求不高， 但要求速度快的场合。</p>
+<p>1、无连接，使用最大努力交付，面向报文，没有拥塞控制，一对一，一对多，多对一，多对多，首部开销小</p>
+<h4 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h4><p>基于TCP的FTP、HTTP等都是可靠传输 。基于UDP的DHCP、DNS等都是不可靠传输。<br>◆FTP:可靠的文件传输协议， 用于因特网上的控制文件的双向传输。<br>◆HTTP:超文本传输协议， 用于从WWW服务器传输超文本到本地浏览器的传输协议 。使用SSL 加密后的安全网页协议为HTTPS。<br>◆SMTP和POP3:简单邮件传输协议， 是一组用于由源地址到目的地址传送邮件的规则， 邮件报 文采用ASCII格式表示， SMTP是发送，POP3是接收<br>◆Telnet:远程连接协议， 是因特网远程登录服务的标准协议和主要方式。<br>◆TFTP:不可靠的 、开销不大的小文件传输协议。<br>◆SNMP:简单网络管理协议， 它主要用于网络设备与网络管理系统(NMS)之间进行监测与管理，比如路由器和交换机设备通过SNMP定期向网络管理系统上报接口流量 、CPU利用率等性能指标<br>◆DHCP:动态主机配置协议， 基于UDP,基于C/S模型， 为主机动态分配IP地址， 有三种方式：固定分配、动态分配、 自动分配。<br>◆DNS:域名解析协议， 通过域名解析出IP地址。</p>
+<h4 id="端口对照"><a href="#端口对照" class="headerlink" title="端口对照"></a>端口对照</h4><p><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/8.jpg" alt="1"></p>
+<h2 id="交换技术"><a href="#交换技术" class="headerlink" title="交换技术"></a>交换技术</h2><p>交换机功能包括:<br>集线功能 。提供大量可供线缆连接的端口达到部署星状拓扑网络的目的。<br>中继功能 。在转发帧时重新产生不失真的电信号。<br>桥接功能 。在内置的端口上使用相同的转发和过滤逻辑。<br>隔离冲突域功能 。将部署好的局域网分为多个冲突域， 而每个冲突域都有自己独立的带宽， 以提高交换机整体宽带利用效率。<br>交换机的功能包括:<br>( 1)转发路径学习 。根据收到数据帧中的源MAC地址建立该地址同交换机端口的映射写入MAC地址表中。<br>(2)数据转发 。如果交换机根据数据帧中的目的MAC地址在建立好的MAC地址表中查询到了， 就向对应端口 进行转发。<br>(3)数据泛洪 。如果数据帧中的目的MAC地址不在MAC地址表中， 则向所有端口转发也就是泛洪 。广播帧和 组播帧向所有端口（不包括源端口） 进行转发。<br>(4)链路地址更新 。MAC地址表会每隔一定时间（如300s ） 更新一次</p>
+<h2 id="路由技术"><a href="#路由技术" class="headerlink" title="路由技术"></a>路由技术</h2><p>路由功能由路由器来提供， 具体包括:<br>(1)异种网络互连， 比如具有异种子网协议的网络互连:<br>(2)子网协议转换， 不同子网间包括局域网和广域网之间的协议转换:<br>(3)数据路由， 即将数据从一个网络依据路由规则转发到另一个网络:<br>(4)速率适配， 利用缓存和流控协议进行适配:<br>(5)隔离网络， 防止广播风暴,实现防火墙;<br>(6)报文分片和重组， 超过接口的MTU报文被分片， 到达目的地之后的报文被重组:<br>(7)备份 、流量控制， 如主备线路的切换和复杂流量控制等。</p>
+<p>路由器工作在OSl七层协议中的第3层， 即网络层 。其主要任务是接收来源于一个网络接口的数据包， 通常 根据此数据包的目地址决定待转发的下一个地址（即下一跳地址) 。路由器中维持着数据转发所需的路由 表， 所有数据包的发送或转发都通过查找路由表来实现 。这个路由表可以静态配置， 也可以通过动态路由 协议自动生成。</p>
+<p>一般来说， 路由协议可分为内部网关协议（IGP） 和外部网关协议(EGP）两类。</p>
+<p>网络建设工程可分为网络规划 、 网络设计和网络实施三个环节。</p>
+<h2 id="传输介质"><a href="#传输介质" class="headerlink" title="传输介质"></a>传输介质</h2><h3 id="双绞线"><a href="#双绞线" class="headerlink" title="双绞线"></a>双绞线</h3><p>将多根铜线按规则缠绕在一起，能够减少干扰;分为无屏蔽双绞线UTP和屏蔽双<br>绞线STP，都是由一对铜线簇组成。也即我们常说的网线;双绞线的传输距离在100m以内</p>
+<p>无屏蔽双绞线UTP:价格低，安装简单，但可靠性相对较低，分为CAT3(3类UTP，速率为10Mbps)、CAT4(4类UTP，与3类差不多，无应用）、CAT5(5类UTP，速率为100Mbps，用于快速以太网)、CAT5E(超5类UTP，速率为1000Mbps）、CAT6(6类UTP，用来替代CAT5E，速率也是<br>10OOMbps） 。</p>
+<p>屏蔽双绞线STP:比之UTP增加了一层屏蔽层，可以有效的提高可靠性，但对应的价格高，安装麻烦，一般用于对传输可靠性要求很高的场合</p>
+<p>网线有如下两种安装标准：都是八根不同颜色的网线，按照不同的顺序排序，插入水晶头中，区分在第1236四根网线的位置不同。</p>
+<p>T568A T568B</p>
+<h3 id="光纤"><a href="#光纤" class="headerlink" title="光纤"></a>光纤</h3><p>由纤芯和包层组成，传输的光信号在纤芯中传输，然而从PC端出来的信号都是电信号，要经过光纤传输的话，就必须将电信号转换为光信号</p>
+<p>多模光纤MMF:纤芯半径较大，因此可以同时传输多种不同的信号，光信号在光纤中以全反射的形式传输，采用发光二极管LED为光源，成本低，但是传输的效率和可靠性都较低，适合于短距离传输，其传输距离与传输速率相关，速率为100Mbps时为2KM，速率为1000Mbps时为550m</p>
+<p>单模光纤SMF:纤芯半径很小，一般只能传输一种信号，采用激光二极管LD作为光源，并且只支持激光信号的传播，同样是以全反射形式传播，只不过反射角很大，看起来像一条直线，成本高，但是传输距离远，可靠性高。传输距离可达5KM</p>
+<h3 id="无线信道"><a href="#无线信道" class="headerlink" title="无线信道"></a>无线信道</h3><p>无线电波，红外光波</p>
+<h3 id="通信方向"><a href="#通信方向" class="headerlink" title="通信方向"></a>通信方向</h3><p>通信方向:数据通信是指发送方发送数据到接收方，这个传输过程可以分类如下:<br>单工:只能由设备A发给设备B，即数据流只能单向流动。<br>半双工:设备A和设备B可以互相通信，但是同一时刻数据流只能单向流动<br>全双工:设备A和设备B在任意时刻都能互相通信</p>
+<p>异步传输:发送方每发送一个字符，需要在字符的起始和结尾处插入标识，当接收方接收到该字符时需要处理开始和结尾处的标识，处理完之后就能识别发送过来的数据，但是这样会造成资源浪费，传输效率降低。发送方和接收方并不是同时进行处理数据</p>
+<p>同步传输:以数据块为单位进行传输，当发送方要发送数据时，先发送一个同步帧，接收方收到后做好接收准备，开始接收数据块，结束后又会有结束帧确认，这样一次传输一个数据块，效率高。</p>
+<p>串行传输:只有一根数据线，数据只能1bit挨个排队传送，适合低速设备、远距离的传送，一般用于广域网中。<br>并行传输:有多根数据线，可以同时传输多个bit数据，适合高速设备的传送，常用语计算机内部各硬件模块之间。</p>
+<h3 id="交换方式"><a href="#交换方式" class="headerlink" title="交换方式"></a>交换方式</h3><p>电路交换:通信一方进行呼叫，另一方接收后，在二者之间会建立一个专用电路，特点为面向连接、实时性高、链路利用率低，一般用于语音视频通信。<br>报文交换:以报文为单位，存储转发模式，接收到数据后先存储，进行差错校验，没有错误则转发，有错误则丢弃，因此会有延时，但可靠性高，是面向无连接的。<br>分组交换:以分组为单位，也是存储转发模式，因为分组的长度比报文小，所以时延小于报文交换，又可分为三种方式:<br>• 数据报:是现在主流的交换方式，各个分组携带地址信息，自由的选择不同的路由路径传送到接收方，接收方接收到分组后再根据地址信息重新组装成原数据，是面向无连接的，但是不可靠的。<br>• 虚电路:发送方发送一个分组，接收方收到后二者之间就建立了一个虚拟的通信线路，二者之间的分组数据交互都通过这条线路传送，在空闲的时候这条线路也可以传输其他数据，是面向连接的，可靠的。<br>• 信元交换:异步传输模式ATM采用的交换方式，本质是按照虚电路方式进行转发，只不过信元是固定长度的分组，共53B，其中5B为头部，48B为数据域，也是面向连接的，可靠的。</p>
+<h2 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h2><p>机器中存放的IP地址是32位的二进制代码，每隔8位插入一个空格，可提高可读性，为了便于理解和设置，一般会采用点分十进制方法来表示:将32位二进制代码每8位二进制转换成十进制，就变成了4个十进制数，而后在每个十进制数间隔中插入.</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>分类IP地址:IP地址分四段，每段八位，共32位二进制数组成。在逻辑上，这32位IP地址分为网络号(带下划线的)和主机号，依据网络号位数的不同，可以将IP地址分为以下几类:<br>按照A类来分配IP地址，总计可以分配：2^24-2=16777214<br>B类的分配数为：2^16-2=65534<br>C类的分配数为：2^8-2=254<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/9.jpg" alt="1"></p>
+<p>无分类编址:即不按照ABC类规则，自动规定网络号，无分类编址格式为:IP地址/网络号，示<br>例:128.168.0.11/20表示的IP地址为128.168.0.11，其网络号占20位，因此主机号占32-20=12位，也可以划分子网。<br>特殊IP地址<br>公有地址:通过它直接访问因特网。是全网唯一的IP地址。<br>私有地址:属于非注册地址，专门为组织机构内部使用，不能直接访问因特网，</p>
+<h3 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h3><p>A类地址网络号：第一部分，8位</p>
+<p>B类地址网络号：第一部分，第二部分， 16位</p>
+<p>C类地址网络号：第一部分，第二部分，第三部分， 24位</p>
+<p>子网划分：一般公司在申请网络时，会直接获得一个范围很大的网络，如一个A类地址，因为主机数之间相差的太大了，不利于分配，我们一般采用子网划分的方法来划分网络，即自定义网络号位数，就能自定义主机号位数，就能根据主机个数来划分出最适合的方案，不会造成资源的浪费。</p>
+<p>子网号：一般的IP地址按标准划分为A B C类后可以进行再一步的划分，将主机号多出的几位作为子网号，就可以划分出多个子网，</p>
+<p>IP地址组成：网络号+子网号+主机号，网络号和子网号都为1，主机号都是0，就是子网掩码</p>
+<p>比如只需要为30台主机分配ip地址，那么我们会申请C类的地址，C类地址是2^8次方个主机号，远远超过了30的需求，于是我们按照2^n-2=30来计算，n=5是最合适的，那么多于的那3位就是用来作为子网号，那么子网就一共可以划分2^3=8个，按照IP地址组成为：网络号+子网号+主机号来算的话，那么就是网络号24+子网号3+主机号5.网络号和子网号都为1,主机号都为0,这样的地址为子网掩码。如果把上面的例子拿来算子网掩码的话就是：24个1+3个1+5个0，得到的就是255.255.255.224要</p>
+<p>注意的是：子网号可以为全0和全1,主机号不能为全0或全1,因此，主机数需要-2,而子网数不用。</p>
+<p>还可以聚合网络为超网，就是划分子网的逆过程，将网络号取出几位作为主机号，此时，这个网络内的主机数量就变多了，成为一个更大的网络</p>
+<p>三级IP地址：网络号+子网号+主机号</p>
+<p>子网掩码：网络号全是1，主机号全是0</p>
+<p>A类子网掩码：255.0.0.0</p>
+<p>B类子网掩码：255.255.0.0</p>
+<p>C类子网掩码：255.255.255.0</p>
+<p>将ip地址与其对应的子网掩码，逐位进行与（1就是保留原先的数据。与0与就是0）运算，可以得到子网的网络地址（只包含网络号）</p>
+<p>IP地址：131.1.123.24/27，/27代表前面27位都是网络号，前三部分是24，最后一部分的前三位也是网络号，网络号不一样代表不在同一网段，路由表的表项</p>
+<p>/23 -》/27 主机号少4个变网络号，则是2的4次方个子网，主机号位数就是5，2的5次方，主机号不能全0或者全1，然后可确定其子网掩码</p>
+<p>/20，可以划分多少个C类子网，C类子网的主机号是8位，网络号是24位，24-20等于4，则子网号是2的4次方</p>
+<p>不属于子网地址算法：网络号确定，确定剩下的最大地址范围，不在范围内就不是</p>
+<h3 id="IPV6"><a href="#IPV6" class="headerlink" title="IPV6"></a>IPV6</h3><p>IPV6主要是为了解决IPv4地址数不够用的情况而提出的设计方案，IPv6具有以下特性：<br>1、 IPv6地址长度为128位，而IPV4地址仅32位，空间增大了2^96倍；<br>2、 灵活的IP报文头部格式，使用一系列固定格式的扩展头部取代了IPv4中可变长度的选项字段。<br>3、 IPv6简化了报文头部格式，加快报文转发，提高了吞吐量；<br>4、提高安全性，身份认证和隐私权是IPv6的关键特性；<br>5、支持更多的服务类型；<br>6、允许协议继续演变，增加新的功能，使之适应未来技术的发展。</p>
+<p>IPV4过渡IPV6技术：</p>
+<p>1、双协议栈技术：可同时支持</p>
+<p>2、隧道技术：在4网络上建立一个能够传输6的数据报的隧道</p>
+<p>3、翻译技术：4转换6</p>
+<h2 id="网络三层模型"><a href="#网络三层模型" class="headerlink" title="网络三层模型"></a>网络三层模型</h2><p>三层模型将网络划分为核心层、汇聚层和接入层：<br>1、核心层：提供不同区域之间的最佳路由和高速数据传送，提高高速转发通信，骨干传输，拥有更高的可靠性，性能，吞吐量，ATM，100BASE_Fx，千兆以太网，双机冗余备份<br>2、 汇聚层：核心层，接入层的分界面，完成网络访问控制，数据包处理，过滤寻址，多台接入层交换机汇聚点，所以汇聚层交换机与接入层交换相比，需要更高的性能，更少的接口，更高的交换速率<br>3、接入层：直接面向用户连接或访问网络的部分，允许终端用户连接到网络，负责一些用户管理功能，用户信息收集工作，为用户提供了在本地网段访问应用系统的能力，还要解决相邻用户之间的互访需要，接入层要负责一些用户信息(例如用户IP地址、MAC地址和访问日志等)的收集工作和用户管理功能(包括认证和计费等)</p>
+<h2 id="网络规划与设计"><a href="#网络规划与设计" class="headerlink" title="网络规划与设计"></a>网络规划与设计</h2><p>建筑物综合布线系统PDS:<br>工作区子系统：实现工作区终端设备到水平子系统的信息插座之间的互联。<br>水平布线子系统：实现信息插座和管理子系统之间的连接。<br>管理子系统：连接各楼层水平布线子系统和垂直干缆线，负责连接控制其他子系统为连接其<br>他子系统提供连接手段<br>垂直干线子系统：实现各楼层设备间子系统之间的互连。<br>设备间子系统：实现中央主配线架与各种不同设备之间的连接。<br>建筑群子系统：各个建筑物通信系统之间的互联</p>
+<p><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/10.jpg" alt="1"></p>
+<p>1、工作区子系统负责房间内部各个设备终端的互联。<br>2、水平和垂直子系统负责不同楼层和建筑内部的互联。<br>3、设备间子系统实现各种设备与交换机之间的互联。<br>4、管理子系统实现整个综合布线系统的管理。<br>5、建筑群子系统实现不同建筑物之间的互联。</p>
+<h2 id="磁盘冗余阵列"><a href="#磁盘冗余阵列" class="headerlink" title="磁盘冗余阵列"></a>磁盘冗余阵列</h2><p>RAID即磁盘冗余阵列技术，将数据分散存储在不同磁盘中，可并行读取，可冗余存储，提高磁盘访问速度，保障数据安全性。<br>RAID0将数据分散的存储在不同磁盘中，磁盘利用率100%,访问速度最快，但是没有提供冗余和错误修复技术；<br>RAID1在成对的独立磁盘上产生互为备份的数据，增加存储可靠性，可以纠错，但磁盘利用率只有50%;<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/11.jpg" alt="1"></p>
+<h2 id="网络存储技术"><a href="#网络存储技术" class="headerlink" title="网络存储技术"></a>网络存储技术</h2><p>1.直接附加存储(DAS):是指将存储设备通过SCSI接口直接连接到一台服务器上使用，其本身是硬件的堆叠，存储操作依赖于服务器，不带有任何存储操作系统。<br>◆存在问题：在传递距离、连接数量、传输速率等方面都受到限制。容量难以扩展升级；数据处理和传输能力降低；服务器异常会波及存储器。</p>
+<p>2.网络附加存储(NAS):通过网络接口与网络直接相连，由用户通过网络访问，有独立的存储系统。如下图所示。NAS存储设备类似于一个专用的文件服务器，去掉了通用服务器大多数计算功能，而仅仅提供文件系统功能。以数据为中心，将存储设备与服务器分离，其存储设<br>备在功能上完全独立于网络中的主服务器。客户机与存储设备之间的数据访问不再需要文件服务器的干预，同时它允许客户机与存储设备之间进行直接的数据访问，所以不仅响应速度快，而且数据传输速率也很高。<br>◆NAS的性能特点是进行小文件级的共享存取；支持即插即用；可以很经济的解决存储容量不足的问题，但难以获得满意的性能。</p>
+<p>3.存储区域网(SAN):SAN是通过专用交换机将磁盘阵列与服务器连接起来的高速专用子网。它没有采用文件共享存取方式，而是采用块(block)级别存储。SAN是通过专用高速网将一个或多个网络存储设备和服务器连接起来的专用存储系统，其最大特点是将存储设备从传统的以太网中分离了出来，成为独立的存储区域网络SAN的系统结构。根据数据传输过程采用的协议，其技术划分为FCSAN(光纤通道)、IP SAN(IP网络)和IB SAN(无线带宽)技术。</p>
+<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><h3 id="DNS协议查询"><a href="#DNS协议查询" class="headerlink" title="DNS协议查询"></a>DNS协议查询</h3><h4 id="递归查询"><a href="#递归查询" class="headerlink" title="递归查询"></a>递归查询</h4><p>当用户发出查询请求时，本地服务要进行递归查询，这种查询方式要求服务器彻底进行名字解析，并返回最后的结果</p>
+<h4 id="迭代查询"><a href="#迭代查询" class="headerlink" title="迭代查询"></a>迭代查询</h4><p>服务器与服务器之间的查询采用迭代的方式进行，发出查询请求的服务器得到的响应，可能不是目标IP地址，而是其他服务器的引用，然后继续查询</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BE%AE%E5%A4%84%E7%90%86/" rel="prev" title="微处理">
+                  <i class="fa fa-angle-left"></i> 微处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/20/%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B%E4%B8%8E%E5%A4%9A%E5%AA%92%E4%BD%93/" rel="next" title="系统工程与多媒体">
+                  系统工程与多媒体 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

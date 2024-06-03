@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="系统软件工程，软件过程模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统软件过程模型">
+<meta property="og:url" content="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="系统软件工程，软件过程模型">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/2.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/3.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/4.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/5.jpg">
+<meta property="article:published_time" content="2024-03-04T02:02:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.204Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/","path":"2024/03/04/系统软件过程模型/","title":"系统软件过程模型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>系统软件过程模型 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.</span> <span class="nav-text">软件开发生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">软件工程设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">软件工程过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%B4%BB%E5%8A%A8"><span class="nav-number">2.2.</span> <span class="nav-text">软件设计活动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%BD%E5%8A%9B%E6%88%90%E7%86%9F%E5%BA%A6%E6%A8%A1%E5%9E%8BCMM"><span class="nav-number">2.3.</span> <span class="nav-text">能力成熟度模型CMM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%BD%E5%8A%9B%E6%88%90%E7%86%9F%E5%BA%A6%E9%9B%86%E6%88%90%E6%A8%A1%E5%9E%8BCMMI"><span class="nav-number">2.4.</span> <span class="nav-text">能力成熟度集成模型CMMI</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">软件过程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%80%91%E5%B8%83%E6%A8%A1%E5%9E%8B%EF%BC%88SDLC%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">瀑布模型（SDLC）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E5%8C%96%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">原型化模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%9E%BA%E6%97%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">螺旋模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#V%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">V模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.</span> <span class="nav-text">增量模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%96%B7%E6%B3%89%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.6.</span> <span class="nav-text">喷泉模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%9E%84%E4%BB%B6%E7%9A%84%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B%EF%BC%88CBSD%EF%BC%89"><span class="nav-number">3.7.</span> <span class="nav-text">基于构件的开发模型（CBSD）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.8.</span> <span class="nav-text">形式化方法模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%8F%E6%8D%B7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.9.</span> <span class="nav-text">敏捷模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88RUP%EF%BC%89"><span class="nav-number">3.10.</span> <span class="nav-text">统一过程模型（RUP）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="系统软件过程模型 | All-Nothing">
+      <meta itemprop="description" content="系统软件工程，软件过程模型">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          系统软件过程模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-03-04 10:02:00" itemprop="dateCreated datePublished" datetime="2024-03-04T10:02:00+08:00">2024-03-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">系统软件工程，软件过程模型</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="软件开发生命周期"><a href="#软件开发生命周期" class="headerlink" title="软件开发生命周期"></a>软件开发生命周期</h3><p>软件定义时期：包括可行性研究和详细需求分析过程，任务是确定软件开发工程必须完成的总目标，具体可分成问题定义、可行性研究、需求分析等</p>
+<p>软件开发时期：就是软件的设计与实现，可分成概要设计、详细设计、编码、测试等。</p>
+<p>软件运行和维护：就是把软件产品移交给用户使用</p>
+<p>软件系统文档</p>
+<p>用户文档主要描述系统功能和使用方法，并不关系这些功能是怎样实现的；</p>
+<p>系统文档描述系统设计、实现和测试等各方面的内容</p>
+<h3 id="软件工程设计"><a href="#软件工程设计" class="headerlink" title="软件工程设计"></a>软件工程设计</h3><h4 id="软件工程过程"><a href="#软件工程过程" class="headerlink" title="软件工程过程"></a>软件工程过程</h4><p>P(Plan)：软件规格说明。规定软件的功能及其运行时的限制。</p>
+<p>D(Do)：软件开发。开发出满足规格说明的软件。</p>
+<p>C(Check)：软件确认。确认开发的软件能够满足用户的需求。</p>
+<p>A(Action)：软件演进。软件在运行过程中不断改进以满足客户新的需求。</p>
+<h4 id="软件设计活动"><a href="#软件设计活动" class="headerlink" title="软件设计活动"></a>软件设计活动</h4><p>数据设计、架构(体系结构)设计、人机界面(接口)设计和过程(功能)设计</p>
+<h4 id="能力成熟度模型CMM"><a href="#能力成熟度模型CMM" class="headerlink" title="能力成熟度模型CMM"></a>能力成熟度模型CMM</h4><table>
+<thead>
+<tr>
+<th>能力等级</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>初始级</td>
+<td>软件过程的特点是杂乱无章，有时甚至很混乱，几乎没有明确定义的步骤，项目的成功完全依赖个人的努力和英雄式核心人物的作用。</td>
+</tr>
+<tr>
+<td>可重复级</td>
+<td>建立了基本的项目管理过程和实践来跟踪项目费用、进度和功能特性，有必要的过程准则来重复以前在同类项目中的成功</td>
+</tr>
+<tr>
+<td>已定义级</td>
+<td>管理和工程两方面的软件过程已经文档化、标准化</td>
+</tr>
+<tr>
+<td>已管理级</td>
+<td>制定了软件过程和产品质量的详细度量标准。对软件过程和产品质量有定量的理解和控制</td>
+</tr>
+<tr>
+<td>优化级</td>
+<td>加强了定量分析，通过来自过程质量反馈和来自新观念、新技术的反馈使过程能不断持续地改进</td>
+</tr>
+</tbody></table>
+<h4 id="能力成熟度集成模型CMMI"><a href="#能力成熟度集成模型CMMI" class="headerlink" title="能力成熟度集成模型CMMI"></a>能力成熟度集成模型CMMI</h4><p>是若干过程模型的综合和改进，不仅仅软件，而是支持多个工程学科和领域的、系统的、一致的过程改进框架，能适应现代工程的特点和需要，能提高过程的质量和工作效率</p>
+<p>阶段式模型：</p>
+<table>
+<thead>
+<tr>
+<th>能力等级</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>初始级</td>
+<td>过程不可预测且缺乏控制</td>
+</tr>
+<tr>
+<td>已管理级</td>
+<td>过程为项目服务</td>
+</tr>
+<tr>
+<td>已定义级</td>
+<td>过程为组织服务</td>
+</tr>
+<tr>
+<td>定量管理</td>
+<td>过程已度量和控制</td>
+</tr>
+<tr>
+<td>优化级</td>
+<td>集中于过程改进和优化</td>
+</tr>
+</tbody></table>
+<p>连续式模型：关注每个过程域的能力，一个组织对不同的过程域可以达到不同的过程域能力等级</p>
+<h3 id="软件过程模型"><a href="#软件过程模型" class="headerlink" title="软件过程模型"></a>软件过程模型</h3><p>软件过程模型是一种规划和组织软件开发过程的方法，过程模型通常由一系列阶段和任务组成，这些任务在软件开发的不同阶段中都有特定的目标。每个阶段都有自己的任务和产出物，这些产出物构成了软件开发的不同部分，最终汇总成完整的软件产品</p>
+<h4 id="瀑布模型（SDLC）"><a href="#瀑布模型（SDLC）" class="headerlink" title="瀑布模型（SDLC）"></a>瀑布模型（SDLC）</h4><p>是一个经典的软件生命周期模型，一般将软件开发分为：可行性分析(计划)、需求分析、软件设计(概要设计、详细设计)、编码、测试、运行维护等几个阶段</p>
+<p><img src="/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/1.jpg" alt="1"></p>
+<p>模型特点：</p>
+<p>从上一项开发活动接受该项活动的工作对象作为输入。利用这一输入，实施该项活动应完成的工作内容。</p>
+<p>给出该项活动的工作成果，作为输出传给下一项开发活动</p>
+<p>对该项活动的实施工作成果进行评审。若其工作成果得到确认，则继续进行下一项开发活动；否则返回前一项，甚至更前项的活动。尽量减少多个阶段间的反复。以相对来说较小的费用来开发软件，适用于需求明确的情况</p>
+<h4 id="原型化模型"><a href="#原型化模型" class="headerlink" title="原型化模型"></a>原型化模型</h4><p>第一步就是创建一个快速原型，能够满足项目干系人与未来的用户可以与原型进行交互，再通过与相关干系人进行充分的讨论和分析，最终弄清楚当前系统的需求，进行了充分的了解之后，在原型的基础上开发出用户满意的产品。适合于需求不明确的情况</p>
+<p>模型特点：</p>
+<p>实际可行</p>
+<p>具有最终系统的基本特征</p>
+<p>构造方便、快速，造价低。原型法的特点在于原型法对用户的需求是动态响应、逐步纳入的</p>
+<h4 id="螺旋模型"><a href="#螺旋模型" class="headerlink" title="螺旋模型"></a>螺旋模型</h4><p>螺旋模型是一个演化软件过程模型，将原型实现的迭代特征与线性顺序(瀑布)模型中控制的和系统化的方面结合起来。在螺旋模型中，软件开发是一系列的增量发布</p>
+<p><img src="/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/2.jpg" alt="1"></p>
+<p>模型特点：</p>
+<p>重点是风险控制分析</p>
+<p>开发过程具有周期性重复的螺旋线状。四个象限分别标志每个周期所划分的四阶段：制订计划、风险分析、实施工程和客户评估。螺旋模型强调了风险分析，特别适用于庞大而复杂的、高风险的系统</p>
+<h4 id="V模型"><a href="#V模型" class="headerlink" title="V模型"></a>V模型</h4><p>V模型从整体上看起来，就是一个V字型的结构，由左右两边组成。左边的下画线分别代表了需求分析、概要设计、详细设计、编码。右边的上画线代表了单元测试、集成测试、系统测试与验收测试</p>
+<p><img src="/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/3.jpg" alt="1"></p>
+<p>模型特点：</p>
+<p>单元测试的主要目的是针对编码过程中可能存在的各种错误；</p>
+<p>集成测试的主要目的是针对详细设计中可能存在的问题</p>
+<p>系统测试主要针对概要设计，检查系统作为一个整体是否有效地得到运行；</p>
+<p>验收测试通常由业务专家或者用户进行，以确认产品能真正符合用户业务上的需要。</p>
+<p>V模型适用于需求明确和需求变更不频繁的情形</p>
+<h4 id="增量模型"><a href="#增量模型" class="headerlink" title="增量模型"></a>增量模型</h4><p>首先开发核心模块功能，而后与用户确认，之后再开发次核心模块的功能，即每次开发一部分功能，并与用户需求确认，最终完成项目开发，优先级最高的服务最先交付</p>
+<p><img src="/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/4.jpg" alt="1"></p>
+<p>模型特点：</p>
+<p>但由于并不是从系统整体角度规划各个模块，因此不利于模块划分。难点在于如何将客户需求划分为多个增量。与原型不用的是增量模型的每一次增量版本都可作为独立可操作的作品，而原型的构造一般是为了演示</p>
+<h4 id="喷泉模型"><a href="#喷泉模型" class="headerlink" title="喷泉模型"></a>喷泉模型</h4><p>是一种以用户需求为动力，以对象作为驱动的模型，适合于面向对象的开发方法。使开发过程具有迭代性和无间隙性</p>
+<h4 id="基于构件的开发模型（CBSD）"><a href="#基于构件的开发模型（CBSD）" class="headerlink" title="基于构件的开发模型（CBSD）"></a>基于构件的开发模型（CBSD）</h4><p>也称之为快速开发模型，主要是利用预先包装的构件来构造应用系统。构件可以是组织内部开发的构件，也可以是商品化成品软</p>
+<p>件构件。特点是增强了复用性，在系统开发过程中，会构建一个构件库，供其他系统复用，因此可以提高可靠性，节省时间和成本</p>
+<h4 id="形式化方法模型"><a href="#形式化方法模型" class="headerlink" title="形式化方法模型"></a>形式化方法模型</h4><p>建立在严格数学基础上的一种软件开发方法，主要活动是生成计算机软件形式化的数学规格说明</p>
+<h4 id="敏捷模型"><a href="#敏捷模型" class="headerlink" title="敏捷模型"></a>敏捷模型</h4><p>个体和交互胜过过程和工具、可以工作的软件胜过面面俱到的文档、客户合作胜过合同谈判、响应变化胜过遵循计划</p>
+<p>模型特点：</p>
+<p>是“适应性”而非“预设性”。</p>
+<p>是“面向人的”而非“面向过程的”。</p>
+<p>敏捷方法是适应型，而非可预测型。拥抱变化，适应变化。</p>
+<p>敏捷方法是以人为本，而非以过程为本。发挥人的特性。</p>
+<p>迭代增量式的开发过程。以原型开发思想为基础，采用法代增量式开发，发行版本小型化</p>
+<p>模型方法：</p>
+<p>极限编程(XP)：基础和价值观是交流、朴素、反馈和勇气，即任何一个软件项目都可以从4个方面入手进行改善：加强交流：从简单做起：寻求反馈；勇于实事求是。</p>
+<p>• XP是一种近螺旋式的开发方法，它将复杂的开发过程分解为一个个相对比较简单的小周期：通过积极的交流、反馈以及其他一系列的方法，开发人员和客户可以非常清楚开发进度、变化、待解决的问题和潜在的困难等，并根据实际情况及时地调整开发过程。</p>
+<p>• XP提倡测试先行，为了将以后出现bug的几率降到最低</p>
+<p>水晶系列方法。与XP方法一样，都有以人为中心的理念，但在实践上有所不同。其目的是发展一种提倡“机动性的”方法，包含具有共性的核心元素，每个都含有独特的角色、过程模式、工作产品和实践。</p>
+<p>并列争球法(Scrum)。是一种迭代的增量化过程，把每段时间(如30天)一次的迭代称为个“冲刺”(Sprint),并按需求的优先级别来实现产品，多个自组织和自治的小组并行地递增实现产品。</p>
+<p>特性驱动开发方法(FDD)。是一个迭代的开发模型。认为有效的软件开发需要3个要素：人、过程和技术。有5个核心过程：开发整体对象模型、构造特征列表、计划特征开发、特征设计和特征构建</p>
+<h4 id="统一过程模型（RUP）"><a href="#统一过程模型（RUP）" class="headerlink" title="统一过程模型（RUP）"></a>统一过程模型（RUP）</h4><p>RUP描述了如何有效地利用商业的、可靠的方法开发和部署软件，是一种重量级过程。RUP类似一个在线的指导者，它可以为所有方面和层次的程序开发提供指导方针、模版以及事例支持</p>
+<p>RUP软件开发生命周期是一个二维的软件开发模型，RUP中有9个核心工作流：</p>
+<p>业务建模</p>
+<p>需求</p>
+<p>分析设计</p>
+<p>实现</p>
+<p>测试</p>
+<p>部署</p>
+<p>配置与变更</p>
+<p>项目管理</p>
+<p>环境</p>
+<p>RUP把软件开发生命周期划分为多个循环，每个循环生成产品的一个新的版本，每个循环依次由4个连续的阶段组成，每个阶段完成确定的任务。这4个阶段如下。</p>
+<p>初始阶段：定义最终产品视图和业务模型，并确定系统范围。</p>
+<p>细化阶段：设计及确定系统的体系结构，制订工作计划及资源要求。</p>
+<p>构造阶段：构造产品并继续演进需求、体系结构、计划直至产品提交。</p>
+<p>移交阶段：把产品提交给用户使用</p>
+<p>模型特点：</p>
+<p>用例驱动：需求分析、设计、实现和测试等活动都是用例驱动的。</p>
+<p>以体系结构为中心：包括系统的总体组织和全局控制、通信协议等。是一个多维的结构，会采用多个视图来描述</p>
+<p>迭代与增量：把整个项目开发分为多个迭代过程。在每次选代中，只考虑系统的一部分需求，进行分析、设计、实现、测试和部署等过程；每次迭代是在己完成部分的基础上进行的，每次增加一些新的功能实现，以此进行下去，直至最后项目的完成</p>
+<p>4+1 视图模型：</p>
+<p><img src="/2024/03/04/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B/5.jpg" alt="1"></p>
+<p>分析人员和测试人员关心的是系统的行为，会侧重于用例视图；</p>
+<p>最终用户关心的是系统的功能，会侧重于逻辑视图；</p>
+<p>程序员关心的是系统的配置、装配等问题，会侧重于实现视图；</p>
+<p>系统集成人员关心的是系统的性能、可伸缩性、吞吐率等问题，会侧重于进程视图；</p>
+<p>系统工程师关心的是系统的发布、安装、拓扑结构等问题，会侧重于部署视图</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/" rel="prev" title="数据库设计">
+                  <i class="fa fa-angle-left"></i> 数据库设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E5%92%8C%E9%9C%80%E6%B1%82%E5%B7%A5%E7%A8%8B/" rel="next" title="逆向工程和需求工程">
+                  逆向工程和需求工程 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

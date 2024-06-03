@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="go语言的常见问题记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO的常见小问题">
+<meta property="og:url" content="https://zypuu.github.io/2021/03/18/Go%E7%9A%84%E5%B8%B8%E8%A7%81%E5%B0%8F%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="go语言的常见问题记录">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-03-18T08:02:20.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.970Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/03/18/Go%E7%9A%84%E5%B8%B8%E8%A7%81%E5%B0%8F%E9%97%AE%E9%A2%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/03/18/Go%E7%9A%84%E5%B8%B8%E8%A7%81%E5%B0%8F%E9%97%AE%E9%A2%98/","path":"2021/03/18/Go的常见小问题/","title":"GO的常见小问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GO的常见小问题 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#byte%E4%B8%8Eint"><span class="nav-number">1.</span> <span class="nav-text">byte与int</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#byte%E4%B8%8E%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.</span> <span class="nav-text">byte与字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strings%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">strings转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.</span> <span class="nav-text">for循环字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E7%9F%AD%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">简短模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">6.</span> <span class="nav-text">常量内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goto"><span class="nav-number">7.</span> <span class="nav-text">goto</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%B1%BB%E5%9E%8B%E5%BC%BA%E8%BD%AC"><span class="nav-number">8.</span> <span class="nav-text">新类型强转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nil%E5%88%87%E7%89%87%E5%92%8C%E7%A9%BA%E5%88%87%E7%89%87%E6%8C%87%E5%90%91%E5%9C%B0%E5%9D%80"><span class="nav-number">9.</span> <span class="nav-text">nil切片和空切片指向地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E6%95%B0%E7%BB%84%EF%BC%8C%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E9%97%AE%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text">字符串转换数组，内存拷贝问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E8%BD%AC%E5%90%AB%E6%9C%89%E4%B8%AD%E6%96%87%EF%BC%8C%E6%95%B0%E5%AD%97%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%AD%97%E7%AC%A6"><span class="nav-number">11.</span> <span class="nav-text">反转含有中文，数字，字符串的字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E5%A4%A7%E5%88%87%E7%89%87%EF%BC%8C%E5%B0%8F%E5%88%87%E7%89%87%E7%9A%84%E4%BB%A3%E4%BB%B7"><span class="nav-number">12.</span> <span class="nav-text">拷贝大切片，小切片的代价</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uintptr%E5%92%8Cunsafe-Pointer%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">13.</span> <span class="nav-text">uintptr和unsafe.Pointer的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map%E4%B8%8D%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BC%9A%E6%80%8E%E4%B9%88%E6%A0%B7"><span class="nav-number">14.</span> <span class="nav-text">map不初始化会怎么样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E4%B8%8D%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">15.</span> <span class="nav-text">map初始化和不初始化的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map%E7%9A%84%E9%81%8D%E5%8E%86%E5%88%A0%E9%99%A4"><span class="nav-number">16.</span> <span class="nav-text">map的遍历删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BF%AE%E6%94%B9"><span class="nav-number">17.</span> <span class="nav-text">go的字符串修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%E6%98%AF%E5%90%A6%E5%B7%B2%E7%BB%8F%E6%8E%92%E5%BA%8F"><span class="nav-number">18.</span> <span class="nav-text">判断一个数组是否已经排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slice%E5%92%8Cmap%E7%9A%84%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E5%A4%84%E7%90%86"><span class="nav-number">19.</span> <span class="nav-text">slice和map的并发安全处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">20.</span> <span class="nav-text">数组与切片的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#json%E5%8C%85%E4%BD%BF%E7%94%A8%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%E9%87%8Ctag%E9%97%AE%E9%A2%98"><span class="nav-number">21.</span> <span class="nav-text">json包使用，结构体里tag问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slice%E7%9A%84%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C-%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="nav-number">22.</span> <span class="nav-text">slice的深拷贝和 浅拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for-range%E5%BE%AA%E7%8E%AF%EF%BC%8Cfor%E9%87%8Cappend"><span class="nav-number">23.</span> <span class="nav-text">for range循环，for里append</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E5%B7%B2%E7%BB%8F%E5%85%B3%E9%97%AD%E7%9A%84channel%E4%BC%9A%E6%80%8E%E6%A0%B7"><span class="nav-number">24.</span> <span class="nav-text">读写已经关闭的channel会怎样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84channel%E8%BF%9B%E8%A1%8C%E8%AF%BB%E5%86%99%E4%BC%9A%E6%80%8E%E6%A0%B7"><span class="nav-number">25.</span> <span class="nav-text">对未初始化的channel进行读写会怎样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AFselect"><span class="nav-number">26.</span> <span class="nav-text">for循环select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goalng%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8"><span class="nav-number">27.</span> <span class="nav-text">goalng内存逃逸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E6%A0%B7%E9%81%BF%E5%85%8D%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8"><span class="nav-number">28.</span> <span class="nav-text">怎样避免内存逃逸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-number">29.</span> <span class="nav-text">内存泄漏相关问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98"><span class="nav-number">30.</span> <span class="nav-text">goroutine泄露问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interface%E7%B1%BB%E5%9E%8B%E5%8F%AF%E4%BB%A5%E6%AF%94%E8%BE%83%E5%90%97"><span class="nav-number">31.</span> <span class="nav-text">interface类型可以比较吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map%E5%A6%82%E4%BD%95%E9%A1%BA%E5%BA%8F%E8%AF%BB%E5%8F%96"><span class="nav-number">32.</span> <span class="nav-text">map如何顺序读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0set"><span class="nav-number">33.</span> <span class="nav-text">实现set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch-fullthrough"><span class="nav-number">34.</span> <span class="nav-text">switch fullthrough</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go%E7%9A%84%E5%87%A0%E4%B8%AA%E5%91%BD%E4%BB%A4"><span class="nav-number">35.</span> <span class="nav-text">go的几个命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go%E7%9A%84log%E5%8C%85%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">36.</span> <span class="nav-text">go的log包线程安全</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/03/18/Go%E7%9A%84%E5%B8%B8%E8%A7%81%E5%B0%8F%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GO的常见小问题 | All-Nothing">
+      <meta itemprop="description" content="go语言的常见问题记录">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO的常见小问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-18 16:02:20" itemprop="dateCreated datePublished" datetime="2021-03-18T16:02:20+08:00">2021-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">go语言的常见问题记录</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="byte与int"><a href="#byte与int" class="headerlink" title="byte与int"></a>byte与int</h3><h3 id="byte与字符串"><a href="#byte与字符串" class="headerlink" title="byte与字符串"></a>byte与字符串</h3><h3 id="strings转换"><a href="#strings转换" class="headerlink" title="strings转换"></a>strings转换</h3><h3 id="for循环字符串"><a href="#for循环字符串" class="headerlink" title="for循环字符串"></a>for循环字符串</h3><h3 id="简短模式"><a href="#简短模式" class="headerlink" title="简短模式"></a>简短模式</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> size := <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+
+<p>这种是不对的，会报错</p>
+<h3 id="常量内存分配"><a href="#常量内存分配" class="headerlink" title="常量内存分配"></a>常量内存分配</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"><span class="keyword">const</span> cl  = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bl    = <span class="number">123</span></span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span>  &#123;</span><br><span class="line">    println(&amp;bl,bl)</span><br><span class="line">    println(&amp;cl,cl)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会报错<br>常量不同于变量的在运行期分配内存，常量通常会被编译器在预处理阶段直接展开，作为指令数据使用</p>
+<h3 id="goto"><a href="#goto" class="headerlink" title="goto"></a>goto</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span>  &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;<span class="number">10</span> ;i++  &#123;</span><br><span class="line">    loop:</span><br><span class="line">        println(i)</span><br><span class="line">    &#125;</span><br><span class="line">    goto loop</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>goto不能跳转到其他函数或者内层代码</p>
+<h3 id="新类型强转"><a href="#新类型强转" class="headerlink" title="新类型强转"></a>新类型强转</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span>  &#123;</span><br><span class="line">     type MyInt1 int</span><br><span class="line">    type MyInt2 = int</span><br><span class="line">    <span class="keyword">var</span> i int =<span class="number">9</span></span><br><span class="line">    <span class="keyword">var</span> i1 MyInt1 = i</span><br><span class="line">    <span class="keyword">var</span> i2 MyInt2 = i</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">type User struct &#123;</span><br><span class="line">&#125;</span><br><span class="line">type MyUser1 User</span><br><span class="line">type MyUser2 = User</span><br><span class="line">func (i MyUser1) <span class="function"><span class="title">m1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;MyUser1.m1&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line">func (i User) <span class="function"><span class="title">m2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;User.m2&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> i1 MyUser1</span><br><span class="line">    <span class="keyword">var</span> i2 MyUser2</span><br><span class="line">    i1.m1()</span><br><span class="line">    i2.m2()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>会报错，myint的是新类型，得强转，不能直接赋值</p>
+<p>第二个，user取了别名myuser1，myuser1没有m2方法，执行失败</p>
+<h3 id="nil切片和空切片指向地址"><a href="#nil切片和空切片指向地址" class="headerlink" title="nil切片和空切片指向地址"></a>nil切片和空切片指向地址</h3><p>指向数组的引用地址不一样</p>
+<p>nil切片是0，不存在<br>空切片是指向一个固定的地址，所有的空切片都指向这个地址</p>
+<p>var slice []int 创建出来的 slice 其实是一个 nil slice。它的长度和容量都为0。和nil比较的结果为true。这里比较混淆的是empty slice，empty slice的长度和容量也都为0，但是所有的空切片的数据指针都指向同一个地址 0xc42003bda0。空切片和 nil 比较的结果为false</p>
+<h3 id="字符串转换数组，内存拷贝问题"><a href="#字符串转换数组，内存拷贝问题" class="headerlink" title="字符串转换数组，内存拷贝问题"></a>字符串转换数组，内存拷贝问题</h3><p>会发生内存拷贝，只要发生类型强转，都会发生内存拷贝</p>
+<p>go的unsafe包</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unsafe.Pointer(&amp;a)方法可以得到变量a的地址</span><br><span class="line">(*reflect.StringHeader)(unsafe.Pointer(&amp;a)) 可以把字符串a转成底层结构的形式</span><br><span class="line">(*[]byte)(unsafe.Pointer(&amp;ssh))可以把ssh底层结构体转成byte的切片的指针。</span><br><span class="line">再通过 *转为指针指向的实际内容</span><br></pre></td></tr></table></figure>
+
+<h3 id="反转含有中文，数字，字符串的字符"><a href="#反转含有中文，数字，字符串的字符" class="headerlink" title="反转含有中文，数字，字符串的字符"></a>反转含有中文，数字，字符串的字符</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span><span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line"> src := <span class="string">&quot;你好abc啊哈哈&quot;</span></span><br><span class="line"> dst := reverse([]rune(src))</span><br><span class="line"> fmt.Printf(<span class="string">&quot;%v\n&quot;</span>, string(dst))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func reverse(s []rune) []rune &#123;</span><br><span class="line"> <span class="keyword">for</span> i, <span class="attr">j</span> := <span class="number">0</span>, len(s)-<span class="number">1</span>; i &lt; j; i, j = i+<span class="number">1</span>, j-<span class="number">1</span> &#123;</span><br><span class="line">  s[i], s[j] = s[j], s[i]</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>rune关键字，从golang源码中看出，它是int32的别名（-2^31 ~ 2^31-1），比起byte（-128～127），可表示更多的字符。<br>由于rune可表示的范围更大，所以能处理一切字符，当然也包括中文字符。在平时计算中文字符，可用rune。<br>因此将字符串转为rune的切片，再进行翻转，完美解决</p>
+<h3 id="拷贝大切片，小切片的代价"><a href="#拷贝大切片，小切片的代价" class="headerlink" title="拷贝大切片，小切片的代价"></a>拷贝大切片，小切片的代价</h3><p>并不是，所有切片的大小相同；三个字段（一个uintptr，两个int）。切片中的第一个字是指向切片底层数组的指针，这是切片的存储空间，第二个字段是切片的长度，第三个字段是容量。将一个 slice 变量分配给另一个变量只会复制三个机器字。所以 拷贝大切片跟小切片的代价应该是一样的</p>
+<p>大切片跟小切片的区别无非就是 Len 和 Cap的值比小切片的这两个值大一些，如果发生拷贝，本质上就是拷贝上面的三个字段</p>
+<h3 id="uintptr和unsafe-Pointer的区别"><a href="#uintptr和unsafe-Pointer的区别" class="headerlink" title="uintptr和unsafe.Pointer的区别"></a>uintptr和unsafe.Pointer的区别</h3><p>unsafe.Pointer只是单纯的通用指针类型，用于转换不同类型指针，它不可以参与指针运算；<br>而uintptr是用于指针运算的，GC 不把 uintptr 当指针，也就是说 uintptr 无法持有对象， uintptr 类型的目标会被回收；<br>unsafe.Pointer 可以和 普通指针 进行相互转换；<br>unsafe.Pointer 可以和 uintptr 进行相互转换</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"> <span class="string">&quot;unsafe&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type W struct &#123;</span><br><span class="line"> b int32</span><br><span class="line"> c int64</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line"> <span class="keyword">var</span> w *W = <span class="keyword">new</span>(W)</span><br><span class="line"> <span class="comment">//这时w的变量打印出来都是默认值0，0</span></span><br><span class="line"> fmt.Println(w.b,w.c)</span><br><span class="line"></span><br><span class="line"> <span class="comment">//现在我们通过指针运算给b变量赋值为10</span></span><br><span class="line"> b := unsafe.Pointer(uintptr(unsafe.Pointer(w)) + unsafe.Offsetof(w.b))</span><br><span class="line"> *((*int)(b)) = <span class="number">10</span></span><br><span class="line"> <span class="comment">//此时结果就变成了10，0</span></span><br><span class="line"> fmt.Println(w.b,w.c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>uintptr(unsafe.Pointer(w)) 获取了 w 的指针起始值<br>unsafe.Offsetof(w.b) 获取 b 变量的偏移量<br>两个相加就得到了 b 的地址值，将通用指针 Pointer 转换成具体指针 ((*int)(b))，通过 * 符号取值，然后赋值。*((*int)(b)) 相当于把 (*int)(b) 转换成 int 了，最后对变量重新赋值成 10，这样指针运算就完成了</p>
+<h3 id="map不初始化会怎么样"><a href="#map不初始化会怎么样" class="headerlink" title="map不初始化会怎么样"></a>map不初始化会怎么样</h3><p>map不初始化，可以取值，取出来的值是空</p>
+<p>不能赋值，赋值会panic异常</p>
+<p>空map和nil map结果是一样的，都是map[]， 判断是否为空， map==nil</p>
+<p>delete一个nil map也不会panic</p>
+<h3 id="map初始化和不初始化的区别"><a href="#map初始化和不初始化的区别" class="headerlink" title="map初始化和不初始化的区别"></a>map初始化和不初始化的区别</h3><p>初始化map是有长度的，可以赋值，操作，默认值。不初始化无法赋值</p>
+<h3 id="map的遍历删除"><a href="#map的遍历删除" class="headerlink" title="map的遍历删除"></a>map的遍历删除</h3><p>map的range遍历删除是安全的，可以一边遍历一边删除，但是删除完后，占用的内存一直不释放，map = nil释放内存</p>
+<h3 id="go的字符串修改"><a href="#go的字符串修改" class="headerlink" title="go的字符串修改"></a>go的字符串修改</h3><p>字符串是不能修改的，天生线程安全，大家使用的都是只读对象，无须加锁；再者，方便内存共享，而不必使用写时复制（Copy On Write）等技术；字符串 hash 值也只需要制作一份</p>
+<p>怎么修改，转为byte数组进行替换，最后通过string强转</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">angleBytes := []byte(angel)</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">5</span>; i &lt;= <span class="number">10</span>; i++ &#123;</span><br><span class="line">    angleBytes[i] = <span class="string">&#x27; &#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="判断一个数组是否已经排序"><a href="#判断一个数组是否已经排序" class="headerlink" title="判断一个数组是否已经排序"></a>判断一个数组是否已经排序</h3><p>sort包的，isSorted方法</p>
+<p>sort包</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">type Interface interface &#123;</span><br><span class="line">        <span class="comment">// 获取数据集合元素个数</span></span><br><span class="line">        Len() int</span><br><span class="line">        <span class="comment">// 如果 i 索引的数据小于 j 索引的数据，返回 true，且不会调用下面的 Swap()，即数据升序排序。</span></span><br><span class="line">        Less(i, j int) bool</span><br><span class="line">        <span class="comment">// 交换 i 和 j 索引的两个元素的位置</span></span><br><span class="line">        Swap(i, j int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="slice和map的并发安全处理"><a href="#slice和map的并发安全处理" class="headerlink" title="slice和map的并发安全处理"></a>slice和map的并发安全处理</h3><p>slice在并发执行中不会报错，但是数据会丢失</p>
+<p>方法：1，索引处理，全局索引，2：加锁， 3：channel处理</p>
+<p>map并发会报错</p>
+<p>方法：1，加锁，2：sync.map</p>
+<h3 id="数组与切片的区别"><a href="#数组与切片的区别" class="headerlink" title="数组与切片的区别"></a>数组与切片的区别</h3><p>1、切片是指针类型， 数组是值类型</p>
+<p>2、数组的长度是固定的，切片不是，切片是动态数组</p>
+<p>3、切片比数组多一个属性，cap容量</p>
+<p>4、切片的底层是数组</p>
+<h3 id="json包使用，结构体里tag问题"><a href="#json包使用，结构体里tag问题" class="headerlink" title="json包使用，结构体里tag问题"></a>json包使用，结构体里tag问题</h3><p>如果变量首字母小写，则为private。无论如何不能转，因为取不到反射信息</p>
+<p>如果变量首字母大写，则为public。</p>
+<p>不加tag，可以正常转为json里的字段，json内字段名跟结构体内字段原名一致。<br>加了tag，从struct转json的时候，json的字段名就是tag里的字段名，原字段名已经没用。</p>
+<h3 id="slice的深拷贝和-浅拷贝"><a href="#slice的深拷贝和-浅拷贝" class="headerlink" title="slice的深拷贝和 浅拷贝"></a>slice的深拷贝和 浅拷贝</h3><p>浅拷贝对于值类型的话是完全拷贝一份，而对于引用类型是拷贝其地址。也就是拷贝的对象修改引用类型的变量同样会影响到源对象</p>
+<p>P2 := P1就是浅拷贝，如何避免，重新给定地址，重新生成一个</p>
+<p>深拷贝 deepCopy(dst, src interface{})</p>
+<p>对于深拷贝就比较好了解了，任何对象都会被完完整整的拷贝一份，拷贝对象与被拷贝对象不存在如何联系，也就不会互相影响。如果你需要拷贝的对象中没有引用类型，那么对于Golang而言使用浅拷贝就可以</p>
+<h3 id="for-range循环，for里append"><a href="#for-range循环，for里append" class="headerlink" title="for range循环，for里append"></a>for range循环，for里append</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s := []int&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line"><span class="keyword">for</span> _, <span class="attr">v</span>:=range s &#123;</span><br><span class="line"> s =append(s, v)</span><br><span class="line"> fmt.Printf(<span class="string">&quot;len(s)=%v\n&quot;</span>,len(s))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不会死循环，for range其实是golang的语法糖，在循环开始前会获取切片的长度 len(切片)，然后再执行len(切片)次数的循环。</p>
+<h3 id="读写已经关闭的channel会怎样"><a href="#读写已经关闭的channel会怎样" class="headerlink" title="读写已经关闭的channel会怎样"></a>读写已经关闭的channel会怎样</h3><p>读已经关闭的 chan 能一直读到东西，但是读到的内容根据通道内关闭前是否有元素而不同。<br>如果 chan 关闭前，buffer 内有元素还未读 , 会正确读到 chan 内的值，且返回的第二个 bool 值（是否读成功）为 true。<br>如果 chan 关闭前，buffer 内有元素已经被读完，chan 内无值，接下来所有接收的值都会非阻塞直接成功，返回 channel 元素的零值，但是第二个 bool 值一直为 false。<br>因为如果接收值的地址 ep 不为空<br>那接收值将获得是一个该类型的零值<br>typedmemclr 会根据类型清理相应地址的内存<br>这就解释了上面代码为什么关闭的 chan 会返回对应类型的零值</p>
+<p>写已经关闭的 chan 会 panic，<br>因为源码当 c.closed != 0 则为通道关闭，此时执行写，源码提示直接 panic，输出的内容就是上面提到的 “send on closed channel”</p>
+<h3 id="对未初始化的channel进行读写会怎样"><a href="#对未初始化的channel进行读写会怎样" class="headerlink" title="对未初始化的channel进行读写会怎样"></a>对未初始化的channel进行读写会怎样</h3><p>读写未初始化的 chan 都会阻塞</p>
+<p>未初始化的 chan 此时是等于 nil，当它不能阻塞的情况下，直接返回 false，表示读写 chan 失败</p>
+<p>当 chan 能阻塞的情况下，则直接阻塞 gopark方法，读写抛出错误</p>
+<h3 id="for循环select"><a href="#for循环select" class="headerlink" title="for循环select"></a>for循环select</h3><p>如果通道已经关闭会怎么样？如果select中的case只有一个，又会怎么样？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">c := make(chan int)</span><br><span class="line">go func () &#123;</span><br><span class="line">	c &lt;- <span class="number">10</span></span><br><span class="line">	close(c)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">	select&#123;</span><br><span class="line">	<span class="keyword">case</span> x, <span class="attr">ok</span> := <span class="xml">&lt;-c:</span></span><br><span class="line"><span class="xml">		if !ok &#123;</span></span><br><span class="line"><span class="xml">			c = nil</span></span><br><span class="line"><span class="xml">		&#125;</span></span><br><span class="line"><span class="xml">	default:</span></span><br><span class="line"></span><br><span class="line"><span class="xml">	&#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>for循环select时，如果其中一个case通道已经关闭，则每次都会执行到这个case。</p>
+<p>怎样不读关闭的channel，根据channel读关闭的会返回false，根据false判断<br>x, ok := &lt;-c 返回的值里第一个x是通道内的值，ok是指通道是否关闭，当通道被关闭后，ok则返回false，因此可以根据这个进行操作x, ok := &lt;-c 返回的值里第一个x是通道内的值，ok是指通道是否关闭，当通道被关闭后，ok则返回false，因此可以根据这个进行操作</p>
+<p>执行c = nil 将通道置为nil，相当于读一个未初始化的通道，则会一直阻塞， seleect会跳过这个阻塞</p>
+<p>如果select里边只有一个case，而这个case被关闭了，则会出现死循环。</p>
+<p>如果像上面置为nil去解决，则会引发别的问题</p>
+<p>第一次读取case能读到通道里的10<br>第二次读取case能读到通道已经关闭的信息。此时将通道置为nil<br>第三次读取case时main协程会被阻塞，此时整个进程没有其他活动的协程了，进程deadlock</p>
+<h3 id="goalng内存逃逸"><a href="#goalng内存逃逸" class="headerlink" title="goalng内存逃逸"></a>goalng内存逃逸</h3><p>golang程序变量会携带有一组校验数据，用来证明它的整个生命周期是否在运行时完全可知。如果变量通过了这些校验，它就可以在栈上分配。否则就说它 逃逸 了，必须在堆上分配</p>
+<p>在一个切片上存储指针或带指针的值。 一个典型的例子就是 []* string</p>
+<p>在方法内把局部变量指针返回 局部变量原本应该在栈中分配，在栈中回收。但是由于返回时被外部引用，因此其生命周期大于栈，则溢出</p>
+<p>slice 的背后数组被重新分配了，因为 append 时可能会超出其容量( cap )。 slice 初始化的地方在编译时是可以知道的，它最开始会在栈上分配。如果切片背后的存储要基于运行时的数据进行扩充，就会在堆上分配 </p>
+<h3 id="怎样避免内存逃逸"><a href="#怎样避免内存逃逸" class="headerlink" title="怎样避免内存逃逸"></a>怎样避免内存逃逸</h3><p>在runtime/stubs.go:133有个函数叫noescape。noescape可以在逃逸分析中隐藏一个指针。让这个指针在逃逸分析中不会被检测为逃逸</p>
+<p>noescape() 函数的作用是遮蔽输入和输出的依赖关系。使编译器不认为 p 会通过 x 逃逸， 因为 uintptr() 产生的引用是编译器无法理解的。</p>
+<h3 id="内存泄漏相关问题"><a href="#内存泄漏相关问题" class="headerlink" title="内存泄漏相关问题"></a>内存泄漏相关问题</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"> <span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line"> <span class="string">&quot;net/http&quot;</span></span><br><span class="line"> <span class="string">&quot;runtime&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line"> num := <span class="number">6</span></span><br><span class="line"> <span class="keyword">for</span> index := <span class="number">0</span>; index &lt; num; index++ &#123;</span><br><span class="line">  resp, <span class="attr">_</span> := http.Get(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line">  _, _ = ioutil.ReadAll(resp.Body)</span><br><span class="line"> &#125;</span><br><span class="line"> fmt.Printf(<span class="string">&quot;此时goroutine个数= %d\n&quot;</span>, runtime.NumGoroutine())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这道题在不执行resp.Body.Close()的情况下，泄漏了吗？如果泄漏，泄漏了多少个goroutine?</p>
+<p>不进行resp.Body.Close()，泄漏是一定的，读写加main是13个，是不对的</p>
+<p>因为http。Get的DefaultTransport </p>
+<p>一次建立连接，就会启动一个读goroutine和写goroutine。这就是为什么一次http.Get()会泄漏两个goroutine的来源</p>
+<p>虽然执行了 6 次循环，而且每次都没有执行 Body.Close() ,就是因为执行了ioutil.ReadAll()把内容都读出来了，连接得以复用，因此只泄漏了一个读goroutine和一个写goroutine，最后加上main goroutine，所以答案就是3个goroutine。<br>从另外一个角度说，正常情况下我们的代码都会执行 ioutil.ReadAll()，但如果此时忘了 resp.Body.Close()，确实会导致泄漏。但如果你调用的域名一直是同一个的话，那么只会泄漏一个 读goroutine 和一个写goroutine，这就是为什么代码明明不规范但却看不到明显内存泄漏的原因</p>
+<h3 id="goroutine泄露问题"><a href="#goroutine泄露问题" class="headerlink" title="goroutine泄露问题"></a>goroutine泄露问题</h3><p>如果你启动了一个 goroutine，但并没有符合预期的退出，直到程序结束，此goroutine才退出，这种情况就是 goroutine 泄露。当 goroutine 泄露发生时，该 goroutine 的栈(一般 2k 内存空间起)一直被占用不能释放，goroutine 里的函数在堆上申请的空间也不能被 垃圾回收器 回收。这样，在程序运行期间，内存占用持续升高，可用内存越来也少，最终将导致系统崩溃</p>
+<p>channel引起泄漏</p>
+<p>1.从 channel 里读，但是没有写</p>
+<p>2.向 unbuffered channel 写，但是没有读</p>
+<p>3.向已满的 buffered channel 写，但是没有读<br>解决方法，2,3设定buffer size，分配值和接收值数量一样</p>
+<p>4.select操作在所有case上阻塞<br>解决方法：<br>使用上述实现里的模式，传入一个 quit channel，配合 select，当不需要的时候，close 这个 quit channel，该 goroutine 就可以退出<br>或者使用ctx包</p>
+<p>5.goroutine进入死循环中，导致资源一直无法释放</p>
+<h3 id="interface类型可以比较吗"><a href="#interface类型可以比较吗" class="headerlink" title="interface类型可以比较吗"></a>interface类型可以比较吗</h3><p>interface类型可以比较，动态类型，动态值，两个一样就可以比较，只有slice，map无法比较，只能和nil比较，或者通过reflect包DeepEqual，或者cmp包比较</p>
+<p>struct可以比较，但是必须是同一类型的实例值可以比较，都相等为true</p>
+<h3 id="map如何顺序读取"><a href="#map如何顺序读取" class="headerlink" title="map如何顺序读取"></a>map如何顺序读取</h3><p>map不能顺序读取，是因为他是无序的，想要有序读取，首先的解决的问题就是，把ｋｅｙ变为有序，所以可以把key放入切片，对切片进行排序，遍历切片，通过key取值</p>
+<h3 id="实现set"><a href="#实现set" class="headerlink" title="实现set"></a>实现set</h3><p>通过map实现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">type inter interface&#123;&#125;</span><br><span class="line"></span><br><span class="line">type <span class="built_in">Set</span> struct &#123;</span><br><span class="line">    m map[inter]bool</span><br><span class="line">    sync.RWMutex</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func New() *<span class="built_in">Set</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;<span class="built_in">Set</span>&#123;</span><br><span class="line">        m: map[inter]bool&#123;&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">func (s *<span class="built_in">Set</span>) <span class="function"><span class="title">Add</span>(<span class="params">item inter</span>)</span> &#123;</span><br><span class="line">    s.Lock()</span><br><span class="line">    defer s.Unlock()</span><br><span class="line">    s.m[item] = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="switch-fullthrough"><a href="#switch-fullthrough" class="headerlink" title="switch fullthrough"></a>switch fullthrough</h3><p>switch的每个case最后都会break</p>
+<p>用fullthrough关键字，可以继续执行下一个case</p>
+<h3 id="go的几个命令"><a href="#go的几个命令" class="headerlink" title="go的几个命令"></a>go的几个命令</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">go env: #用于查看go的环境变量</span><br><span class="line">go run: #用于编译并运行go源码文件</span><br><span class="line">go build: #用于编译源码文件、代码包、依赖包</span><br><span class="line">go get: #用于动态获取远程代码包</span><br><span class="line">go install: #用于编译go文件，并将编译结构安装到bin、pkg目录</span><br><span class="line">go clean: #用于清理工作目录，删除编译和安装遗留的目标文件</span><br><span class="line">go version: #用于查看go的版本信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="go的log包线程安全"><a href="#go的log包线程安全" class="headerlink" title="go的log包线程安全"></a>go的log包线程安全</h3><p>Golang的标准库提供了log的机制，但是该模块的功能较为简单（看似简单，其实他有他的设计思路）。在输出的位置做了线程安全的保护。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"># GO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/15/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%93%E9%A2%98/" rel="prev" title="动态规划专题">
+                  <i class="fa fa-angle-left"></i> 动态规划专题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/20/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" rel="next" title="字符串相关算法">
+                  字符串相关算法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

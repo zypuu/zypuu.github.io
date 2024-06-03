@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="tornado websocket的应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tornado websocket源码分析及解决实际问题">
+<meta property="og:url" content="https://zypuu.github.io/2019/06/30/tornado%20websocket%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="tornado websocket的应用">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-30T08:40:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.031Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="websocket">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2019/06/30/tornado%20websocket%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2019/06/30/tornado%20websocket%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/","path":"2019/06/30/tornado websocket源码分析及解决实际问题/","title":"tornado websocket源码分析及解决实际问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>tornado websocket源码分析及解决实际问题 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tornado-websocket"><span class="nav-number">1.</span> <span class="nav-text">tornado websocket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E7%BB%A7%E6%89%BF"><span class="nav-number">1.1.1.</span> <span class="nav-text">类继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">获取建立连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ping-pong%E6%9C%BA%E5%88%B6"><span class="nav-number">1.1.3.</span> <span class="nav-text">ping pong机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E6%B6%88%E6%81%AF"><span class="nav-number">1.1.4.</span> <span class="nav-text">最大消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E6%B6%88%E6%81%AF"><span class="nav-number">1.1.5.</span> <span class="nav-text">发消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82"><span class="nav-number">1.1.6.</span> <span class="nav-text">跨域请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E4%B9%8B%E5%90%8E"><span class="nav-number">1.1.7.</span> <span class="nav-text">建立连接之后</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">1.1.8.</span> <span class="nav-text">接收消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.1.9.</span> <span class="nav-text">关闭连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E5%BC%82%E5%B8%B8"><span class="nav-number">1.1.10.</span> <span class="nav-text">发送异常</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E4%B8%9A%E5%8A%A1%E5%A4%84%E7%90%86%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">根据业务处理特殊问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#websocket%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E4%B9%8B%E5%89%8D%E6%8B%A6%E6%88%AA"><span class="nav-number">1.2.1.</span> <span class="nav-text">websocket建立连接之前拦截</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E5%8A%A8%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5%EF%BC%8C%E4%B8%BB%E5%8A%A8%E5%8F%91%E9%80%81%E5%BC%82%E5%B8%B8%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.2.2.</span> <span class="nav-text">主动关闭连接，主动发送异常关闭连接</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2019/06/30/tornado%20websocket%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="tornado websocket源码分析及解决实际问题 | All-Nothing">
+      <meta itemprop="description" content="tornado websocket的应用">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          tornado websocket源码分析及解决实际问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-30 16:40:00" itemprop="dateCreated datePublished" datetime="2019-06-30T16:40:00+08:00">2019-06-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">tornado websocket的应用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="tornado-websocket"><a href="#tornado-websocket" class="headerlink" title="tornado websocket"></a>tornado websocket</h2><p>tornado版本：4.5.2</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tornado.websocket <span class="keyword">import</span> WebSocketHandler</span><br></pre></td></tr></table></figure>
+<p>使用tornado.websocket的websockethandler类</p>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="类继承"><a href="#类继承" class="headerlink" title="类继承"></a>类继承</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class WebSocketHandler(tornado.web.RequestHandler):</span><br></pre></td></tr></table></figure>
+<p>websocket继承的是tornado.web.RequestHandler这个类</p>
+<h4 id="获取建立连接"><a href="#获取建立连接" class="headerlink" title="获取建立连接"></a>获取建立连接</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">@tornado.web.asynchronous</span><br><span class="line">   def get(self, *args, **kwargs):</span><br><span class="line">       self.open_args = args</span><br><span class="line">       self.open_kwargs = kwargs</span><br><span class="line"></span><br><span class="line">       # Upgrade header should be present and should be equal to WebSocket</span><br><span class="line">       <span class="keyword">if</span> self.request.headers.get(<span class="string">&quot;Upgrade&quot;</span>, <span class="string">&quot;&quot;</span>).lower() != <span class="string">&#x27;websocket&#x27;</span>:</span><br><span class="line">           self.set_status(<span class="number">400</span>)</span><br><span class="line">           log_msg = <span class="string">&quot;Can \&quot;Upgrade\&quot; only to \&quot;WebSocket\&quot;.&quot;</span></span><br><span class="line">           self.finish(log_msg)</span><br><span class="line">           gen_log.debug(log_msg)</span><br><span class="line">           <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">       # Connection header should be upgrade.</span><br><span class="line">       # Some proxy servers/load balancers</span><br><span class="line">       # might mess with it.</span><br><span class="line">       headers = self.request.headers</span><br><span class="line">       connection = map(lambda s: s.strip().lower(),</span><br><span class="line">                        headers.get(<span class="string">&quot;Connection&quot;</span>, <span class="string">&quot;&quot;</span>).split(<span class="string">&quot;,&quot;</span>))</span><br><span class="line">       <span class="keyword">if</span> <span class="string">&#x27;upgrade&#x27;</span> not <span class="keyword">in</span> connection:</span><br><span class="line">           self.set_status(<span class="number">400</span>)</span><br><span class="line">           log_msg = <span class="string">&quot;\&quot;Connection\&quot; must be \&quot;Upgrade\&quot;.&quot;</span></span><br><span class="line">           self.finish(log_msg)</span><br><span class="line">           gen_log.debug(log_msg)</span><br><span class="line">           <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">       # Handle WebSocket Origin naming convention differences</span><br><span class="line">       # The difference between version 8 and 13 is that in 8 the</span><br><span class="line">       # client sends a &quot;Sec-Websocket-Origin&quot; header and in 13 it&#x27;s</span><br><span class="line">       # simply &quot;Origin&quot;.</span><br><span class="line">       <span class="keyword">if</span> <span class="string">&quot;Origin&quot;</span> <span class="keyword">in</span> self.request.headers:</span><br><span class="line">           origin = self.request.headers.get(<span class="string">&quot;Origin&quot;</span>)</span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           origin = self.request.headers.get(<span class="string">&quot;Sec-Websocket-Origin&quot;</span>, None)</span><br><span class="line"></span><br><span class="line">       # If there was an origin header, check to make sure it matches</span><br><span class="line">       # according to check_origin. When the origin is None, we assume it</span><br><span class="line">       # did not come from a browser and that it can be passed on.</span><br><span class="line">       <span class="keyword">if</span> origin is not None and not self.check_origin(origin):</span><br><span class="line">           self.set_status(<span class="number">403</span>)</span><br><span class="line">           log_msg = <span class="string">&quot;Cross origin websockets not allowed&quot;</span></span><br><span class="line">           self.finish(log_msg)</span><br><span class="line">           gen_log.debug(log_msg)</span><br><span class="line">           <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">       self.ws_connection = self.get_websocket_protocol()</span><br><span class="line">       <span class="keyword">if</span> self.ws_connection:</span><br><span class="line">           self.ws_connection.accept_connection()</span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           self.set_status(<span class="number">426</span>, <span class="string">&quot;Upgrade Required&quot;</span>)</span><br><span class="line">           self.set_header(<span class="string">&quot;Sec-WebSocket-Version&quot;</span>, <span class="string">&quot;7, 8, 13&quot;</span>)</span><br><span class="line">           self.finish()</span><br></pre></td></tr></table></figure>
+<p>该方法在建立连接前会检验请求头的信息，是否websocket协议，检查connection连接，是否允许跨域请求，还有浏览器的版本等。调用该方法get_websocket_protocol检查通过，则接受该连接的访问最后accept_connection</p>
+<h4 id="ping-pong机制"><a href="#ping-pong机制" class="headerlink" title="ping pong机制"></a>ping pong机制</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">@property</span><br><span class="line">    def ping_interval(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;The interval for websocket keep-alive pings.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Set websocket_ping_interval = 0 to disable pings.</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.settings.get(<span class="string">&#x27;websocket_ping_interval&#x27;</span>, None)</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def ping_timeout(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;If no ping is received in this many seconds,</span></span><br><span class="line"><span class="string">        close the websocket connection (VPNs, etc. can fail to cleanly close ws connections).</span></span><br><span class="line"><span class="string">        Default is max of 3 pings or 30 seconds.</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.settings.get(<span class="string">&#x27;websocket_ping_timeout&#x27;</span>, None)</span><br><span class="line">		</span><br><span class="line">def ping(self, data):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;Send ping frame to the remote end.&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.ws_connection is None:</span><br><span class="line">            raise WebSocketClosedError()</span><br><span class="line">        self.ws_connection.write_ping(data)</span><br><span class="line"></span><br><span class="line">    def on_pong(self, data):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;Invoked when the response to a ping frame is received.&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def on_ping(self, data):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;Invoked when the a ping frame is received.&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        pass</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>设置为0则为禁用，websocket协议本身自带pingpong机制，用于连接健康检查和保持连接打开状态，但是这个ping pong机制是与浏览器之间进行的，而不是与websocket客户端，且大多由服务端发起，js本身并不存在这样的机制，浏览器又存在各种版本问题，项目中最好由客户端发起心跳去检验服务端，因为由一个服务端对应多个客户端，最好由客户端发起，为了解决这个问题，最好加入心跳机制，来检验连接存活问题。</p>
+<h4 id="最大消息"><a href="#最大消息" class="headerlink" title="最大消息"></a>最大消息</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@property</span><br><span class="line">   def max_message_size(self):</span><br><span class="line">       <span class="string">&quot;&quot;</span><span class="string">&quot;Maximum allowed message size.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       If the remote peer sends a message larger than this, the connection</span></span><br><span class="line"><span class="string">       will be closed.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       Default is 10MiB.</span></span><br><span class="line"><span class="string">       &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">       <span class="keyword">return</span> self.settings.get(<span class="string">&#x27;websocket_max_message_size&#x27;</span>, None)</span><br></pre></td></tr></table></figure>
+<p>从源码看最大消息为10M</p>
+<h4 id="发消息"><a href="#发消息" class="headerlink" title="发消息"></a>发消息</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def write_message(self, message, binary=False):</span><br><span class="line">       <span class="string">&quot;&quot;</span><span class="string">&quot;Sends the given message to the client of this Web Socket.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       The message may be either a string or a dict (which will be</span></span><br><span class="line"><span class="string">       encoded as json).  If the ``binary`` argument is false, the</span></span><br><span class="line"><span class="string">       message will be sent as utf8; in binary mode any byte string</span></span><br><span class="line"><span class="string">       is allowed.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       If the connection is already closed, raises `WebSocketClosedError`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       .. versionchanged:: 3.2</span></span><br><span class="line"><span class="string">          `WebSocketClosedError` was added (previously a closed connection</span></span><br><span class="line"><span class="string">          would raise an `AttributeError`)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       .. versionchanged:: 4.3</span></span><br><span class="line"><span class="string">          Returns a `.Future` which can be used for flow control.</span></span><br><span class="line"><span class="string">       &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">       <span class="keyword">if</span> self.ws_connection is None:</span><br><span class="line">           raise WebSocketClosedError()</span><br><span class="line">       <span class="keyword">if</span> isinstance(message, dict):</span><br><span class="line">           message = tornado.escape.json_encode(message)</span><br><span class="line">       <span class="keyword">return</span> self.ws_connection.write_message(message, binary=binary)</span><br></pre></td></tr></table></figure>
+<p>会判断该连接是否存在，不存在则抛出关闭异常，判断消息是否dict，如果是dict则进行编码</p>
+<h4 id="跨域请求"><a href="#跨域请求" class="headerlink" title="跨域请求"></a>跨域请求</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">def check_origin(self, origin):</span><br><span class="line">      <span class="string">&quot;&quot;</span><span class="string">&quot;Override to enable support for allowing alternate origins.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      The ``origin`` argument is the value of the ``Origin`` HTTP</span></span><br><span class="line"><span class="string">      header, the url responsible for initiating this request.  This</span></span><br><span class="line"><span class="string">      method is not called for clients that do not send this header;</span></span><br><span class="line"><span class="string">      such requests are always allowed (because all browsers that</span></span><br><span class="line"><span class="string">      implement WebSockets support this header, and non-browser</span></span><br><span class="line"><span class="string">      clients do not have the same cross-site security concerns).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      Should return True to accept the request or False to reject it.</span></span><br><span class="line"><span class="string">      By default, rejects all requests with an origin on a host other</span></span><br><span class="line"><span class="string">      than this one.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      This is a security protection against cross site scripting attacks on</span></span><br><span class="line"><span class="string">      browsers, since WebSockets are allowed to bypass the usual same-origin</span></span><br><span class="line"><span class="string">      policies and don&#x27;t use CORS headers.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      .. warning::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">         This is an important security measure; don&#x27;t disable it</span></span><br><span class="line"><span class="string">         without understanding the security implications. In</span></span><br><span class="line"><span class="string">         particular, if your authentication is cookie-based, you</span></span><br><span class="line"><span class="string">         must either restrict the origins allowed by</span></span><br><span class="line"><span class="string">         ``check_origin()`` or implement your own XSRF-like</span></span><br><span class="line"><span class="string">         protection for websocket connections. See `these</span></span><br><span class="line"><span class="string">         &lt;https://www.christian-schneider.net/CrossSiteWebSocketHijacking.html&gt;`_</span></span><br><span class="line"><span class="string">         `articles</span></span><br><span class="line"><span class="string">         &lt;https://devcenter.heroku.com/articles/websocket-security&gt;`_</span></span><br><span class="line"><span class="string">         for more.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      To accept all cross-origin traffic (which was the default prior to</span></span><br><span class="line"><span class="string">      Tornado 4.0), simply override this method to always return true::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">          def check_origin(self, origin):</span></span><br><span class="line"><span class="string">              return True</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      To allow connections from any subdomain of your site, you might</span></span><br><span class="line"><span class="string">      do something like::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">          def check_origin(self, origin):</span></span><br><span class="line"><span class="string">              parsed_origin = urllib.parse.urlparse(origin)</span></span><br><span class="line"><span class="string">              return parsed_origin.netloc.endswith(&quot;</span>.mydomain.com<span class="string">&quot;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      .. versionadded:: 4.0</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">      parsed_origin = urlparse(origin)</span><br><span class="line">      origin = parsed_origin.netloc</span><br><span class="line">      origin = origin.lower()</span><br><span class="line"></span><br><span class="line">      host = self.request.headers.get(<span class="string">&quot;Host&quot;</span>)</span><br><span class="line"></span><br><span class="line">      # Check to see that origin matches host directly, including ports</span><br><span class="line">      <span class="keyword">return</span> origin == host</span><br></pre></td></tr></table></figure>
+<p>重写这个方法 return true则允许跨域请求</p>
+<h4 id="建立连接之后"><a href="#建立连接之后" class="headerlink" title="建立连接之后"></a>建立连接之后</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">def open(self, *args, **kwargs):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;Invoked when a new WebSocket is opened.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The arguments to `open` are extracted from the `tornado.web.URLSpec`</span></span><br><span class="line"><span class="string">    regular expression, just like the arguments to</span></span><br><span class="line"><span class="string">    `tornado.web.RequestHandler.get`.</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+<p>可重写open方法，在建立连接之后进行业务处理</p>
+<h4 id="接收消息"><a href="#接收消息" class="headerlink" title="接收消息"></a>接收消息</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def on_message(self, message):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;Handle incoming messages on the WebSocket</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        This method must be overridden.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        .. versionchanged:: 4.5</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">           ``on_message`` can be a coroutine.</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        raise NotImplementedError</span><br></pre></td></tr></table></figure>
+<p>由源码看，接收消息的方法必须被重写，不然会抛一个异常</p>
+<h4 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">def on_close(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;Invoked when the WebSocket is closed.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        If the connection was closed cleanly and a status code or reason</span></span><br><span class="line"><span class="string">        phrase was supplied, these values will be available as the attributes</span></span><br><span class="line"><span class="string">        ``self.close_code`` and ``self.close_reason``.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        .. versionchanged:: 4.0</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">           Added ``close_code`` and ``close_reason`` attributes.</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def close(self, code=None, reason=None):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;Closes this Web Socket.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Once the close handshake is successful the socket will be closed.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        ``code`` may be a numeric status code, taken from the values</span></span><br><span class="line"><span class="string">        defined in `RFC 6455 section 7.4.1</span></span><br><span class="line"><span class="string">        &lt;https://tools.ietf.org/html/rfc6455#section-7.4.1&gt;`_.</span></span><br><span class="line"><span class="string">        ``reason`` may be a textual message about why the connection is</span></span><br><span class="line"><span class="string">        closing.  These values are made available to the client, but are</span></span><br><span class="line"><span class="string">        not otherwise interpreted by the websocket protocol.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        .. versionchanged:: 4.0</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">           Added the ``code`` and ``reason`` arguments.</span></span><br><span class="line"><span class="string">        &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.ws_connection:</span><br><span class="line">            self.ws_connection.close(code, reason)</span><br><span class="line">            self.ws_connection = None</span><br></pre></td></tr></table></figure>
+<p>on_close方法为连接关闭之后，可以根据业务进行特殊处理，<br>close方法，可由服务端根据业务主动关闭连接，可写code与reason，进行特殊处理，前端的websocket可捕获这个code与reason</p>
+<h4 id="发送异常"><a href="#发送异常" class="headerlink" title="发送异常"></a>发送异常</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def send_error(self, *args, **kwargs):</span><br><span class="line">    <span class="keyword">if</span> self.stream is None:</span><br><span class="line">        <span class="built_in">super</span>(WebSocketHandler, self).send_error(*args, **kwargs)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">    # If we get an uncaught exception during the handshake,</span><br><span class="line">    # we have no choice but to abruptly close the connection.</span><br><span class="line">    # TODO: for uncaught exceptions after the handshake,</span><br><span class="line">    # we can close the connection more gracefully.</span><br><span class="line">    self.stream.close()</span><br></pre></td></tr></table></figure>
+<p>send_error发送一个异常，之后会触发关闭连接</p>
+<h3 id="根据业务处理特殊问题"><a href="#根据业务处理特殊问题" class="headerlink" title="根据业务处理特殊问题"></a>根据业务处理特殊问题</h3><h4 id="websocket建立连接之前拦截"><a href="#websocket建立连接之前拦截" class="headerlink" title="websocket建立连接之前拦截"></a>websocket建立连接之前拦截</h4><p>经过源码分析可知，没有on_open这种方法，在建立连接之前做一些操作，所以在分析完浏览器请求，接收这个链接之后，建立连接之前重写get_websocket_protocol方法，进行业务相关操作，再调用，如果不符合想要接入的连接，则可以在这里拒绝掉</p>
+<h4 id="主动关闭连接，主动发送异常关闭连接"><a href="#主动关闭连接，主动发送异常关闭连接" class="headerlink" title="主动关闭连接，主动发送异常关闭连接"></a>主动关闭连接，主动发送异常关闭连接</h4><p>根据业务需求，我们可以主动调用close方法来主动关闭此次连接，可以设定自定义状态码，然后由前端捕获到，进行业务相关处理。或者调用send_error方法，发送异常来进行业务特殊处理，主动与客户端断开连接</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/websocket/" rel="tag"># websocket</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/23/websocket%E7%8A%B6%E6%80%81%E7%A0%81/" rel="prev" title="websocket状态码">
+                  <i class="fa fa-angle-left"></i> websocket状态码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/01/websocket%E5%BF%83%E8%B7%B3%E9%87%8D%E8%BF%9E%E6%9C%BA%E5%88%B6%E5%A4%84%E7%90%86/" rel="next" title="websocket 心跳机制处理">
+                  websocket 心跳机制处理 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

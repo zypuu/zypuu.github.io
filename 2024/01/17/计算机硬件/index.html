@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="计算机硬件组成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机硬件组成">
+<meta property="og:url" content="https://zypuu.github.io/2024/01/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="计算机硬件组成">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-01-17T03:17:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.218Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/01/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/01/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/","path":"2024/01/17/计算机硬件/","title":"计算机硬件组成"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机硬件组成 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">硬件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU"><span class="nav-number">2.</span> <span class="nav-text">CPU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-number">2.2.</span> <span class="nav-text">组成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">进制转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">原码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">反码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E7%A0%81"><span class="nav-number">6.</span> <span class="nav-text">补码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E7%A0%81"><span class="nav-number">7.</span> <span class="nav-text">移码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%A1%E9%AA%8C%E7%A0%81"><span class="nav-number">8.</span> <span class="nav-text">校验码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%EF%BC%9A"><span class="nav-number">8.1.</span> <span class="nav-text">奇偶校验码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A0%A1%E9%AA%8C%E7%A0%81%EF%BC%88Cyclic-Redundancy-Check%EF%BC%8CCRC%EF%BC%89"><span class="nav-number">8.2.</span> <span class="nav-text">循环冗余校验码（Cyclic Redundancy Check，CRC）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%B7%E6%98%8E%E7%A0%81%E6%A0%A1%E9%AA%8C"><span class="nav-number">8.3.</span> <span class="nav-text">海明码校验</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/01/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机硬件组成 | All-Nothing">
+      <meta itemprop="description" content="计算机硬件组成">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机硬件组成
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-17 11:17:00" itemprop="dateCreated datePublished" datetime="2024-01-17T11:17:00+08:00">2024-01-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">计算机硬件组成</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="硬件系统"><a href="#硬件系统" class="headerlink" title="硬件系统"></a>硬件系统</h3><p>计算机的基本硬件系统由运算器、控制器、存储器、输入设备和输出设备5大<br>部件组成。</p>
+<p>运算器、控制器等部件被集成在一起统称为中央处理单元CPU。</p>
+<p>存储器是计算机系统中的记忆设备，分为内部存储器和外部存储器。</p>
+<p>输入设备和输出设备合称为外部设备（简称外设），输入设备用于输入原始数<br>据及各种命令，而输出设备则用于输出计算机运行的结果。</p>
+<h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3><h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><p>1、程序控制：CPU通过执行指令来控制程序的执行顺序，这是CPU的重要功能。<br>2、操作控制：一条指令功能的实现需要若干操作信号配合来完成，CPU产生每条指令的操<br>作信号并将操作信号送往对应的部件，控制相应的部件按指令的功能要求进行操作。<br>3、时间控制：CPU对各种操作进行时间上的控制，即指令执行过程中操作信号的出现时间、<br>持续时间及出现的时间顺序都需要进行严格控制。<br>4、数据处理：CPU通过对数据进行算术运算及逻辑运算等方式进行加工处理，数据加工处<br>理的结果被人们所利用。所以，对数据的加工处理也是CPU最根本的任务。</p>
+<p>此外，CPU还需要对系统内部和外部的中断或异常做出响应，进行相应的处理。</p>
+<h4 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h4><p>CPU主要由运算器、控制器、寄存器组和内部总线等部件组成</p>
+<p>1、运算器：执行所有的算术运算，数据加工，如加减乘除等；执行所有的逻辑运算并进行逻辑测试，如与、或、非、比较等，只有加法计算器。<br>1） 算术逻辑单元ALU（实现对数据的算术和逻辑运算）<br>2）累加寄存器AC（运算结果或源操作数的存放区）<br>3）数据缓冲寄存器DR（暂时存放内存的指令或数据）<br>4）状态条件寄存器PSW（保存指令运行结果的条件码内容，如溢出标志等）组成。<br>2、 控制器：控制整个CPU的工作，最为重要，保证指令的正确执行，能够处理异常事件。<br>1） 指令寄存器IR（暂存CPU执行指令）<br>2） 程序计数器PC（存放指令执行地址）<br>3）地址寄存器AR（保存当前CPU所访问的内存地址）<br>4） 指令译码器ID（分析指令操作码）等组成。</p>
+<p>通过汇编指令可以操作寄存器</p>
+<h3 id="进制转换"><a href="#进制转换" class="headerlink" title="进制转换"></a>进制转换</h3><p>二转十：</p>
+<p>带符号：，符号位最高位1为负数，0为正数</p>
+<p>小数位：小数点后第1位x2的-1次方，以此类推相加</p>
+<p>十转二：</p>
+<p>整数位：除2取余，直至结果为0，下到上记录</p>
+<p>小数位：x2取整数部分，直到小数部分为0， 上到下记录</p>
+<p>十六（H）转二：</p>
+<p>一位对应4位的二进制，90H，9对应4位二进制1001，0对应的二进制0000</p>
+<h3 id="原码"><a href="#原码" class="headerlink" title="原码"></a>原码</h3><p>最高位符号位，其余n-1位数的绝对值，0的原码有两种 +0 -0</p>
+<p>原码运算，只适用于加法，因为符号位的问题，导致减法（变相的加法）会出问题</p>
+<p>根据机器字长补0，符号位占一位</p>
+<h3 id="反码"><a href="#反码" class="headerlink" title="反码"></a>反码</h3><p>正数的反码还是等于原码</p>
+<p>负数的反码，原码除符号位外，其他位按位取反</p>
+<p>反码中，计算会有问题</p>
+<h3 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h3><p>正数的补码等于原码</p>
+<p>负数的补码等于反码+1，或（原码）等于2的机器字长次方-负数的绝对值</p>
+<p>通过补码计算 减法，正数加上负数，计算机中都通过补码进行加减运算</p>
+<p>负数的补码-1就是反码，取反就是原码</p>
+<p>补码将减法转换为加法，简化运算器的设计</p>
+<p>原码，反码，补码，的最高位都是符号位</p>
+<h3 id="移码"><a href="#移码" class="headerlink" title="移码"></a>移码</h3><p>补码的符号位取反，表示浮点数的指数（阶码）</p>
+<p>浮点数：</p>
+<p>尾数x基数的阶码次幂</p>
+<p>尾数：补码表示，表示精度，位数越多精度越高</p>
+<p>阶码：移码表示，表示范围，位数越多范围越大</p>
+<p>对阶：小数向大数看齐，阶码一致，将尾数右移n位阶差，小数点左移</p>
+<h3 id="校验码"><a href="#校验码" class="headerlink" title="校验码"></a>校验码</h3><p>在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A： 00要转换为B：11，码距为2。一般来说，码距越大，越利于纠错和检错</p>
+<h4 id="奇偶校验码："><a href="#奇偶校验码：" class="headerlink" title="奇偶校验码："></a>奇偶校验码：</h4><p>用增加校验位的方法</p>
+<ol>
+<li>无论数据位多少位，校验位只有一位</li>
+<li>数据位和校验位一共所含的1个数为奇数，称为奇校验</li>
+<li>数据位和校验位一共所含的1个数为偶数，称为偶校验，只能检测出奇数个错误</li>
+</ol>
+<p>可以检查出误码，但不能纠错</p>
+<h4 id="循环冗余校验码（Cyclic-Redundancy-Check，CRC）"><a href="#循环冗余校验码（Cyclic-Redundancy-Check，CRC）" class="headerlink" title="循环冗余校验码（Cyclic Redundancy Check，CRC）"></a>循环冗余校验码（Cyclic Redundancy Check，CRC）</h4><p>可以检查错误，不能纠错，漏检率比较低</p>
+<p>模2除法：</p>
+<p>1、被除数首位是几，商就是几</p>
+<p>2、异或运算，相同为0，不同为1</p>
+<p>3、弃首位，补末位，再上商</p>
+<p>计算过程：<br>假设原始信息串为10110，CRC的生成多项式为G（x）＝x＾4＋x＋1，必须包含1，求CRC校验码。<br>1、在原始信息位后面添0，假设生成多项式的阶为r，则在原始信息位后添加r个0，本题中，G<br>（x）阶为4，则在原始信息串后加4个0，得到的新串为101100000，作为被除数。<br>2 、由多项式得到除数，多项中x的幂指数存在的位置1，不存在的位置0。本题中，x的幂指数为<br>0，1，4的变量都存在，而幂指数为2，3的不存在，因此得到串10011。<br>3、生成CRC校验码，将前两步得出的被除数和除数进行模2除法运算（即不进位也不借位的除法运<br>算）。<br>得到余数1111。<br>注意：余数不足r，则余数左边用若干个0补齐。如求得余数为11，r＝4，则补两个0得到0011。<br>4、生成最终发送信息串，将余数添加到原始信息后。上例中，原始信息为10110，添加余数<br>1111后，结果为101101111。发送方将此数据发送给接收方。<br>5、接收方进行校验。接收方的CRC校验过程与生成过程类似，接收方接收了带校验和的帧后，<br>用多项式G（x）来除。余数为0，则表示信息无错；否则要求发送方进行重传。</p>
+<p>上面是发送方</p>
+<p>注意接收方，接收方就是被除数</p>
+<h4 id="海明码校验"><a href="#海明码校验" class="headerlink" title="海明码校验"></a>海明码校验</h4><p>可以检错，也可以纠错</p>
+<p>数据位n位，增加k个校验位，扩大码距</p>
+<p>2的k次方 -1 &gt;= n + k</p>
+<p>传送的信息是1010，海明校验，奇校验的规则下海明码</p>
+<p>1、根据上面的公式，n是信息位，求出k校验位的个数，1010，求出的k是3，n是4,则海明码是7位</p>
+<p>2、然后校验码Pi，要放在2的i-1次方的位置，也就是i=1，2，3，求出Pi的位置1，2，4，剩下的4位就是数据位D1,D2,D3,D4</p>
+<p>3、根据海明位的校验位的位置是1，2，4，被校验的海明位的下标是校验位的下标之和，如果该海明位就是校验位，那就是自身校验，得到每个海明位，根据下标和，得到所关联的校验位</p>
+<p>4、得到校验位的对应的海明位的数据位一组，根据奇偶校验补充得到校验位的海明位，和原先数据位组合得到海明码</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/27/Kafka%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/" rel="prev" title="Kafka原理探究">
+                  <i class="fa fa-angle-left"></i> Kafka原理探究
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8C%87%E4%BB%A4/" rel="next" title="计算机指令系统">
+                  计算机指令系统 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

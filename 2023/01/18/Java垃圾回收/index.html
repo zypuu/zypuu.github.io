@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关于java的垃圾回收与算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java垃圾回收">
+<meta property="og:url" content="https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="关于java的垃圾回收与算法。">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/2.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/3.jpg">
+<meta property="article:published_time" content="2023-01-18T05:10:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.987Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="垃圾回收">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/","path":"2023/01/18/Java垃圾回收/","title":"Java垃圾回收"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java垃圾回收 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%9E%83%E5%9C%BE"><span class="nav-number">1.</span> <span class="nav-text">如何确定垃圾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">引用计数法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">可达性分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">Java 引用类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">强引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%B1%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">弱引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.3.</span> <span class="nav-text">软引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%99%9A%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.4.</span> <span class="nav-text">虚引用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4Mark-Sweep"><span class="nav-number">2.1.</span> <span class="nav-text">标记清除Mark-Sweep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E5%A4%8D%E5%88%B6Mark-Copying"><span class="nav-number">2.2.</span> <span class="nav-text">标记复制Mark-Copying</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86Mark-Copying"><span class="nav-number">2.3.</span> <span class="nav-text">标记整理Mark-Copying</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">分代收集算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E7%94%9F%E4%BB%A3%E6%A0%87%E8%AE%B0%E5%A4%8D%E5%88%B6"><span class="nav-number">2.4.1.</span> <span class="nav-text">新生代标记复制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%80%81%E5%B9%B4%E4%BB%A3%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86"><span class="nav-number">2.4.2.</span> <span class="nav-text">老年代标记整理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%8C%BA%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.5.</span> <span class="nav-text">分区收集算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%94%9F%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">3.1.</span> <span class="nav-text">新生代垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Serial-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88%E5%8D%95%E7%BA%BF%E7%A8%8B%E3%80%81%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%89"><span class="nav-number">3.1.1.</span> <span class="nav-text">Serial 垃圾收集器（单线程、复制算法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ParNew-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88Serial-%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%89"><span class="nav-number">3.1.2.</span> <span class="nav-text">ParNew 垃圾收集器（Serial+多线程）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parallel-Scavenge-%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%E3%80%81%E9%AB%98%E6%95%88%EF%BC%89"><span class="nav-number">3.1.3.</span> <span class="nav-text">Parallel Scavenge 收集器（多线程复制算法、高效）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%80%81%E5%B9%B4%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">老年代垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Serial-Old-%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95-%EF%BC%89"><span class="nav-number">3.2.1.</span> <span class="nav-text">Serial Old 收集器（单线程标记整理算法 ）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parallel-Old-%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95%EF%BC%89"><span class="nav-number">3.2.2.</span> <span class="nav-text">Parallel Old 收集器（多线程标记整理算法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CMS-%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95%EF%BC%89"><span class="nav-number">3.2.3.</span> <span class="nav-text">CMS 收集器（多线程标记清除算法）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">初始标记</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">并发标记</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E6%A0%87%E8%AE%B0"><span class="nav-number">3.2.3.3.</span> <span class="nav-text">重新标记</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%B8%85%E9%99%A4"><span class="nav-number">3.2.3.4.</span> <span class="nav-text">并发清除</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#G1-%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">3.2.4.</span> <span class="nav-text">G1 收集器</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java垃圾回收 | All-Nothing">
+      <meta itemprop="description" content="关于java的垃圾回收与算法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java垃圾回收
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-01-18 13:10:00" itemprop="dateCreated datePublished" datetime="2023-01-18T13:10:00+08:00">2023-01-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">关于java的垃圾回收与算法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="如何确定垃圾"><a href="#如何确定垃圾" class="headerlink" title="如何确定垃圾"></a>如何确定垃圾</h2><h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>给对象添加一个引用计数器,当对象增加一个引用时计数器加 1,引用失效时计数器减 1。引用计数为 0 的对象可被回收，但是会出现问题，如果出现循环引用的话，引用计数永远不可能为0，所以，该对象永远不会被回收</p>
+<h3 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h3><p>为了解决引用计数法的循环引用问题，Java 使用了可达性分析的方法。通过一系列的“GC roots”对象作为起点搜索。如果在“GC roots”和一个对象之间没有可达路径，则称该对象是不可达的。要注意的是，不可达对象不等价于可回收对象，不可达对象变为可回收对象至少要经过两次标记<br>过程。两次标记后仍然是可回收对象，则将面临回收。</p>
+<h3 id="Java-引用类型"><a href="#Java-引用类型" class="headerlink" title="Java 引用类型"></a>Java 引用类型</h3><h4 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h4><p>把一个对象赋给一个引用变量，这个引用变量就是一个强引用。当一个对象被强引用变量引用时，它处于可达状态，它是不可能被垃圾回收机制回收的，即使该对象以后永远都不会被用到 JVM 也不会回收。因此强引用是造成 Java 内存泄漏的主要原因之一</p>
+<h4 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h4><p>弱引用需要用 WeakReference 类来实现，它比软引用的生存期更短，对于只有弱引用的对象来说，只要垃圾回收机制一运行，不管 JVM 的内存空间是否足够，总会回收该对象占用的内存</p>
+<h4 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h4><p>软引用需要用 SoftReference 类来实现，对于只有软引用的对象来说，当系统内存足够时它不会被回收，当系统内存空间不足时它会被回收。软引用通常用在对内存敏感的程序中。</p>
+<h4 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h4><p>虚引用需要 PhantomReference 类来实现，它不能单独使用，必须和引用队列联合使用。虚引用的主要作用是跟踪对象被垃圾回收的状态</p>
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><p>（更多详情可以看 Go的垃圾回收算法，进行比对 <a href="https://zypuu.github.io/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">GO的垃圾回收</a>）</p>
+<h3 id="标记清除Mark-Sweep"><a href="#标记清除Mark-Sweep" class="headerlink" title="标记清除Mark-Sweep"></a>标记清除Mark-Sweep</h3><p>最基础的垃圾回收算法，分为两个阶段，标注和清除。标记阶段标记出所有需要回收的对象，清除阶段回收被标记的对象所占用的空间<br><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/1.jpg" alt="1"><br>该算法最大的问题是内存碎片化严重，后续可能发生大对象不能找到可利用空间的问题</p>
+<h3 id="标记复制Mark-Copying"><a href="#标记复制Mark-Copying" class="headerlink" title="标记复制Mark-Copying"></a>标记复制Mark-Copying</h3><p>为了解决 Mark-Sweep 算法内存碎片化的缺陷而被提出的算法。按内存容量将内存划分为等大小<br>的两块。每次只使用其中一块，当这一块内存满后将尚存活的对象复制到另一块上去，把已使用<br>的内存清掉<br><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/2.jpg" alt="1"><br>算法虽然实现简单，内存效率高，不易产生碎片，但是最大的问题是可用内存被压缩到了原<br>本的一半。且存活对象增多的话，Copying 算法的效率会大大降低</p>
+<h3 id="标记整理Mark-Copying"><a href="#标记整理Mark-Copying" class="headerlink" title="标记整理Mark-Copying"></a>标记整理Mark-Copying</h3><p>结合了以上两个算法，为了避免缺陷而提出。标记阶段和 Mark-Sweep 算法相同，标记后不是清<br>理对象，而是将存活对象移向内存的一端。然后清除端边界外的对象</p>
+<p><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/3.jpg" alt="1"></p>
+<h3 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h3><p>分代收集法是目前大部分 JVM 所采用的方法，其核心思想是根据对象存活的不同生命周期将内存划分为不同的域，一般情况下将 GC 堆划分为老生代和新生代。<br>老生代的特点是每次垃圾回收时只有少量对象需要被回收<br>新生代的特点是每次垃圾回收时都有大量垃圾需要被回收<br>因此可以根据不同区域选择不同的算法</p>
+<h4 id="新生代标记复制"><a href="#新生代标记复制" class="headerlink" title="新生代标记复制"></a>新生代标记复制</h4><p>因为新生代中每次垃圾回收都要回收大部分对象，即要复制的操作比较少，但通常并不是按照 1：1 来划分新生代。一般将新生代划分为一块较大的 Eden 空间和两个较小的 Survivor 空间(From Space, To Space)，每次使用Eden 空间和其中的一块 Survivor 空间，当进行回收时，将该两块空间中还存活的对象复制到另一块 Survivor 空间中。</p>
+<p>每次垃圾收集都能发现大批对象已死, 只有少量存活. 因此选用复制算法, 只需要付出少量<br>存活对象的复制成本就可以完成收集</p>
+<h4 id="老年代标记整理"><a href="#老年代标记整理" class="headerlink" title="老年代标记整理"></a>老年代标记整理</h4><p>因为对象存活率高、没有额外空间对它进行分配担保, 就必须采用“标记—清理”或“标<br>记—整理”算法来进行回收, 不必进行内存复制, 且直接腾出空闲内存</p>
+<ol>
+<li>JAVA 虚拟机提到过的处于方法区的永生代(Permanet Generation)，它用来存储 class 类，<br>常量，方法描述等。对永生代的回收主要包括废弃常量和无用的类。</li>
+<li>对象的内存分配主要在新生代的 Eden Space 和 Survivor Space 的 From Space(Survivor 目<br>前存放对象的那一块)，少数情况会直接分配到老生代。</li>
+<li>当新生代的 Eden Space 和 From Space 空间不足时就会发生一次 GC，进行 GC 后，Eden<br>Space 和 From Space 区的存活对象会被挪到 To Space，然后将 Eden Space 和 From<br>Space 进行清理。</li>
+<li>如果 To Space 无法足够存储某个对象，则将这个对象存储到老生代。</li>
+<li>在进行 GC 后，使用的便是 Eden Space 和 To Space 了，如此反复循环。</li>
+<li>当对象在 Survivor 区躲过一次 GC 后，其年龄就会+1。默认情况下年龄到达 15 的对象会被<br>移到老生代中</li>
+</ol>
+<h3 id="分区收集算法"><a href="#分区收集算法" class="headerlink" title="分区收集算法"></a>分区收集算法</h3><p>分区算法则将整个堆空间划分为连续的不同小区间, 每个小区间独立使用, 独立回收. 这样做的好处是可以控制一次回收多少个小区间 , 根据目标停顿时间, 每次合理地回收若干个小区间(而不是<br>整个堆), 从而减少一次 GC 所产生的停顿。</p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><h3 id="新生代垃圾回收器"><a href="#新生代垃圾回收器" class="headerlink" title="新生代垃圾回收器"></a>新生代垃圾回收器</h3><h4 id="Serial-垃圾收集器（单线程、复制算法）"><a href="#Serial-垃圾收集器（单线程、复制算法）" class="headerlink" title="Serial 垃圾收集器（单线程、复制算法）"></a>Serial 垃圾收集器（单线程、复制算法）</h4><p>最基本垃圾收集器，使用复制算法，曾经是JDK1.3.1 之前新生代唯一的垃圾收集器。Serial 是一个单线程的收集器，它不但只会使用一个 CPU 或一条线程去完成垃圾收集工作，并且在进行垃圾收集的同时，必须暂停其他所有的工作线程，直到垃圾收集结束。<br>Serial 垃圾收集器虽然在收集垃圾过程中需要暂停所有其他的工作线程，但是它简单高效，对于限<br>定单个 CPU 环境来说，没有线程交互的开销，可以获得最高的单线程垃圾收集效率，因此 Serial<br>垃圾收集器依然是 java 虚拟机运行在 Client 模式下默认的新生代垃圾收集器</p>
+<h4 id="ParNew-垃圾收集器（Serial-多线程）"><a href="#ParNew-垃圾收集器（Serial-多线程）" class="headerlink" title="ParNew 垃圾收集器（Serial+多线程）"></a>ParNew 垃圾收集器（Serial+多线程）</h4><p>收集器默认开启和 CPU 数目相同的线程数，ParNew虽然是除了多线程外和Serial 收集器几乎完全一样，但是ParNew垃圾收集器是很多 java<br>虚拟机运行在 Server 模式下新生代的默认垃圾收集器</p>
+<h4 id="Parallel-Scavenge-收集器（多线程复制算法、高效）"><a href="#Parallel-Scavenge-收集器（多线程复制算法、高效）" class="headerlink" title="Parallel Scavenge 收集器（多线程复制算法、高效）"></a>Parallel Scavenge 收集器（多线程复制算法、高效）</h4><p>自适应调节策略也是 ParallelScavenge 收集器与 ParNew 收集器的一个重要区别，同样使用复制算法，也是一个多线程的垃圾收集器，它重点关注的是程序达到一个可控制的吞吐量（吞吐量=运行用户代码时间/(运行用户代码时间+垃圾收集时间)）高吞吐量可以最高效率地利用 CPU 时间，尽快地完成程序的运算任务，主要适用于在后台运算而不需要太多交互的任务</p>
+<h3 id="老年代垃圾回收器"><a href="#老年代垃圾回收器" class="headerlink" title="老年代垃圾回收器"></a>老年代垃圾回收器</h3><h4 id="Serial-Old-收集器（单线程标记整理算法-）"><a href="#Serial-Old-收集器（单线程标记整理算法-）" class="headerlink" title="Serial Old 收集器（单线程标记整理算法 ）"></a>Serial Old 收集器（单线程标记整理算法 ）</h4><p>Serial Old 是 Serial 垃圾收集器年老代版本，它同样是个单线程的收集器，使用标记-整理算法，<br>这个收集器也主要是运行在 Client 默认的 java 虚拟机默认的年老代垃圾收集器</p>
+<h4 id="Parallel-Old-收集器（多线程标记整理算法）"><a href="#Parallel-Old-收集器（多线程标记整理算法）" class="headerlink" title="Parallel Old 收集器（多线程标记整理算法）"></a>Parallel Old 收集器（多线程标记整理算法）</h4><p>Parallel Old 收集器是Parallel Scavenge的年老代版本，使用多线程的标记-整理算法，在 JDK1.6<br>才开始提供</p>
+<h4 id="CMS-收集器（多线程标记清除算法）"><a href="#CMS-收集器（多线程标记清除算法）" class="headerlink" title="CMS 收集器（多线程标记清除算法）"></a>CMS 收集器（多线程标记清除算法）</h4><p>Concurrent mark sweep(CMS)收集器是一种年老代垃圾收集器，其最主要目标是获取最短垃圾回收停顿时间，和其他年老代使用标记-整理算法不同，它使用多线程的标记-清除算法。最短的垃圾收集停顿时间可以为交互比较高的程序提高用户体验</p>
+<h5 id="初始标记"><a href="#初始标记" class="headerlink" title="初始标记"></a>初始标记</h5><p>只是标记一下 GC Roots 能直接关联的对象，速度很快，仍然需要暂停所有的工作线程。</p>
+<h5 id="并发标记"><a href="#并发标记" class="headerlink" title="并发标记"></a>并发标记</h5><p>进行 GC Roots 跟踪的过程，和用户线程一起工作，不需要暂停工作线程。</p>
+<h5 id="重新标记"><a href="#重新标记" class="headerlink" title="重新标记"></a>重新标记</h5><p>为了修正在并发标记期间，因用户程序继续运行而导致标记产生变动的那一部分对象的标记<br>记录，仍然需要暂停所有的工作线程</p>
+<h5 id="并发清除"><a href="#并发清除" class="headerlink" title="并发清除"></a>并发清除</h5><p>清除 GC Roots 不可达对象，和用户线程一起工作，不需要暂停工作线程。由于耗时最长的并<br>发标记和并发清除过程中，垃圾收集线程可以和用户现在一起并发工作，所以总体上来看<br>CMS 收集器的内存回收和用户线程是一起并发地执行</p>
+<h4 id="G1-收集器"><a href="#G1-收集器" class="headerlink" title="G1 收集器"></a>G1 收集器</h4><p>Garbage first 垃圾收集器是目前垃圾收集器理论发展的最前沿成果，相比与 CMS 收集器，G1 收<br>集器两个最突出的改进是：</p>
+<ol>
+<li>基于标记-整理算法，不产生内存碎片。</li>
+<li>可以非常精确控制停顿时间，在不牺牲吞吐量前提下，实现低停顿垃圾回收。<br>G1 收集器避免全区域垃圾收集，它把堆内存划分为大小固定的几个独立区域，并且跟踪这些区域<br>的垃圾收集进度，同时在后台维护一个优先级列表，每次根据所允许的收集时间，优先回收垃圾<br>最多的区域。区域划分和优先级区域回收机制，确保 G1 收集器可以在有限时间获得最高的垃圾收<br>集效率</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" rel="tag"># 垃圾回收</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/01/09/JVM/" rel="prev" title="JVM">
+                  <i class="fa fa-angle-left"></i> JVM
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/01/22/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD/" rel="next" title="Java类加载">
+                  Java类加载 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

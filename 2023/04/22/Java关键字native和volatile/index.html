@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关于java的关键字native和volatile，以及volatile的底层实现原理，如何保证其特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java关键字native和volatile">
+<meta property="og:url" content="https://zypuu.github.io/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="关于java的关键字native和volatile，以及volatile的底层实现原理，如何保证其特性">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/2.jpg">
+<meta property="article:published_time" content="2023-04-22T07:03:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.985Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/","path":"2023/04/22/Java关键字native和volatile/","title":"Java关键字native和volatile"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java关键字native和volatile | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#native"><span class="nav-number">1.</span> <span class="nav-text">native</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">2.</span> <span class="nav-text">volatile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E6%80%A7%EF%BC%88%E7%A6%81%E6%AD%A2%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">有序性（禁止指令重排序）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E4%BF%9D%E8%AF%81%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-number">2.3.</span> <span class="nav-text">不保证原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0volatile%E7%9A%84%E5%8F%AF%E8%A7%81%E6%80%A7%E5%92%8C%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="nav-number">2.4.</span> <span class="nav-text">如何实现volatile的可见性和有序性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C"><span class="nav-number">2.4.1.</span> <span class="nav-text">内存屏障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E8%AF%BB%E6%93%8D%E4%BD%9C"><span class="nav-number">2.4.2.</span> <span class="nav-text">volatile读操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">2.4.3.</span> <span class="nav-text">volatile写操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.4.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java关键字native和volatile | All-Nothing">
+      <meta itemprop="description" content="关于java的关键字native和volatile，以及volatile的底层实现原理，如何保证其特性">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java关键字native和volatile
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-04-22 15:03:00" itemprop="dateCreated datePublished" datetime="2023-04-22T15:03:00+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">关于java的关键字native和volatile，以及volatile的底层实现原理，如何保证其特性</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="native"><a href="#native" class="headerlink" title="native"></a>native</h2><p>1.java 中的 native 修饰符表示被修饰的方法由本地语言实现。</p>
+<p>2.有时java应用需要与java外面的环境交互。这是本地方法存在的主要原因，你可以想想java需要与一些底层系统如操作系统或某些硬件交换信息时的情况。</p>
+<p>3.JVM支持着java语言本身和运行时库，它是java程序赖以生存的平台，通过使用本地方法，我们得以用java实现了jre的与底层系统的交互，甚至JVM的一些部分就是用C写的，还有，如果我们要使用一些java语言本身没有提供封装的操作系统的特性时，我们也需要使用本地方法</p>
+<p>比如：Thread.start()方法，CAS里面调用的操作系统的CAS</p>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>关键字volatile在Java中本质上是一种修饰符，它用来修饰变量。</p>
+<p>volatile关键字在多线程编程中非常重要，它保证了多个线程之间变量的可见性和有序性。</p>
+<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p>被volatile修饰的变量对于所有线程都是可见的，即当一个线程修改volatile变量的值后，其他线程立即可见修改后的值。写完后立即刷新回主内存并及时发出通知，大家可以去主内存拿最新版，前面的修改对后面所有线程可见</p>
+<h3 id="有序性（禁止指令重排序）"><a href="#有序性（禁止指令重排序）" class="headerlink" title="有序性（禁止指令重排序）"></a>有序性（禁止指令重排序）</h3><p>JVM会对代码进行优化，其中包括指令重排序，编译器和处理器为了优化程序性能而对指令序列进行重新排序的一种手段，有时候会改变程序语句的先后顺序，如果一个操作的结果并不影响程序的正确性，那么JVM很有可能会将此操作与其后面的操作交换执行顺序。而在多线程环境中，这种指令重排序可能会导致程序输出不正确的结果，因此使用volatile关键字可以禁止指令重排序优化。</p>
+<h3 id="不保证原子性"><a href="#不保证原子性" class="headerlink" title="不保证原子性"></a>不保证原子性</h3><p>并不保证操作具有原子性</p>
+<h3 id="如何实现volatile的可见性和有序性"><a href="#如何实现volatile的可见性和有序性" class="headerlink" title="如何实现volatile的可见性和有序性"></a>如何实现volatile的可见性和有序性</h3><p>当写一个volatile变量时，JVM会把该线程对应的本地内存中的共享变量值立即刷新回主内存中。.<br>当读一个volatile变量时，JVM会把该线程对应的本地内存设置为无效，重新回到主内存中读取最新共享变量</p>
+<p>所以volatile的写内存语义是直接刷新到主内存中，读的内存语义是直接从主内存中读取</p>
+<p>引入内存屏障的定义</p>
+<h4 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h4><p>内存屏障是一种机制，用于保障程序在多线程环境中的数据一致性。它可以保证指令的执行顺序，避免出现线程安全问题</p>
+<p>内存屏障(也称内存栅栏，屏障指令等，是一类同步屏障指令，是CPU或编译器在对内存随机访问的操作中的一个同步点，使得此点之前的所有读写操作都执行后才可以开始执行此点之后的操作)，避免代码重排序。内存屏障其实就是一种JVM指令，Java内存模型的重排规则会要求Java编译器在生成JVM指令时插入特定的内存屏障指令，通过这些内存屏障指令，volatile实现了Java内存模型中的可见性和有序性(禁重排)</p>
+<p>可见性实现：</p>
+<p>内存屏障之前的所有写操作都要回写到主内存。<br>内存屏障之后的所有读操作都能获得内存屏障之前的所有写操作的最新结果</p>
+<p>实现了可见性</p>
+<p>内存屏障分类：</p>
+<table>
+<thead>
+<tr>
+<th>Load Barrier（读屏障）</th>
+<th>确保前面的读操作必须在它之前的写操作完成之后才执行</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Store Barrier（写屏障）</td>
+<td>确保后面的写操作必须在它之前的读操作完成之后才执行。</td>
+</tr>
+<tr>
+<td>Full Fence（全屏障）</td>
+<td>保证所有前面的操作都完成后再执行后面的操作。</td>
+</tr>
+<tr>
+<td>StoreLoad Barrier（写-读屏障）</td>
+<td>保证后面的读操作必须在前面的写操作完成后执行</td>
+</tr>
+</tbody></table>
+<p>内存屏障指令：</p>
+<table>
+<thead>
+<tr>
+<th>屏障类型</th>
+<th>屏障指令</th>
+<th>指令效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LoadLoad屏障</td>
+<td>读1；LoadLoad屏障；读2</td>
+<td>保证读1在读2以及后续读取操作之前执行</td>
+</tr>
+<tr>
+<td>StoreStore屏障</td>
+<td>写1；StoreStore屏障；写2</td>
+<td>写2及其后续写操作执行前，保证写1的操作已经刷新到主内存</td>
+</tr>
+<tr>
+<td>LoadStore屏障</td>
+<td>读1；LoadStore屏障；写2</td>
+<td>写2及其后续的写操作执行前，保证读1的操作已经结束</td>
+</tr>
+<tr>
+<td>StoreLoad屏障</td>
+<td>写1；StoreLoad屏障；读2</td>
+<td>保证写1的操作已经刷新到主内存之后，才会执行后续的读2操作</td>
+</tr>
+</tbody></table>
+<p>内存屏障刷内存数据：</p>
+<p>读屏障(LoadBarrier)：在读指令之前插入读屏障，让工作内存或CPU高速缓存当中的缓存数据失效，重新回到主内存中获取最新数据<br>写屏障(StoreBarrier)：在写指令之后插入写屏障，强制把写缓冲区的数据刷回到主内存中</p>
+<h4 id="volatile读操作"><a href="#volatile读操作" class="headerlink" title="volatile读操作"></a>volatile读操作</h4><p>在每个volatile读操作的后面插入一个LoadLoad屏障<br>在每个volatile读操作的后面插入一个LoadStore屏障</p>
+<p><img src="/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/1.jpg" alt="1"></p>
+<h4 id="volatile写操作"><a href="#volatile写操作" class="headerlink" title="volatile写操作"></a>volatile写操作</h4><p>在每个volatile写操作的前面插入一个StoreStore屏障<br>在每个volatile写操作的后面插入一个StoreLoad屏障</p>
+<p><img src="/2023/04/22/Java%E5%85%B3%E9%94%AE%E5%AD%97native%E5%92%8Cvolatile/2.jpg" alt="1"></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Java中的volatile关键字会告诉Java虚拟机，在访问该变量时总是从主内存中读取数据，在修改该变量时总是将数据写回主内存中。这个特性可以保证在多线程环境下，不同线程访问该变量时不会出现数据不一致的问题。</p>
+<p>为了实现这个特性，Java虚拟机会在volatile变量的读写操作前后加上内存屏障（Memory Barriers），它会强制将写缓冲区/高速缓存中的数据刷新到主内存中，或强制从主内存中读取最新的数据到写缓冲区/高速缓存中。内存屏障是一种CPU指令，在不同的CPU体系结构下实现方式可能不同。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF/" rel="prev" title="消息队列的事务消息">
+                  <i class="fa fa-angle-left"></i> 消息队列的事务消息
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/05/14/Java%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="next" title="Java线程和线程池">
+                  Java线程和线程池 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="解析go语言，go的基本类型 int string struct point">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO的基本数据结构：int，字符串，结构体，指针">
+<meta property="og:url" content="https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="解析go语言，go的基本类型 int string struct point">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/1.png">
+<meta property="og:image" content="https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/2.png">
+<meta property="og:image" content="https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/3.png">
+<meta property="article:published_time" content="2020-12-22T09:06:22.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.952Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/1.png">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/","path":"2020/12/22/GO的基本数据结构：int，字符串，结构体，指针/","title":"GO的基本数据结构：int，字符串，结构体，指针"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GO的基本数据结构：int，字符串，结构体，指针 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#int%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">int类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">string类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#string%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-number">2.1.</span> <span class="nav-text">string的遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strings%E5%8C%85%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">strings包常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Count-s-string-str-string-int"><span class="nav-number">2.2.1.</span> <span class="nav-text">Count(s string, str string) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Index-s-string-str-string-int"><span class="nav-number">2.2.2.</span> <span class="nav-text">Index(s string, str string) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LastIndex-s-string-str-string-int"><span class="nav-number">2.2.3.</span> <span class="nav-text">LastIndex(s string, str string) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IndexRune-s-string-r-rune-int"><span class="nav-number">2.2.4.</span> <span class="nav-text">IndexRune(s string, r rune) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IndexAny-s-string-str-string-int"><span class="nav-number">2.2.5.</span> <span class="nav-text">IndexAny(s string, str string) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LastIndexAny-s-string-str-string-int"><span class="nav-number">2.2.6.</span> <span class="nav-text">LastIndexAny(s string, str string) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Contains-s-string-str-string-bool"><span class="nav-number">2.2.7.</span> <span class="nav-text">Contains(s string, str string) bool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ContainsAny-s-string-str-string-bool"><span class="nav-number">2.2.8.</span> <span class="nav-text">ContainsAny(s string, str string) bool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ContainsRune-s-string-r-rune-bool"><span class="nav-number">2.2.9.</span> <span class="nav-text">ContainsRune(s string, r rune) bool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SplitN-s-str-string-n-int-string"><span class="nav-number">2.2.10.</span> <span class="nav-text">SplitN(s, str string, n int) []string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SplitAfterN-s-str-string-n-int-string"><span class="nav-number">2.2.11.</span> <span class="nav-text">SplitAfterN(s, str string, n int) []string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Split-s-str-string-string"><span class="nav-number">2.2.12.</span> <span class="nav-text">Split(s, str string) []string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SplitAfter-s-str-string-string"><span class="nav-number">2.2.13.</span> <span class="nav-text">SplitAfter(s, str string) []string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fields-s-string-string"><span class="nav-number">2.2.14.</span> <span class="nav-text">Fields(s string) []string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FieldsFunc-s-string-f-func-rune-bool-string"><span class="nav-number">2.2.15.</span> <span class="nav-text">FieldsFunc(s string, f func(rune) bool) []string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Join-s-string-str-string-string"><span class="nav-number">2.2.16.</span> <span class="nav-text">Join(s []string, str string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HasPrefix-s-string-prefix-string-bool"><span class="nav-number">2.2.17.</span> <span class="nav-text">HasPrefix(s string, prefix string) bool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HasSuffix-s-suffix-string-bool"><span class="nav-number">2.2.18.</span> <span class="nav-text">HasSuffix(s, suffix string) bool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Map-f-func-rune-rune-s-string-string"><span class="nav-number">2.2.19.</span> <span class="nav-text">Map(f func(rune) rune, s string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Repeat-s-string-n-int-string"><span class="nav-number">2.2.20.</span> <span class="nav-text">Repeat(s string, n int) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ToUpper-s-string-string"><span class="nav-number">2.2.21.</span> <span class="nav-text">ToUpper(s string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ToLower-s-string-string"><span class="nav-number">2.2.22.</span> <span class="nav-text">ToLower(s string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ToTitle-s-string-string"><span class="nav-number">2.2.23.</span> <span class="nav-text">ToTitle(s string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimLeftFunc-s-string-f-func-rune-bool-string"><span class="nav-number">2.2.24.</span> <span class="nav-text">TrimLeftFunc(s string, f func(rune) bool) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimRightFunc-s-string-f-func-rune-bool-string"><span class="nav-number">2.2.25.</span> <span class="nav-text">TrimRightFunc(s string, f func(rune) bool) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimFunc-s-string-f-func-rune-bool-string"><span class="nav-number">2.2.26.</span> <span class="nav-text">TrimFunc(s string, f func(rune) bool) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IndexFunc-s-string-f-func-rune-bool-int"><span class="nav-number">2.2.27.</span> <span class="nav-text">IndexFunc(s string, f func(rune) bool) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LastIndexFunc-s-string-f-func-rune-bool-int"><span class="nav-number">2.2.28.</span> <span class="nav-text">LastIndexFunc(s string, f func(rune) bool) int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Trim-s-string-str-string-string"><span class="nav-number">2.2.29.</span> <span class="nav-text">Trim(s string, str string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimLeft-s-string-str-string-string"><span class="nav-number">2.2.30.</span> <span class="nav-text">TrimLeft(s string, str string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimRight-s-string-str-string-string"><span class="nav-number">2.2.31.</span> <span class="nav-text">TrimRight(s string, str string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimSpace-s-string-string"><span class="nav-number">2.2.32.</span> <span class="nav-text">TrimSpace(s string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimPrefix-s-prefix-string-string"><span class="nav-number">2.2.33.</span> <span class="nav-text">TrimPrefix(s, prefix string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TrimSuffix-s-suffix-string-string"><span class="nav-number">2.2.34.</span> <span class="nav-text">TrimSuffix(s, suffix string) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Replace-s-old-new-string-n-int-string"><span class="nav-number">2.2.35.</span> <span class="nav-text">Replace(s, old, new string, n int) string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EqualFold-s1-s2-string-bool"><span class="nav-number">2.2.36.</span> <span class="nav-text">EqualFold(s1, s2 string) bool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Compare-s1-string-s2-string-int1"><span class="nav-number">2.2.37.</span> <span class="nav-text">Compare(s1 string, s2 string) int1</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%8C%87%E9%92%88"><span class="nav-number">3.</span> <span class="nav-text">结构体和指针</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GO的基本数据结构：int，字符串，结构体，指针 | All-Nothing">
+      <meta itemprop="description" content="解析go语言，go的基本类型 int string struct point">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO的基本数据结构：int，字符串，结构体，指针
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-12-22 17:06:22" itemprop="dateCreated datePublished" datetime="2020-12-22T17:06:22+08:00">2020-12-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">解析go语言，go的基本类型 int string struct point</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="int类型"><a href="#int类型" class="headerlink" title="int类型"></a>int类型</h2><p><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/1.png" alt="1"></p>
+<p>变量i属于类型int，在内存中用一个32位字长(word)表示</p>
+<p>变量j由于做了精确的转换，属于int32类型。尽管i和j有着相同的内存布局，但是它们属于不同的类型</p>
+<p>变量f属于float类型，Go语言当前使用32位浮点型值表示(float32)。它与int32很像，但是内部实现不同。</p>
+<p>接下来，变量bytes的类型是[5]byte，一个由5个字节组成的数组。它的内存表示就是连起来的5个字节，就像C的数组。类似地，变量primes是4个int的数组。</p>
+<h2 id="string类型"><a href="#string类型" class="headerlink" title="string类型"></a>string类型</h2><p>字符串在Go语言内存模型中用一个2字长的数据结构表示。它包含一个指向字符串存储数据的指针和一个长度数据</p>
+<p><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/2.png" alt="2"></p>
+<p>因为string类型是不可变的，对于多字符串共享同一个存储数据是安全的。切分操作str[i:j]会得到一个新的2字长结构，一个可能不同的但仍指向同一个字节序列(即上文说的存储数据)的指针和长度数据。</p>
+<p>这意味着字符串切分可以在不涉及内存分配或复制操作。这使得字符串切分的效率等同于传递下标</p>
+<h3 id="string的遍历"><a href="#string的遍历" class="headerlink" title="string的遍历"></a>string的遍历</h3><p>要么string打印，要么fmt格式化输出，得到字符串，不然得到的是byte类型</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(<span class="string">&quot;方法一  格式化打印&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch1</span> := range str &#123;</span><br><span class="line">      fmt.Printf(<span class="string">&quot;%q&quot;</span>,ch1) <span class="comment">//单引号围绕的字符字面值，由go语法安全的转义</span></span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(<span class="string">&quot;方法二  转化输出格式&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch2</span> := range str &#123;</span><br><span class="line">      fmt.Println(string(ch2))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="strings包常用操作"><a href="#strings包常用操作" class="headerlink" title="strings包常用操作"></a>strings包常用操作</h3><h4 id="Count-s-string-str-string-int"><a href="#Count-s-string-str-string-int" class="headerlink" title="Count(s string, str string) int"></a>Count(s string, str string) int</h4><p>计算字符串str在s中的非重叠个数。如果str为空串则返回s中的字符（非字节）个数+1。</p>
+<h4 id="Index-s-string-str-string-int"><a href="#Index-s-string-str-string-int" class="headerlink" title="Index(s string, str string) int"></a>Index(s string, str string) int</h4><p>返回子串str在字符串s中第一次出现的位置。如果找不到则返回-1；如果str为空，则返回0。</p>
+<h4 id="LastIndex-s-string-str-string-int"><a href="#LastIndex-s-string-str-string-int" class="headerlink" title="LastIndex(s string, str string) int"></a>LastIndex(s string, str string) int</h4><p>返回子串str在字符串s中最后一次出现的位置。如果找不到则返回-1；如果str为空则返回字符串s的长度。</p>
+<h4 id="IndexRune-s-string-r-rune-int"><a href="#IndexRune-s-string-r-rune-int" class="headerlink" title="IndexRune(s string, r rune) int"></a>IndexRune(s string, r rune) int</h4><p>返回字符r在字符串s中第一次出现的位置。如果找不到则返回-1。</p>
+<h4 id="IndexAny-s-string-str-string-int"><a href="#IndexAny-s-string-str-string-int" class="headerlink" title="IndexAny(s string, str string) int"></a>IndexAny(s string, str string) int</h4><p>返回字符串str中的任何一个字符在字符串s中第一次出现的位置。如果找不到或str为空则返回-1。</p>
+<h4 id="LastIndexAny-s-string-str-string-int"><a href="#LastIndexAny-s-string-str-string-int" class="headerlink" title="LastIndexAny(s string, str string) int"></a>LastIndexAny(s string, str string) int</h4><p>返回字符串str中的任何一个字符在字符串s中最后一次出现的位置。如果找不到或str为空则返回-1。</p>
+<h4 id="Contains-s-string-str-string-bool"><a href="#Contains-s-string-str-string-bool" class="headerlink" title="Contains(s string, str string) bool"></a>Contains(s string, str string) bool</h4><p>判断字符串s中是否包含个子串str。包含或者str为空则返回true。</p>
+<h4 id="ContainsAny-s-string-str-string-bool"><a href="#ContainsAny-s-string-str-string-bool" class="headerlink" title="ContainsAny(s string, str string) bool"></a>ContainsAny(s string, str string) bool</h4><p>判断字符串s中是否包含个子串str中的任何一个字符。包含则返回true，如果str为空则返回false。</p>
+<h4 id="ContainsRune-s-string-r-rune-bool"><a href="#ContainsRune-s-string-r-rune-bool" class="headerlink" title="ContainsRune(s string, r rune) bool"></a>ContainsRune(s string, r rune) bool</h4><p>判断字符串s中是否包含字符r。</p>
+<h4 id="SplitN-s-str-string-n-int-string"><a href="#SplitN-s-str-string-n-int-string" class="headerlink" title="SplitN(s, str string, n int) []string"></a>SplitN(s, str string, n int) []string</h4><p>以str为分隔符，将s切分成多个子串，结果中<strong>不包含</strong>str本身。如果str为空则将s切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。参数n表示最多切分出几个子串，超出的部分将不再切分，最后一个n包含了所有剩下的不切分。如果n为0，则返回nil；如果n小于0，则不限制切分个数，全部切分。</p>
+<h4 id="SplitAfterN-s-str-string-n-int-string"><a href="#SplitAfterN-s-str-string-n-int-string" class="headerlink" title="SplitAfterN(s, str string, n int) []string"></a>SplitAfterN(s, str string, n int) []string</h4><p>以str为分隔符，将s切分成多个子串，结果中<strong>包含</strong>str本身。如果str为空，则将s切分成Unicode字符列表。如果s 中没有str子串，则将整个s作为 []string 的第一个元素返回。参数n表示最多切分出几个子串，超出的部分将不再切分。如果n为0，则返回 nil；如果 n 小于 0，则不限制切分个数，全部切分。</p>
+<h4 id="Split-s-str-string-string"><a href="#Split-s-str-string-string" class="headerlink" title="Split(s, str string) []string"></a>Split(s, str string) []string</h4><p>以str为分隔符，将s切分成多个子切片，结果中<strong>不包含</strong>str本身。如果str为空，则将s切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。</p>
+<h4 id="SplitAfter-s-str-string-string"><a href="#SplitAfter-s-str-string-string" class="headerlink" title="SplitAfter(s, str string) []string"></a>SplitAfter(s, str string) []string</h4><p>以str为分隔符，将s切分成多个子切片，结果中<strong>包含</strong>str本身。如果 str 为空，则将 s 切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。</p>
+<h4 id="Fields-s-string-string"><a href="#Fields-s-string-string" class="headerlink" title="Fields(s string) []string"></a>Fields(s string) []string</h4><p>以连续的空白字符为分隔符，将s切分成多个子串，结果中不包含空白字符本身。空白字符有：\t, \n, \v, \f, \r, ’ ‘, U+0085 (NEL), U+00A0 (NBSP) 。如果 s 中只包含空白字符，则返回一个空列表。</p>
+<h4 id="FieldsFunc-s-string-f-func-rune-bool-string"><a href="#FieldsFunc-s-string-f-func-rune-bool-string" class="headerlink" title="FieldsFunc(s string, f func(rune) bool) []string"></a>FieldsFunc(s string, f func(rune) bool) []string</h4><p>以一个或多个满足f(rune)的字符为分隔符，将s切分成多个子串，结果中不包含分隔符本身。如果s中没有满足f(rune)的字符，则返回一个空列表。</p>
+<h4 id="Join-s-string-str-string-string"><a href="#Join-s-string-str-string-string" class="headerlink" title="Join(s []string, str string) string"></a>Join(s []string, str string) string</h4><p>将s中的子串连接成一个单独的字符串，子串之间用str分隔。</p>
+<h4 id="HasPrefix-s-string-prefix-string-bool"><a href="#HasPrefix-s-string-prefix-string-bool" class="headerlink" title="HasPrefix(s string, prefix string) bool"></a>HasPrefix(s string, prefix string) bool</h4><p>判断字符串s是否以prefix开头。</p>
+<h4 id="HasSuffix-s-suffix-string-bool"><a href="#HasSuffix-s-suffix-string-bool" class="headerlink" title="HasSuffix(s, suffix string) bool"></a>HasSuffix(s, suffix string) bool</h4><p>判断字符串s是否以prefix结尾。</p>
+<h4 id="Map-f-func-rune-rune-s-string-string"><a href="#Map-f-func-rune-rune-s-string-string" class="headerlink" title="Map(f func(rune) rune, s string) string"></a>Map(f func(rune) rune, s string) string</h4><p>将s中满足f(rune)的字符替换为f(rune)的返回值。如果f(rune)返回负数，则相应的字符将被删除。</p>
+<h4 id="Repeat-s-string-n-int-string"><a href="#Repeat-s-string-n-int-string" class="headerlink" title="Repeat(s string, n int) string"></a>Repeat(s string, n int) string</h4><p>将n个字符串s连接成一个新的字符串。</p>
+<h4 id="ToUpper-s-string-string"><a href="#ToUpper-s-string-string" class="headerlink" title="ToUpper(s string) string"></a>ToUpper(s string) string</h4><p>将s中的所有字符修改为其大写格式。对于非ASCII字符，它的大写格式需要查表转换。</p>
+<h4 id="ToLower-s-string-string"><a href="#ToLower-s-string-string" class="headerlink" title="ToLower(s string) string"></a>ToLower(s string) string</h4><p>将s中的所有字符修改为其小写格式。对于非ASCII字符，它的小写格式需要查表转换。</p>
+<h4 id="ToTitle-s-string-string"><a href="#ToTitle-s-string-string" class="headerlink" title="ToTitle(s string) string"></a>ToTitle(s string) string</h4><p>将s中的所有字符修改为其Title格式，大部分字符的Title格式就是Upper格式，只有少数字符的Title格式是特殊字符。这里的ToTitle主要给Title函数调用。</p>
+<h4 id="TrimLeftFunc-s-string-f-func-rune-bool-string"><a href="#TrimLeftFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimLeftFunc(s string, f func(rune) bool) string"></a>TrimLeftFunc(s string, f func(rune) bool) string</h4><p>删除s头部连续的满足f(rune)的字符。</p>
+<h4 id="TrimRightFunc-s-string-f-func-rune-bool-string"><a href="#TrimRightFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimRightFunc(s string, f func(rune) bool) string"></a>TrimRightFunc(s string, f func(rune) bool) string</h4><p>删除s尾部连续的满足f(rune)的字符。</p>
+<h4 id="TrimFunc-s-string-f-func-rune-bool-string"><a href="#TrimFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimFunc(s string, f func(rune) bool) string"></a>TrimFunc(s string, f func(rune) bool) string</h4><p>删除s首尾连续的满足f(rune)的字符。</p>
+<h4 id="IndexFunc-s-string-f-func-rune-bool-int"><a href="#IndexFunc-s-string-f-func-rune-bool-int" class="headerlink" title="IndexFunc(s string, f func(rune) bool) int"></a>IndexFunc(s string, f func(rune) bool) int</h4><p>返回s中第一个满足f(rune) 的字符的字节位置。如果没有满足 f(rune) 的字符，则返回 -1。</p>
+<h4 id="LastIndexFunc-s-string-f-func-rune-bool-int"><a href="#LastIndexFunc-s-string-f-func-rune-bool-int" class="headerlink" title="LastIndexFunc(s string, f func(rune) bool) int"></a>LastIndexFunc(s string, f func(rune) bool) int</h4><p>返回s中最后一个满足f(rune)的字符的字节位置。如果没有满足 f(rune) 的字符，则返回 -1。</p>
+<h4 id="Trim-s-string-str-string-string"><a href="#Trim-s-string-str-string-string" class="headerlink" title="Trim(s string, str string) string"></a>Trim(s string, str string) string</h4><p>删除s首尾连续的包含在str中的字符。</p>
+<h4 id="TrimLeft-s-string-str-string-string"><a href="#TrimLeft-s-string-str-string-string" class="headerlink" title="TrimLeft(s string, str string) string"></a>TrimLeft(s string, str string) string</h4><p>删除s头部连续的包含在str中的字符串。</p>
+<h4 id="TrimRight-s-string-str-string-string"><a href="#TrimRight-s-string-str-string-string" class="headerlink" title="TrimRight(s string, str string) string"></a>TrimRight(s string, str string) string</h4><p>删除s尾部连续的包含在str中的字符串。</p>
+<h4 id="TrimSpace-s-string-string"><a href="#TrimSpace-s-string-string" class="headerlink" title="TrimSpace(s string) string"></a>TrimSpace(s string) string</h4><p>删除s首尾连续的的空白字符。</p>
+<h4 id="TrimPrefix-s-prefix-string-string"><a href="#TrimPrefix-s-prefix-string-string" class="headerlink" title="TrimPrefix(s, prefix string) string"></a>TrimPrefix(s, prefix string) string</h4><p>删除s头部的prefix字符串。如果s不是以prefix开头，则返回原始s。</p>
+<h4 id="TrimSuffix-s-suffix-string-string"><a href="#TrimSuffix-s-suffix-string-string" class="headerlink" title="TrimSuffix(s, suffix string) string"></a>TrimSuffix(s, suffix string) string</h4><p>删除s尾部的suffix字符串。如果s不是以suffix结尾，则返回原始s。（只去掉一次，注意和TrimRight区别）</p>
+<h4 id="Replace-s-old-new-string-n-int-string"><a href="#Replace-s-old-new-string-n-int-string" class="headerlink" title="Replace(s, old, new string, n int) string"></a>Replace(s, old, new string, n int) string</h4><p>返回s的副本，并将副本中的old字符串替换为new字符串，替换次数为n次，如果n为-1，则全部替换；如果 old 为空，则在副本的每个字符之间都插入一个new。</p>
+<h4 id="EqualFold-s1-s2-string-bool"><a href="#EqualFold-s1-s2-string-bool" class="headerlink" title="EqualFold(s1, s2 string) bool"></a>EqualFold(s1, s2 string) bool</h4><p>比较UTF-8编码在小写的条件下是否相等，不区分大小写，同时它还会对特殊字符进行转换。比如将“ϕ”转换为“Φ”、将“Ǆ”转换为“ǅ”等，然后再进行比较。<br>“==”比较字符串是否相等，区分大小写，返回bool。</p>
+<h4 id="Compare-s1-string-s2-string-int1"><a href="#Compare-s1-string-s2-string-int1" class="headerlink" title="Compare(s1 string, s2 string) int1"></a>Compare(s1 string, s2 string) int1</h4><p>比较字符串，区分大小写，比”==”速度快。相等为0，不相等为-1。</p>
+<h2 id="结构体和指针"><a href="#结构体和指针" class="headerlink" title="结构体和指针"></a>结构体和指针</h2><p>type Point struct { X, Y int }<br><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/3.png" alt="3"><br>Point{10,20}表示一个已初始化的Point类型。对它进行取地址表示一个指向刚刚分配和初始化的Point类型</p>
+<p>结构体的域在内存中是紧挨着排列的。</p>
+<p>出于效率的考虑，大型的结构体通常都使用结构体指针的方式，直接传递给函数，或者从函数中返回</p>
+<p>1.当函数本意是修改原始数据，用指针传递<br>2.结构体很大，用指针传递<br>3.结构体很小，不打算修改内容，用值传递，值传递是传递实参的副本，对本身没有影响</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"># GO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/21/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aslice/" rel="prev" title="GO基本数据结构：slice">
+                  <i class="fa fa-angle-left"></i> GO基本数据结构：slice
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/22/%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="next" title="两个有序数组的中位数">
+                  两个有序数组的中位数 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

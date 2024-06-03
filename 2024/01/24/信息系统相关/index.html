@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="信息系统相关，生命周期，系统开发方法，政府企业化信息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息系统相关">
+<meta property="og:url" content="https://zypuu.github.io/2024/01/24/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="信息系统相关，生命周期，系统开发方法，政府企业化信息">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-01-24T07:34:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.037Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/01/24/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/01/24/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/","path":"2024/01/24/信息系统相关/","title":"信息系统相关"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>信息系统相关 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5"><span class="nav-number">3.</span> <span class="nav-text">阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.</span> <span class="nav-text">生产阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E9%98%B6%E6%AE%B5"><span class="nav-number">3.2.</span> <span class="nav-text">开发阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E9%98%B6%E6%AE%B5"><span class="nav-number">3.3.</span> <span class="nav-text">运行阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E4%BA%A1%E9%98%B6%E6%AE%B5"><span class="nav-number">3.4.</span> <span class="nav-text">消亡阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E8%AE%BE%E5%8E%9F%E5%88%99"><span class="nav-number">4.</span> <span class="nav-text">建设原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">开发方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">结构化方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">5.2.</span> <span class="nav-text">原型化方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%B3%95"><span class="nav-number">5.3.</span> <span class="nav-text">面向对象法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E6%9C%8D%E5%8A%A1%E6%B3%95"><span class="nav-number">5.4.</span> <span class="nav-text">面向服务法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9FTPS"><span class="nav-number">6.</span> <span class="nav-text">业务处理系统TPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9FMIS"><span class="nav-number">7.</span> <span class="nav-text">管理信息系统MIS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%94%AF%E6%8C%81%E7%B3%BB%E7%BB%9FDSS"><span class="nav-number">8.</span> <span class="nav-text">决策支持系统DSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%93%E5%AE%B6%E7%B3%BB%E7%BB%9FES"><span class="nav-number">9.</span> <span class="nav-text">专家系统ES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9E%E5%85%AC%E5%8C%96%E7%B3%BB%E7%BB%9FOAS"><span class="nav-number">10.</span> <span class="nav-text">办公化系统OAS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%81%E4%B8%9A%E8%B5%84%E6%BA%90%E8%A7%84%E5%88%92ERP"><span class="nav-number">11.</span> <span class="nav-text">企业资源规划ERP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%81%E4%B8%9A%E5%85%B8%E5%9E%8B%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%8C%96%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">12.</span> <span class="nav-text">企业典型信息系统化架构模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BF%E5%BA%9C%E4%BF%A1%E6%81%AF%E5%8C%96%E5%8F%8A%E7%94%B5%E5%AD%90%E6%94%BF%E5%8A%A1"><span class="nav-number">12.1.</span> <span class="nav-text">政府信息化及电子政务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%8C%96"><span class="nav-number">12.2.</span> <span class="nav-text">企业信息化</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/01/24/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="信息系统相关 | All-Nothing">
+      <meta itemprop="description" content="信息系统相关，生命周期，系统开发方法，政府企业化信息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信息系统相关
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-24 15:34:00" itemprop="dateCreated datePublished" datetime="2024-01-24T15:34:00+08:00">2024-01-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">信息系统相关，生命周期，系统开发方法，政府企业化信息</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>信息系统是由计算机硬件、网络和通信设备、计算机软件、信息资源、信息用户和规章制度组成的以处理信息流为目的的人机一体化系统。</p>
+<p>信息系统的5个基本功能：输入、存储、处理、输出和控制。</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>业务（数据)处理系统(TPS/DPS)<br>管理信息系统(MIS)<br>决策支持系统(DSS)<br>专家系统(ES)<br>办公自动化系统(OAS)<br>综合性信息系统：<br>ERP系统：主要管理公司的各种资源，负责处理进销存、供应链、生产计划MPS、MRP计算、生产订单、管理会计，是财务数据的强力支撑。<br>WMS系统：主要包括库房货位管理，主要有收发料，通过扫码进出库，对库存进行库位、先进先出与盘点;栈板出货管控、库龄管理等内容，主要是立体仓库或大批量仓库数据需求。<br>MES系统：负责生产过程和生产过程中防呆、自动化设备集成，是各个客户审核的重点，是生产全流程管控，也有企业称之为SFC，其实大同小异，但是它是生产过程、生产工艺、生产设备、自动化生产直接的核心。<br>PDM系统：管理研发阶段的物料、BOM、工程变更数据，负责产品数据为主。PDM系统是产品研发全过程管理，主要涉及协同研发等能力。</p>
+<h3 id="阶段"><a href="#阶段" class="headerlink" title="阶段"></a>阶段</h3><h4 id="生产阶段"><a href="#生产阶段" class="headerlink" title="生产阶段"></a>生产阶段</h4><p>信息系统的需求分析阶段</p>
+<h4 id="开发阶段"><a href="#开发阶段" class="headerlink" title="开发阶段"></a>开发阶段</h4><p>信息系统的开发阶段：最重要、关键的阶段。包括总体规划、系统分析、系统设计、系统<br>实施和系统验收这5个阶段</p>
+<h4 id="运行阶段"><a href="#运行阶段" class="headerlink" title="运行阶段"></a>运行阶段</h4><p>当信息系统通过验收，正式移交给用户以后，系统就进入了运行阶段。系统维护包括即排错性维护、适应性维护、完善性维护和预防性维护</p>
+<h4 id="消亡阶段"><a href="#消亡阶段" class="headerlink" title="消亡阶段"></a>消亡阶段</h4><p>在信息系统建设的初期企业就应当注意系统的消亡条件和时机，以及由此而花费的成本。</p>
+<h3 id="建设原则"><a href="#建设原则" class="headerlink" title="建设原则"></a>建设原则</h3><p>信息系统建设的原则：高层管理人员介入原则、用户参与开发原则、自顶向下规划原则、工程化原则、其他原则（创新性，整体性，发展性，经济性等)。</p>
+<h3 id="开发方法"><a href="#开发方法" class="headerlink" title="开发方法"></a>开发方法</h3><h4 id="结构化方法"><a href="#结构化方法" class="headerlink" title="结构化方法"></a>结构化方法</h4><p>结构化方法是一种传统的信息系统开发方法，由结构化分析（SA)、结构化设计(SD)和结构化程序设计(SP)三部分有机组合而成，其，其精髓是自顶向下、逐步求精和模块化设计。</p>
+<p>结构化方法一般利用图形表达用户需求，常用工具有数据流图、数据字典、结构化语言、判定表以及判定树等。</p>
+<p>结构化方法的不足和局限：<br>开发周期长：按顺序经历各个阶段，直到实施阶段结束后，用户才能使用系统。<br>难以适应需求变化：不适用于需求不明确或经常变更的项目。<br>很少考虑数据结构：结构化方法是一种面向数据流的开发方法，很少考虑数据结构。</p>
+<h4 id="原型化方法"><a href="#原型化方法" class="headerlink" title="原型化方法"></a>原型化方法</h4><p>也称为快速原型法，或者简称为原型法。它是一种根据用户初步需求，利用系统开发工具，快速地建立一个系统模型展示给用户，在此基础上与用户交流，最终实现用户需求的信息系统快速开发的方法</p>
+<p>按是否实现功能分类：分为水平原型(行为原型，功能的导航)、垂直原型（结构化原型，实现了部分功能)。</p>
+<p>按最终结果分类：分为抛弃式原型、演化式原型。</p>
+<p>原型法可以使系统开发的周期缩短、成本和风险降低、速度加快，获得较高的综合开发效益<br>原型法是以用户为中心来开发系统的，用户参与的程度大大提高，开发的系统符合用户的需求，因而增加了用户的满意度，提高了系统开发的成功率。<br>由于用户参与了系统开发的全过程，对系统的功能和结构容易理解和接受，有利于系统的移交，有利于系统的运行与维护。<br>原型法的不足之处：开发的环境要求高。管理水平要求高。</p>
+<p>原型法的优点主要在于能更有效地确认用户需求。从直观上来看，原型法适用于那些需求不明确的系统开发。事实上，对于分析层面难度大、技术层面难度不大的系统，适合于原型法开发</p>
+<h4 id="面向对象法"><a href="#面向对象法" class="headerlink" title="面向对象法"></a>面向对象法</h4><p>客观世界是由各种对象组成的</p>
+<p>使用OO方法构造的系统具有更好的复用性<br>面向对象方法可以普遍适用于各类信息系统的开发<br>面向对象方法的不足之处：必须依靠一定的面向对象技术支持</p>
+<h4 id="面向服务法"><a href="#面向服务法" class="headerlink" title="面向服务法"></a>面向服务法</h4><p>面向服务(Service Oriented Architecture,简称SOA)的方法：进一步将接口的定义与实现进行解耦，则催生了服务和面向服务的开发方法，微服务概念</p>
+<h3 id="业务处理系统TPS"><a href="#业务处理系统TPS" class="headerlink" title="业务处理系统TPS"></a>业务处理系统TPS</h3><p>为电子数据处理系统(EDP)，最初级形式的信息系统<br>TPS的主要功能就是对企业管理中日常事务所发生的数据进行输入、处理和输出。因此，TPS的数据处理周期由以下几个构成：<br>数据输入<br>数据处理<br>数据维护<br>文件报表的产生<br>查询处理</p>
+<p>TPS是其他类型信息系统的信息产生器，<br>由于TPS面对的是结构化程度很高的管理问题，因此可以采用结构化生命周期法来进行开发</p>
+<h3 id="管理信息系统MIS"><a href="#管理信息系统MIS" class="headerlink" title="管理信息系统MIS"></a>管理信息系统MIS</h3><p>由业务处理系统发展而成的，是在TPS基础上引进大量管理方法对企业整体信息进行处理，并利用信息进行预测、控制、计划、辅助企业全面管理的信息系统。<br>管理信息系统由四大部件组成，即信息源、信息处理器、信息用户和信息管理者。<br>根据各部件之间的联系可分为开环(不收集外部信息不反馈)和闭环(不断收集信息反馈调整)。根据处理的内容及决策的层次来看，我们可以把管理信息系统看成一个金字塔</p>
+<h3 id="决策支持系统DSS"><a href="#决策支持系统DSS" class="headerlink" title="决策支持系统DSS"></a>决策支持系统DSS</h3><p>是支持各种层次的人们进行决策</p>
+<p>数据的重组和确认。与决策支持系统相关的数据库的问题是，获得正确的数据井且可用理想的形式操作这些数据。这个问题可以通过数据仓库的概念解决</p>
+<p>数据字典的建立。数据仓库是一个与作业层系统分离存在的数据库。通过对数据仓库的存取，管理者可以做出以事实为根据的决策来解决许多业务问题。</p>
+<p>数据挖掘和智能体。一旦建成数据仓库，管理者们需要运用工具进行数据存取和查询，使用的工具称为智能体。</p>
+<p>模型建立。针对模型库的处理，根据实际业务场景和需求,选择或构建不同的分析模型,用来进行预测、优化、规划等,以便做出更好的决策，模型管理的目的就是帮助决策者理解与选择有关的现象。建立模型的方法有穷枚举法算法、启发式和模拟法</p>
+<h3 id="专家系统ES"><a href="#专家系统ES" class="headerlink" title="专家系统ES"></a>专家系统ES</h3><p>基于知识的专家系统(专家系统：Expert System，ES)，是人工智能的一个重要分支。专家系统的能力来自于它所拥有的专家知识，知识的表示及推理的方法则提供了应用的机理<br>专家系统就是一个可模拟专家进行推理的智能系统,让普通人也能获得专家级建议</p>
+<p>专家系统不同于传统的应用程序和其他类型的人工智能问题求解程序。主要表现在以下5个方面：<br>1、系统属于人工智能范畴，其求解的问题是半结构化或非结构化问题。<br>2、系统模拟的是人类专家在问题领域的推理，而不是模拟问题领域本身。<br>3、系统由3个要素组成：描述问题状态的综合数据库、存放启发式经验知识的知识库和对知识库的知识进行推理的推理机。三要素分别对应数据级、知识库级和控制级三级知识，而传统应用程序只有数据和程序两级结构。<br>4、系统处理的问题是实际的问题，而不是纯学术的问题。<br>5、解决手段来看，专家系统专用性强，通用性差</p>
+<p>人工智能（AI)旨在利用机械、电子、光电或生物器件等制造的装置或机器模仿人类的智能.AI研究的重点放在开发具有智能行为的计算机系统上，智能行为表现出以下5个特点。<br>1、从过去的事件或情形中汲取经验，并将从经验中得到的知识应用于新的环境和场景。<br>2、具有在缺乏重要信息时解决问题的能力。<br>3、具有处理和操纵各种符号、理解形象化图片（图像)的能力。<br>4、想象力和创造力。<br>5、善于启发。</p>
+<p>人工智能是一个极为广泛的领域，AI的主要分支有专家系统、机器人技术、视觉系统、自然语言处理、学习系统和神经网络等。</p>
+<h3 id="办公化系统OAS"><a href="#办公化系统OAS" class="headerlink" title="办公化系统OAS"></a>办公化系统OAS</h3><p>办公自动化就是办公信息处理手段的自动化。OAS要解决的是包括数据、文字、声音、图像等信息的一体化处理问题。以行为科学为主导，系统科学为理论基础，结合运用计算机技术和通信技术。</p>
+<p>主要功能：<br>事务处理<br>信息管理<br>辅助决策</p>
+<p>办公自动化系统的组成：计算机设备、办公设备、数据通信及网络设备、软件系统.</p>
+<h3 id="企业资源规划ERP"><a href="#企业资源规划ERP" class="headerlink" title="企业资源规划ERP"></a>企业资源规划ERP</h3><p>企业资源规划是指建立在信息技术基础上，以系统化的管理思想，为企业提供决策和运营手段的管理平台。ERP系统是将企业所有资源进行集成整合，并进行全面、一体化管理的信息系统。</p>
+<p>企业有三大资源：物流（物流管理)、资金流（财务管理)、信息流（生产控制管理)、现在一般认为人力资源（人力资源管理)是企业第四大资源</p>
+<p>1、采购与库存管理。采购与库存管理是ERP的基本模块，其中采购管理模块是对采购工作，即从采购订单产生至货物收到的全过程进行组织、实施与控制，库存管理模块则是对企业物料的进、出、存进行管理。<br>2、质量与设备管理。质量管理贯穿于企业管理的始终。设备管理是指依据企业的生产经营目标，通过一系列的技术、经济和组织措施，对设备寿命周期内的所有设备物资运动形态和价值运动形态进行的综合管理。<br>3、财务管理。会计工作是企业管理的重要组成部分，是以货币的形式反映和监督企业的日常经济活动，并对这些经济业务的数据进行分类、汇总，以便为企业管理和决策提供必要的信息支持。企业财务管理是企业会计工作和活动的统称。<br>4、ERP有关扩展应用模块。如客户关系管理、分销资源管理、供应链管理和电子商务等。这几个扩展模块本身也是一个独立的系统，在市场上它们常作为独立的软件产品进行出售和实施。<br>5、ERP的功能：支持决策的功能、为处于不同行业的企业提供有针对性的IT解决方案、从企业内部的供应链发展为全行业和跨行业的供应链。</p>
+<h3 id="企业典型信息系统化架构模型"><a href="#企业典型信息系统化架构模型" class="headerlink" title="企业典型信息系统化架构模型"></a>企业典型信息系统化架构模型</h3><h4 id="政府信息化及电子政务"><a href="#政府信息化及电子政务" class="headerlink" title="政府信息化及电子政务"></a>政府信息化及电子政务</h4><p>电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，</p>
+<p>第1 个特征是以互联网为基础设施，构造和发展电子政务。<br>第2个特征是，就电子政务的内涵而言，更强调政府服务功能的发挥和完善，包括政府对企业、对居民的服务以及政府各部门之间的相互服务。</p>
+<p>政府到政府（Government-to-Government，G2G）、政府到企业（Government-to-Business，G2B）、政府到公众（Government-to-Citizen，G2C）、企业到政府（Business-to-Government，B2G）和公众到政府（Citizen-to-Government，C2G）</p>
+<h4 id="企业信息化"><a href="#企业信息化" class="headerlink" title="企业信息化"></a>企业信息化</h4><p>企业信息化的具体目标是优化企业业务流程，使之更加有效，</p>
+<p>企业信息化就是技术和业务的融合。需要从3个层面来实现。<br>1、 企业战略的层面。必须对企业目前的业务策略和未来的发展方向作深入分析。达到战略上的融合。<br>2、业务运作层面。针对企业所确定的业务战略，通过分析获得实现这些目标的关键驱动力和实现这些目标的关键流程。<br>3、管理运作层面。虽然这一层面从价值链的角度上来说，是属于辅助流程，但它对企业日常管理的科学性、高效性是非常重要的。除了提出应用功能的需求外，还必须给出相应的信息技术体系，这些将确保管理模式和组织架构适应信息化的需要</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E8%AF%84%E4%BB%B7/" rel="prev" title="系统性能评价">
+                  <i class="fa fa-angle-left"></i> 系统性能评价
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/04/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" rel="next" title="信息安全技术">
+                  信息安全技术 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="解析go语言，go的基本数据结构 channel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO的基本数据结构：channel">
+<meta property="og:url" content="https://zypuu.github.io/2021/01/14/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Achannel/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="解析go语言，go的基本数据结构 channel">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-01-14T09:09:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.951Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/01/14/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Achannel/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/01/14/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Achannel/","path":"2021/01/14/GO的基本数据结构：channel/","title":"GO的基本数据结构：channel"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GO的基本数据结构：channel | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">channel实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#channel%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">channel状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel%E4%B8%8E%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲channel与非缓冲channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.1.</span> <span class="nav-text">非缓冲channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%86%B2channel"><span class="nav-number">1.2.2.</span> <span class="nav-text">缓冲channel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine%E6%B3%84%E9%9C%B2"><span class="nav-number">1.3.</span> <span class="nav-text">goroutine泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cap%E5%92%8Clen"><span class="nav-number">1.4.</span> <span class="nav-text">cap和len</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#range"><span class="nav-number">1.5.</span> <span class="nav-text">range</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-number">1.6.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.7.</span> <span class="nav-text">并发循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-gorountine-%E9%80%80%E5%87%BA"><span class="nav-number">1.8.</span> <span class="nav-text">关于 gorountine 退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close%E5%85%B3%E9%97%AD"><span class="nav-number">1.9.</span> <span class="nav-text">close关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#done-channel"><span class="nav-number">1.10.</span> <span class="nav-text">done channel</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">channel原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">读写操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E"><span class="nav-number">2.3.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E9%80%9A%E9%81%93"><span class="nav-number">2.4.</span> <span class="nav-text">空通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.5.</span> <span class="nav-text">select实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#select%E9%9A%8F%E6%9C%BA%E6%80%A7"><span class="nav-number">2.5.1.</span> <span class="nav-text">select随机性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSP%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">CSP模型</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/01/14/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Achannel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GO的基本数据结构：channel | All-Nothing">
+      <meta itemprop="description" content="解析go语言，go的基本数据结构 channel">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO的基本数据结构：channel
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-01-14 17:09:00" itemprop="dateCreated datePublished" datetime="2021-01-14T17:09:00+08:00">2021-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>14k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>13 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">解析go语言，go的基本数据结构 channel</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="channel实现"><a href="#channel实现" class="headerlink" title="channel实现"></a>channel实现</h2><p>channel可以被存储到变量中，可以作为参数传递给函数，也可以作为函数的返回值返回。</p>
+<p>作为Go语言的核心特征之一，虽然channel看上去很高端，但是其实channel仅仅就是一个数据结构</p>
+<p>线程间有竞争条件，那么对共享数据的访问往往需要加锁来保证一致性，而针对不同的访问竞争，比如读/读、读/写、写/写，需要用不同的锁机制</p>
+<p>Go语言采用的并发模型是<code>CSP（Communicating Sequential Processes）</code>，提倡<strong>通过通信共享内存</strong>而不是<strong>通过共享内存而实现通信</strong></p>
+<h3 id="channel状态"><a href="#channel状态" class="headerlink" title="channel状态"></a>channel状态</h3><p>初始化channel</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ch = chan string <span class="comment">// A channel is in a nil state when it is declared to its zero value</span></span><br><span class="line">ch = nil <span class="comment">// A channel can be placed in a nil state</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* open channel */</span></span><br><span class="line">ch := make(chan string) <span class="comment">// A channel is in a open state when it’s made using the built-in function make.</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* closed channel */</span></span><br><span class="line">close(ch) </span><br></pre></td></tr></table></figure>
+
+<p>channel分为三种状态：</p>
+<p>1.nil： 不允许读写，blocked状态，会阻塞</p>
+<p>2.open： 允许读写， allowed状态</p>
+<p>3.closed： 写会panic，可以读</p>
+<p>在channel被close之后，goruntine仍然可以从channel取走数据，如果channel中没有数据可取时，receive操作会立刻返回nil</p>
+<p>range循环可以直接在channel上迭代，当channel被关闭并且没有数据时可以直接跳出循环。</p>
+<p>另外，对于nil和closed状态的channel执行close操作也会触发panic异常</p>
+<h3 id="缓冲channel与非缓冲channel"><a href="#缓冲channel与非缓冲channel" class="headerlink" title="缓冲channel与非缓冲channel"></a>缓冲channel与非缓冲channel</h3><p>channel的读写操作可以不传递数据</p>
+<p>场景：</p>
+<p>一个goroutine可以同时给多个goroutine发送消息，只是这个消息不携带额外的数据，所以常被用于批量goruntine的退出</p>
+<p>goroutine A对channel执行了close操作，而goruntine B得到channel已经被关闭这个信息后可以执行相应的处理</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ch := make(chan struct&#123;&#125;)</span><br><span class="line"><span class="comment">// 写入ch </span></span><br><span class="line">ch &lt;- struct&#123;&#125;&#123;&#125;</span><br><span class="line"><span class="comment">// 读取ch</span></span><br><span class="line">&lt;- ch</span><br></pre></td></tr></table></figure>
+
+<p>也可以传递数据：</p>
+<p>goroutine A执行send发送数据，而goroutine B执行receive接收数据。channel携带的数据只能被一个goruntine得到，一个goruntine取走数据后这份数据在channel里就不复存在了</p>
+<p>携带数据的可以分为缓冲和非缓冲</p>
+<h4 id="非缓冲channel"><a href="#非缓冲channel" class="headerlink" title="非缓冲channel"></a>非缓冲channel</h4><p>不存储数据，只传递数据</p>
+<p>goroutine A在往channel发送数据完成之前，一定有goroutine B在等着从这个channel接收数据，否则发送就会导致发送的goruntine被block住，所以发送和接收的goruntine是耦合的</p>
+<p>所以会有两个goroutine</p>
+<p>死锁场景：</p>
+<p>ch发送数据时就使main gouruntine被永久block住，导致程序死锁，因为没有goroutine等待接收数据，main还没执行完，会导致ch阻塞锁住<br>如果channel长度是1，则不会发生死锁</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ch = make(chan string)</span><br><span class="line">	ch &lt;- <span class="string">&quot;hello&quot;</span> <span class="comment">//fatal error: all goroutines are asleep - deadlock! goroutine 1 [chan send]:</span></span><br><span class="line">	fmt.Println(<span class="xml">&lt;-ch)</span></span><br><span class="line"><span class="xml">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>下面这种也会死锁，ch里没有数据，直接读也会锁住</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ch = make(chan string)</span><br><span class="line">	fmt.Println(<span class="xml">&lt;-ch) //fatal error: all goroutines are asleep - deadlock! goroutine 1 [chan receive]:</span></span><br><span class="line">	ch &lt;- &quot;hello&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>单起一个goroutine就可以正常工作</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ch = make(chan string)</span><br><span class="line">	go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		fmt.Println(<span class="xml">&lt;-ch) //out: hello</span></span><br><span class="line"><span class="xml">	&#125;()</span></span><br><span class="line">	ch &lt;- &quot;hello&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>退出场景：<br>main goroutine会在go func执行前就退出了，无法打印1-10</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;%d &quot;</span>, i)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>让两个goruntine之间有一些通信，让main goruntine收到sub goruntine通知后再退出。在这种场景中，channel并不携带任何数据，只是起到一个信号的作用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ch = make(chan string)</span><br><span class="line">	go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;%d &quot;</span>, i)</span><br><span class="line">		&#125;</span><br><span class="line">		ch &lt;- <span class="string">&quot;exit&quot;</span></span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">	&lt;-ch</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="缓冲channel"><a href="#缓冲channel" class="headerlink" title="缓冲channel"></a>缓冲channel</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ch = make(chan string, <span class="number">1</span>)</span><br><span class="line">	ch &lt;- <span class="string">&quot;hello&quot;</span> <span class="comment">//fatal error: all goroutines are asleep - deadlock! goroutine 1 [chan send]:</span></span><br><span class="line">	fmt.Println(<span class="xml">&lt;-ch)</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>以上场景，如果没有指定channel长度为1，则会发生死锁<br>同一个goroutine内，读，放到写前面会导致死锁<br>对比上面非缓冲channel</p>
+<p>注意：长度不同，会有区别</p>
+<p>对于长度为1的channel<br>第二个数据发送完成之前，之前发送的第一个数据一定被取走了，否则发送也会被block住，这其实说明了数据的交付得到了延迟保证</p>
+<p>对于长度大于1的channel<br>发送数据时，之前发送的数据不能保证一定被取走了，并且buffer size越大，数据的交付得到的保证越少。也正是由于这种无保证交付，减少了goroutine之间通信时的阻塞延迟，根据发送数据、接收数据、数据处理的速度合理的设计buffer size，甚至可以在不浪费空间的情况下做到没有任何延迟</p>
+<p>如果channel buffer已经塞满了数据，继续执行发送会导致当前goruntine被block住（阻塞），直到channel中的数据被取走一部分才可以继续向channel发送数据</p>
+<p>PS：</p>
+<p>1.channel主要用于多个goroutine之间通信，不要在单个goruotine中进行读写，容易导致死锁</p>
+<p>2.合理设计goroutine数量，和channel的size</p>
+<h3 id="goroutine泄露"><a href="#goroutine泄露" class="headerlink" title="goroutine泄露"></a>goroutine泄露</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	ch := make(chan string)</span><br><span class="line">	count := <span class="number">3</span></span><br><span class="line">	<span class="keyword">for</span> index := <span class="number">0</span>; index &lt; count; index++ &#123;</span><br><span class="line">		go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">			time.Sleep(time.Duration(rand.Intn(<span class="number">200</span>)) * time.Millisecond)</span><br><span class="line">			ch &lt;- <span class="string">&quot;hello&quot;</span></span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="xml">&lt;-ch)</span></span><br><span class="line"><span class="xml">	time.Sleep(time.Duration(rand.Intn(5000)) * time.Millisecond)</span></span><br><span class="line"><span class="xml">	//other work</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>上面这个例子，3个goroutine发送数据，1个接收数据</p>
+<p>所以只有最早执行完send的goruntine的数据能得到交付，另外两个慢一点的goruntine将会被永远block住直到整个程序退出。这种情况也是一个BUG，称为goruntine泄露，泄露的goruntine并不会被自动回收</p>
+<p>确保每个不再需要的goruntine正常退出非常重要，尤其是常驻内存的后台程序。</p>
+<p>最需要注意的场景就是负责接收的goruntine在永久退出（return）接收处理时，要确保发送的goruntine不会因为继续发送数据被block住</p>
+<p>改进：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	ch := make(chan string)</span><br><span class="line">	count := <span class="number">3</span></span><br><span class="line">	<span class="keyword">for</span> index := <span class="number">0</span>; index &lt; count; index++ &#123;</span><br><span class="line">		go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">			time.Sleep(time.Duration(rand.Intn(<span class="number">200</span>)) * time.Millisecond)</span><br><span class="line">			ch &lt;- <span class="string">&quot;hello&quot;</span></span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> index := <span class="number">0</span>; index &lt; count; index++ &#123;</span><br><span class="line">		fmt.Println(<span class="xml">&lt;-ch)</span></span><br><span class="line"><span class="xml">	&#125;</span></span><br><span class="line"><span class="xml">	time.Sleep(time.Duration(rand.Intn(5000)) * time.Millisecond)</span></span><br><span class="line"><span class="xml">	//other work</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="cap和len"><a href="#cap和len" class="headerlink" title="cap和len"></a>cap和len</h3><p>cap可获取channel的长度容量</p>
+<p>len可获取channel的数据个数</p>
+<h3 id="range"><a href="#range" class="headerlink" title="range"></a>range</h3><p>range可以对channel进行迭代，不断接收channel里的数据（没有数据时阻塞），直到channel被关闭后自动退出迭代</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ch = make(chan string, <span class="number">2</span>)</span><br><span class="line">	go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">			time.Sleep(<span class="number">500</span> * time.Millisecond)</span><br><span class="line">			ch &lt;- <span class="string">&quot;hello&quot;</span></span><br><span class="line">		&#125;</span><br><span class="line">		close(ch) <span class="comment">// 放入5条数据后关闭</span></span><br><span class="line">	&#125;()</span><br><span class="line"> 	<span class="comment">// 超过channel长度继续写数据会阻塞，主goroutine会进行取，另一个goroutine进行写</span></span><br><span class="line">	<span class="keyword">for</span> recv := range ch &#123;</span><br><span class="line">		fmt.Println(recv) <span class="comment">// 关闭可继续读取数据</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><p>go提供的select可以同时对多个channel进行监控，实现并发接收。当多个case里的channel同时有数据ready的时候，select会随机选择一个case进行处理。</p>
+<p>PS：range操作可以在channel关闭后自动退出，而select不会。所以在用for循环搭配select实现轮询时，select的case语句中必须显示的判断channel是否已经关闭，并做相应的处理，否则select每次从处于closed状态的channel中取出空值，并且继续执行case语句包含的body，程序的运行就可能与期望不一致</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ch = make(chan string, <span class="number">2</span>)</span><br><span class="line">	go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">			time.Sleep(<span class="number">1000</span> * time.Millisecond)</span><br><span class="line">			ch &lt;- <span class="string">&quot;hello&quot;</span></span><br><span class="line">		&#125;</span><br><span class="line">		close(ch)</span><br><span class="line">	&#125;()</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		select &#123;</span><br><span class="line">		<span class="keyword">case</span> recv, <span class="attr">ok</span> := <span class="xml">&lt;-ch:</span></span><br><span class="line"><span class="xml">			if !ok &#123; // 显示的判断，是否关闭</span></span><br><span class="line"><span class="xml">				os.Exit(0)</span></span><br><span class="line"><span class="xml">			&#125;</span></span><br><span class="line"><span class="xml">			fmt.Println(recv)</span></span><br><span class="line"><span class="xml">		&#125;</span></span><br><span class="line"><span class="xml">	&#125;</span></span><br><span class="line"><span class="xml"> </span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="并发循环"><a href="#并发循环" class="headerlink" title="并发循环"></a>并发循环</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	list := []int&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">	sizes := make(chan int)</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	<span class="keyword">for</span> e := range list &#123;</span><br><span class="line">		wg.Add(<span class="number">1</span>)</span><br><span class="line">		go <span class="function"><span class="title">func</span>(<span class="params">e int</span>)</span> &#123;</span><br><span class="line">			defer wg.Done()</span><br><span class="line">			sizes &lt;- e</span><br><span class="line">		&#125;(e)</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		wg.Wait()</span><br><span class="line">		close(sizes)</span><br><span class="line">	&#125;()</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">var</span> total int</span><br><span class="line">	<span class="keyword">for</span> num := range sizes &#123;</span><br><span class="line">		total += num</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(total)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据list的长度启动多个goruntine，每个gouruntine的处理就是向非缓冲channel中写入一个数据，main goruntine取到所有数据后打印total退出</p>
+<p>1.sync.WaitGroup来做计数，每启动一个goruntine计数器加1，每个goruntine完成时用wg.Done()将计数器减1，还有一个额外的goruntine在监控计数器的变化（阻塞直到计数器减到0</p>
+<p>2.如果所有的goruntine都完成了数据发送并退出，额外的goruntine将会关闭channel</p>
+<p>3.main goruntine对channel的range操作一旦检测到channel被关闭便会立即退出</p>
+<p>场景：使用并发循环，但是不知道迭代次数时</p>
+<p>1.监控计数器的处理必须放到一个单独的goruntine中，因为Wait()会阻塞当前goruntine直到计数器变为0。</p>
+<p>2.Add()操作可以加负数。无论是Add()还是Done()，如果操作会使计数器变为负数则会出发panic异常</p>
+<h3 id="关于-gorountine-退出"><a href="#关于-gorountine-退出" class="headerlink" title="关于 gorountine 退出"></a>关于 gorountine 退出</h3><p>扫描磁盘空间例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;bufio&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">	<span class="string">&quot;path/filepath&quot;</span></span><br><span class="line">	<span class="string">&quot;strings&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="comment">//限制同时打开的目录文件数，防止启动过多的goruntine</span></span><br><span class="line"><span class="keyword">var</span> sema = make(chan struct&#123;&#125;, <span class="number">20</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment">//用于取消整个磁盘扫描任务</span></span><br><span class="line"><span class="keyword">var</span> done = make(chan struct&#123;&#125;)</span><br><span class="line"> </span><br><span class="line">func <span class="function"><span class="title">walkDir</span>(<span class="params">dir string, n *sync.WaitGroup, fileSizes chan&lt;- int64</span>)</span> &#123;</span><br><span class="line">	defer n.Done()</span><br><span class="line">	<span class="comment">//收到cancel信号后，goruntine直接退出</span></span><br><span class="line">	<span class="keyword">if</span> <span class="function"><span class="title">cancelled</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, <span class="attr">entry</span> := range <span class="function"><span class="title">dirents</span>(<span class="params">dir</span>)</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> entry.IsDir() &#123;</span><br><span class="line">			n.Add(<span class="number">1</span>)</span><br><span class="line">			subdir := filepath.Join(dir, entry.Name())</span><br><span class="line">			go walkDir(subdir, n, fileSizes)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fileSizes &lt;- entry.Size()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func dirents(dir string) []os.FileInfo &#123;</span><br><span class="line">	select &#123;</span><br><span class="line">	<span class="keyword">case</span> sema &lt;- struct&#123;&#125;&#123;&#125;:</span><br><span class="line">	<span class="keyword">case</span> <span class="xml">&lt;-done:</span></span><br><span class="line"><span class="xml">		//发出cancel后，我们期望是这个工作能立即被终止，但是对于已经启动的goruntine，dirents会继续执行并耗费不少时间</span></span><br><span class="line"><span class="xml">		//所以这里添加对cancel信号的处理，可以减少cancel操作的时延</span></span><br><span class="line"><span class="xml">		return nil</span></span><br><span class="line"><span class="xml">	&#125;</span></span><br><span class="line"><span class="xml"> </span></span><br><span class="line"><span class="xml">	defer func() &#123;</span></span><br><span class="line">		&lt;-sema</span><br><span class="line">	&#125;()</span><br><span class="line"> </span><br><span class="line">	entries, err := ioutil.ReadDir(dir)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		fmt.Fprintf(os.Stderr, &quot;du1: %v\n&quot;, err)</span><br><span class="line">		return nil</span><br><span class="line">	&#125;</span><br><span class="line">	return entries</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func inputDir() string &#123;</span><br><span class="line">	var (</span><br><span class="line">		inputReader *bufio.Reader</span><br><span class="line">		dir         string</span><br><span class="line">		err         error</span><br><span class="line">	)</span><br><span class="line"> 	// inputReader，获取用户输入</span><br><span class="line">	inputReader = bufio.NewReader(os.Stdin)</span><br><span class="line">	// 打印提示</span><br><span class="line">	fmt.Printf(&quot;Please input a directory:&quot;)</span><br><span class="line">	// 读取用户输入</span><br><span class="line">	dir, err = inputReader.ReadString(&#x27;\n&#x27;)</span><br><span class="line">	// 遇到错误退出</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		os.Exit(1)</span><br><span class="line">	&#125;</span><br><span class="line">	// 处理文件路径</span><br><span class="line">	dir = strings.Replace(dir, &quot;\n&quot;, &quot;&quot;, -1)</span><br><span class="line">	//返回文件路径</span><br><span class="line">	return dir</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func printDiskUsage(nFiles int64, nBytes int64) &#123;</span><br><span class="line">	fmt.Printf(&quot;%d files %.1f GB\n&quot;, nFiles, float64(nBytes)/1e9)</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func cancelled() bool &#123;</span><br><span class="line">	select &#123;</span><br><span class="line">	case &lt;-done:</span><br><span class="line">		return true</span><br><span class="line">	default:</span><br><span class="line">		return false</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func main() &#123;</span><br><span class="line">	// 开始执行工作，打印开始执行</span><br><span class="line">	fmt.Println(&quot;=========Enter, walk.Test.()==========&quot;)</span><br><span class="line">	// defer最后结束执行，打印结束工作</span><br><span class="line">	defer fmt.Println(&quot;=========Exit, walk.Test.()==========&quot;)</span><br><span class="line">	// 程序输入</span><br><span class="line">	dir := inputDir()</span><br><span class="line"> </span><br><span class="line">	//从标准输入读到任何内容后，关闭done这个channel</span><br><span class="line">	go func() &#123;</span><br><span class="line">		os.Stdin.Read(make([]byte, 1))</span><br><span class="line">		close(done)</span><br><span class="line">	&#125;()</span><br><span class="line"> </span><br><span class="line">	fileSizes := make(chan int64)</span><br><span class="line">	var n sync.WaitGroup</span><br><span class="line">	n.Add(1)</span><br><span class="line">	go walkDir(dir, &amp;n, fileSizes)</span><br><span class="line"> </span><br><span class="line">	go func() &#123;</span><br><span class="line">		n.Wait()</span><br><span class="line">		close(fileSizes)</span><br><span class="line">	&#125;()</span><br><span class="line"> </span><br><span class="line">	var nFiles, nBytes int64</span><br><span class="line">	var tick &lt;-chan time.Time</span><br><span class="line">	tick = time.Tick(100 * time.Millisecond)</span><br><span class="line"> </span><br><span class="line">loop:</span><br><span class="line">	for &#123;</span><br><span class="line">		select &#123;</span><br><span class="line">		case &lt;-done:</span><br><span class="line">			for range fileSizes &#123;</span><br><span class="line">				//do nothing，这个for循环的意义在于：收到cancel信号后，统计工作马上结束，我们会退出对fileSizes这个channel的接收操作，但是整个程序未必退出</span><br><span class="line">				//这时将fileSizes排空可以防止还在运行walkDir的goruntine因为向fileSies发送数据被阻塞（没有buffer或者buffer已满），导致goruntine泄露</span><br><span class="line">			&#125;</span><br><span class="line">			return</span><br><span class="line">		case size, ok := &lt;-fileSizes:</span><br><span class="line">			if !ok &#123; //这里必须显示的判断fileSizes是否已经被close</span><br><span class="line">				break loop</span><br><span class="line">			&#125;</span><br><span class="line">			nFiles++</span><br><span class="line">			nBytes += size</span><br><span class="line">		case &lt;-tick: //每0.1S产生一次时钟信号，打印一次当前统计数字</span><br><span class="line">			printDiskUsage(nFiles, nBytes)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	printDiskUsage(nFiles, nBytes)</span><br><span class="line">	close(sema)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>1.新建一个done channel用于取消整个磁盘扫描任务，新建一个sema channel， 限制20个，限制同时打开的目录文件数</p>
+<p>2.打印开始，defer打印结束</p>
+<p>3.输入文件路径inputDir：</p>
+<p>根据 inputReader，获取用户输入， inputReader.ReadString(‘\n’)读取用户输入， 遇到错误退出，处理并返回文件路径</p>
+<p>4.用于关闭done chanel 从标准输入读到任何内容后，关闭done这个channel，用于主任务监控，关闭说明任务结束</p>
+<p>5.初始化file的channel</p>
+<p>6.开始计数，计数+1，启动goroutine 对于文件work。传入输入的文件路径，传入计数指针，用于修改计数，传入file的chaannel</p>
+<pre><code>工作的函数：
+1.defer，进行计数，最后计数减一
+2.判断主done channel是否要关闭，防止work goroutine在主任务结束后，继续执行
+3.根据文件路径获取文件列表 []os.FileInfo， dirents
+    1.select监控，一种是监控到 done里有信号要退出，收到信号直接return nil，结束后续运行
+      一种是往sema里写入一个空值，用来代表有一个目录文件被打开
+    2.函数最后取出sema的数据
+    3.读取文件路径，返回当前路径的文件列表，最后第二步，取出sema的数据
+4.遍历出来的文件，判断是不是文件夹，不是把大小放到file channel里，是的话，计数加1
+5.再启一个goroutine 继续work子路径，传入新得到的路径，计数，filechannel
+PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进入子路径，结束后减1，最后都没有文件夹了，则计数为0</code></pre>
+<p>7.单启一个goroutine，看计数，Wait()会阻塞当前goruntine直到计数器变为0，最后关闭file channel</p>
+<p>8.声明一个tick channel time.Time格式</p>
+<p>9.loop循环开启， select监听多个channel：<br>    1.done channel收到信号，统计工作结束<br>    2.file channel取出数据，判断file channel是否被关闭，然后取出数据统计<br>    3.tick channel，打印当时数据<br>    4.for循环结束，打印最终数据</p>
+<p>10.最后程序退出</p>
+<h3 id="close关闭"><a href="#close关闭" class="headerlink" title="close关闭"></a>close关闭</h3><p>close 内置函数关闭一个通道，该通道必须是双向的或仅发送的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ch1 := make(chan int, <span class="number">10</span>)</span><br><span class="line">ch2 := make(chan&lt;- int, <span class="number">10</span>)</span><br><span class="line">ch3 := make(<span class="xml">&lt;-chan int, 10)</span></span><br><span class="line"><span class="xml">close(ch1)</span></span><br><span class="line"><span class="xml">close(ch2)</span></span><br><span class="line"><span class="xml">close(ch3)</span></span><br></pre></td></tr></table></figure>
+<p>关闭 channel3将panic cannot close receive-only channel</p>
+<p>channel 应该由发送的一方执行，由接收 channel 的一方关闭</p>
+<h3 id="done-channel"><a href="#done-channel" class="headerlink" title="done channel"></a>done channel</h3><p>用于主协程通知子协程取消的需求</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    messages := make(chan int, <span class="number">10</span>)</span><br><span class="line">    done := make(chan bool)</span><br><span class="line"></span><br><span class="line">    defer close(messages)</span><br><span class="line">    <span class="comment">// consumer</span></span><br><span class="line">    go <span class="function"><span class="title">func</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        ticker := time.NewTicker(<span class="number">1</span> * time.Second)</span><br><span class="line">        <span class="keyword">for</span> _ = range ticker.C &#123;</span><br><span class="line">            select &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="xml">&lt;-done:</span></span><br><span class="line"><span class="xml">                fmt.Println(&quot;child process interrupt...&quot;)</span></span><br><span class="line"><span class="xml">                return</span></span><br><span class="line"><span class="xml">            default:</span></span><br><span class="line">                fmt.Printf(&quot;send message: %d\n&quot;, &lt;-messages)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    // producer</span><br><span class="line">    for i := 0; i &lt; 10; i++ &#123;</span><br><span class="line">        messages &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    time.Sleep(5 * time.Second)</span><br><span class="line">    close(done)</span><br><span class="line">    time.Sleep(1 * time.Second)</span><br><span class="line">    fmt.Println(&quot;main process exit!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述例子中定义了一个buffer为0的channel done,子协程运行着定时任务。</p>
+<p>如果主协程需要在某个时刻发送消息通知子协程中断任务退出，那么就可以让子协程监听这个done channel，一旦主协程关闭done channel，那么子协程就可以推出了，这样就实现了主协程通知子协程的需求</p>
+<h2 id="channel原理"><a href="#channel原理" class="headerlink" title="channel原理"></a>channel原理</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>src/runtime/chan.go里</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">type hchan struct &#123;</span><br><span class="line">    qcount   uint           <span class="comment">// total data in the queue</span></span><br><span class="line">    dataqsiz uint           <span class="comment">// size of the circular queue</span></span><br><span class="line">    buf      unsafe.Pointer <span class="comment">// points to an array of dataqsiz elements</span></span><br><span class="line">    elemsize uint16</span><br><span class="line">    closed   uint32</span><br><span class="line">    elemtype *_type <span class="comment">// element type</span></span><br><span class="line">    sendx    uint   <span class="comment">// send index</span></span><br><span class="line">    recvx    uint   <span class="comment">// receive index</span></span><br><span class="line">    recvq    waitq  <span class="comment">// list of recv waiters</span></span><br><span class="line">    sendq    waitq  <span class="comment">// list of send waiters</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// lock protects all fields in hchan, as well as several</span></span><br><span class="line">    <span class="comment">// fields in sudogs blocked on this channel.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Do not change another G&#x27;s status while holding this lock</span></span><br><span class="line">    <span class="comment">// (in particular, do not ready a G), as this can deadlock</span></span><br><span class="line">    <span class="comment">// with stack shrinking.</span></span><br><span class="line">    lock mutex</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>make的时候，会申请一块内存，创建一个hchan结构体，返回执行该内存的指针，所以获取的的ch变量本身就是一个指针，在函数之间传递的时候是同一个channel</p>
+<p>核心的部分是存放channel数据的环形队列，由qcount和elemsize分别指定了队列的容量和当前使用量</p>
+<p>如果是带缓冲区的chan，则缓冲区数据实际上是紧接着Hchan结构体中分配的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c = (Hchan*)runtime.mal(n + hint*elem-&gt;size);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用两个list保存像该chan发送和从该chan接收数据的goroutine，还有一个mutex来保证操作这些结构的安全</p>
+<p>recvq和sendq两个链表，一个是因读这个通道而导致阻塞的goroutine，另一个是因为写这个通道而阻塞的goroutine。如果一个goroutine阻塞于channel了，那么它就被挂在recvq或sendq中</p>
+<p>队列中的每个成员是一个SudoG结构体变量</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct    SudoG</span><br><span class="line">&#123;</span><br><span class="line">    G*    g;        <span class="comment">// g and selgen constitute</span></span><br><span class="line">    uint32    selgen;        <span class="comment">// a weak pointer to g</span></span><br><span class="line">    SudoG*    link;</span><br><span class="line">    int64    releasetime;</span><br><span class="line">    byte*    elem;        <span class="comment">// data element</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>结构中主要的就是一个g和一个elem</p>
+<p>elem用于存储goroutine的数据</p>
+<p>读通道时，数据会从Hchan的队列中拷贝到SudoG的elem域</p>
+<p>写通道时，数据则是由SudoG的elem域拷贝到Hchan的队列中</p>
+<h3 id="读写操作"><a href="#读写操作" class="headerlink" title="读写操作"></a>读写操作</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c &lt;- v</span><br><span class="line"><span class="keyword">void</span> runtime·chansend(ChanType *t, Hchan *c, byte *ep, bool *pres, <span class="keyword">void</span> *pc)</span><br></pre></td></tr></table></figure>
+<p>c就是channel<br>ep是取变量v的地址<br>pres 用于select操作中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">G1： c &lt;- task</span><br><span class="line">G2： task := <span class="xml">&lt;- ch</span></span><br></pre></td></tr></table></figure>
+
+<p>G1是写入,发送者<br>G2是读取，接收者</p>
+<p>流程：</p>
+<p>写：</p>
+<p>1.初始的时候hchan结构体的buf为空，sendx和recvx都为0</p>
+<p>2.G1向ch里发送数据的时候，会首先对buf加锁</p>
+<p>3.将要发送的数据copy到buf里，并增加sendx的值</p>
+<p>4.最后释放buf的锁</p>
+<p>读：</p>
+<p>1.G2消费的时候首先对buf加锁</p>
+<p>2.然后将buf里的数据copy到task变量对应的内存里，增加recvx</p>
+<p>3.最后释放锁</p>
+<p>PS：整个过程，G1和G2没有共享的内存，底层通过hchan结构体的buf，使用copy内存的方式进行通信，最后达到了共享内存的目的</p>
+<p>G2的消费速度应该是慢于G1的，所以buf的数据会越来越多，这个时候G1再向ch里发送数据，这个时候G1就会阻塞</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>channel会区分是同步还是异步。</p>
+<p>同步是指chan是不带缓冲区的，因此可能写阻塞，而异步是指chan带缓冲区，只有缓冲区满才阻塞</p>
+<p>写阻塞：</p>
+<p>1.G1向buf已经满了的ch发送数据的时候，当runtine检测到对应的hchan的buf已经满</p>
+<p>2.会通知调度器，调度器会将G1的状态设置为waiting</p>
+<p>3.移除与线程M的联系，然后从P的runqueue中选择一个goroutine在线程M中执行</p>
+<p>4.G1就是阻塞状态，但是不是操作系统的线程阻塞</p>
+<p>5.G1变为waiting状态后，会创建一个代表自己的sudog的结构，然后放到sendq这个list中</p>
+<p>6.sudog结构中保存了channel相关的变量的指针</p>
+<p>PS： 如果该Goroutine是sender，那么保存的是待发送数据的变量的地址，如果是receiver则为接收数据的变量的地址，之所以是地址，前面我们提到在传输数据的时候使用的是copy的方式</p>
+<p>7.G2从ch中接收一个数据时，会通知调度器，设置G1的状态为runnable，然后将加入P的runqueue里，等待线程执行</p>
+<h3 id="空通道"><a href="#空通道" class="headerlink" title="空通道"></a>空通道</h3><p>G2先运行，读阻塞：</p>
+<p>1.G2会从一个empty的channel里取数据，这个时候G2就会阻塞</p>
+<p>2.G2也会创建一个sudog结构体，保存接收数据的变量的地址，但是该sudog结构体是放到了recvq列表里</p>
+<p>3.当G1向ch发送数据的时候，runtime并没有对hchan结构体题的buf进行加锁，而是直接将G1里的发送到ch的数据copy到了G2 sudog里对应的elem指向的内存地址</p>
+<p>PS：读一个关闭的通道，永远不会阻塞，会返回一个通道数据类型的零值。这个实现也很简单，将零值复制到调用函数的参数ep中。写一个关闭的通道，则会panic。关闭一个空通道，也会导致panic</p>
+<h3 id="select实现"><a href="#select实现" class="headerlink" title="select实现"></a>select实现</h3><p>select-case中的chan操作编译成了if-else</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select &#123;</span><br><span class="line"><span class="keyword">case</span> v = <span class="xml">&lt;-c:</span></span><br><span class="line"><span class="xml">        ...foo</span></span><br><span class="line"><span class="xml">default:</span></span><br><span class="line"><span class="xml">        ...bar</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>会被编译为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="function"><span class="title">selectnbrecv</span>(<span class="params">&amp;v, c</span>)</span> &#123;</span><br><span class="line">        ...foo</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ...bar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>selectnbrecv函数调用runtime.chanrecv函数，只不过设置了一个参数，告诉当runtime.chanrecv函数，当不能完成操作时不要阻塞，而是返回失败</p>
+<p>select操作其实都仅仅是被换成了if-else判断，底层调用的不阻塞的通道操作函数</p>
+<h4 id="select随机性"><a href="#select随机性" class="headerlink" title="select随机性"></a>select随机性</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct    Scase</span><br><span class="line">&#123;</span><br><span class="line">    SudoG    sg;            <span class="comment">// must be first member (cast to Scase)</span></span><br><span class="line">    Hchan*    chan;        <span class="comment">// chan</span></span><br><span class="line">    byte*    pc;            <span class="comment">// return pc</span></span><br><span class="line">    uint16    kind;</span><br><span class="line">    uint16    so;            <span class="comment">// vararg of selected bool</span></span><br><span class="line">    bool*    receivedp;    <span class="comment">// pointer to received bool (recv2)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct    Select</span><br><span class="line">&#123;</span><br><span class="line">    uint16    tcase;            <span class="comment">// 总的scase[]数量</span></span><br><span class="line">    uint16    ncase;            <span class="comment">// 当前填充了的scase[]数量</span></span><br><span class="line">    uint16*    pollorder;        <span class="comment">// case的poll次序</span></span><br><span class="line">    Hchan**    lockorder;        <span class="comment">// channel的锁住的次序</span></span><br><span class="line">    Scase    scase[<span class="number">1</span>];        <span class="comment">// 每个case会在结构体里有一个Scase，顺序是按出现的次序</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>1.每个select都对应一个Select结构体</p>
+<p>2.在Select数据结构中有个Scase数组，记录下了每一个case，而Scase中包含了Hchan。</p>
+<p>3.然后pollorder数组将元素随机排列，将Scase乱序</p>
+<h2 id="CSP模型"><a href="#CSP模型" class="headerlink" title="CSP模型"></a>CSP模型</h2><p>用于描述两个独立的并发实体通过共享的通讯 channel(管道)进行通信的并发模型</p>
+<p>golang 通过goroutine和channel实现</p>
+<p>Goroutine 是实际并发执行的实体，底层是使用协程(coroutine)实现并发，coroutine是一种运行在用户态的用户线程</p>
+<p>1.用户空间 避免了内核态和用户态的切换导致的成本</p>
+<p>2.可以由语言和框架层进行调度</p>
+<p>3.更小的栈空间允许创建大量的实例</p>
+<p>channel 是被单独创建并且可以在进程之间传递，它的通信模式类似于 boss-worker 模式的</p>
+<p>一个实体通过将消息发送到channel 中，然后又监听这个 channel 的实体处理，两个实体之间是匿名的，这个就实现实体中间的解耦</p>
+<p>其中 channel 是同步的一个消息被发送到 channel 中，最终是一定要被另外的实体消费掉的，在实现原理上其实是一个阻塞的消息队列</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"># GO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" rel="prev" title="GO的垃圾回收">
+                  <i class="fa fa-angle-left"></i> GO的垃圾回收
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/20/GO%E7%9A%84%E6%8E%A5%E5%8F%A3interface%E5%92%8C%E5%8F%8D%E5%B0%84/" rel="next" title="GO的接口interface和反射">
+                  GO的接口interface和反射 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

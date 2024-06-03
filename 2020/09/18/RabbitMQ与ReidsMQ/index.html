@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="RabbitMQ与redisMq的比较">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMQ与RedisMQ">
+<meta property="og:url" content="https://zypuu.github.io/2020/09/18/RabbitMQ%E4%B8%8EReidsMQ/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="RabbitMQ与redisMq的比较">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-09-18T06:10:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.030Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2020/09/18/RabbitMQ%E4%B8%8EReidsMQ/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2020/09/18/RabbitMQ%E4%B8%8EReidsMQ/","path":"2020/09/18/RabbitMQ与ReidsMQ/","title":"RabbitMQ与RedisMQ"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>RabbitMQ与RedisMQ | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E9%98%9F%E5%88%97"><span class="nav-number">1.</span> <span class="nav-text">Redis队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E9%98%9F%E5%88%97%E5%AF%B9%E6%AF%94"><span class="nav-number">2.</span> <span class="nav-text">两个队列对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ"><span class="nav-number">3.</span> <span class="nav-text">RabbitMQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AMQP"><span class="nav-number">3.1.</span> <span class="nav-text">AMQP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">3.2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exchange%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.4.</span> <span class="nav-text">exchange模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-number">3.5.</span> <span class="nav-text">相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">3.5.1.</span> <span class="nav-text">如何保证可靠性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%8C%E9%81%BF%E5%85%8D%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="nav-number">3.5.2.</span> <span class="nav-text">消息幂等性，避免重复消费</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E7%A1%AE%E8%AE%A4"><span class="nav-number">3.5.3.</span> <span class="nav-text">消息确认</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%99%90%E6%B5%81"><span class="nav-number">3.5.4.</span> <span class="nav-text">消息限流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ACK%E6%9C%BA%E5%88%B6"><span class="nav-number">3.5.5.</span> <span class="nav-text">ACK机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E5%9B%9E%E9%98%9F%E5%88%97"><span class="nav-number">3.5.6.</span> <span class="nav-text">重回队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TTL%E9%98%9F%E5%88%97"><span class="nav-number">3.5.7.</span> <span class="nav-text">TTL队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97"><span class="nav-number">3.5.8.</span> <span class="nav-text">死信队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E6%B6%88%E6%81%AF%E6%B5%81%E7%A8%8B"><span class="nav-number">3.5.9.</span> <span class="nav-text">生产消息流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF%E8%BF%87%E7%A8%8B"><span class="nav-number">3.5.10.</span> <span class="nav-text">消费者接收消息过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%EF%BC%8C%E6%8B%92%E7%BB%9D%E6%B6%88%E6%81%AF%EF%BC%8C%E5%BB%B6%E8%BF%9F%EF%BC%8C%E4%BC%98%E5%85%88%E5%A4%84%E7%90%86"><span class="nav-number">3.5.11.</span> <span class="nav-text">事务，拒绝消息，延迟，优先处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%9D%E8%AF%81%E5%B1%82%E7%BA%A7"><span class="nav-number">3.5.12.</span> <span class="nav-text">保证层级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%9F%E5%88%97%E7%BB%93%E6%9E%84"><span class="nav-number">3.5.13.</span> <span class="nav-text">队列结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%9B%9B%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="nav-number">3.5.14.</span> <span class="nav-text">消息四种状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%A6%82%E4%BD%95%E5%88%86%E5%8F%91"><span class="nav-number">3.5.15.</span> <span class="nav-text">消息如何分发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%B6%88%E6%81%AF%E6%AD%A3%E7%A1%AE%E5%8F%91%E9%80%81"><span class="nav-number">3.5.16.</span> <span class="nav-text">如何确保消息正确发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E8%B4%B9%E6%96%B9%E7%A1%AE%E8%AE%A4%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">3.5.17.</span> <span class="nav-text">消费方确认接收消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A2%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98"><span class="nav-number">3.5.18.</span> <span class="nav-text">丢数据问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97"><span class="nav-number">3.5.19.</span> <span class="nav-text">实现延时队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%A6%82%E4%BD%95%E8%A2%AB%E4%BC%98%E5%85%88%E6%B6%88%E8%B4%B9"><span class="nav-number">3.5.20.</span> <span class="nav-text">消息如何被优先消费</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E9%A1%BA%E5%BA%8F%E6%80%A7"><span class="nav-number">3.5.21.</span> <span class="nav-text">如何保证消息顺序性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E6%B6%88%E8%B4%B9%E8%80%85%E7%9B%91%E5%90%AC%E4%B8%80%E4%B8%AA%E9%98%9F%E5%88%97"><span class="nav-number">3.5.22.</span> <span class="nav-text">多个消费者监听一个队列</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2020/09/18/RabbitMQ%E4%B8%8EReidsMQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="RabbitMQ与RedisMQ | All-Nothing">
+      <meta itemprop="description" content="RabbitMQ与redisMq的比较">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RabbitMQ与RedisMQ
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-18 14:10:00" itemprop="dateCreated datePublished" datetime="2020-09-18T14:10:00+08:00">2020-09-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">消息队列</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">RabbitMQ与redisMq的比较</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Redis队列"><a href="#Redis队列" class="headerlink" title="Redis队列"></a>Redis队列</h2><p>rpush，消息类型定义，不同业务定义不同消息类型，while true，一直循环等待取lpop，取不到time。sleep</p>
+<h2 id="两个队列对比"><a href="#两个队列对比" class="headerlink" title="两个队列对比"></a>两个队列对比</h2><p>redis ：没有相应的机制保证消息的可靠消费，如果发布者发布一条消息，而没有对应的订阅者的话，或者消费失败的话，这条消息将丢失，不会存在内存中</p>
+<p>rabbitmq：具有消息消费确认机制，如果发布一条消息，还没有消费者消费该队列，那么这条消息将一直存放在队列中，直到有消费者消费了该条消息，以此可以保证消息的可靠消费</p>
+<p>redis:实时性高，redis作为高效的缓存服务器，所有数据都存在内存中，所以它具有更高的实时性消费者负载均衡</p>
+<p>rabbitmq：可以被多个消费者同时监控消费，但是每一条消息只能被消费一次，由于rabbitmq的消费确认机制，因此它能够根据消费者的消费能力而调整它的负载</p>
+<p>redis：发布订阅模式，一个队列可以被多个消费者同时订阅，当有消息到达时，会将该消息依次发送给每个订阅者，她是一种消息的广播形式，redis本身不做消费者的负载均衡，因此消费效率存在瓶颈；</p>
+<p>rabbitmq：队列，每条消息都可以选择性持久化，持久化粒度更小，更灵活</p>
+<p>rabbitmq实现了后台监控平台，可以在该平台上看到所有创建的队列的详细情况，良好的后台管理平台可以方面我们更好的使用</p>
+<p>redis没有所谓的监控平台</p>
+<p>redis：轻量级，低延迟，高并发，低可靠性；<br>rabbitmq：重量级，高可靠，异步，不保证实时</p>
+<h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><p>原生支持AMQP协议，还支持STOMP， MQTT等多种消</p>
+<h3 id="AMQP"><a href="#AMQP" class="headerlink" title="AMQP"></a>AMQP</h3><p>三层协议：高中底层</p>
+<p>交换器 (Exchange)：消息代理服务器中用于把消息路由到队列的组件。<br>队列 (Queue)：用来存储消息的数据结构，位于硬盘或内存中。<br>绑定 (Binding)： 一套规则，告知交换器消息应该将消息投递给哪个队列</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>Publisher 生产者-&gt;exchange交换机发送消息</p>
+<p>Consumer 消费者-&gt;从消息队列中取得消息</p>
+<p>Broker 客户端连接，实体服务</p>
+<p>Virtual host 一个Virtual Host里面可以有若干个Exchange和Queue，同一个Virtual Host里面不能有相同名称的Exchange和Queue</p>
+<p>Message 消息 由Properties和Body组成（消息头和消息体）。Properties可以对消息进行修饰，比如消息的优先级、延迟等高级特性；Body这就是消息体内容</p>
+<p>Exchange 交换机，接收生产者发送的消息，根据路由键转发消息到绑定的队列。</p>
+<pre><code>三种常见的交换机类型：
+
+1、direct（发布与订阅，完全匹配）
+
+2、fanout（广播）
+
+3、topic（主题，规则匹配）</code></pre>
+<p>Routing key：路由键。一个路由规则，虚拟机可用它来确定如何路由一个特定消息<br>消息发送到MQ服务器时，消息将拥有一个路由键，即便是空的。RabbitMQ也会将其和绑定使用的路由键进行匹配。<br>如果匹配，消息将投递到该队列；如果不匹配，消息将会进入黑洞</p>
+<p>Binding：绑定。Exchange和Queue之间的虚拟连接，binding中可以包含routing key</p>
+<p>Channel：网络信道，是TCP里面的虚拟连接。几乎所有的操作都在Channel中进行， Channel是进行消息读写的通道</p>
+<p>TCP一旦打开，就会创建AMQP信道。</p>
+<p>无论是发布消息、接收消息、订阅队列，这些动作都是通过信道完成的。</p>
+<p>为什么不直接通信：<br>1、TCP的创建和销毁开销特别大。创建需要3次握手，销毁需要4次分手<br>2、如果不用信道，那应用程序就会以TCP连接RabbitMQ，高峰时每秒成千上万条连接会造成资源巨大浪费，而且操作系统每秒处理TCP连接数也是有限制的，必定造成性能瓶颈<br>3、信道的原理是一条线程一条通道，多条线程多条通道同用一条TCP连接。一条TCP连接可以容纳无限的信道，即使每秒成千上万的请求也不会成为性能瓶颈</p>
+<p>Queue：一个消息可以投入一个或多个队列。消息一直在队列里面，等待消费者连接到这个队列上将其取走</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p>发消息的时候需要指定发往哪个Exchange，然后借助routing key发送到对应的消息队列queue，消费者从订阅的消息队列上取消息</p>
+<h3 id="exchange模式"><a href="#exchange模式" class="headerlink" title="exchange模式"></a>exchange模式</h3><p>direc：完全匹配RouteKey</p>
+<p>topic：通配符模糊匹配RouteKey</p>
+<p>Fanout：群发，不关心routekey</p>
+<h3 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h3><h4 id="如何保证可靠性"><a href="#如何保证可靠性" class="headerlink" title="如何保证可靠性"></a>如何保证可靠性</h4><p>1、消息落库，消息持久化，消息标记， 在高并发场景下，数据库IO压力大，不适用</p>
+<p>2、延迟投递：</p>
+<p>发送first——send消息</p>
+<p>同时发送一个延迟的检查消息（检查第一次发送消息消费情况）</p>
+<p>消费端消费消息，消费后发送一个确认ack给broker</p>
+<p>回调服务检测到消费端的确认消息，进行数据库的状态持久化（这样相当于数据库一次操作，异步持久化）回调服务检测到消费端的确认消息，进行数据库的状态持久化（这样相当于数据库一次操作，异步持久化）</p>
+<p>回调服务响应第二个延时消息，确认消息成功消费，如果出现异常，回调服务调用RPC给生产者，再次发送</p>
+<h4 id="消息幂等性，避免重复消费"><a href="#消息幂等性，避免重复消费" class="headerlink" title="消息幂等性，避免重复消费"></a>消息幂等性，避免重复消费</h4><p>幂等性即对数据进行若干次操作，仍然保证正确</p>
+<p>消息不会消费多次，只消费一次</p>
+<p>唯一ID加上时间戳</p>
+<p>MQ内部针对每条生产者发送的消息生成一个inner-msg-id，作为去重和幂等的依据</p>
+<h4 id="消息确认"><a href="#消息确认" class="headerlink" title="消息确认"></a>消息确认</h4><p>消息的确认，是指生产者投递消息后，如果Broker收到消息，则会给我们生产者一个应答。</p>
+<p>生产者进行接收应答，用来确定这个消息是否正常的发送到Broker，这种方式也是消息的可靠性</p>
+<p>Return Listener用于处理一些不可路由的消息！</p>
+<h4 id="消息限流"><a href="#消息限流" class="headerlink" title="消息限流"></a>消息限流</h4><p>RabbitMQ提供了一种QOS（服务质量保证）功能，即在非自动确认消息的前提下，如果一定数目的消息（通过基于consumer或者channel设置Qos的值）未被确认前，不进行消费新的消息</p>
+<h4 id="ACK机制"><a href="#ACK机制" class="headerlink" title="ACK机制"></a>ACK机制</h4><p>消费端进行消费的时候，如果由于业务异常我们可以进行日志的记录，然后进行补偿。如果由于服务器宕机等严重问题，那我们就需要手工进行ACK保障消费端消费成功。</p>
+<p>消息确认ACK：如果在处理消息的过程中，消费者的服务器在处理消息时出现异常，那可能这条正在处理的消息就没有完成消息消费，数据就会丢失。为了确保数据不会丢失，RabbitMQ支持消息确认ACK。</p>
+<p>ACK的消息确认机制是消费者从RabbitMQ收到消息并处理完成后，反馈给RabbitMQ，RabbitMQ收到反馈后才将此消息从队列中删除。</p>
+<p>1、如果一个消费者在处理消息出现了网络不稳定、服务器异常等现象，那么就不会有ACK反馈，RabbitMQ会认为这个消息没有正常消费，会将消息重新放入队列中。</p>
+<p>2、如果在集群的情况下：RabbitMQ会立即将这个消息推送给这个在线的其他消费者。这种机制保证了不丢失任何消息和任务。</p>
+<p>3、消息永远不会从RabbitMQ中删除：只有当消费者正确发送ACK反馈，RabbitMQ确认收到后，消息才会删除</p>
+<p>4、消息的ACK确认机制默认开</p>
+<h4 id="重回队列"><a href="#重回队列" class="headerlink" title="重回队列"></a>重回队列</h4><p>消费失败的消息都会放回队列，一般都会关闭</p>
+<h4 id="TTL队列"><a href="#TTL队列" class="headerlink" title="TTL队列"></a>TTL队列</h4><p>消息过期机制</p>
+<p>第一种通过对队列进行设置，这种设置后，该队列中所有的消息都存在相同的过期时间，第二种通过对消息本身进行设置，那么每条消息的过期时间都不一样。如果同时使用这2种方法，那么以过期时间小的那个数值为准</p>
+<h4 id="死信队列"><a href="#死信队列" class="headerlink" title="死信队列"></a>死信队列</h4><p>当消息在一个队列中变成死信（dead message）之后，它能被重新publish到另一个Exchange，这个Exchange就是DLX</p>
+<p>消息变成死信：</p>
+<p>1、 消息被拒绝（basic.reject/basic.nack）并且request=false；<br>2、 消息TTL过期；<br>3、 队列达到最大长度</p>
+<p>可以监听这个队列进行处理</p>
+<h4 id="生产消息流程"><a href="#生产消息流程" class="headerlink" title="生产消息流程"></a>生产消息流程</h4><p>1.Producer先连接到Broker,建立连接Connection,开启一个信道(Channel)</p>
+<p>2.Producer声明一个交换器并设置好相关属性</p>
+<p>3.Producer声明一个队列并设置好相关属性</p>
+<p>4.Producer通过路由键将交换器和队列绑定起来</p>
+<p>5.Producer发送消息到Broker,其中包含路由键、交换器等信息</p>
+<p>6.相应的交换器根据接收到的路由键查找匹配的队列</p>
+<p>7.如果找到，将消息存入对应的队列，如果没有找到，会根据生产者的配置丢弃或者退回给生产者（两种处理方式）</p>
+<p>8.关闭信道</p>
+<p>9.管理连接</p>
+<h4 id="消费者接收消息过程"><a href="#消费者接收消息过程" class="headerlink" title="消费者接收消息过程"></a>消费者接收消息过程</h4><p>1.Producer先连接到Broker,建立连接Connection,开启一个信道(Channel)</p>
+<p>2.向Broker请求消费响应的队列中消息，可能会设置响应的回调函数</p>
+<p>3.等待Broker回应并投递相应队列中的消息，接收消息</p>
+<p>4.消费者确认收到的消息,ack</p>
+<p>5.RabbitMq从队列中删除已经确定的消息</p>
+<p>6.关闭信道</p>
+<p>7.关闭连接</p>
+<h4 id="事务，拒绝消息，延迟，优先处理"><a href="#事务，拒绝消息，延迟，优先处理" class="headerlink" title="事务，拒绝消息，延迟，优先处理"></a>事务，拒绝消息，延迟，优先处理</h4><h4 id="保证层级"><a href="#保证层级" class="headerlink" title="保证层级"></a>保证层级</h4><p>最多一次，最少一次，恰好一次</p>
+<h4 id="队列结构"><a href="#队列结构" class="headerlink" title="队列结构"></a>队列结构</h4><p>rabbit_amqqueue_process :负责协议相关的消息处理，即接收生产者发布的消息、向消费者交付消息、处理消息的确认(包括生产端的 confirm 和消费端的 ack) 等。<br>backing_queue:是消息存储的具体形式和引擎，并向 rabbit amqqueue process 提供相关的接口以供调用。</p>
+<h4 id="消息四种状态"><a href="#消息四种状态" class="headerlink" title="消息四种状态"></a>消息四种状态</h4><p>alpha: 消息内容(包括消息体、属性和 headers) 和消息索引都存储在内存中 。<br>beta: 消息内容保存在磁盘中，消息索引保存在内存中。<br>gamma: 消息内容保存在磁盘中，消息索引在磁盘和内存中都有 。<br>delta: 消息内容和索引都在磁盘中 。</p>
+<h4 id="消息如何分发"><a href="#消息如何分发" class="headerlink" title="消息如何分发"></a>消息如何分发</h4><p>若该队列至少有一个消费者订阅，消息将以循环（round-robin）的方式发送给消费者。每条消息只会分发给一个订阅的消费者（前提是消费者能够正常处理消息并进行确认）</p>
+<h4 id="如何确保消息正确发送"><a href="#如何确保消息正确发送" class="headerlink" title="如何确保消息正确发送"></a>如何确保消息正确发送</h4><p>将信道设置成confirm模式（发送方确认模式），则所有在信道上发布的消息都会被指派一个唯一的ID。一旦消息被投递到目的队列后，或者消息被写入磁盘后（可持久化的消息），信道会发送一个确认给生产者（包含消息唯一ID）</p>
+<h4 id="消费方确认接收消息"><a href="#消费方确认接收消息" class="headerlink" title="消费方确认接收消息"></a>消费方确认接收消息</h4><p>消费者接收每一条消息后都必须进行确认（消息接收和消息确认是两个不同操作）。只有消费者确认了消息，RabbitMQ才能安全地把消息从队列中删除。这里并没有用到超时机制，RabbitMQ仅通过Consumer的连接中断来确认是否需要重新发送消息。也就是说，只要连接不中断，RabbitMQ给了Consumer足够长的时间来处理消息</p>
+<p>如果消费者接收到消息，在确认之前断开了连接或取消订阅，RabbitMQ会认为消息没有被分发，然后重新分发给下一个订阅的消费者。（可能存在消息重复消费的隐患，需要根据bizId去重）<br>如果消费者接收到消息却没有确认消息，连接也未断开，则RabbitMQ认为该消费者繁忙，将不会给该消费者分发更多的消息</p>
+<h4 id="丢数据问题"><a href="#丢数据问题" class="headerlink" title="丢数据问题"></a>丢数据问题</h4><p>生产者丢数据：</p>
+<p>1、开启事务，但会降低吞吐量</p>
+<p>2、 开启confirm模式，丢了可以进行重试</p>
+<p>消费队列丢数据：</p>
+<p>1、磁盘db持久化，持久化成功，返回个ack，将queue的持久化标识durable设置为true,则代表是一个持久的队列，deliveryMode=2</p>
+<p>消费者丢数据：</p>
+<p>自动确认，手动确认，不确认模式</p>
+<h4 id="实现延时队列"><a href="#实现延时队列" class="headerlink" title="实现延时队列"></a>实现延时队列</h4><p>在rabbitmq中不存在延时队列，但是我们可以通过设置消息的过期时间和死信队列来模拟出延时队列。消费者监听死信交换器绑定的队列，而不要监听消息发送的队列</p>
+<p>场景：用户在系统中创建一个订单，如果超过时间用户没有进行支付，那么自动取消订单</p>
+<h4 id="消息如何被优先消费"><a href="#消息如何被优先消费" class="headerlink" title="消息如何被优先消费"></a>消息如何被优先消费</h4><p>可以设置消息优先级</p>
+<h4 id="如何保证消息顺序性"><a href="#如何保证消息顺序性" class="headerlink" title="如何保证消息顺序性"></a>如何保证消息顺序性</h4><p>每个队列有一个消费者</p>
+<p>否则只能通过全局ID实现（每条消息都一个msgId，关联的消息拥有一个parentMsgId。可以在消费端实现前一条消息未消费，不处理下一条消息；也可以在生产端实现前一条消息未处理完毕，不发布下一条消息）</p>
+<h4 id="多个消费者监听一个队列"><a href="#多个消费者监听一个队列" class="headerlink" title="多个消费者监听一个队列"></a>多个消费者监听一个队列</h4><p>轮询: 默认的策略，消费者轮流，平均地接收消息<br>公平分发: 根据消费者的能力来分发消息，给空闲的消费者发送更多消息</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag"># 消息队列</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/12/%E5%85%B3%E4%BA%8ELinux%20buff_cache%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/" rel="prev" title="关于Linux buff/cache缓存处理">
+                  <i class="fa fa-angle-left"></i> 关于Linux buff/cache缓存处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/08/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" rel="next" title="时间复杂度与空间复杂度">
+                  时间复杂度与空间复杂度 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="go的字典树实现，前缀树，以及相关问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字典树，前缀树">
+<meta property="og:url" content="https://zypuu.github.io/2021/03/26/%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%8C%E5%89%8D%E7%BC%80%E6%A0%91/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="go的字典树实现，前缀树，以及相关问题">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-03-26T07:53:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.057Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/03/26/%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%8C%E5%89%8D%E7%BC%80%E6%A0%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/03/26/%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%8C%E5%89%8D%E7%BC%80%E6%A0%91/","path":"2021/03/26/字典树，前缀树/","title":"字典树，前缀树"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>字典树，前缀树 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#trie-%E5%AD%97%E5%85%B8%E6%A0%91%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">trie 字典树实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E4%BC%BC%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="nav-number">2.</span> <span class="nav-text">类似二叉树的层序遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E8%AF%8D%E6%90%9C%E7%B4%A2"><span class="nav-number">3.</span> <span class="nav-text">单词搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E8%AF%8D%E6%90%9C%E7%B4%A2II"><span class="nav-number">4.</span> <span class="nav-text">单词搜索II</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/03/26/%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%8C%E5%89%8D%E7%BC%80%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="字典树，前缀树 | All-Nothing">
+      <meta itemprop="description" content="go的字典树实现，前缀树，以及相关问题">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字典树，前缀树
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-26 15:53:00" itemprop="dateCreated datePublished" datetime="2021-03-26T15:53:00+08:00">2021-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">go的字典树实现，前缀树，以及相关问题</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="trie-字典树实现"><a href="#trie-字典树实现" class="headerlink" title="trie 字典树实现"></a>trie 字典树实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">type Trie struct &#123;</span><br><span class="line">    isEnd       bool</span><br><span class="line">    children    [<span class="number">26</span>]*Trie</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">func Constructor() Trie &#123;</span><br><span class="line">    <span class="keyword">return</span> Trie&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">func (<span class="built_in">this</span> *Trie) <span class="function"><span class="title">Insert</span>(<span class="params">word string</span>)</span>  &#123;</span><br><span class="line">    root := <span class="built_in">this</span></span><br><span class="line">    <span class="comment">// 每个单词字符处理，是nil的话就新建</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(word); i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> root.children[word[i] - <span class="string">&#x27;a&#x27;</span>] == nil &#123;</span><br><span class="line">            root.children[word[i] - <span class="string">&#x27;a&#x27;</span>] = &amp;Trie&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 不是nil就更新下一节点去遍历</span></span><br><span class="line">        root = root.children[word[i] - <span class="string">&#x27;a&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最后一个节点是单词结尾</span></span><br><span class="line">    root.isEnd = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">func (<span class="built_in">this</span> *Trie) Search(word string) bool &#123;</span><br><span class="line">    root := <span class="built_in">this</span></span><br><span class="line">    <span class="comment">// 搜索与插入类似，是nil的话直接返回false</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(word); i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> root.children[word[i] - <span class="string">&#x27;a&#x27;</span>] == nil &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        root = root.children[word[i] - <span class="string">&#x27;a&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最后判断是前缀，还是完整单词</span></span><br><span class="line">    <span class="keyword">if</span> root.isEnd != <span class="literal">true</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">func (<span class="built_in">this</span> *Trie) StartsWith(prefix string) bool &#123;</span><br><span class="line">    root := <span class="built_in">this</span></span><br><span class="line">    <span class="comment">// 只判断前缀，不需要判断完整单词</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(prefix); i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> root.children[prefix[i] - <span class="string">&#x27;a&#x27;</span>] == nil &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        root = root.children[prefix[i] - <span class="string">&#x27;a&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your Trie object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * obj := Constructor();</span></span><br><span class="line"><span class="comment"> * obj.Insert(word);</span></span><br><span class="line"><span class="comment"> * param_2 := obj.Search(word);</span></span><br><span class="line"><span class="comment"> * param_3 := obj.StartsWith(prefix);</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="类似二叉树的层序遍历"><a href="#类似二叉树的层序遍历" class="headerlink" title="类似二叉树的层序遍历"></a>类似二叉树的层序遍历</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dfs</span></span><br><span class="line">func levelOrder(root *TreeNode) [][]int &#123;</span><br><span class="line">    res := [][]int&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> dfs func(*TreeNode, int)</span><br><span class="line">    dfs = <span class="function"><span class="title">func</span>(<span class="params">root *TreeNode, l int</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> l == <span class="function"><span class="title">len</span>(<span class="params">res</span>)</span> &#123;</span><br><span class="line">            res = append(res, []int&#123;&#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        res[l] = append(res[l], root.Val)</span><br><span class="line">        <span class="keyword">if</span> root.Left != nil &#123; dfs(root.Left, l + <span class="number">1</span>) &#125;</span><br><span class="line">        <span class="keyword">if</span> root.Right != nil &#123; dfs(root.Right, l + <span class="number">1</span>) &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(root, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bfs</span></span><br><span class="line">func levelOrder(root *TreeNode) [][]int &#123;</span><br><span class="line">    res := [][]int&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    q := []*TreeNode&#123;root&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> len(q) &gt; <span class="number">0</span> &#123;</span><br><span class="line">        qLen := len(q)</span><br><span class="line">        curRes := []int&#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; qLen; i++ &#123;</span><br><span class="line">            node := q[<span class="number">0</span>]</span><br><span class="line">            q = q[<span class="number">1</span>:]</span><br><span class="line">            curRes = append(curRes, node.Val)</span><br><span class="line">            <span class="keyword">if</span> node.Left != nil &#123; q = append(q, node.Left) &#125;</span><br><span class="line">            <span class="keyword">if</span> node.Right != nil &#123; q = append(q, node.Right) &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        res = append(res, curRes)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意判断边界条件，开始的root是否为nil， root的left，right是否为nil</p>
+<h3 id="单词搜索"><a href="#单词搜索" class="headerlink" title="单词搜索"></a>单词搜索</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dfs</span></span><br><span class="line">func exist(board [][]byte, word string) bool &#123;</span><br><span class="line">    dirI := []int&#123;-<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line">    dirJ := []int&#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> dfs func(int, int, int) bool</span><br><span class="line">    dfs = func(i, j, l int) bool &#123;</span><br><span class="line">        <span class="keyword">if</span> board[i][j] != word[l] &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> l == len(word) - <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        board[i][j] = <span class="string">&#x27; &#x27;</span></span><br><span class="line">        defer <span class="function"><span class="title">func</span>(<span class="params">i, j int, b byte</span>)</span>  &#123; board[i][j] = b &#125;(i, j, word[l])</span><br><span class="line">        <span class="keyword">for</span> k := <span class="number">0</span>; k &lt; <span class="number">4</span>; k++ &#123;</span><br><span class="line">            newI := i + dirI[k]</span><br><span class="line">            newJ := j + dirJ[k]</span><br><span class="line">            <span class="keyword">if</span> newI &gt;= <span class="number">0</span> &amp;&amp; newJ &gt;= <span class="number">0</span> &amp;&amp; newI &lt; len(board) &amp;&amp; newJ &lt; len(board[<span class="number">0</span>]) &amp;&amp; board[newI][newJ] != <span class="string">&#x27; &#x27;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> <span class="function"><span class="title">dfs</span>(<span class="params">newI, newJ, l + <span class="number">1</span></span>)</span> &#123; <span class="keyword">return</span> <span class="literal">true</span> &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(board); i++ &#123;</span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; len(board[<span class="number">0</span>]); j++ &#123;</span><br><span class="line">            <span class="keyword">if</span> board[i][j] == word[<span class="number">0</span>] &#123;</span><br><span class="line">                <span class="keyword">if</span> <span class="function"><span class="title">dfs</span>(<span class="params">i, j, <span class="number">0</span></span>)</span> &#123; <span class="keyword">return</span> <span class="literal">true</span> &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Trie 字典树， 注释看单词搜索2，一样</span></span><br><span class="line">type Trie struct &#123;</span><br><span class="line">    isEnd bool</span><br><span class="line">    childrens [<span class="number">58</span>]*Trie</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func exist(board [][]byte, word string) bool &#123;</span><br><span class="line">    root := &amp;Trie&#123;&#125;</span><br><span class="line">    node := root</span><br><span class="line">    <span class="keyword">for</span> _, <span class="attr">v</span> := range word &#123;</span><br><span class="line">        <span class="keyword">if</span> node.childrens[v - <span class="string">&#x27;A&#x27;</span>] == nil &#123;</span><br><span class="line">            node.childrens[v - <span class="string">&#x27;A&#x27;</span>] = &amp;Trie&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        node = node.childrens[v - <span class="string">&#x27;A&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    node.isEnd = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    dirx := []int&#123;-<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>&#125;</span><br><span class="line">    diry := []int&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> dfs func(x, y int, root *Trie) bool</span><br><span class="line">    dfs = func(x, y int, root *Trie) bool &#123;</span><br><span class="line">        <span class="keyword">if</span> x &lt; <span class="number">0</span> || y &lt; <span class="number">0</span> || x == len(board) || y == <span class="function"><span class="title">len</span>(<span class="params">board[<span class="number">0</span>]</span>)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        cur := board[x][y]</span><br><span class="line">        <span class="keyword">if</span> cur == <span class="string">&#x27; &#x27;</span> || root.childrens[cur - <span class="string">&#x27;A&#x27;</span>] == nil &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        root = root.childrens[cur - <span class="string">&#x27;A&#x27;</span>]</span><br><span class="line">        <span class="keyword">if</span> root.isEnd &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        board[x][y] = <span class="string">&#x27; &#x27;</span></span><br><span class="line">        <span class="keyword">for</span> p := <span class="number">0</span>; p &lt; <span class="number">4</span>; p++ &#123;</span><br><span class="line">            <span class="keyword">if</span> <span class="function"><span class="title">dfs</span>(<span class="params">x + dirx[p], y + diry[p], root</span>)</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        board[x][y] = cur</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> x := <span class="number">0</span>; x &lt; len(board); x++ &#123;</span><br><span class="line">        <span class="keyword">for</span> y := <span class="number">0</span>; y &lt; len(board[<span class="number">0</span>]); y++ &#123;</span><br><span class="line">            <span class="keyword">if</span> <span class="function"><span class="title">dfs</span>(<span class="params">x, y, root</span>)</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="单词搜索II"><a href="#单词搜索II" class="headerlink" title="单词搜索II"></a>单词搜索II</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//dfs</span></span><br><span class="line">func findWords(board [][]byte, words []string) []string &#123;</span><br><span class="line">    m := len(board)</span><br><span class="line">    n := len(board[<span class="number">0</span>])</span><br><span class="line">    res := make([]string, <span class="number">0</span>, len(words))</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(words); i++ &#123;</span><br><span class="line">        flag := <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; m; j++ &#123;</span><br><span class="line">            <span class="keyword">for</span> k := <span class="number">0</span>; k &lt; n; k++ &#123;</span><br><span class="line">                flag = dfs(board, words, j, k, i, <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">if</span> flag &#123; <span class="keyword">break</span> &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> flag &#123; <span class="keyword">break</span> &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> flag &#123; res = append(res, words[i]) &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> dirx = []int&#123;-<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line"><span class="keyword">var</span> diry = []int&#123;<span class="number">0</span>, <span class="number">0</span> ,-<span class="number">1</span>, <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line">func dfs(board [][]byte, words []string, j, k, i, t int) bool &#123;</span><br><span class="line">    <span class="keyword">if</span> board[j][k] != words[i][t] &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> t == len(words[i]) - <span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    board[j][k] = <span class="string">&#x27; &#x27;</span></span><br><span class="line">    <span class="comment">// 还原board</span></span><br><span class="line">    defer <span class="function"><span class="title">func</span>(<span class="params">j, k int, b byte</span>)</span> &#123; board[j][k] = b &#125; (j, k, words[i][t])</span><br><span class="line">    <span class="keyword">for</span> d := <span class="number">0</span>; d &lt; <span class="number">4</span>; d++ &#123;</span><br><span class="line">        newJ := j + dirx[d]</span><br><span class="line">        newK := k + diry[d]</span><br><span class="line">        <span class="keyword">if</span> newJ &gt;= <span class="number">0</span> &amp;&amp; newK &gt;= <span class="number">0</span> &amp;&amp; newJ &lt; len(board) &amp;&amp; newK &lt; len(board[<span class="number">0</span>]) &amp;&amp; board[newJ][newK] != <span class="string">&#x27; &#x27;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> <span class="function"><span class="title">dfs</span>(<span class="params">board, words, newJ, newK, i, t + <span class="number">1</span></span>)</span> &#123; <span class="keyword">return</span> <span class="literal">true</span> &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// trie树方法</span></span><br><span class="line"><span class="comment">// 创建字典树</span></span><br><span class="line">type Trie struct &#123;</span><br><span class="line">    word string</span><br><span class="line">    childrens [<span class="number">26</span>]*Trie</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 方向</span></span><br><span class="line"><span class="keyword">var</span> dirx = []int&#123;-<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line"><span class="keyword">var</span> diry = []int&#123;<span class="number">0</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">1</span>&#125;</span><br><span class="line"><span class="comment">// 主函数</span></span><br><span class="line">func findWords(board [][]byte, words []string) []string &#123;</span><br><span class="line">    res := []string&#123;&#125;</span><br><span class="line">    <span class="comment">// 初始化root</span></span><br><span class="line">    root := &amp;Trie&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> _, <span class="attr">v</span> := range words &#123;</span><br><span class="line">    	<span class="comment">// 每个单词重新从root开始</span></span><br><span class="line">        node := root</span><br><span class="line">        <span class="comment">// 插入字典树</span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(v); i++ &#123;</span><br><span class="line">            <span class="keyword">if</span> node.childrens[v[i] - <span class="string">&#x27;a&#x27;</span>] == nil &#123;</span><br><span class="line">                node.childrens[v[i] - <span class="string">&#x27;a&#x27;</span>] = &amp;Trie&#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            node = node.childrens[v[i] - <span class="string">&#x27;a&#x27;</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        node.word = v</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 递归</span></span><br><span class="line">    <span class="keyword">var</span> dfs func(x, y int, root *Trie)</span><br><span class="line">    dfs = <span class="function"><span class="title">func</span>(<span class="params">x, y int, root *Trie</span>)</span> &#123;</span><br><span class="line">    	<span class="comment">// 超出边界，return</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; <span class="number">0</span> || y &lt; <span class="number">0</span> || x == len(board) || y == <span class="function"><span class="title">len</span>(<span class="params">board[<span class="number">0</span>]</span>)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 取当前点</span></span><br><span class="line">        cur := board[x][y]</span><br><span class="line">        <span class="comment">// 如果当前点使用过，或者不在字典树里，则return</span></span><br><span class="line">        <span class="keyword">if</span> cur == <span class="string">&#x27; &#x27;</span> || root.childrens[cur - <span class="string">&#x27;a&#x27;</span>] == nil &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 在字典树里，且没有使用过，则更新到下一个节点</span></span><br><span class="line">        root = root.childrens[cur - <span class="string">&#x27;a&#x27;</span>]</span><br><span class="line">        <span class="comment">// 如果到结束，找到单词，加入结果</span></span><br><span class="line">        <span class="keyword">if</span> root.word != <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">            res = append(res, root.word)</span><br><span class="line">            root.word = <span class="string">&quot;&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 标记防止重复</span></span><br><span class="line">        board[x][y] = <span class="string">&#x27; &#x27;</span></span><br><span class="line">        <span class="comment">// 继续dfs</span></span><br><span class="line">        <span class="keyword">for</span> p := <span class="number">0</span>; p &lt; <span class="number">4</span>; p++ &#123;</span><br><span class="line">            dfs(x + dirx[p], y + diry[p], root)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 还原</span></span><br><span class="line">        board[x][y] = cur</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历 dfs</span></span><br><span class="line">    <span class="keyword">for</span> x := <span class="number">0</span>; x &lt; len(board); x++ &#123;</span><br><span class="line">        <span class="keyword">for</span> y := <span class="number">0</span>; y &lt; len(board[<span class="number">0</span>]); y++ &#123;</span><br><span class="line">            dfs(x, y, root)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>单词搜索II，字典树方法的时间复杂度<br>O（m * n * 4^L）m,n是二维网格的长宽，L是单词的平均长度</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/26/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9B%B8%E5%85%B3/" rel="prev" title="位运算相关">
+                  <i class="fa fa-angle-left"></i> 位运算相关
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/26/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="next" title="并查集">
+                  并查集 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

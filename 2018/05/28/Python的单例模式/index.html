@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Python的设计模式，单例模式简介以及如何实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的单例模式">
+<meta property="og:url" content="https://zypuu.github.io/2018/05/28/Python%E7%9A%84%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="Python的设计模式，单例模式简介以及如何实现">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-05-28T12:21:03.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.030Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2018/05/28/Python%E7%9A%84%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2018/05/28/Python%E7%9A%84%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/","path":"2018/05/28/Python的单例模式/","title":"Python的单例模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python的单例模式 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">什么是单例模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">实现单例的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97"><span class="nav-number">2.1.</span> <span class="nav-text">模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">使用装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">使用类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">2.3.1.</span> <span class="nav-text">优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B"><span class="nav-number">2.4.</span> <span class="nav-text">__new__方法实现单例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%B1%BB%E5%88%9B%E5%BB%BA%E5%8D%95%E4%BE%8B"><span class="nav-number">2.5.</span> <span class="nav-text">元类创建单例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2018/05/28/Python%E7%9A%84%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python的单例模式 | All-Nothing">
+      <meta itemprop="description" content="Python的设计模式，单例模式简介以及如何实现">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python的单例模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-05-28 20:21:03" itemprop="dateCreated datePublished" datetime="2018-05-28T20:21:03+08:00">2018-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Python的设计模式，单例模式简介以及如何实现</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="什么是单例模式"><a href="#什么是单例模式" class="headerlink" title="什么是单例模式"></a>什么是单例模式</h2><p>顾名思义：就是单个模式</p>
+<p>单例模式是一种常见的软件设置模式，在它的核心结构中只包含一个被称为单例类的特殊类，通过单例模式可以保证系统中的一个类只有一个实例而且该实例易于外界访问，从而方便对实例个数的控制并节约系统资源。如果希望在系统中某个对象只能存在一个，单例模式是最好的解决方案。</p>
+<p>比如，某个服务器程序的配置信息存放在一个文件中，客户端通过一个 AppConfig 的类来读取配置文件的信息。如果在程序运行期间，有很多地方都需要使用配置文件的内容，也就是说，很多地方都需要创建 AppConfig 对象的实例，这就导致系统中存在多个 AppConfig 的实例对象，而这样会严重浪费内存资源，尤其是在配置文件内容很多的情况下。事实上，类似 AppConfig 这样的类，我们希望在程序运行期间只存在一个实例对象。</p>
+<p>单例模式的要点有三类</p>
+<p>某个类只能有一个实例<br>它必须创建这个实例<br>它必须自行向整个系统提供这个实例</p>
+<h2 id="实现单例的方法"><a href="#实现单例的方法" class="headerlink" title="实现单例的方法"></a>实现单例的方法</h2><h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>其实，Python 的模块就是天然的单例模式，因为模块在第一次导入时，会生成 .pyc 文件，当第二次导入时，就会直接加载 .pyc 文件，而不会再次执行模块代码。因此，我们只需把相关的函数和数据定义在一个模块中，就可以获得一个单例对象了。</p>
+<h3 id="使用装饰器"><a href="#使用装饰器" class="headerlink" title="使用装饰器"></a>使用装饰器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">def Singleton(cls):</span><br><span class="line">    _instance = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    def _singleton(*args, **kargs):</span><br><span class="line">        <span class="keyword">if</span> cls not <span class="keyword">in</span> _instance:</span><br><span class="line">            _instance[cls] = cls(*args, **kargs)</span><br><span class="line">        <span class="keyword">return</span> _instance[cls]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _singleton</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Singleton</span><br><span class="line">class A(object):</span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    def __init__(self, x=<span class="number">0</span>):</span><br><span class="line">        self.x = x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a1 = A(<span class="number">2</span>)</span><br><span class="line">a2 = A(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用类"><a href="#使用类" class="headerlink" title="使用类"></a>使用类</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Singleton(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def instance(cls, *args, **kwargs):</span><br><span class="line">        <span class="keyword">if</span> not hasattr(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">            Singleton._instance = Singleton(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> Singleton._instance</span><br></pre></td></tr></table></figure>
+<p>但是这种情况下，多线程是无法使用的，存在问题</p>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Singleton(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def instance(cls, *args, **kwargs):</span><br><span class="line">        <span class="keyword">if</span> not hasattr(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">            Singleton._instance = Singleton(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> Singleton._instance</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">def task(arg):</span><br><span class="line">    obj = Singleton.instance()</span><br><span class="line">    print(obj)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    t = threading.Thread(target=task,args=[i,])</span><br><span class="line">    t.start()</span><br></pre></td></tr></table></figure>
+<p>结果如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x02C933D0</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>看起来也没有问题，那是因为执行速度过快，如果在init方法中有一些IO操作，就会发现问题了，下面我们通过time.sleep模拟</p>
+<p>我们在上面__init__方法中加入以下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def __init__(self):</span><br><span class="line">       <span class="keyword">import</span> time</span><br><span class="line">       time.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>结果如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;__main__.Singleton object at <span class="number">0x034A3410</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034BB990</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034BB910</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034ADED0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034E6BD0</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034E6C10</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034E6B90</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034BBA30</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034F6B90</span>&gt;</span><br><span class="line">&lt;__main__.Singleton object at <span class="number">0x034E6A90</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>这时就发现问题，按照以上方式创建的单例，无法支持多线程</p>
+<p>解决办法：加锁！未加锁部分并发执行,加锁部分串行执行,速度降低,但是保证了数据安全</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">class Singleton(object):</span><br><span class="line">    _instance_lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def instance(cls, *args, **kwargs):</span><br><span class="line">        <span class="keyword">with</span> Singleton._instance_lock:</span><br><span class="line">            <span class="keyword">if</span> not hasattr(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">                Singleton._instance = Singleton(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> Singleton._instance</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def task(arg):</span><br><span class="line">    obj = Singleton.instance()</span><br><span class="line">    print(obj)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    t = threading.Thread(target=task,args=[i,])</span><br><span class="line">    t.start()</span><br><span class="line">time.sleep(<span class="number">20</span>)</span><br><span class="line">obj = Singleton.instance()</span><br><span class="line">print(obj)</span><br></pre></td></tr></table></figure>
+<p>这样就差不多了，但是还是有一点小问题，就是当程序执行时，执行了time.sleep(20)后，下面实例化对象时，此时已经是单例模式了，但我们还是加了锁，这样不太好，再进行一些优化，把intance方法，改成下面的这样就行：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@classmethod</span><br><span class="line">   def instance(cls, *args, **kwargs):</span><br><span class="line">       <span class="keyword">if</span> not hasattr(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">           <span class="keyword">with</span> Singleton._instance_lock:</span><br><span class="line">               <span class="keyword">if</span> not hasattr(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">                   Singleton._instance = Singleton(*args, **kwargs)</span><br><span class="line">       <span class="keyword">return</span> Singleton._instance</span><br></pre></td></tr></table></figure>
+<p>这样，一个可以支持多线程的单例模式就完成了</p>
+<h3 id="new-方法实现单例"><a href="#new-方法实现单例" class="headerlink" title="__new__方法实现单例"></a>__new__方法实现单例</h3><p>我们知道，当我们实例化一个对象时，是先执行了类的__new__方法（我们没写时，默认调用object.__new__），实例化对象；然后再执行类的__init__方法，对这个对象进行初始化，所有我们可以基于这个，实现单例模式。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">class Singleton(object):</span><br><span class="line">    _instance_lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    def __new__(cls, *args, **kwargs):</span><br><span class="line">        <span class="keyword">if</span> not hasattr(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">            <span class="keyword">with</span> Singleton._instance_lock:</span><br><span class="line">                <span class="keyword">if</span> not hasattr(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">                    Singleton._instance = object.__new__(cls)  </span><br><span class="line">        <span class="keyword">return</span> Singleton._instance</span><br><span class="line"></span><br><span class="line">obj1 = Singleton()</span><br><span class="line">obj2 = Singleton()</span><br><span class="line">print(obj1,obj2)</span><br><span class="line"></span><br><span class="line">def task(arg):</span><br><span class="line">    obj = Singleton()</span><br><span class="line">    print(obj)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    t = threading.Thread(target=task,args=[i,])</span><br><span class="line">    t.start()</span><br></pre></td></tr></table></figure>
+<p>结果如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;__main__.Singleton object at <span class="number">0x038B33D0</span>&gt; <span class="xml"><span class="tag">&lt;<span class="name">__main__.Singleton</span> <span class="attr">object</span> <span class="attr">at</span> <span class="attr">0x038B33D0</span>&gt;</span></span></span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x038B33D0&gt;</span><br></pre></td></tr></table></figure>
+<p>采用这种方式的单例模式，以后实例化对象时，和平时实例化对象的方法一样 obj = Singleton() </p>
+<h3 id="元类创建单例"><a href="#元类创建单例" class="headerlink" title="元类创建单例"></a>元类创建单例</h3><p>1.类由type创建，创建类时，type的<strong>init__方法自动执行，类() 执行type的 __call__方法(类的__new__方法,类的__init__方法)<br>2.对象由类创建，创建对象时，类的__init__方法自动执行，对象()执行类的 __call</strong> 方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">class SingletonType(type):</span><br><span class="line">    _instance_lock = threading.Lock()</span><br><span class="line">    def __call__(cls, *args, **kwargs):</span><br><span class="line">        <span class="keyword">if</span> not hasattr(cls, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">            <span class="keyword">with</span> SingletonType._instance_lock:</span><br><span class="line">                <span class="keyword">if</span> not hasattr(cls, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">                    cls._instance = <span class="built_in">super</span>(SingletonType,cls).__call__(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>(<span class="title">metaclass</span></span>=SingletonType):</span><br><span class="line">    def __init__(self,name):</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">obj1 = Foo(<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">obj2 = Foo(<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">print(obj1,obj2)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/26/%E5%85%B3%E4%BA%8ECelery%E7%9A%84%E5%BC%82%E6%AD%A5%E6%9C%8D%E5%8A%A1%E4%BD%BF%E7%94%A8/" rel="prev" title="关于Celery的异步服务使用">
+                  <i class="fa fa-angle-left"></i> 关于Celery的异步服务使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/06/02/RestFul%E8%AE%BE%E8%AE%A1%E8%A7%84%E5%88%99/" rel="next" title="RestFul设计规则">
+                  RestFul设计规则 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

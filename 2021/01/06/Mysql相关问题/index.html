@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="mysql相关问题汇总">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql相关问题">
+<meta property="og:url" content="https://zypuu.github.io/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="mysql相关问题汇总">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/1.jpg">
+<meta property="article:published_time" content="2021-01-06T06:56:14.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.029Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/","path":"2021/01/06/Mysql相关问题/","title":"Mysql相关问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Mysql相关问题 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-B-%E6%A0%91%E6%AF%94-B-%E6%A0%91%E6%9B%B4%E9%80%82%E5%90%88%E5%BA%94%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95"><span class="nav-number">1.</span> <span class="nav-text">为什么 B+ 树比 B 树更适合应用于数据库索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E7%B4%A2%E5%BC%95"><span class="nav-number">1.1.</span> <span class="nav-text">哈希索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">二分查找优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">1.3.</span> <span class="nav-text">二叉搜索树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AVL%E6%A0%91"><span class="nav-number">1.4.</span> <span class="nav-text">AVL树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B%E6%A0%91"><span class="nav-number">1.5.</span> <span class="nav-text">B树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E6%A0%91"><span class="nav-number">1.6.</span> <span class="nav-text">B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B%E6%A0%91%E4%B8%8EB-%E6%A0%91%E5%8C%BA%E5%88%AB"><span class="nav-number">1.7.</span> <span class="nav-text">B树与B+树区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9B%B4%E9%80%82%E5%90%88B-%E6%A0%91"><span class="nav-number">1.8.</span> <span class="nav-text">为什么更适合B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E6%A0%91-1"><span class="nav-number">1.9.</span> <span class="nav-text">B* 树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9B%B8%E5%85%B3"><span class="nav-number">2.</span> <span class="nav-text">索引相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-number">2.1.</span> <span class="nav-text">索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E4%BC%98%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">索引优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95%EF%BC%8C%E9%9D%9E%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95%EF%BC%8C%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95"><span class="nav-number">2.3.</span> <span class="nav-text">聚集索引，非聚集索引，覆盖索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%EF%BC%8C%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99"><span class="nav-number">2.4.</span> <span class="nav-text">联合索引，最左匹配原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%94%9F%E6%95%88%EF%BC%8C%E5%A4%B1%E6%95%88%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.5.</span> <span class="nav-text">索引生效，失效条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%BA%93DDL%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">大库DDL操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E8%A1%A8%E4%BC%98%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">大表优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%85%E5%A4%A7%E5%88%86%E9%A1%B5%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">超大分页问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B5%E5%90%91%E5%88%86%E8%A1%A8%E4%B8%8E%E6%A8%AA%E5%90%91%E5%88%86%E8%A1%A8"><span class="nav-number">6.</span> <span class="nav-text">纵向分表与横向分表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E8%A7%A3%E5%86%B3"><span class="nav-number">6.1.</span> <span class="nav-text">分布式解决</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">7.</span> <span class="nav-text">mysql隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%8F%E8%AF%BB"><span class="nav-number">7.1.</span> <span class="nav-text">脏读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%A4%8D%E5%BA%A6%E3%80%81%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB"><span class="nav-number">7.2.</span> <span class="nav-text">可重复度、不可重复读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%BB%E8%AF%BB"><span class="nav-number">7.3.</span> <span class="nav-text">幻读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">7.4.</span> <span class="nav-text">隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4"><span class="nav-number">7.4.1.</span> <span class="nav-text">读未提交</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%BB%E6%8F%90%E4%BA%A4"><span class="nav-number">7.4.2.</span> <span class="nav-text">读提交</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%A4%8D%E5%BA%A6"><span class="nav-number">7.4.3.</span> <span class="nav-text">可重复度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%B2%E8%A1%8C%E5%8C%96"><span class="nav-number">7.4.4.</span> <span class="nav-text">串行化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E6%9D%A1sql%E8%AF%AD%E5%8F%A5%E6%98%AF%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8C%E7%9A%84"><span class="nav-number">8.</span> <span class="nav-text">一条sql语句是如何执行的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E4%B8%8E%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text">主从复制与一致性问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86"><span class="nav-number">10.</span> <span class="nav-text">主从复制原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%90%E8%A7%82%E9%94%81%EF%BC%8C%E6%82%B2%E8%A7%82%E9%94%81"><span class="nav-number">11.</span> <span class="nav-text">乐观锁，悲观锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#explain%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="nav-number">12.</span> <span class="nav-text">explain分析查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE"><span class="nav-number">13.</span> <span class="nav-text">优化数据访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98%E7%9A%84%E9%97%AE%E9%A2%98QC"><span class="nav-number">14.</span> <span class="nav-text">查询缓存的问题QC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96like%E6%9F%A5%E8%AF%A2"><span class="nav-number">15.</span> <span class="nav-text">优化like查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%961%EF%BC%9Aicp"><span class="nav-number">15.1.</span> <span class="nav-text">优化1：icp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%962%EF%BC%9A%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95"><span class="nav-number">15.2.</span> <span class="nav-text">优化2：全文索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%963%EF%BC%9A%E7%94%9F%E6%88%90%E5%88%97"><span class="nav-number">15.3.</span> <span class="nav-text">优化3：生成列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80"><span class="nav-number">16.</span> <span class="nav-text">数据库基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81delete%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="nav-number">17.</span> <span class="nav-text">不要delete删除数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E9%94%AE%E8%BE%BE%E5%88%B0%E4%B8%8A%E9%99%90"><span class="nav-number">18.</span> <span class="nav-text">主键达到上限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#count-%E5%92%8Ccount-1%E4%B8%8D%E6%98%AF%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F"><span class="nav-number">19.</span> <span class="nav-text">count * 和count 1不是全表扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#binlog-redolog-undolog"><span class="nav-number">20.</span> <span class="nav-text">binlog redolog undolog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC"><span class="nav-number">21.</span> <span class="nav-text">MVCC</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Mysql相关问题 | All-Nothing">
+      <meta itemprop="description" content="mysql相关问题汇总">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mysql相关问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-01-06 14:56:14" itemprop="dateCreated datePublished" datetime="2021-01-06T14:56:14+08:00">2021-01-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>9.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">mysql相关问题汇总</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="为什么-B-树比-B-树更适合应用于数据库索引"><a href="#为什么-B-树比-B-树更适合应用于数据库索引" class="headerlink" title="为什么 B+ 树比 B 树更适合应用于数据库索引"></a>为什么 B+ 树比 B 树更适合应用于数据库索引</h3><p>查找一步步优化</p>
+<h4 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h4><p>自适应哈希索引就是用哈希表实现的，用哈希表实现索引的好处是非常明显的，查找单个指定数据只需要 O(1) 的时间复杂度</p>
+<p>但是哈希表本身是无序的，不利于范围查询</p>
+<h4 id="二分查找优化"><a href="#二分查找优化" class="headerlink" title="二分查找优化"></a>二分查找优化</h4><p>数据存有序数组，基于二分查找</p>
+<p>二分查找o(logn),范围查询可以通过二分查找实现，但是不利于插入删除</p>
+<h4 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h4><p>为了优化插入删除，引入二叉搜索树</p>
+<p>1.若任意结点的左子树不空，则左子树上所有结点的值均不大于它的根结点的值。</p>
+<p>2.若任意结点的右子树不空，则右子树上所有结点的值均不小于它的根结点的值。</p>
+<p>3.任意结点的左、右子树也分别为二叉搜索树</p>
+<p>但是当树退化，高度差过大，会导致查询变慢，二叉搜索平衡树，AVL树</p>
+<h4 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h4><p>自平衡二叉搜索树</p>
+<p>维护AVL 树也是需要一定开销的，即当树插入/更新/删除新的数据时假设破坏了树的平衡性，那么需要通过左旋和右旋来维护树的平衡</p>
+<p>AVL 树的查找效率为 O(log n)，也就是说，当树过高时，查找效率会下降</p>
+<p>索引文件并不小，所以是存储在磁盘上的。</p>
+<p>文件系统需要从磁盘读取数据时，一般以页为单位进行读取，假设一个页内的数据过少，<br>那么操作系统就需要读取更多的页，涉及磁盘随机 I/O 访问的次数就更多。</p>
+<p>树越高，每一页读取的数据就越少</p>
+<p>将数据从磁盘读入内存涉及随机 I/O 的访问，是数据库里面成本最高的操作之一</p>
+<p>AVL树既有链表的快速插入与删除操作的特点，又有数组快速查找的优势，但是这并不是最符合磁盘读写特征的数据结构</p>
+<h4 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h4><p>为了优化树高，将AVL树变为B树，二叉树变为m叉树，B树，多路平衡查找树</p>
+<p>1.排序方式：所有节点关键字是按递增次序排列，并遵循左小右大原则；</p>
+<p>2.子节点数：非叶节点的子节点数&gt;1，且&lt;=M ，且M&gt;=2，空树除外（注：M阶代表一个树节点最多有多少个查找路径，M=M路,当M=2则是2叉树,M=3则是3叉）；</p>
+<p>3.关键字数：枝节点的关键字数量大于等于ceil(m/2)-1个且小于等于M-1个（注：ceil()是个朝正无穷方向取整的函数 如ceil(1.1)结果为2);</p>
+<p>4.所有叶子节点均在同一层、叶子节点除了包含了关键字和关键字记录的指针外也有指向其子节点的指针只不过其指针地址都为null对应下图最后一层节点的空格子;</p>
+<p>关键字数量大于等于ceil(m/2)-1个且小于等于M-1个</p>
+<p>二叉树变成 m 叉树，这个 m 的大小可以根据单个页的大小做对应调整，从而使得一个页可以存储更多的数据，从磁盘中读取一个页可以读到的数据就更多，随机 IO 次数变少，大大提升效率</p>
+<p>B树相对于平衡二叉树的不同是，每个节点包含的关键字增多了，特别是在B树应用到数据库中的时候，数据库充分利用了磁盘块的原理（磁盘数据存储是采用块的形式存储的，每个块的大小为4K，每次IO进行数据读取时，同一个磁盘块的数据可以一次性读取出来）把节点大小限制和充分使用在磁盘快大小范围；把树的节点关键字增多后树的层级比原来的二叉树少了，减少数据查找的次数和复杂度;</p>
+<p>但是只能通过中序遍历查询全表，当进行范围查询时，可能会需要中序回溯</p>
+<h4 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h4><p>B+树在B树的基础上加了以下优化：</p>
+<p>1.叶子结点增加了指针进行连接，即叶子结点间形成了链表；</p>
+<p>2.非叶子结点只存关键字 key，不再存储数据，只在叶子结点存储数据；</p>
+<p>说明：叶子之间用双向链表连接比单向链表连接多出的好处是通过链表中任一结点都可以通过往前或者往后遍历找到链表中指定的其他结点。</p>
+<p>范围查询时可以通过访问叶子节点的链表进行有序遍历，而不再需要中序回溯访问结点。</p>
+<p>非叶子结点只存储关键字key，一方面这种结构相当于划分出了更多的范围，加快了查询速度，另一方面相当于单个索引值大小变小，同一个页可以存储更多的关键字，读取单个页就可以得到更多的关键字，可检索的范围变大了，相对 IO 读写次数就降低了。</p>
+<p>由于非叶子结点并不是最终指向文件内容的结点，而只是叶子结点中关键字的索引。所以任何关键字的查找必须走一条从根结点到叶子结点的路。所有关键字查询的路径长度相同，导致每一个数据的查询效率相当</p>
+<h4 id="B树与B-树区别"><a href="#B树与B-树区别" class="headerlink" title="B树与B+树区别"></a>B树与B+树区别</h4><p>1、B 树非叶子结点和叶子结点都存储数据,因此查询数据时，时间复杂度最好为 O(1),最坏为 O(log n)，B+树只在叶子结点存储数据，非叶子结点存储关键字，且不同非叶子结点的关键字可能重复，因此查询数据时，时间复杂度固定为 O(log n)</p>
+<p>2、B+ 树叶子结点之间用链表相互连接，因而只需扫描叶子结点的链表就可以完成一次遍历操作，B树只能通过中序遍历</p>
+<h4 id="为什么更适合B-树"><a href="#为什么更适合B-树" class="headerlink" title="为什么更适合B+树"></a>为什么更适合B+树</h4><p>1、B+ 树相比 B 树减少了 磁盘I/O 读写的次数。由于索引文件很大因此索引文件存储在磁盘上，B+ 树的非叶子结点只存关键字不存数据，因而单个页可以存储更多的关键字，即一次性读入内存的需要查找的关键字也就越多，磁盘的随机 I/O 读取次数相对就减少了</p>
+<p>2、B+树查询效率更加稳定，只查叶子节点，稳定ologn</p>
+<p>3、范围查询，扫表，因为叶子节点是双向链表连接，方便范围查询，B树只能中序遍历</p>
+<h4 id="B-树-1"><a href="#B-树-1" class="headerlink" title="B* 树"></a>B* 树</h4><p>优化了B+树的子节点关键字个数，2/3m</p>
+<p>B+树节点满的时候会分裂，B* 树，存有兄弟节点的指针，B* 树节点满时会检查兄弟节点是否满， 不满就放到兄弟节点，都满了，就各拿出1/3得到新的节点</p>
+<p>从平衡二叉树、B树、B+树、B* 树总体来看它们的贯彻的思想是相同的，都是采用二分法和数据平衡策略来提升查找数据的速度</p>
+<p>不同点是他们一个一个在演变的过程中通过IO从磁盘读取数据的原理进行一步步的演变，每一次演变都是为了让节点的空间更合理的运用起来，从而使树的层级减少达到快速查找数据的目的</p>
+<h3 id="索引相关"><a href="#索引相关" class="headerlink" title="索引相关"></a>索引相关</h3><h4 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h4><p>快速访问数据表中的特定信息，提高检索速度<br>创建唯一性索引，保证数据库表中每一行数据的唯一性</p>
+<p>创建索引和维护索引需要耗费时间，这个时间随着数据量的增加而增加；索引需要占用物理空间，不光是表需要占用数据空间，每个索引也需要占用物理空间；当对表进行增、删、改、的时候索引也要动态维护，这样就降低了数据的维护速度</p>
+<p>在最频繁使用的、用以缩小查询范围的字段上建立索引。</p>
+<p>在频繁使用的、需要排序的字段上建立索引</p>
+<p>对于查询中很少涉及的列或者重复值比较多的列，不宜建立索引</p>
+<p>特殊字段text，不宜建立索引</p>
+<h4 id="索引优点"><a href="#索引优点" class="headerlink" title="索引优点"></a>索引优点</h4><p>大大减少了服务器需要扫描的数据行数。</p>
+<p>帮助服务器避免进行排序和分组，以及避免创建临时表（B+Tree 索引是有序的，可以用于 ORDER BY 和 GROUP BY 操作。临时表主要是在排序和分组过程中创建，不需要排序和分组，也就不需要创建临时表）。</p>
+<p>将随机 I/O 变为顺序 I/O（B+Tree 索引是有序的，会将相邻的数据都存储在一起）</p>
+<p>索引虽然会提高查询效率，但是会降低更新表的效率。比如每次对表进行增删改操作，MySQL不仅要保存数据，还有保存或者更新对应的索引文件</p>
+<h4 id="聚集索引，非聚集索引，覆盖索引"><a href="#聚集索引，非聚集索引，覆盖索引" class="headerlink" title="聚集索引，非聚集索引，覆盖索引"></a>聚集索引，非聚集索引，覆盖索引</h4><p>索引创建的辅助索引，非主键索引，辅助索引的索引树存储的是主键ID，key是该字段，辅助索引（也成二级索引）存储的数据是主键值，称为非聚集索引</p>
+<p>主键索引，存储的是一整行的数据，key是主键ID，叫做聚集索引，即叶子节点中，存储的是整行数据</p>
+<p>如果通过辅助索引查询的数据不是主键值，要查的是整行数据，就需要通过辅助索引查到主键，再根据主键去主键索引查整行数据</p>
+<p>这个回到主键索引树上去查找的过程，叫做回表</p>
+<p>需要经过再一次的逻辑IO访问</p>
+<p>减少回表，覆盖索引</p>
+<p>不一定,这涉及到查询语句所要求的字段是否全部命中了索引,如果全部命中了索引,那么就不必再进行回表查询.</p>
+<p>再辅助索引树上完成查询就是覆盖索引，不需要回表</p>
+<p>覆盖索引不需要回表，查询操作在辅助索引树上就可以完成，减少了回表次数，因此可以减少大量的IO次数</p>
+<p>对于统计而言，假设操作在覆盖索引上可以完成，也可以减少大量的IO操作</p>
+<h4 id="联合索引，最左匹配原则"><a href="#联合索引，最左匹配原则" class="headerlink" title="联合索引，最左匹配原则"></a>联合索引，最左匹配原则</h4><p>创建了一个联合索引indext(a,b,c)，实际上是创建了三个索引</p>
+<p>MySQL建立联合索引时会遵循最左前缀匹配的原则，在检索数据时从联合索引的最左边开始匹配 </p>
+<h4 id="索引生效，失效条件"><a href="#索引生效，失效条件" class="headerlink" title="索引生效，失效条件"></a>索引生效，失效条件</h4><p>Mysql从左到右的使用索引中的字段，一个查询可以只使用索引中的一部份，但只能是最左侧部分。例如索引是key index （a,b,c）。 可以支持a | a,b| a,b,c 3种组合进行查找，但不支持 b,c进行查找 .当最左侧字段是常量引用时，索引就十分有效</p>
+<p>创建复合索引时，应该仔细考虑列的顺序。对索引中的所有列执行搜索或仅对前几列执行搜索时，复合索引非常有用；仅对后面的任意列执行搜索时，复合索引则没有用处</p>
+<p>(1)    select * from myTest  where a=3 and b=5 and c=4;   —-  abc顺序<br>abc三个索引都在where条件里面用到了，而且都发挥了作用</p>
+<p>(2)    select * from myTest  where  c=4 and b=6 and a=3;<br>where里面的条件顺序在查询之前会被mysql自动优化，效果跟上一句一样</p>
+<p>(3)    select * from myTest  where a=3 and c=7;<br>a用到索引，b没有用，所以c是没有用到索引效果的</p>
+<p>(4)    select * from myTest  where a=3 and b&gt;7 and c=3;     —- b范围值，断点，阻塞了c的索引<br>a用到了，b也用到了，c没有用到，这个地方b是范围值，也算断点，只不过自身用到了索引</p>
+<p>(5)    select * from myTest  where b=3 and c=4;   — 联合索引必须按照顺序使用，并且需要全部使用<br>因为a索引没有使用，所以这里 bc都没有用上索引效果</p>
+<p>(6)    select * from myTest  where a&gt;4 and b=7 and c=9;<br>a用到了  b没有使用，c没有使用</p>
+<p>(7)    select * from myTest  where a=3 order by b;<br>a用到了索引，b在结果排序中也用到了索引的效果，a下面任意一段的b是排好序的</p>
+<p>(8)    select * from myTest  where a=3 order by c;<br>a用到了索引，但是这个地方c没有发挥排序效果，因为中间断点了，使用 explain 可以看到 filesort</p>
+<p>(9)    select * from mytable where b=3 order by a;<br>b没有用到索引，排序中a也没有发挥索引效果</p>
+<p>不在索引列上做任何操作（计算、函数、（自动or手动）类型转换），会导致索引失效而转向全表扫描</p>
+<p>存储引擎不能使用索引范围条件右边的列</p>
+<p>尽量使用覆盖索引（只访问索引的查询（索引列和查询列一致）），减少select *</p>
+<p>mysql在使用不等于（！=或者&lt;&gt;）的时候无法使用索引会导致全表扫描</p>
+<p>is null,is not null也无法使用索引   —-  此处存在疑问，经测试确实可以使用，ref和const等级，并不是all</p>
+<p>like以通配符开头（’%abc…’）mysql索引失效会变成全表扫描的操作。</p>
+<p>所以设计索引，范围查询要放在最后面，列过滤的频繁程度越高，越放在前面</p>
+<h3 id="大库DDL操作"><a href="#大库DDL操作" class="headerlink" title="大库DDL操作"></a>大库DDL操作</h3><p>修改表结构，字段，创建表等</p>
+<p>1、不要在业务高峰期执行</p>
+<p>2、执行DDL前，先看一下库中是否有未提交的事务，注意查看事务information_schema.innodb_trx表</p>
+<p>3、随时关注服务器日志状况，已有问题要先行解决。show processlist也可以发现一些问题</p>
+<p>4、特别危险的操作一定先在预生产环境或测试环境先行模拟，评估风险。</p>
+<p>5、尽量避免 kill 会话进程，可能会在某些情况造成数据问题。</p>
+<p>6、研发时，预计表就会比较大的时候，要多评审几次，多留一些预置字段，避免DDL操作。</p>
+<h3 id="大表优化"><a href="#大表优化" class="headerlink" title="大表优化"></a>大表优化</h3><p>1、分库分表，能不分就不分</p>
+<p>MySQL 是关系数据库，数据库表之间的关系从一定的角度上映射了业务逻辑。任何分库分表的行为都会在某种程度上提升业务逻辑的复杂度</p>
+<p>分库分表会带来数据的合并，查询或者更新条件的分离，事务的分离等等多种后果，业务实现的复杂程度往往会翻倍或者指数级上升。所以，在分库分表之前，不要为分而分，去做其他力所能及的事情吧，例如升级硬件，升级，升级网络，升级数据库版本，读写分离，负载均衡等等。所有分库分表的前提是，这些你已经尽力了</p>
+<p>2、某些字段垂直拆分</p>
+<p>频繁更新的字段，拆分出去，减少update压力</p>
+<p>3、日志表，大增长表，水平拆分</p>
+<p>4、慢sql调优，慢sql记录，然后区分子服务拆分</p>
+<h3 id="超大分页问题"><a href="#超大分页问题" class="headerlink" title="超大分页问题"></a>超大分页问题</h3><p>offset并不是跳过N行，而是都查出来，舍弃前面的跳过行，当跳过很大时，就会比较慢，效率比较低</p>
+<p>先锁定id，然后关联根据id查，或者先预估数据，缓存</p>
+<h3 id="纵向分表与横向分表"><a href="#纵向分表与横向分表" class="headerlink" title="纵向分表与横向分表"></a>纵向分表与横向分表</h3><p>纵向分表：把不经常使用的，按列拆分出去，单独查询</p>
+<p>横向分表：按行分表</p>
+<h4 id="分布式解决"><a href="#分布式解决" class="headerlink" title="分布式解决"></a>分布式解决</h4><p>1、单数据库可以用本地事务搞定，使用多数据库就只能通过分布式事务解决了。</p>
+<p>常用解决方案有：基于可靠消息（MQ）的解决方案、两阶段事务提交、柔性事务</p>
+<p>2、在使用 SQL 时 order by， limit 等关键字需要特殊处理，一般来说采用分片的思路：</p>
+<p>先在每个分片上执行相应的函数，然后将各个分片的结果集进行汇总和再次计算，最终得到结果</p>
+<p>3、分库分表id问题：UUid, 号段模式</p>
+<h3 id="mysql隔离级别"><a href="#mysql隔离级别" class="headerlink" title="mysql隔离级别"></a>mysql隔离级别</h3><p>mysql事务的隔离性</p>
+<h4 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h4><p>读到了其他事务未提交的数据，未提交意味着这些数据可能会回滚，读到了最终不一定存在的数据</p>
+<h4 id="可重复度、不可重复读"><a href="#可重复度、不可重复读" class="headerlink" title="可重复度、不可重复读"></a>可重复度、不可重复读</h4><p>可重复读指的是在一个事务内，最开始读到的数据和事务结束前的任意时刻读到的同一批数据都是一致的</p>
+<p>不可重复读指的是在同一事务内，不同的时刻读到的同一批数据可能是不一样的，可能会受到其他事务的影响</p>
+<p>针对更新</p>
+<h4 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h4><p>幻读是针对数据插入（INSERT）操作来说的。假设事务A对某些行的内容作了更改，但是还未提交，此时事务B插入了与事务A更改前的记录相同的记录行，并且在事务A提交之前先提交了，而这时，在事务A中查询，会发现好像刚刚的更改对于某些数据未起作用</p>
+<h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><p>读未提交（READ UNCOMMITTED）<br>读提交 （READ COMMITTED）<br>可重复读 （REPEATABLE READ）<br>串行化 （SERIALIZABLE）</p>
+<p>隔离强度逐渐增强，性能逐渐变差</p>
+<p><img src="/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/1.jpg" alt="1"></p>
+<p>查看隔离级别<br>show variables like ‘tx_isolation’</p>
+<p>设置隔离级别<br>SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL {READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE}</p>
+<p>MySQL事务隔离其实是依靠锁来实现的，加锁自然会带来性能的损失。而读未提交隔离级别是不加锁的，所以它的性能是最好的，但同时也是安全系数最低的</p>
+<p>mysql默认可重复读</p>
+<h5 id="读未提交"><a href="#读未提交" class="headerlink" title="读未提交"></a>读未提交</h5><p>不加锁，没有隔离</p>
+<p>可以读到其他事务未提交的数据，但没有办法保证你读到的数据最终一定是提交后的数据，如果中间发生回滚，那就会出现脏数据问题</p>
+<h5 id="读提交"><a href="#读提交" class="headerlink" title="读提交"></a>读提交</h5><p>读提交就是一个事务只能读到其他事务已经提交过的数据，也就是其他事务调用 commit 命令之后的数据。但是在同一事务中，事务的不同时刻同样的查询条件，查询出来的记录内容是不一样的，事务A的提交影响了事务B的查询结果，这就是不可重复读</p>
+<h5 id="可重复度"><a href="#可重复度" class="headerlink" title="可重复度"></a>可重复度</h5><p>实现可重复度：MVVC版本控制</p>
+<p>一行记录可能实际上有多个版本，每个版本的记录除了有数据本身外，还要有一个表示版本的字段，记为 row trx_id，也就是事务id</p>
+<p>可重复读是在事务开始的时候生成一个当前事务全局性的快照，而读提交则是每次执行语句的时候都重新生成一次快照，并符合以下规则：</p>
+<p>1、当前事务内的更新，可以读到<br>2、版本未提交，不能读到<br>3、版本已提交，但是却在快照创建后提交的，不能读到<br>4、版本已提交，且是在快照创建前提交的，可以读到</p>
+<p>并发写问题：</p>
+<p>事务A执行 update 操作， update 的时候要对所修改的行加行锁，这个行锁会在提交之后才释放。而在事务A提交之前，事务B也想 update 这行数据，于是申请行锁，但是由于已经被事务A占有，事务B是申请不到的，此时，事务B就会一直处于等待状态，直到事务A提交，事务B才能继续执行，如果事务A的时间太长，那么事务B很有可能出现超时异常</p>
+<p>加锁分为有索引和无索引：有索引可以直接拿到id对该行加锁，无索引，mysql会把所有行都加锁，然后再逐一比对释放锁，开销极大，所以要合理设计索引</p>
+<p>解决幻读：</p>
+<p>使用间隙锁，mysql的底层是b+树，叶子节点是双向链表，会把索引拆分几个区间，对于操作的记录加行锁，操作记录的两边加间隙锁（Next-Key），防止其他事务插入</p>
+<p>事务不会读到其他事务对已有数据的修改，及时其他事务已提交，也就是说，事务开始时读到的已有数据是什么，在事务提交前的任意时刻，这些数据的值都是一样的。但是，对于其他事务新插入的数据是可以读到的，这也就引发了幻读问题</p>
+<h5 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h5><p>读的时候加共享锁，也就是其他事务可以并发读，但是不能写。写的时候加排它锁，其他事务不能并发写也不能并发读</p>
+<p>串行化是4种事务隔离级别中隔离效果最好的，解决了脏读、可重复读、幻读的问题，但是效果最差，它将事务的执行变为顺序执行，与其他三个隔离级别相比，它就相当于单线程，后一个事务的执行必须等待前一个事务结束</p>
+<h3 id="一条sql语句是如何执行的"><a href="#一条sql语句是如何执行的" class="headerlink" title="一条sql语句是如何执行的"></a>一条sql语句是如何执行的</h3><p>查询语句：</p>
+<p>1、检查该语句是否有权限，没有权限直接返回错误</p>
+<p>2、有权限直接查询缓存，有缓存直接返回</p>
+<p>3、分析器提取语句的关键词，确认是什么操作</p>
+<p>4、选择优化方案</p>
+<p>5、权限校验，通过则调引擎接口查询结果</p>
+<p>更新语句：</p>
+<p>先查询，然后更新，记录日志，会有两阶段记录日志，redolog， binlog两个日志 模块，解决数据一致性问题</p>
+<p>判断redo log 是否完整，如果判断是完整的，就立即提交。<br>如果redo log 只是预提交但不是commit状态，这个时候就会去判断binlog是否完整，如果完整就提交 redo log, 不完整就回滚事务</p>
+<h3 id="主从复制与一致性问题"><a href="#主从复制与一致性问题" class="headerlink" title="主从复制与一致性问题"></a>主从复制与一致性问题</h3><p>异步复制，不关心从库，直接返回</p>
+<p>同步复制，等待从库同步完毕，事务执行时间会延长，强一致性</p>
+<p>半同步复制：等待从库同步一个，写到redolog后，然后主的应答，从库剩余的写入</p>
+<h3 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h3><p>1、mysql主库事件记录在binlog</p>
+<p>2、主库将日志推到从库relog</p>
+<p>3、从库根据relog做变更操作</p>
+<h3 id="乐观锁，悲观锁"><a href="#乐观锁，悲观锁" class="headerlink" title="乐观锁，悲观锁"></a>乐观锁，悲观锁</h3><p>乐观锁：每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。乐观锁适用于多读的应用类型，这样可以提高吞吐量</p>
+<p>悲观锁：每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会block直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁</p>
+<h3 id="explain分析查询语句"><a href="#explain分析查询语句" class="headerlink" title="explain分析查询语句"></a>explain分析查询语句</h3><p>explain是否使用索引，是否使用子查询，可选择索引 ，实际使用索引，扫描的行数</p>
+<p>索引查询类型：<br>system 表只有一行</p>
+<p>const 主键，索引查询 只有一行匹配</p>
+<p>eq_ref 连接查询，只有一行</p>
+<p>ref 使用非唯一索引</p>
+<p>range 范围查询</p>
+<p>index 只扫描索引树</p>
+<p>all全表扫描</p>
+<h3 id="优化数据访问"><a href="#优化数据访问" class="headerlink" title="优化数据访问"></a>优化数据访问</h3><p>不要select * ，只返回需要的数据</p>
+<p>只返回需要的行 limit</p>
+<p>切分大查询 </p>
+<h3 id="查询缓存的问题QC"><a href="#查询缓存的问题QC" class="headerlink" title="查询缓存的问题QC"></a>查询缓存的问题QC</h3><p>同样的sql语句可以缓存，频繁更新的那种不适合缓存</p>
+<p>缓存失效比较频繁的原因就是，只要我们一对表进行更新，那这个表所有的缓存都会被清空</p>
+<h3 id="优化like查询"><a href="#优化like查询" class="headerlink" title="优化like查询"></a>优化like查询</h3><h4 id="优化1：icp"><a href="#优化1：icp" class="headerlink" title="优化1：icp"></a>优化1：icp</h4><p>like查询不能使用索引，优化：mysql ICP特性，5.6开启了</p>
+<p>关闭ICP特性情况下：</p>
+<p>storage层：只将满足index key条件的索引记录对应的整行记录取出，返回给server层</p>
+<p>server 层：对返回的数据，使用后面的where条件过滤，直至返回</p>
+<p>打开情况下：<br>storage层：</p>
+<p>首先将index key条件满足的索引记录区间确定，然后在索引上使用index filter进行过滤</p>
+<p>将满足的index filter条件的索引记录才去回表取出整行记录返回server层</p>
+<p>不满足index filter条件的索引记录丢弃，不回表、也不会返回server层</p>
+<p>server 层：对返回的数据，使用table filter条件做最后的过滤。</p>
+<p>使用ICP后，直接就去掉了不满足index filter条件的记录，</p>
+<p>省去了他们回表和传递到server层的成本</p>
+<p>优化：配合复合索引使用，利用icp特性，减少不必要的数据扫描。然而对于单列like，无法利用icp特性，但是可以覆盖索引减少回表</p>
+<h4 id="优化2：全文索引"><a href="#优化2：全文索引" class="headerlink" title="优化2：全文索引"></a>优化2：全文索引</h4><p>MySQL 5.6开始支持全文索引，可以在变长的字符串类型上创建全文索引，来加速模糊匹配业务场景的DML操作</p>
+<p>优化查找字符串的方式</p>
+<p>改写为全文索引的匹配方式：写SQL为全文索引匹配的方式：match(nickname) against(‘123’)</p>
+<h4 id="优化3：生成列"><a href="#优化3：生成列" class="headerlink" title="优化3：生成列"></a>优化3：生成列</h4><p>利用MySQL 5.7的生成列模拟函数索引的方式解决，具体步骤如下：</p>
+<p>虚拟列：当行记录被访问的时候自动计算得到，不占用存储空间。支持此列上创建二级索引。</p>
+<p>物理列：当行记录被插入或更新时候自动计算并保存起来，占用存储空间。支持此列上创建主键和二级索引</p>
+<p>利用内置reverse函数将like ‘%风云’反转为like ‘云风%’，基于此函数添加虚拟生成列。<br>在虚拟生成列上创建索引。<br>将SQL改写成通过生成列like reverse(‘%风云’)去过滤，走生成列上的索引</p>
+<h3 id="数据库基础"><a href="#数据库基础" class="headerlink" title="数据库基础"></a>数据库基础</h3><p>客户端 - 连接器 - 查询缓存 - 分析器 - 优化器 - 执行器 - 引擎</p>
+<p>查询空闲链接 show processlist</p>
+<p>Command列显示为Sleep的这一行，就表示现在系统里面有一个空闲连接，超过超时时间，连接会断开</p>
+<h3 id="不要delete删除数据"><a href="#不要delete删除数据" class="headerlink" title="不要delete删除数据"></a>不要delete删除数据</h3><p>尤其是大表，delete物理删除数据会产生空间碎片，最好采用逻辑删除</p>
+<p>elete物理删除既不能释放磁盘空间，而且会产生大量的碎片，聚集索引非线性增加，导致索引频繁分裂，影响SQL执行计划的稳定性；</p>
+<p>同时在碎片回收时，会耗用大量的CPU，磁盘空间，影响表上正常的DML操作</p>
+<p>比较耗时，也会阻塞表上正常的DML运行，同时需要占用额外更多的磁盘空间，对于RDS来说，可能会导致磁盘空间瞬间爆满，实例瞬间被锁定，应用无法做DML操作，所以禁止在线上环境去执行</p>
+<h3 id="主键达到上限"><a href="#主键达到上限" class="headerlink" title="主键达到上限"></a>主键达到上限</h3><p>自增ID达到上限用完了之后，分为两种情况：</p>
+<p>如果设置了主键，那么将会报错主键冲突，改为bigint。<br>如果没有设置主键，数据库则会帮我们自动生成一个全局的row_id，新数据会覆盖老数据<br>解决方案：</p>
+<p>表尽可能都要设置主键，主键尽量使用bigint类型，21亿的上限还是有可能达到的，比如魔兽，虽然说row_id上限高达281万亿，但是覆盖数据显然是不可接受的</p>
+<h3 id="count-和count-1不是全表扫描"><a href="#count-和count-1不是全表扫描" class="headerlink" title="count * 和count 1不是全表扫描"></a>count * 和count 1不是全表扫描</h3><p>MySQL 都会用成本最小的辅助索引查询方式来计数</p>
+<h3 id="binlog-redolog-undolog"><a href="#binlog-redolog-undolog" class="headerlink" title="binlog redolog undolog"></a>binlog redolog undolog</h3><h3 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h3><p>快照读与当前读</p>
+<p>MVCC 的 SELECT 操作是快照中的数据，不需要进行加锁操作</p>
+<p>MVCC 其它会对数据库进行修改的操作（INSERT、UPDATE、DELETE）需要进行加锁操作，从而读取最新的数据。可以看到 MVCC 并不是完全不用加锁，而只是避免了 SELECT 的加锁操作</p>
+<p>undo日志</p>
+<p>MVCC 使用到的快照存储在 Undo 日志中，该日志通过回滚指针把一个数据行（Record）的所有快照连接起来</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/06/GO%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="prev" title="GO的内存分配">
+                  <i class="fa fa-angle-left"></i> GO的内存分配
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/" rel="next" title="GO的逃逸分析">
+                  GO的逃逸分析 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

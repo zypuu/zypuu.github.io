@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列的推拉模式">
+<meta property="og:url" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg">
+<meta property="article:published_time" content="2023-03-10T10:26:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.126Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/","path":"2023/03/10/消息队列的推拉模式/","title":"消息队列的推拉模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>消息队列的推拉模式 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">推拉模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">推模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A"><span class="nav-number">1.1.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">拉模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RocketMq%E5%92%8Ckafka%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">RocketMq和kafka的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RocketMQ-%E4%B8%AD%E7%9A%84%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="nav-number">2.1.</span> <span class="nav-text">RocketMQ 中的长轮询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka%E7%9A%84%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka的长轮询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="消息队列的推拉模式 | All-Nothing">
+      <meta itemprop="description" content="消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          消息队列的推拉模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-03-10 18:26:00" itemprop="dateCreated datePublished" datetime="2023-03-10T18:26:00+08:00">2023-03-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">消息队列</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">消息队列不同阶段的消息推拉，以及kafka，rocketMQ是如何实现的。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="推拉模式"><a href="#推拉模式" class="headerlink" title="推拉模式"></a>推拉模式</h2><p>推拉模式的时候指的是 Comsumer 和 Broker 之间的交互。<br>默认的认为 Producer 与 Broker 之间就是推的方式，即 Producer 将消息推送给 Broker，而不是Broker 主动去拉取消息</p>
+<p>如果需要 Broker 去拉取消息，那么 Producer 就必须在本地通过日志的形式保存消息来等待 Broker 的拉取，如果有很多生产者的话，那么消息的可靠性不仅仅靠 Broker 自身，还需要靠成百上千的 Producer。</p>
+<h3 id="推模式"><a href="#推模式" class="headerlink" title="推模式"></a>推模式</h3><p>推模式指的是消息从 Broker 推向 Consumer，即 Consumer 被动的接收消息，由 Broker 来主导消息的发送</p>
+<h4 id="优势："><a href="#优势：" class="headerlink" title="优势："></a>优势：</h4><p>1、消息实时性高， Broker 接受完消息之后可以立马推送给 Consumer。<br>2、对于消费者使用来说更简单，就等着，反正有消息来了就会推过来</p>
+<h4 id="劣势："><a href="#劣势：" class="headerlink" title="劣势："></a>劣势：</h4><p>推送速率难以适应消费速率，推模式的目标就是以最快的速度推送消息，当生产者往 Broker 发送消息的速率大于消费者消费消息的速率时，消费者服务就容易崩溃，并且不同的消费者的消费速率还不一样，身为 Broker 很难平衡每个消费者的推送速率，如果要实现自适应的推送速率那就需要在推送的时候消费者告诉 Broker ，然后 Broker 需要维护每个消费者的状态进行推送速率的变更。<br>这其实就增加了 Broker 自身的复杂度。</p>
+<p>所以说推模式难以根据消费者的状态控制推送速率，适用于消息量不大、消费能力强要求实时性高的场景</p>
+<h3 id="拉模式"><a href="#拉模式" class="headerlink" title="拉模式"></a>拉模式</h3><p>拉模式指的是 Consumer 主动向 Broker 请求拉取消息，即 Broker 被动的发送消息给 Consumer</p>
+<h4 id="优势：-1"><a href="#优势：-1" class="headerlink" title="优势："></a>优势：</h4><p>1、拉模式主动权就在消费者身上，消费者可以根据自身的情况来发起拉取消息的请求。假设当前消费者觉得自己消费不过来了，它可以根据一定的策略停止拉取，或者间隔拉取<br>2、 Broker 就相对轻松，它只管存生产者发来的消息，至于消费的时候自然由消费者主动发起，不需要关注消息的消费<br>3、根据消费者的消费能力，可以参考消费者请求的信息来决定缓存多少消息之后批量发送</p>
+<h4 id="劣势：-1"><a href="#劣势：-1" class="headerlink" title="劣势："></a>劣势：</h4><p>1、消息延迟，消费者去拉取消息，但是消费者怎么知道消息到了呢？所以它只能不断地拉取，但是又不能很频繁地请求，太频繁了就变成消费者在攻击 Broker 。因此需要降低请求的频率，比如隔个2 秒请求一次，你看着消息就很有可能延迟 2 秒<br>2、消息忙请求，忙请求就是比如消息隔了几个小时才有，那么在几个小时之内消费者的请求都是无效的</p>
+<p>我个人觉得拉模式更加的合适，因为现在的消息队列都有持久化消息的需求，也就是说本身它就有个存储功能，它的使命就是接受消息，保存好消息使得消费者可以消费消息即可。<br>虽说一般而言 Broker 不会成为瓶颈，因为消费端有业务消耗比较慢，但是 Broker 毕竟是一个中心点，能轻量就尽量轻量</p>
+<h2 id="RocketMq和kafka的处理"><a href="#RocketMq和kafka的处理" class="headerlink" title="RocketMq和kafka的处理"></a>RocketMq和kafka的处理</h2><p>RocketMQ 和 Kafka 都选择了拉模式，通过长轮询来减轻拉模式的劣势影响</p>
+<p>基于推模式的消息队列如 ActiveMQ。</p>
+<h3 id="RocketMQ-中的长轮询"><a href="#RocketMQ-中的长轮询" class="headerlink" title="RocketMQ 中的长轮询"></a>RocketMQ 中的长轮询</h3><p>RocketMQ 中的 PushConsumer 其实是披着拉模式的方法，<strong>只是看起来像推模式而已</strong>。</p>
+<p>因为 RocketMQ 在被背后偷偷的帮我们去 Broker 请求数据了</p>
+<p>如图所示：</p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/1.jpg" alt="1"></p>
+<p>后台会有个 RebalanceService 线程，这个线程会根据 topic 的队列数量和当前消费组的消费者个数做</p>
+<p>负载均衡，每个队列产生的 pullRequest 放入阻塞队列 pullRequestQueue 中。然后又有个</p>
+<p>PullMessageService 线程不断的从阻塞队列 pullRequestQueue 中获取 pullRequest，然后通过网络</p>
+<p>请求 broker，这样实现的准实时拉取消息</p>
+<p>然后 Broker 的 PullMessageProcessor 里面的 processRequest 方法是用来处理拉消息请求的，有消</p>
+<p>息就直接返回，如果没有消息怎么办呢</p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/2.jpg" alt="1"></p>
+<p>suspendPullRequest 方法</p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/3.jpg" alt="1"></p>
+<p>而 PullRequestHoldService 这个线程会每 5 秒从 pullRequestTable 取PullRequest请求，然后看看待</p>
+<p>拉取消息请求的偏移量是否小于当前消费队列最大偏移量，如果条件成立则说明有新消息了，则会调用</p>
+<p>notifyMessageArriving ，最终调用 PullMessageProcessor 的 executeRequestWhenWakeup() 方法</p>
+<p>重新尝试处理这个消息的请求，也就是再来一次，整个长轮询的时间默认 30 秒。</p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/4.jpg" alt="1"></p>
+<p>简单的说就是 5 秒会检查一次消息时候到了，如果到了则调用 processRequest 再处理一次</p>
+<p>但是这样看起来并不太实时，所以还有个 ReputMessageService 线程，这个线程用来不断地从 commitLog 中解析数据并分发请求，构建出 ConsumeQueue 和 IndexFile 两种类型的数据，<strong>并且也会有唤醒请求的操作，来弥补每</strong> <strong>5s</strong>一次这么慢的延迟，就是消息写入并且会调用 pullRequestHoldService#notifyMessageArriving</p>
+<p>最终的流程就如上面的流程图所示</p>
+<h3 id="Kafka的长轮询"><a href="#Kafka的长轮询" class="headerlink" title="Kafka的长轮询"></a>Kafka的长轮询</h3><p>像 Kafka 在拉请求中有参数，可以使得消费者请求在 “长轮询” 中阻塞等待。</p>
+<p>简单的说就是消费者去 Broker 拉消息，定义了一个超时时间，也就是说消费者去请求消息，如果有的</p>
+<p>话马上返回消息，如果没有的话消费者等着直到超时，然后再次发起拉消息请求。</p>
+<p>并且 Broker 也得配合，如果消费者请求过来，有消息肯定马上返回，没有消息那就建立一个延迟操</p>
+<p>作，等条件满足了再返回。</p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/10.jpg" alt="1"></p>
+<p>消费者：</p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/5.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/6.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/7.jpg" alt="1"></p>
+<p>最后<strong>调用的就是</strong> <strong>Kafka</strong> <strong>包装过的</strong> <strong>selector**</strong>，而最终会调用** <strong>Java nio</strong> <strong>的</strong> <strong>select(timeout)</strong></p>
+<p>Broker:</p>
+<p>就在 KafkaApis.scala 文件的 handle 方法下，handleFetchRequest 。</p>
+<p>这个方法进来后</p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/8.jpg" alt="1"></p>
+<p><img src="/2023/03/10/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E6%8E%A8%E6%8B%89%E6%A8%A1%E5%BC%8F/9.jpg" alt="1"></p>
+<p>这个延迟操作都需要实现哪些方法，首先构建的延迟操作需要有检查机制，来查看</p>
+<p>消息是否已经到了，然后呢还得有个消息到了之后该执行的方法，还需要有执行完毕之后该干啥的方</p>
+<p>法，当然还得有个超时之后得干啥的方法。</p>
+<p>这几个方法其实对应的就是代码里的 DelayedFetch ，这个类继承了 DelayedOperation 内部有：</p>
+<p>isCompleted 检查条件是否满足的方法</p>
+<p>tryComplete 条件满足之后执行的方法</p>
+<p>onComplete 执行完毕之后调用的方法</p>
+<p>onExpiration 过期之后需要执行的方法</p>
+<p>判断是否过期就是由时间轮来推动判断的，但是总不能等过期的时候再去看消息到了没吧？</p>
+<p>这里 Kafka 和 RocketMQ 的机制一样，也会在消息写入的时候提醒这些延迟请求消息来了</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>可以看到 RocketMQ 和 Kafka 都是采用“长轮询”的机制，具体的做法都是通过消费者等待消息，当有</p>
+<p>消息的时候 Broker 会直接返回消息，如果没有消息都会采取延迟处理的策略，并且为了保证消息的及</p>
+<p>时性，在对应队列或者分区有新消息到来的时候都会提醒消息来了，及时返回消息。</p>
+<p>消费者和 Broker 相互配合，拉取消息请求不满足条件的时候 hold 住，避免了多次频繁的</p>
+<p>拉取动作，当消息一到就提醒返回。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag"># 消息队列</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/06/Java%20Set%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="prev" title="Java Set源码分析">
+                  <i class="fa fa-angle-left"></i> Java Set源码分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/22/Java%20Map%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="next" title="Java Map源码分析">
+                  Java Map源码分析 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

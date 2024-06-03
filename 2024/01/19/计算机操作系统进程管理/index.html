@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="计算机操作系统简要，以及进程管理简要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机操作系统进程管理">
+<meta property="og:url" content="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="计算机操作系统简要，以及进程管理简要">
+<meta property="og:locale">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/1.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/2.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/3.jpg">
+<meta property="og:image" content="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/4.jpg">
+<meta property="article:published_time" content="2024-01-19T00:03:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.216Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/1.jpg">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/","path":"2024/01/19/计算机操作系统进程管理/","title":"计算机操作系统进程管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机操作系统进程管理 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">计算机操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E5%BE%81"><span class="nav-number">1.2.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">1.3.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.4.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">1.5.</span> <span class="nav-text">启动流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text">状态图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E8%B6%8B%E5%9B%BE"><span class="nav-number">2.2.</span> <span class="nav-text">前趋图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E5%9B%BE"><span class="nav-number">2.3.</span> <span class="nav-text">资源图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E4%B8%8E%E4%BA%92%E6%96%A5"><span class="nav-number">2.4.</span> <span class="nav-text">同步与互斥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">2.5.</span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%BB%E9%94%81"><span class="nav-number">2.6.</span> <span class="nav-text">死锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">线程</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机操作系统进程管理 | All-Nothing">
+      <meta itemprop="description" content="计算机操作系统简要，以及进程管理简要">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机操作系统进程管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-19 08:03:00" itemprop="dateCreated datePublished" datetime="2024-01-19T08:03:00+08:00">2024-01-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">计算机操作系统简要，以及进程管理简要</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="计算机操作系统"><a href="#计算机操作系统" class="headerlink" title="计算机操作系统"></a>计算机操作系统</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>通过资源管理提高计算机系统的效率； 改善人机界面向用户提供友好的工作环境。</p>
+<h4 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h4><p>并发性 、 共享性 、 虚拟性 、 不确定性。</p>
+<h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><p>进程管理 、存储管理 、 文件管理 、设备管理 、作业管理。</p>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>批处理操作系统 、分时操作系统（轮流使用CPU工作片） 、<br>实时操作系统（快速响应） 、网络操作系统 、分布式操作系统（物理分散的<br>计 算机互联系统） 、微机操作系统（Windows） 、嵌入式操作系统。</p>
+<h4 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h4><p>BIOS-&gt;主引导记录-&gt;操作系统。</p>
+<h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><p>进程是计算机中正在运行的程序的实例 。它是操作系统进行资源分配和管理的基本单位， 包括代码、数据和执行状态等信息</p>
+<p>进程控制块PCB（唯一标志） 、程序（描述进程要做什么） 、数据（存放进程执行时 所需数据）</p>
+<h4 id="状态图"><a href="#状态图" class="headerlink" title="状态图"></a>状态图</h4><p>分为三态图，五态图<br><img src="/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/1.jpg" alt="1"><br><img src="/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/2.jpg" alt="1"></p>
+<h4 id="前趋图"><a href="#前趋图" class="headerlink" title="前趋图"></a>前趋图</h4><p>用来表示哪些任务可以并行执行， 哪些任务之间有顺序关系<br>任务间的并行 、 任务间的先后顺序。<br><img src="/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/3.jpg" alt="1"></p>
+<h4 id="资源图"><a href="#资源图" class="headerlink" title="资源图"></a>资源图</h4><p>用来表示进程和资源之间的分配和请求关系。<br><img src="/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/4.jpg" alt="1"><br>P代表进程， R代表资源， R方框中有几个圆球就表示有几个这种资源， 在图中， R1指向P1， 表示R1有一个资源已经分配给了P1， P1指向R2， 表示P1还需要P1请求一个R2资源才能执行。</p>
+<p>阻塞节点： 某进程所请求的资源已经全部分配完毕，先分配，后请求， 无法获取所需资源， 该进程被阻塞了无法<br>继 续 。如上图中P2。<br>非阻塞节点： 某进程所请求的资源还有剩余， 可以分配给该进程继续运行 。如上图中P1、P3。<br>当一个进程资源图中所有进程都是阻塞节点时， 即陷入死锁状态。</p>
+<h4 id="同步与互斥"><a href="#同步与互斥" class="headerlink" title="同步与互斥"></a>同步与互斥</h4><p>互斥： 某资源（即临界资源）在同一时间内只能由一个任务单独使用， 使用时需要加锁，使用完后解锁才能被其他任务使用；</p>
+<p>临界资源： 各进程间需要以互斥方式对其进行访问的资源。<br>临界区： 指进程中对临界资源实施操作的那段程序 。本质是一段程序代码。<br>互斥信号量：对临界资源采用互斥访问，使用互斥信号量后其他进程无法访问，初值为1。</p>
+<p>同步： 多个任务可以并发执行， 只不过有速度上的差异，在一定情况下停下等待，不存在资源是否单独或共享的问题；</p>
+<p>同步信号量： 对共享资源的访问控制，初值一般是共享资源的数量。</p>
+<h4 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h4><p>P操作： 申请资源， S=S-1，若S&gt;=0， 则执行P操作的进程继续执行；若S&lt;0， 则<br>置该进程为阻塞状态（因为无可用资源），并将其插入阻塞队列。<br>V操作： 释放资源， S=S+1，若S&gt;0， 代表此时资源有空余， 没有阻塞的进程， 则<br>该进程继续执行； 若S&lt;=0， 代表此时线程在被阻塞， 所以需要从阻塞状态唤醒一<br>个进程， 并将其插入就绪队列（此时因为缺少资源被P操作阻塞的进程可以继续执<br>行），然后执行V操作的进程继续。</p>
+<p>经典问题： 生产者和消费者的问题<br>三个信号量： 互斥信号量S0（仓库独立使用权）， 同步信号量S1（仓库空闲位<br>置）， 同步信号量S2（仓库商品个数） 。<br>生产者流程：<br>生产一个商品S<br>P(S0) 占用仓库<br>P(S1) 申请资源，申请一个位置<br>将商品放入仓库中<br>V(S2) 释放资源，商品个数+1<br>V(S0) 不再占用仓库<br>消费者流程：<br>P(S0) 占用仓库<br>P(S2) 消耗一个商品，商品个数-1<br>取出一个商品<br>V(S1) 商品被取出，释放一个位置+1<br>V(S0) 不再占用仓库</p>
+<p>1、PV对等，会形成平衡 </p>
+<p>2、先P后V</p>
+<p>1、图上面都是P操作，下面都是V操作，根据V的信号量，在前驱图标出信号量S</p>
+<p>前驱图：</p>
+<p>指进去P操作，指进去的前面的点就是V操作，指出去V操作，指出去后面的点就是P操作</p>
+<p>如果第一个进程只有一步，就是V操作</p>
+<p>如果最后一个点只有一步，就是P操作</p>
+<p>2、两个程序段推导，根据S信号量的初始值，然后PV的操作顺序，来控制程序等待，如果唤醒了其他进程，需要当前进程执行完，才去执行被唤醒的进程</p>
+<h4 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h4><p>当一个进程在等待永远不可能发生的事件时， 就会产生死锁， 若系统中<br>有 多个进程处于死锁状态， 就会造成系统死锁。<br>死锁产生的四个必要条件：<br>• 资源互斥<br>• 每个进程占有资源并等待其他资源<br>• 系统不能剥夺进程资源<br>• 进程资源图是一个环路。</p>
+<p>死锁产生后， 解决措施是打破四大条件， 有下列方法：<br>死锁预防： 采用某种策略限制并发进程对于资源的请求，破坏死锁产生的四个条件之一， 使系统任何时刻都不满足死锁的条件。<br>死锁避免： 一般采用银行家算法来避免，银行家算法， 就是提前计算出一条不会死锁的资源分配方法， 才分配资源，否则不分配资源，相当于借贷， 考虑对方 还得起才借钱， 提前考虑好以后， 就可以避免死锁。<br>死锁检测： 允许死锁产生， 但系统定时运行一个检测死锁的程序，若检测到系<br>统 中发生死锁， 则设法加以解除。<br>死锁解除： 即死锁发生后的解除方法， 如强制剥夺资源，撤销进程等。</p>
+<p>死锁计算问题： 系统内有n个进程，每个进程都需要R个资源，那么其发生死锁的最 大资源数为n<em>（R-1） 。其不发生死锁的最小资源数为n</em>（R-1）+1。</p>
+<p>银行家算法问题：</p>
+<p>根据总资源数-已分配资源数，得到剩余资源数，然后看满足哪个进程资源先执行，先执行后就会释放资源</p>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p>传统的进程有两个属性：<br>• 可拥有资源的独立单位<br>• 可独立调度和分配的基本单位<br>引入线程后， 线程是独立调度的最小单位， 进程是拥有资源的最小单位，<br>线程可以共享进程的公共数据 、全局变量 、代码 、文件等资源， 但不能<br>共 享线程独有的资源， 如线程的栈指针等标识数据</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/18/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%8A%80%E6%9C%AF%E3%80%81%E6%80%BB%E7%BA%BF/" rel="prev" title="输入输出、总线技术">
+                  <i class="fa fa-angle-left"></i> 输入输出、总线技术
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/" rel="next" title="计算机操作存储，文件，设备管理">
+                  计算机操作存储，文件，设备管理 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="信息安全技术，安全系统框架，加密技术，抗攻击技术，保证体系和评估方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息安全技术">
+<meta property="og:url" content="https://zypuu.github.io/2024/02/04/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="信息安全技术，安全系统框架，加密技术，抗攻击技术，保证体系和评估方法">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-02-04T07:40:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.037Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/02/04/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/02/04/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/","path":"2024/02/04/信息安全技术/","title":"信息安全技术"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>信息安全技术 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">信息安全基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%A6%81%E7%B4%A0"><span class="nav-number">1.1.</span> <span class="nav-text">基本要素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%8C%83%E5%9B%B4"><span class="nav-number">1.2.</span> <span class="nav-text">安全范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%AE%89%E5%85%A8"><span class="nav-number">1.3.</span> <span class="nav-text">存储安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8"><span class="nav-number">1.4.</span> <span class="nav-text">网络安全</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E6%A1%86%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">安全系统的组成框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E4%BD%93%E7%B3%BB"><span class="nav-number">2.1.</span> <span class="nav-text">技术体系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E6%8A%80%E6%9C%AF"><span class="nav-number">3.</span> <span class="nav-text">加密技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%8A%80%E6%9C%AF"><span class="nav-number">3.1.</span> <span class="nav-text">对称加密技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%8A%80%E6%9C%AF"><span class="nav-number">3.2.</span> <span class="nav-text">非对称加密技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%91%98%E8%A6%81%EF%BC%88%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">信息摘要（消息认证）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D"><span class="nav-number">3.4.</span> <span class="nav-text">数字签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6"><span class="nav-number">3.5.</span> <span class="nav-text">数字证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PKI%E5%85%AC%E9%92%A5%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD"><span class="nav-number">3.6.</span> <span class="nav-text">PKI公钥基础设施</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%97%E6%94%BB%E5%87%BB%E6%8A%80%E6%9C%AF"><span class="nav-number">5.</span> <span class="nav-text">抗攻击技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ARP%E6%AC%BA%E9%AA%97"><span class="nav-number">5.1.</span> <span class="nav-text">ARP欺骗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS%E6%AC%BA%E9%AA%97"><span class="nav-number">5.2.</span> <span class="nav-text">DNS欺骗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IP%E6%AC%BA%E9%AA%97"><span class="nav-number">5.3.</span> <span class="nav-text">IP欺骗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">5.4.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%8C%96TCP-IP%E5%A0%86%E6%A0%88%E4%BB%A5%E6%8A%B5%E5%BE%A1%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="nav-number">5.5.</span> <span class="nav-text">强化TCP&#x2F;IP堆栈以抵御拒绝服务攻击</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E7%9A%84%E4%BF%9D%E8%AF%81%E4%BD%93%E7%B3%BB%E5%92%8C%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">信息安全的保证体系和评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%9D%E8%AF%81%E4%BD%93%E7%B3%BB"><span class="nav-number">6.1.</span> <span class="nav-text">保证体系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="nav-number">6.2.</span> <span class="nav-text">评估方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/02/04/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="信息安全技术 | All-Nothing">
+      <meta itemprop="description" content="信息安全技术，安全系统框架，加密技术，抗攻击技术，保证体系和评估方法">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信息安全技术
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-02-04 15:40:00" itemprop="dateCreated datePublished" datetime="2024-02-04T15:40:00+08:00">2024-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统架构设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">信息安全技术，安全系统框架，加密技术，抗攻击技术，保证体系和评估方法</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="信息安全基础"><a href="#信息安全基础" class="headerlink" title="信息安全基础"></a>信息安全基础</h3><h4 id="基本要素"><a href="#基本要素" class="headerlink" title="基本要素"></a>基本要素</h4><p>信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性。<br>1、机密性：机密性指的是信息只能被授权的人员或实体访问，防止未经授权的人获取敏感信息<br>2、完整性：确保信息在传输或存储过程中不被篡改或损坏，保持其准确性和完整性。<br>3、可用性：确保信息和资源在需要时可供访问和使用，避免因服务中断或不可用性导致的损失。<br>4、可控性：是指对系统或信息进行管理和控制，确保只有授权的人员可以进行合法的操作。<br>5、可审查性：指对系统和操作进行监控和审查的能力，记录和跟踪系统中发生的事件，以便追查和解决安全问题</p>
+<h4 id="安全范围"><a href="#安全范围" class="headerlink" title="安全范围"></a>安全范围</h4><p>设备安全、数据安全、内容安全和行为安全<br>1、设备安全的主要目标是确保这些设备的操作和功能不会被破坏、篡改或滥用。它包括3个方面：设备的稳定性、可靠性、可用性<br>2、数据安全即采取措施确保数据免受未授权的泄露、篡改和毁坏，包括3个方面：数据的秘密性、完整性、可用性<br>3、内容安全是信息安全在政治、法律、道德层次上的要求<br>4、行为安全关注人的行为和习惯，行为安全的特性包括：行为的秘密性、完整性、可控性</p>
+<h4 id="存储安全"><a href="#存储安全" class="headerlink" title="存储安全"></a>存储安全</h4><p>信息的存储安全包括信息使用的安全、系统安全监控、计算机病毒防治、数据的加密和防止非法<br>的攻击等</p>
+<h4 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h4><p>1、网络安全漏洞：物理安全性、软件安全漏洞、不兼容使用安全漏洞、选择合适的安全哲理。<br>2、网络安全威胁：非授权的访问、信息泄露或丢失、破坏数据完整性、拒绝服务攻击、利用网络传播病毒。<br>3、安全措施的目标：访问控制、认证、完整性、审计、保密。</p>
+<h3 id="安全系统的组成框架"><a href="#安全系统的组成框架" class="headerlink" title="安全系统的组成框架"></a>安全系统的组成框架</h3><p>信息安全系统的组成框架包含三个体系：技术体系、组织结构体系和管理体系</p>
+<h4 id="技术体系"><a href="#技术体系" class="headerlink" title="技术体系"></a>技术体系</h4><p>1、基础安全设备包括密码芯片、加密卡、身份识别卡等<br>2、计算机网络安全指信息在网络传输过程中的安全防范<br>3、操作系统安全是指操作系统的无错误配置、无漏洞、无后门、无特洛伊木马等<br>4、数据库安全可粗略划分为数据库管理系统安全和数据库应用系统安全两个部分<br>5、终端安全设备从电信网终端设备的角度分为电话密码机、传真密码机、异步数据密码机等</p>
+<h3 id="加密技术"><a href="#加密技术" class="headerlink" title="加密技术"></a>加密技术</h3><h4 id="对称加密技术"><a href="#对称加密技术" class="headerlink" title="对称加密技术"></a>对称加密技术</h4><p>对数据的加密和解密的密钥(密码)是相同的，也称为共享密钥加密技术，属于不公开密钥加密算法。其缺点是加密安全性不高(因为只有一个密钥),且密钥分发困难(因为密钥还需要传输给接收方，也要考虑保密性等问题)。但是其加密速度快，非常适合于大数据的加密</p>
+<p>算法： DES（56位密钥），3DES(2对56密钥)，AES，RC-5，IDEA，PGP</p>
+<h4 id="非对称加密技术"><a href="#非对称加密技术" class="headerlink" title="非对称加密技术"></a>非对称加密技术</h4><p>又称为公开密钥加密技术，各个用户分别有一对密钥，称为公钥和私钥，其中公钥是公开的，所有用户都知道，私钥是保密的，只有自己知道，使用公钥加密，只能对应的私钥能解密，使用私钥加密，同样也只有对应的公钥能解密；非对称加密就是运用了公钥和私钥的原理，其对数据的加密和解密的密钥是不同的，是公开密钥加密算法。缺点是加密速度慢(密钥多，计算量大，不适合加密大数据)</p>
+<p>算法：RSA（512位），EIGAMAL，ECC</p>
+<h4 id="信息摘要（消息认证）"><a href="#信息摘要（消息认证）" class="headerlink" title="信息摘要（消息认证）"></a>信息摘要（消息认证）</h4><p>就是一段数据的特征信息，当数据发生了改变，信息摘要也会发生改变，发送方会将数据和信息摘要一起传给接收方，接收方会根据接收到的数据重新生成一个信息摘要，若此摘要和接收到的摘要相同，则说明数据正确。信息摘要是由哈希函数生成的</p>
+<p>信息摘要的特点：不算数据多长，都会产生固定长度的信息摘要；任何不同的输入数据，都会产生<br>不同的信息摘要；单向性，即只能由数据生成信息摘要，不能由信息摘要还原数据</p>
+<p>信息摘要算法：MD5（产生128位的输出）、SHA（安全散列算法，产生160位的输出，安全性更<br>高）</p>
+<h4 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h4><p>数字签名属于非对称加密体制，主要功能有：不可否认、无法篡改和伪造(报文鉴别)、报文的完整性</p>
+<p>原理：若发送方需要发送数据，应该使用发送方的私钥进行数字签名，而其公钥是共享的，任何接收方都可以拿来解密，因此，接收方使用了发送方的公钥解密，就必然知道此数据是由发送方的私钥加密的，而发送的私钥只属于发送方，唯一标识了数据是由谁发送的，这就是数字签名的过程原理</p>
+<h4 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h4><p>数字证书又称为数字标识，由用户申请，证书签证机关CA对其核实签发的，对用户的公钥的认证。现在的数字证书版本大多为x.509。</p>
+<p>数字证书的原理：每一个发送方都要先向CA申请数字证书，数字证书是经过CA数字签名了的，也即CA使用私钥加密，当发送方要发送数据时，接收方首先下载CA的公钥，去验证数字证书的真伪，如果是真的，就能保证发送方是真的，因为CA是官方权威的机构，其合法性毋庸置疑。</p>
+<h4 id="PKI公钥基础设施"><a href="#PKI公钥基础设施" class="headerlink" title="PKI公钥基础设施"></a>PKI公钥基础设施</h4><p>PKI公钥基础设施是提供公钥加密和数字签名服务的系统或平台，目的是为了管理密钥和证书。一个机构通过采用PKI框架管理密钥和证书可以建立一个安全的网络环境。<br>PKI主要包括四个部分：X.509格式的证书；CA操作协议；CA管理协议；CA政策制定。<br>PKI的基础技术包括加密、数字签名、数据完整性机制、数字信封、双重数字签名等。</p>
+<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3><p>访问控制是指主体依据某些控制策略或权限对客体本身或是其资源进行的不同授权访问。访问控制包括3个要素,即主体、客体和控制策略，其中访问控制包括认证、控制策略实现和审计3方面的内容。</p>
+<p>访问控制矩阵（ACM）</p>
+<p>访问控制表（ACL)。目前最流行、使用最多的访问控制实现技术。每个客体有一个访问控制表，是系统中每一个有权访问这个客体的主体的信息。这种实现技术实际上是按列保存访问矩阵</p>
+<p>能力表。对应于访问控制表，这种实现技术实际上是按行保存访问矩阵</p>
+<p>授权关系表。每一行（或者说元组）就是访问矩阵中的一个非空元素，是某一个主体对应于某一个客体的访问权限信息</p>
+<h3 id="抗攻击技术"><a href="#抗攻击技术" class="headerlink" title="抗攻击技术"></a>抗攻击技术</h3><p>为对抗攻击者的攻击，密钥生成需要考虑3个方面的因素：增大密钥空间、选择强钥（复杂的)、密钥的随机性（使用随机数）</p>
+<p>拒绝服务攻击有许多种，网络的内外部用户都可以发动这种攻击。内部用户可以通过长时间占用系统的内存、CPU处理时间使其他用户不能及时得到这些资源，而引起拒绝服务攻击;外部黑客也可以通过占用网络连接使其他用户得不到网络服务。</p>
+<p>外部用户针对网络连接发动拒绝服务攻击主要有以下几种模式：消耗资源、破坏或更改配置信息、物理破坏或改变网络部件、利用服务程序中的处理错误使服务失效</p>
+<p>分布式拒绝服务DDoS攻击是传统DoS攻击的发展，攻击者首先侵入并控制一些计算机，然后控制这些计算机同时向一个特定的目标发起拒绝服务攻击。克服了传统DOS受网络资源的限制和隐蔽性两大缺点。</p>
+<p>拒绝服务攻击的防御方式<br>1、 加强对数据包的特征识别，攻击者发送的数据包中是有一些特征字符串。通过搜寻这些特征字符串,就可以确定攻击服务器和攻击者的位置。<br>2、设置防火墙监视本地主机端口的使用情况。如果发现端口处于监听状态，则系统很可能受到攻击。<br>3、对通信数据量进行统计也可获得有关攻击系统的位置和数量信息。在攻击时，攻击数据的来源地址会发出超出正常极限的数据量。<br>4、尽可能的修正己经发现的问题和系统漏洞。</p>
+<h4 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h4><p>主机A想知道局域网内主机B的MAC地址，那么主机A就广播发送ARP请求分组，局域网内主<br>机都会收到，但只有B收到解析后知道是请求自己的MAC地址，所以只有B会返回单播的响应分组，告诉A自己的MAC地址。A收到响应分组后，会建立一个B的IP地址和MAC地址映射，这<br>个映射是动态存在的,如果一定时间AB不再通信，那么就会清空这个地址映射，下次如果还要通信，则重复这个过程</p>
+<p>上述过程主机A是不管其有没有发送过请求广播分组的，而是只要收到了返回的分组信息，就会刷新lP地址和MAC地址的映射关系，这样就存在安全隐患，假设有主机C，模拟返回分组格式，构造正确的IP地址和自己的MAC地址映射，A收到后也会刷新映射关系，那么当A再次向B发送信息时，实<br>际就发送到了C的MAC地址，数据就被c监听到了</p>
+<p>在winxp下输入命令：arp-s gate-way-ip gate-way-mac固化arp表，阻止arp欺骗。<br>采用双向绑定的方法解决并且防止ARP欺骗<br>ARP防护软件―—ARPGuard</p>
+<h4 id="DNS欺骗"><a href="#DNS欺骗" class="headerlink" title="DNS欺骗"></a>DNS欺骗</h4><p>DNS欺骗首先是冒充域名服务器，然后把查询的IP地址设为攻击者的IP地址，这样的话，用户上网就只能看到攻击者的主页，而不是用户想要取得的网站的主页了，这就是DNS欺骗的基本原理。也即改掉了域名和IP地址的对应关系。黑客是通过冒充DNS服务器回复查询IP的</p>
+<p>DNS欺骗的检测：<br>1、被动监听检测：通过旁路监听的方式，捕获所有DNS请求和应答数据包，并为其建立一个请求应答映射表。如果在一定的时间间隔内，一个请求对应两个或两个以上结果不同的应答包，则怀疑受到了DNS欺骗攻击。<br>2、虚假报文探测：采用主动发送探测包的手段来检测网络内是否存在DNS欺骗攻击者。如果向一个非DNS服务器发送请求包，正常来说不会收到任何应答，如果收到了应答包，则说明受到了攻击。<br>3、交叉检查查询：在客户端收到DNS应答包之后，向DNS 服务器反向查询应答包中返回的IP地址所对应的DNS名字，如果二者一致说明没有受到攻击，否则说明被欺骗</p>
+<h4 id="IP欺骗"><a href="#IP欺骗" class="headerlink" title="IP欺骗"></a>IP欺骗</h4><p>1 . 首先使被冒充主机host b 的网络暂时瘫痪，以免对攻击成干扰;<br>2. 然后黑客计算机会发起TCP连接到目标机host a的某个端口来猜测lSN基值和增加规律;<br>3. 接下来冒充主机host b的ip地址来向host a来发送请求连接：<br>4. 然后等待目标机host a发送响应数据包给已经瘫痪的主机，但是因为host b已经瘫痪，所以无法看不到这个包：<br>5. 最后黑客再次伪装成主机host b向目标主机host a发送带有预测的目标机的ISN的数据包;<br>6. 连接建立，发送命令请求。</p>
+<p>IP欺骗的防范：虽然lP欺骗攻击有着相当难度，但这种攻击非常广泛，入侵往往由这里开始。预防这种攻击可以删除UNIX中所有的/etc/hosts.equiv 、$HOME/.rhosts文件，修改/etc/inetd.conf 文件，使得RPC机制无法应用。另外，还可以通过设置防火墙过滤来自外部而信源地址却是内部IP的报文</p>
+<h4 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h4><p>端口扫描就是尝试与目标主机的某些端口建立连接，如果目标主机该端口有回复（见三次握手中的第二次），则说明该端口开放，即为“活动端口”。<br>1、全TC连接，这种扫描方法使用三次握手，与目标计算机建立标准的TCP连接<br>2、半打开式扫描(SYN扫描)。在这种扫描技术中，扫描主机自动向目标计算机的指定端口发送SYN数据段,表示发送建立连接请求。如果目标计算机的回应TCP报文中SYN=1 ACK=1 ，则说明该端口是活动的，接着扫描主机传送一个RST给目标，主机拒绝建立TCP连接，从而导致三次握手的过程失败。如果目标计算机的回应是RST，则表示该端口为“死端口”，这种情况下，扫描主机不用做任何回应。<br>3、 FIN扫描。依靠发送FIN来判断目标计算机的指定端口是不具备活动的发送一个FIN=1 的TCP报文到一个关闭的端口时，该报文会被丢掉，并返回一个RST报文。但是，如果当FIN报文到一个活动的端口时，该报文只是被简单的丢掉，不会返回任何回应。从FIN 扫描可以看出，这种扫描没有涉及任何TCP连接部分。因此，这种扫描比前两种都安全，可以称之为秘密扫描。<br>4、第三方扫描。第三方扫描又称“代理扫描”，这种扫描是利用第三方主机来代替入侵者进行扫描。这个第三方主机一般是入侵者通过入侵其他计算机而得到的，该“第三方”主机常被入侵者称之为“肉鸡”。这些“肉鸡”一般为安全防御系数极低的个人计算机。</p>
+<h4 id="强化TCP-IP堆栈以抵御拒绝服务攻击"><a href="#强化TCP-IP堆栈以抵御拒绝服务攻击" class="headerlink" title="强化TCP/IP堆栈以抵御拒绝服务攻击"></a>强化TCP/IP堆栈以抵御拒绝服务攻击</h4><p>1、同步包风暴(SYN Flooding)：利用TCP协议缺陷发送大量伪造的TCP连接请求，使得被攻击者资源耗尽。三次握手，进行了两次，不进行第三次握手，连接队列处于等待状态，大量这样的等待，会占满全部队列空间，使得系统挂起。可以通过修改注册表防御SYN Flooding攻击</p>
+<p>2、ICMP攻击：ICMP协议本身的特点决定了它非常容易被用于攻击网络上的路由器和主机。比如，前面提到的“Ping of Death”攻击就是利用操作系统规定的ICMP数据包的最大尺寸不超过64KB这一规定，达到使TCP/IP堆栈崩溃、主机死机的效果。可以通过修改注册表防御ICMP攻击</p>
+<p>3、SNMP攻击：SNMP还能被用于控制这些设备和产品，重定向通信流，改变通信数据包的优先级，甚至断开通信连接。总之，入侵者如果具备相应能力，就能完全接管你的网络。可以通过修改注册表项防御系统漏洞扫描指对重要计算机信息系统进行检查，发现其中可能被黑客利用的漏洞。包括基于网络的漏洞扫描（通过网络远程扫描主机)、基于主机的漏洞扫描（在目标系统安装了代理扫描）</p>
+<h3 id="信息安全的保证体系和评估方法"><a href="#信息安全的保证体系和评估方法" class="headerlink" title="信息安全的保证体系和评估方法"></a>信息安全的保证体系和评估方法</h3><h4 id="保证体系"><a href="#保证体系" class="headerlink" title="保证体系"></a>保证体系</h4><p>GB17859—999标准规定了计算机系统安全保护能力的五个等级：<br>1、第一级用户自主保护级：实现基本的用户隔离和自主访问控制。比如：个人电脑操作系统,通过账号密码隔离不同用户,用户只能访问自己的文件和进程。<br>2、第二级系统审计保护级：在第一级基础上实现更细粒度的访问控制和审计。比如：公司内部办公系统,有账号密码登录,对安全相关的登录、文件访问进行日志记录,对不同部门的数据访问设置权限控制。<br>3、第三级安全标记保护级：在第二级基础上实现安全标记和强制访问控制。比如：政府内部文件系统,对文件设置密级标记,用户的访问权限按照政策与文件标记相匹配判定,进行强制访问控制。<br>4、第四级结构化保护级：在第三级基础上实现形式化安全策略和对所有资源的访问控制。比如：军方信息系统,有多级安全策略模型,对所有用户身份、存储数据、网络资源等实施严格的强制访问控制。<br>5、第五级访问验证保护级：实现抗篡改的访问监控器,对单个用户的所有访问进行仲裁。比如：核设施监控系统,通过抗篡改的访问控制器验证每个用户每次访问的权限,拒绝非授权访问。</p>
+<h4 id="评估方法"><a href="#评估方法" class="headerlink" title="评估方法"></a>评估方法</h4><p>安全风险管理：在风险评估实施前，应该考虑：<br>1、确定风险评估的范围。<br>2、确定风险评估的目标。<br>3、建立适当的组织结构。<br>4、建立系统性的风险评估方法。<br>5、获得最高管理者对风险评估策划的批准。</p>
+<p>风险评估的基本要素为脆弱性、资产、威胁、风险和安全措施，与这些要素相关的属性分别为业务战略、资产价值、安全需求、安全事件和残余风险，这些也是风险评估要素的一部分</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/24/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/" rel="prev" title="信息系统相关">
+                  <i class="fa fa-angle-left"></i> 信息系统相关
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/" rel="next" title="数据库设计">
+                  数据库设计 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

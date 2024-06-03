@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="解析go语言，go的逃逸分析，变量内存分配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO的逃逸分析">
+<meta property="og:url" content="https://zypuu.github.io/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="解析go语言，go的逃逸分析，变量内存分配">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-01-08T01:46:22.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.955Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/","path":"2021/01/08/GO的逃逸分析/","title":"GO的逃逸分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GO的逃逸分析 | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%A0%86%E6%A0%88%E5%8F%8A%E5%8F%98%E9%87%8F%E5%88%86%E9%85%8D"><span class="nav-number">1.</span> <span class="nav-text">关于堆栈及变量分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">逃逸分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90"><span class="nav-number">2.1.</span> <span class="nav-text">什么是逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90"><span class="nav-number">2.2.</span> <span class="nav-text">为什么要逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90"><span class="nav-number">2.3.</span> <span class="nav-text">如何逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">逃逸分析注意点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E7%BC%BA%E9%99%B7%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">逃逸分析缺陷问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8F%98%E9%87%8F%E9%80%83%E9%80%B8"><span class="nav-number">2.5.1.</span> <span class="nav-text">函数变量逃逸</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%B4%E6%8E%A5%E8%B5%8B%E5%80%BC"><span class="nav-number">2.5.2.</span> <span class="nav-text">间接赋值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#interface"><span class="nav-number">2.5.3.</span> <span class="nav-text">interface</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#channel"><span class="nav-number">2.5.4.</span> <span class="nav-text">channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0"><span class="nav-number">2.5.5.</span> <span class="nav-text">可变参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E6%96%B9%E6%B3%95"><span class="nav-number">2.5.6.</span> <span class="nav-text">结构体方法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/01/08/GO%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GO的逃逸分析 | All-Nothing">
+      <meta itemprop="description" content="解析go语言，go的逃逸分析，变量内存分配">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO的逃逸分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-01-08 09:46:22" itemprop="dateCreated datePublished" datetime="2021-01-08T09:46:22+08:00">2021-01-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">解析go语言，go的逃逸分析，变量内存分配</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="关于堆栈及变量分配"><a href="#关于堆栈及变量分配" class="headerlink" title="关于堆栈及变量分配"></a>关于堆栈及变量分配</h2><p>在函数内部定义了一个局部变量，然后返回这个局部变量的地址（指针）。这些局部变量是在栈上分配的（静态内存分配），一旦函数执行完毕，变量占据的内存会被销毁，任何对这个返回值作的动作（如解引用），都将扰乱程序的运行，甚至导致程序直接崩溃</p>
+<p>即时通过函数内部使用new函数构造一个变量（动态内存分配），然后返回此变量的地址。因为变量是在堆上创建的，所以函数退出时不会被销毁，但是new出来的对象不delete，也会发生内存泄漏</p>
+<p>栈分配开销小，堆分配开销大。</p>
+<p>栈空间会随着一个函数的结束自动释放，堆空间需要 GC 模块不断的跟踪扫描回收</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func stack() int &#123; </span><br><span class="line">    <span class="comment">// 变量 i 会在栈上分配</span></span><br><span class="line">     i := <span class="number">10</span></span><br><span class="line">     <span class="keyword">return</span> i</span><br><span class="line">&#125;</span><br><span class="line">func heap() *int &#123;</span><br><span class="line">    <span class="comment">// 变量 j 会在堆上分配</span></span><br><span class="line">    j := <span class="number">10</span></span><br><span class="line">    <span class="keyword">return</span> &amp;j</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>stack 函数中的变量 i 在函数退出会自动释放；而 heap 函数返回的是对变量i的引用，也就是说 heap()退出后，表示变量 i 还要能被访问，它会自动被分配到堆空间上</p>
+<p>汇编代码如下，可以查看汇编代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go tool compile -S main.go</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">TEXT main.stack(SB) /tmp/test.go</span><br><span class="line">  test.go:<span class="number">7</span>     <span class="number">0x487240</span>        48c74424080a000000  MOVQ $<span class="number">0xa</span>, <span class="number">0x8</span>(SP)  </span><br><span class="line">  test.go:<span class="number">7</span>     <span class="number">0x487249</span>        c3          RET         </span><br><span class="line"> </span><br><span class="line">TEXT main.heap(SB) /tmp/test.go</span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x487250</span>        64488b0c25f8ffffff  MOVQ FS:<span class="number">0xfffffff8</span>, CX          </span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x487259</span>        483b6110        CMPQ <span class="number">0x10</span>(CX), SP           </span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x48725d</span>        <span class="number">7639</span>            JBE <span class="number">0x487298</span>                </span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x48725f</span>        4883ec18        SUBQ $<span class="number">0x18</span>, SP              </span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x487263</span>        48896c2410      MOVQ BP, <span class="number">0x10</span>(SP)           </span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x487268</span>        488d6c2410      LEAQ <span class="number">0x10</span>(SP), BP           </span><br><span class="line">  test.go:<span class="number">10</span>        <span class="number">0x48726d</span>        488d05ac090100      LEAQ <span class="number">0x109ac</span>(IP), AX            </span><br><span class="line">  test.go:<span class="number">10</span>        <span class="number">0x487274</span>        <span class="number">48890424</span>        MOVQ AX, <span class="number">0</span>(SP)              </span><br><span class="line">  test.go:<span class="number">10</span>        <span class="number">0x487278</span>        e8f33df8ff      CALL runtime.newobject(SB)      </span><br><span class="line">  test.go:<span class="number">10</span>        <span class="number">0x48727d</span>        488b442408      MOVQ <span class="number">0x8</span>(SP), AX            </span><br><span class="line">  test.go:<span class="number">10</span>        <span class="number">0x487282</span>        48c7000a000000      MOVQ $<span class="number">0xa</span>, <span class="number">0</span>(AX)            </span><br><span class="line">  test.go:<span class="number">11</span>        <span class="number">0x487289</span>        <span class="number">4889442420</span>      MOVQ AX, <span class="number">0x20</span>(SP)           </span><br><span class="line">  test.go:<span class="number">11</span>        <span class="number">0x48728e</span>        488b6c2410      MOVQ <span class="number">0x10</span>(SP), BP           </span><br><span class="line">  test.go:<span class="number">11</span>        <span class="number">0x487293</span>        4883c418        ADDQ $<span class="number">0x18</span>, SP              </span><br><span class="line">  test.go:<span class="number">11</span>        <span class="number">0x487297</span>        c3          RET                 </span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x487298</span>        e8a380fcff      CALL runtime.morestack_noctxt(SB)   </span><br><span class="line">  test.go:<span class="number">9</span>     <span class="number">0x48729d</span>        ebb1            JMP main.heap(SB)           </span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"> </span><br><span class="line">TEXT runtime.newobject(SB) /usr/share/go/src/runtime/malloc.go</span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b070</span>        64488b0c25f8ffffff  MOVQ FS:<span class="number">0xfffffff8</span>, CX          </span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b079</span>        483b6110        CMPQ <span class="number">0x10</span>(CX), SP           </span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b07d</span>        763d            JBE <span class="number">0x40b0bc</span>                </span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b07f</span>        4883ec28        SUBQ $<span class="number">0x28</span>, SP              </span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b083</span>        48896c2420      MOVQ BP, <span class="number">0x20</span>(SP)           </span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b088</span>        488d6c2420      LEAQ <span class="number">0x20</span>(SP), BP           </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b08d</span>        488b442430      MOVQ <span class="number">0x30</span>(SP), AX           </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b092</span>        488b08          MOVQ <span class="number">0</span>(AX), CX              </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b095</span>        48890c24        MOVQ CX, <span class="number">0</span>(SP)              </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b099</span>        <span class="number">4889442408</span>      MOVQ AX, <span class="number">0x8</span>(SP)            </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b09e</span>        c644241001      MOVB $<span class="number">0x1</span>, <span class="number">0x10</span>(SP)         </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b0a3</span>        e888f4ffff      CALL runtime.mallocgc(SB)       </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b0a8</span>        488b442418      MOVQ <span class="number">0x18</span>(SP), AX           </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b0ad</span>        <span class="number">4889442438</span>      MOVQ AX, <span class="number">0x38</span>(SP)           </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b0b2</span>        488b6c2420      MOVQ <span class="number">0x20</span>(SP), BP           </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b0b7</span>        4883c428        ADDQ $<span class="number">0x28</span>, SP              </span><br><span class="line">  malloc.go:<span class="number">1068</span>    <span class="number">0x40b0bb</span>        c3          RET                 </span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b0bc</span>        e87f420400      CALL runtime.morestack_noctxt(SB)   </span><br><span class="line">  malloc.go:<span class="number">1067</span>    <span class="number">0x40b0c1</span>        ebad            JMP runtime.newobject(SB)</span><br></pre></td></tr></table></figure>
+
+<p> 上面的汇编中可看到，heap() 函数调用了 runtime.newobject() 方法，它会调用 mallocgc 方法从 mcache 上申请内存。堆内存分配不仅分配上逻辑比栈空间分配复杂，它最致命的是会带来很大的管理成本，Go 语言要消耗很多的计算资源对其进行标记回收（也就是 GC 成本）</p>
+<h2 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h2><h3 id="什么是逃逸分析"><a href="#什么是逃逸分析" class="headerlink" title="什么是逃逸分析"></a>什么是逃逸分析</h3><p>在编译原理中，分析指针动态范围的方法称之为逃逸分析。通俗来讲，当一个对象的指针被多个方法或线程引用时，我们称这个指针发生了逃逸。</p>
+<p>逃逸分析决定一个变量是分配在栈上，还是分配在堆上</p>
+<p>golang即时用new分配的内存，函数返回后，没有用了，就丢到栈上</p>
+<p>如果还有函数外部其他引用，就会分配到堆上，实现按需分配</p>
+<h3 id="为什么要逃逸分析"><a href="#为什么要逃逸分析" class="headerlink" title="为什么要逃逸分析"></a>为什么要逃逸分析</h3><p>如果变量都分配到堆上，堆不像栈可以自动清理。它会引起Go频繁地进行垃圾回收，而垃圾回收会占用比较大的系统开销（占用CPU容量的25%）。</p>
+<p>堆和栈相比，堆适合不可预知大小的内存分配。但是为此付出的代价是分配速度较慢，而且会形成内存碎片。栈内存分配则会非常快</p>
+<p>通过逃逸分析，可以尽量把那些不需要分配到堆上的变量直接分配到栈上，堆上的变量少了，会减轻分配堆内存的开销，同时也会减少gc的压力，提高程序的运行速度</p>
+<h3 id="如何逃逸分析"><a href="#如何逃逸分析" class="headerlink" title="如何逃逸分析"></a>如何逃逸分析</h3><p>以下命令可以查看逃逸分析</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go build -gcflags <span class="string">&#x27;-m -l&#x27;</span> test.go</span><br><span class="line">go tool compile <span class="string">&quot;-m&quot;</span> main.go</span><br></pre></td></tr></table></figure>
+
+<p>Go逃逸分析最基本的原则是：如果一个函数返回对一个变量的引用，那么它就会发生逃逸。</p>
+<p>Go 编辑器会自动帮我们找出需要进行动态分配的变量，它是在编译时追踪一个变量的生命周期，如果能确认一个数据只在函数空间内访问，不会被外部使用，则使用栈空间，否则就要使用堆空间</p>
+<p>简单来说，编译器会根据变量是否被外部引用来决定是否逃逸：</p>
+<p>1.如果函数外部没有引用，则优先放到栈中，定义了一个很大的数组，需要申请的内存过大，超过了栈的存储能力，也会分配到堆中<br>2.如果函数外部存在引用，则必定放到堆中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line">func foo() *int &#123;</span><br><span class="line">    t := <span class="number">3</span></span><br><span class="line">    <span class="keyword">return</span> &amp;t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    x := foo()</span><br><span class="line">    fmt.Println(*x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># command-line-arguments</span><br><span class="line">src/main.go:<span class="number">7</span>:<span class="number">9</span>: &amp;t escapes to heap</span><br><span class="line">src/main.go:<span class="number">6</span>:<span class="number">7</span>: moved to heap: t</span><br><span class="line">src/main.go:<span class="number">12</span>:<span class="number">14</span>: *x escapes to heap</span><br><span class="line">src/main.go:<span class="number">12</span>:<span class="number">13</span>: main ... argument does not <span class="built_in">escape</span></span><br></pre></td></tr></table></figure>
+<p>x也发生了逃逸</p>
+<p>PS：有些函数参数为interface类型，比如<br>fmt.Println(a…interface{})，编译期间很难确定其参数的具体类型，也会发生逃逸</p>
+<h3 id="逃逸分析注意点"><a href="#逃逸分析注意点" class="headerlink" title="逃逸分析注意点"></a>逃逸分析注意点</h3><p>不要盲目使用变量的指针作为函数参数，虽然它会减少复制操作。但其实当参数为变量自身的时候，复制是在栈上完成的操作，开销远比变量逃逸后动态地在堆上分配内存少的多。</p>
+<p>PS：不要以为使用了堆内存就一定会导致性能低下，使用栈内存会带来性能优势。因为实际项目中，系统的性能瓶颈一般都不会出现在内存分配上。千万不要盲目优化，找到系统瓶颈，用数据驱动优化。</p>
+<h3 id="逃逸分析缺陷问题"><a href="#逃逸分析缺陷问题" class="headerlink" title="逃逸分析缺陷问题"></a>逃逸分析缺陷问题</h3><p>编译器有时会将不需要使用堆空间的变量，也逃逸掉。这里是容易出现性能问题的大坑</p>
+<p>多级间接赋值容易导致逃逸</p>
+<p>这里的多级间接指的是，对某个引用类对象中的引用类成员进行赋值。Go 语言中的引用类数据类型有 func, interface, slice, map, chan, * Type(指针)</p>
+<p>公式 Data.Field = Value，<br>如果 Data, Field 都是引用类的数据类型，<br>则会导致 Value 逃逸。这里的等号 = 不单单只赋值，也表示参数传递</p>
+<p>例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[]interface&#123;&#125;: data[<span class="number">0</span>] = <span class="number">100</span> 会导致 <span class="number">100</span> 逃逸</span><br><span class="line"></span><br><span class="line">map[string]interface&#123;&#125;: data[<span class="string">&quot;key&quot;</span>] = <span class="string">&quot;value&quot;</span> 会导致 <span class="string">&quot;value&quot;</span> 逃逸</span><br><span class="line"></span><br><span class="line">map[interface&#123;&#125;]interface&#123;&#125;: data[<span class="string">&quot;key&quot;</span>] = <span class="string">&quot;value&quot;</span> 会导致 key 和 value 都逃逸</span><br><span class="line"></span><br><span class="line">map[string][]string: data[<span class="string">&quot;key&quot;</span>] = []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 会导致切片逃逸</span><br><span class="line"></span><br><span class="line">map[string]*int: 赋值时 *int 会 逃逸</span><br><span class="line"></span><br><span class="line">[]*int: data[<span class="number">0</span>] = &amp;i 会使 i 逃逸</span><br><span class="line"></span><br><span class="line">func(*int): data(&amp;i) 会使 i 逃逸</span><br><span class="line"></span><br><span class="line">func([]string): data([]&#123;<span class="string">&quot;hello&quot;</span>&#125;) 会使 []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 逃逸</span><br><span class="line"></span><br><span class="line">chan []string: data &lt;- []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 会使 []string&#123;<span class="string">&quot;hello&quot;</span>&#125; 逃逸</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数变量逃逸"><a href="#函数变量逃逸" class="headerlink" title="函数变量逃逸"></a>函数变量逃逸</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">func <span class="function"><span class="title">test</span>(<span class="params">i int</span>)</span>        &#123;&#125;</span><br><span class="line">func <span class="function"><span class="title">testEscape</span>(<span class="params">i *int</span>)</span> &#123;&#125;</span><br><span class="line"> </span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    i, j, m, <span class="attr">n</span> := <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    t, <span class="attr">te</span> := test, testEscape <span class="comment">// 函数变量</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 直接调用</span></span><br><span class="line">    test(m)        <span class="comment">// 不逃逸</span></span><br><span class="line">    testEscape(&amp;n) <span class="comment">// 不逃逸</span></span><br><span class="line">    <span class="comment">// 间接调用</span></span><br><span class="line">    t(i)   <span class="comment">// 不逃逸</span></span><br><span class="line">    te(&amp;j) <span class="comment">// 逃逸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="间接赋值"><a href="#间接赋值" class="headerlink" title="间接赋值"></a>间接赋值</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">type Data struct &#123;</span><br><span class="line">    data  map[int]int</span><br><span class="line">    slice []int</span><br><span class="line">    ch    chan int</span><br><span class="line">    inf   interface&#123;&#125;</span><br><span class="line">    p     *int</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    d1 := Data&#123;&#125;</span><br><span class="line">    d1.data = make(map[int]int) <span class="comment">// GOOD: does not escape</span></span><br><span class="line">    d1.slice = make([]int, <span class="number">4</span>)   <span class="comment">// GOOD: does not escape</span></span><br><span class="line">    d1.ch = make(chan int, <span class="number">4</span>)   <span class="comment">// GOOD: does not escape</span></span><br><span class="line">    d1.inf = <span class="number">3</span>                  <span class="comment">// GOOD: does not escape</span></span><br><span class="line">    d1.p = <span class="keyword">new</span>(int)             <span class="comment">//  GOOD: does not escape</span></span><br><span class="line"> </span><br><span class="line">    d2 := <span class="keyword">new</span>(Data)             <span class="comment">// d2 是指针变量， 下面为该指针变量中的指针成员赋值</span></span><br><span class="line">    d2.data = make(map[int]int) <span class="comment">// BAD: escape to heap</span></span><br><span class="line">    d2.slice = make([]int, <span class="number">4</span>)   <span class="comment">// BAD:  escape to heap</span></span><br><span class="line">    d2.ch = make(chan int, <span class="number">4</span>)   <span class="comment">// BAD:  escape to heap</span></span><br><span class="line">    d2.inf = <span class="number">3</span>                  <span class="comment">// BAD:  escape to heap</span></span><br><span class="line">    d2.p = <span class="keyword">new</span>(int)             <span class="comment">// BAD:  escape to heap</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="interface"><a href="#interface" class="headerlink" title="interface"></a>interface</h4><p>只要使用了 Interface 类型(不是 interafce{})，那么赋值给它的变量一定会逃逸</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">type Iface interface &#123;</span><br><span class="line">    Dummy()</span><br><span class="line">&#125;</span><br><span class="line">type Integer int</span><br><span class="line">func (i Integer) <span class="function"><span class="title">Dummy</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line"> </span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> (</span><br><span class="line">        iface Iface</span><br><span class="line">        i     Integer</span><br><span class="line">    )</span><br><span class="line">    iface = i</span><br><span class="line">    iface.Dummy() <span class="comment">//  make i escape to heap</span></span><br><span class="line">    <span class="comment">// 形成 iface.Dummy.i = i</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="channel"><a href="#channel" class="headerlink" title="channel"></a>channel</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">test</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> (</span><br><span class="line">        chInteger   = make(chan *int)</span><br><span class="line">        chMap       = make(chan map[int]int)</span><br><span class="line">        chSlice     = make(chan []int)</span><br><span class="line">        chInterface = make(chan interface&#123;&#125;)</span><br><span class="line">        a, b, c, d  = <span class="number">0</span>, map[int]int&#123;&#125;, []int&#123;&#125;, <span class="number">32</span></span><br><span class="line">    )</span><br><span class="line">    chInteger &lt;- &amp;a  <span class="comment">// 逃逸</span></span><br><span class="line">    chMap &lt;- b       <span class="comment">// 逃逸</span></span><br><span class="line">    chSlice &lt;- c     <span class="comment">// 逃逸</span></span><br><span class="line">    chInterface &lt;- d <span class="comment">// 逃逸</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>向 channel 中发送数据，本质上就是为 channel 内部的成员赋值，就像给一个 slice 中的某一项赋值一样。所以 chan * Type, chan map[Type]Type, chan []Type, chan interface{} 类型都会导致发送到 channel 中的数据逃逸。</p>
+<p>这本来也是情理之中的，发送给 channel 的数据是要与其他函数分享的，为了保证发送过去的指针依然可用，只能使用堆分配。</p>
+<h4 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h4><p>可变参数如 func(arg …string) 实际与 func(arg []string) 是一样的，会增加一层访问路径。这也是 fmt.Sprintf 总是会使参数逃逸的原因</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">func a (args ...interface&#123;&#125;) int &#123;</span><br><span class="line">	c := args[<span class="number">0</span>].(int)</span><br><span class="line">	d := args[<span class="number">1</span>].(int)</span><br><span class="line">	<span class="keyword">return</span> c + d</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    res := a(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">// 1, 2逃逸</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="结构体方法"><a href="#结构体方法" class="headerlink" title="结构体方法"></a>结构体方法</h4><p>以下 2 种很常规的写法，但他们却有着很大的性能差距</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">type User struct &#123;</span><br><span class="line">    roles []string</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func (u *User) <span class="function"><span class="title">SetRoles</span>(<span class="params">roles []string</span>)</span> &#123;</span><br><span class="line">    u.roles = roles</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">func SetRoles(u User, roles []string) User &#123;</span><br><span class="line">    u.roles = roles</span><br><span class="line">    <span class="keyword">return</span> u</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> b User</span><br><span class="line"></span><br><span class="line">	a := SetRoles(b, []string&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>&#125;) <span class="comment">// // 参数[]string&#123;&quot;1&quot;, &quot;2&quot;&#125; 不逃逸</span></span><br><span class="line"></span><br><span class="line">	b.SetRoles([]string&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>&#125;) <span class="comment">// 参数[]string&#123;&quot;1&quot;, &quot;2&quot;&#125; 逃逸</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>两种情况下</p>
+<p>第一种没有逃逸</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">第一种 a := SetRoles(b, []string&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>&#125;)</span><br><span class="line"></span><br><span class="line">main.go:<span class="number">8</span>:<span class="number">6</span>: can inline (*User).SetRoles</span><br><span class="line">main.go:<span class="number">12</span>:<span class="number">6</span>: can inline SetRoles</span><br><span class="line">main.go:<span class="number">17</span>:<span class="number">6</span>: can inline main</span><br><span class="line">main.go:<span class="number">20</span>:<span class="number">15</span>: inlining call to SetRoles</span><br><span class="line">main.go:<span class="number">8</span>:<span class="number">25</span>: leaking param: roles</span><br><span class="line">main.go:<span class="number">8</span>:<span class="number">7</span>: (*User).SetRoles u does not <span class="built_in">escape</span></span><br><span class="line">main.go:<span class="number">12</span>:<span class="number">15</span>: leaking param: u to result ~r2 level=<span class="number">0</span></span><br><span class="line">main.go:<span class="number">12</span>:<span class="number">23</span>: leaking param: roles to result ~r2 level=<span class="number">0</span></span><br><span class="line">main.go:<span class="number">20</span>:<span class="number">27</span>: main []string literal does not <span class="built_in">escape</span></span><br><span class="line">main.go:<span class="number">20</span>:<span class="number">2</span>: a declared and not used</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>第二种逃逸，第二种开销会比较大</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">第二种 b.SetRoles([]string&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>&#125;)</span><br><span class="line"></span><br><span class="line">main.go:<span class="number">8</span>:<span class="number">6</span>: can inline (*User).SetRoles</span><br><span class="line">main.go:<span class="number">12</span>:<span class="number">6</span>: can inline SetRoles</span><br><span class="line">main.go:<span class="number">17</span>:<span class="number">6</span>: can inline main</span><br><span class="line">main.go:<span class="number">22</span>:<span class="number">12</span>: inlining call to (*User).SetRoles</span><br><span class="line">main.go:<span class="number">8</span>:<span class="number">25</span>: leaking param: roles</span><br><span class="line">main.go:<span class="number">8</span>:<span class="number">7</span>: (*User).SetRoles u does not <span class="built_in">escape</span></span><br><span class="line">main.go:<span class="number">12</span>:<span class="number">15</span>: leaking param: u to result ~r2 level=<span class="number">0</span></span><br><span class="line">main.go:<span class="number">12</span>:<span class="number">23</span>: leaking param: roles to result ~r2 level=<span class="number">0</span></span><br><span class="line">main.go:<span class="number">22</span>:<span class="number">21</span>: []string literal escapes to heap</span><br><span class="line">main.go:<span class="number">22</span>:<span class="number">3</span>: main b does not <span class="built_in">escape</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"># GO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/06/Mysql%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" rel="prev" title="Mysql相关问题">
+                  <i class="fa fa-angle-left"></i> Mysql相关问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" rel="next" title="GO的垃圾回收">
+                  GO的垃圾回收 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

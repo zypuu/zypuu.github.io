@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="redis与memcache，还有redis集群，codis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis， Codis与Mc">
+<meta property="og:url" content="https://zypuu.github.io/2021/03/12/Redis%E4%B8%8EMc/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="redis与memcache，还有redis集群，codis">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-03-12T03:42:28.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:30.031Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2021/03/12/Redis%E4%B8%8EMc/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2021/03/12/Redis%E4%B8%8EMc/","path":"2021/03/12/Redis与Mc/","title":"Redis， Codis与Mc"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Redis， Codis与Mc | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Memcache"><span class="nav-number">1.</span> <span class="nav-text">Memcache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%92%99%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">钙化问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reids"><span class="nav-number">2.</span> <span class="nav-text">Reids</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98"><span class="nav-number">2.1.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">基础类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#string"><span class="nav-number">2.2.1.</span> <span class="nav-text">string</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash"><span class="nav-number">2.2.2.</span> <span class="nav-text">hash</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#list"><span class="nav-number">2.2.3.</span> <span class="nav-text">list</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set"><span class="nav-number">2.2.4.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sorted-set"><span class="nav-number">2.2.5.</span> <span class="nav-text">sorted set</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pub-sub-%E8%AE%A2%E9%98%85%E5%8F%91%E5%B8%83"><span class="nav-number">2.2.6.</span> <span class="nav-text">pub&#x2F;sub 订阅发布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bitmap-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-number">2.2.7.</span> <span class="nav-text">bitmap 布隆过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pipeline-%E7%AE%A1%E9%81%93%E5%91%BD%E4%BB%A4"><span class="nav-number">2.2.8.</span> <span class="nav-text">pipeline 管道命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">2.3.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%B3%E8%A1%A8"><span class="nav-number">2.4.</span> <span class="nav-text">跳表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E4%B8%AD%E7%9A%84%E8%B7%B3%E8%A1%A8"><span class="nav-number">2.4.1.</span> <span class="nav-text">redis中的跳表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7%E9%87%8F%E7%9A%84key%E5%90%8C%E4%B8%80%E6%97%B6%E9%97%B4%E8%BF%87%E6%9C%9F"><span class="nav-number">2.5.1.</span> <span class="nav-text">大量的key同一时间过期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">2.5.2.</span> <span class="nav-text">redis分布式锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E6%8C%87%E5%AE%9A%E5%89%8D%E7%BC%80%E7%9A%84key"><span class="nav-number">2.5.3.</span> <span class="nav-text">查找指定前缀的key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E5%81%9A%E5%BC%82%E6%AD%A5%E9%98%9F%E5%88%97"><span class="nav-number">2.5.4.</span> <span class="nav-text">redis做异步队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%8C%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E4%BA%A4%E4%BA%92"><span class="nav-number">2.5.5.</span> <span class="nav-text">redis持久化，主从数据交互</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pipelibne"><span class="nav-number">2.5.6.</span> <span class="nav-text">Pipelibne</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="nav-number">2.5.7.</span> <span class="nav-text">redis同步机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E5%95%A5redis%E5%BF%AB"><span class="nav-number">2.5.8.</span> <span class="nav-text">为啥redis快</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E5%A4%9A%E6%A0%B8"><span class="nav-number">2.5.9.</span> <span class="nav-text">单线程多核</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4sentinel%E7%9B%91%E6%8E%A7"><span class="nav-number">2.5.10.</span> <span class="nav-text">哨兵集群sentinel监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="nav-number">2.5.11.</span> <span class="nav-text">过期策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%EF%BC%8C%E7%A9%BF%E9%80%8F%EF%BC%8C%E9%9B%AA%E5%B4%A9"><span class="nav-number">2.5.12.</span> <span class="nav-text">缓存击穿，穿透，雪崩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E4%B9%8B%E9%97%B4%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="nav-number">2.5.13.</span> <span class="nav-text">主从之间数据同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.5.14.</span> <span class="nav-text">redis线程模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E6%85%A2%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">2.5.15.</span> <span class="nav-text">redis慢的原因</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Codis"><span class="nav-number">3.</span> <span class="nav-text">Codis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#codis%E5%88%86%E7%89%87"><span class="nav-number">3.1.</span> <span class="nav-text">codis分片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A7%BD%E4%BD%8D%E5%90%8C%E6%AD%A5"><span class="nav-number">3.2.</span> <span class="nav-text">槽位同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codis%E6%89%A9%E5%AE%B9"><span class="nav-number">3.3.</span> <span class="nav-text">codis扩容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codis%E4%B8%8D%E6%94%AF%E6%8C%81%E4%BA%8B%E5%8A%A1%EF%BC%8C%E4%B8%8D%E6%94%AF%E6%8C%81MSETNX"><span class="nav-number">3.4.</span> <span class="nav-text">codis不支持事务，不支持MSETNX</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2021/03/12/Redis%E4%B8%8EMc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Redis， Codis与Mc | All-Nothing">
+      <meta itemprop="description" content="redis与memcache，还有redis集群，codis">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis， Codis与Mc
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-12 11:42:28" itemprop="dateCreated datePublished" datetime="2021-03-12T11:42:28+08:00">2021-03-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:30" itemprop="dateModified" datetime="2024-06-03T17:11:30+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">redis与memcache，还有redis集群，codis</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Memcache"><a href="#Memcache" class="headerlink" title="Memcache"></a>Memcache</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>用的是LRU cache算法+超时过期机制</p>
+<p>当查询数据时，客户端首先参考节点列表计算出key的哈希值（阶段一哈希），进而选中一个节点；客户端将请求发送给选中的节点，然后memcached节点通过一个内部的哈希算法（阶段二哈希），查找真正的数据（item）</p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>Mc特点：</p>
+<p>MC 处理请求时使用多线程异步 IO 的方式，可以合理利用 CPU 多核的优势，性能非常优秀；<br>MC 功能简单，使用内存存储数据；<br>MC 的内存结构以及钙化问题我就不细说了，大家可以查看官网了解下；<br>MC 对缓存的数据可以设置失效期，过期后的数据会被清除；<br>失效的策略采用延迟失效，就是当再次使用数据时检查是否失效；<br>当容量存满时，会对缓存中的数据进行剔除，剔除时除了会对过期 key 进行清理，还会按 LRU 策略对数据进行剔除</p>
+<p>限制：<br>key 不能超过 250 个字节；<br>value 不能超过 1M 字节；<br>key 的最大失效时间是 30 天；<br>只支持 K-V 结构，不提供持久化和主从同步功能</p>
+<h3 id="钙化问题"><a href="#钙化问题" class="headerlink" title="钙化问题"></a>钙化问题</h3><p>没有空余的内存分配新的slab的时候， 写入新的数据，会淘汰最新的，LRU只会淘汰同一级别的Slab数据</p>
+<p>重启实例，采取随机过期策略</p>
+<h2 id="Reids"><a href="#Reids" class="headerlink" title="Reids"></a>Reids</h2><h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>本地缓存(内存交互)，分布式缓存（远程请求，良好的扩展能力），多级缓存（两者结合）</p>
+<h3 id="基础类型"><a href="#基础类型" class="headerlink" title="基础类型"></a>基础类型</h3><h4 id="string"><a href="#string" class="headerlink" title="string"></a>string</h4><p>内部的实现是通过 SDS（Simple Dynamic String ）来存储的。SDS 类似于 Java 中的 ArrayList，可以通过预分配冗余空间的方式来减少内存的频繁分配</p>
+<p>场景：缓存，计数器，session</p>
+<p>动态字符串SDS</p>
+<p>会存储长度信息，取出来的就是o1，还预分配了一个冗余长度，有多余的1byte空间（这1byte也是为了存空字</p>
+<p>惰性空间释放：我们执行完一个字符串缩减的操作，redis并不会马上收回我们的空间，因为可以预防你继续添加的操作，这样可以减少分配空间带来的消耗，但是当你再次操作还是没用到多余空间的时候，Redis也还是会收回对于的空间，防止内存的浪费的</p>
+<p>两次，第一次不会缩减回收多余空间，再次操作发现还没有使用，就会回收，删减的话也不会马上释放free空间</p>
+<p>同时保存了长度还会处理二进制的数据，进行长度对比</p>
+<h4 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h4><p>map结构，kv使用，扩容，渐进式rehash，新旧两个hash，扩大到原来的2倍，缩容是元素数量到达数组的1/10</p>
+<h4 id="list"><a href="#list" class="headerlink" title="list"></a>list</h4><p>List 存储一些列表型的数据结构，底层是链表结构</p>
+<p>lrange 命令，读取某个闭区间内的元素，可以基于 List 实现分页查询</p>
+<p>Redis的链表结构，可以轻松实现阻塞队列，数据的生产者可以通过Lpush命令从左边插入数据，多个数据消费者，可以使用BRpop命令阻塞的“抢”列表尾部的数据</p>
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><p>无序集合，自动去重</p>
+<h4 id="sorted-set"><a href="#sorted-set" class="headerlink" title="sorted set"></a>sorted set</h4><p>有序集合，根据分数自动排序</p>
+<h4 id="pub-sub-订阅发布"><a href="#pub-sub-订阅发布" class="headerlink" title="pub/sub 订阅发布"></a>pub/sub 订阅发布</h4><h4 id="bitmap-布隆过滤器"><a href="#bitmap-布隆过滤器" class="headerlink" title="bitmap 布隆过滤器"></a>bitmap 布隆过滤器</h4><h4 id="pipeline-管道命令"><a href="#pipeline-管道命令" class="headerlink" title="pipeline 管道命令"></a>pipeline 管道命令</h4><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>Redis 只保证串行执行命令，并且能保证全部执行，但是执行命令失败时并不会回滚，而是会继续执行下去</p>
+<h3 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h3><p>解决链表查找问题，链表的插入删除都是o1，但是查找是on，只能一个一个查找</p>
+<p>将链表升维，多层链表，类似二分查找的思想，是查找时间复杂度可以降低到O(log n)</p>
+<p>但是会对插入，删除造成影响，需要调整层级链表之间的对应关系</p>
+<p>如何调整，不要求每层的对应关系，插入的节点产生随即层数，还是O1操作，比如随机 层数是3，则1到3层都有这个节点，不需要调整会优于平衡树</p>
+<p>查找时会逐层查找，降低查找的时间复杂度</p>
+<p>如何产生这个随机层数，会影响到跳表的查找效率</p>
+<p>redis中的概率是p，1/4</p>
+<p>第1层链表固定有n个节点；<br>第2层链表平均有n<em>p个节点；<br>第3层链表平均有n</em>p2个节点</p>
+<p>从第1层到最高层，各层链表的平均节点数是一个指数递减的等比数列。容易推算出，而最高层的平均节点数为1/p</p>
+<p>相比于平衡树，hash：</p>
+<p>1、跳表，平衡树是有序的，hash是无序的，查找是O1，但是无法范围查找</p>
+<p>2、范围查找时，平衡树比跳表复杂，平衡树需要中序遍历</p>
+<p>3、平衡树插入删除会引起子树调整，保证平衡，跳表只需要修改指针</p>
+<p>4、内存占用，平衡树每层两个指针，跳表每层1/（1-p）， redis是1/4，每层1.33个指针</p>
+<p>5、查找都是ologn，实现跳表更简单</p>
+<h4 id="redis中的跳表"><a href="#redis中的跳表" class="headerlink" title="redis中的跳表"></a>redis中的跳表</h4><p>sorted set底层不仅仅使用了skiplist，还使用了ziplist和dict</p>
+<p>sorted set中的每个元素主要表现出3个属性：</p>
+<p>数据本身（在前面的例子中我们把名字存成了数据）。<br>每个数据对应一个分数(score)。<br>根据分数大小和数据本身的字典排序rank排名</p>
+<p>zrevrank由数据查询它对应的排名，这在前面介绍的skiplist中并不支持。<br>zscore由数据查询它对应的分数，这也不是skiplist所支持的。<br>zrevrange根据一个排名范围，查询排名在这个范围内的数据。这在前面介绍的skiplist中也不支持。<br>zrevrangebyscore根据分数区间查询数据集合，是一个skiplist所支持的典型的范围查找（score相当于key）。</p>
+<p>zscore的查询，不是由skiplist来提供的，而是由那个dict来提供的。 时间复杂度o1<br>为了支持排名(rank)，Redis里对skiplist做了扩展，使得根据排名能够快速查到数据，或者根据分数查到数据之后，也同时很容易获得排名。而且，根据排名的查找，时间复杂度也为O(log n)。<br>zrevrange的查询，是根据排名查数据，由扩展后的skiplist来提供。O(log(n)+M)<br>zrevrank是先在dict中由数据查到分数，再拿分数到skiplist中去查找，查到后也同时获得了排名。O(log n)</p>
+<p>分数(score)允许重复，即skiplist的key允许重复。这在最开始介绍的经典skiplist中是不允许的。<br>在比较时，不仅比较分数（相当于skiplist的key），还比较数据本身。在Redis的skiplist实现中，数据本身的内容唯一标识这份数据，而不是由key来唯一标识。另外，当多个元素分数相同的时候，还需要根据数据内容来进字典排序。<br>第1层链表不是一个单向链表，而是一个双向链表。这是为了方便以倒序方式获取一个范围内的元素。</p>
+<p>当数据较少时，sorted set是由一个ziplist来实现的。超过128个就会转skiplist，或者单独插入长度超过了64<br>当数据多的时候，sorted set是由一个dict + 一个skiplist来实现的。简单来讲，dict用来查询数据到分数的对应关系，而skiplist用来根据分数查询数据（可能是范围查找）</p>
+<p>ziplist双向链表</p>
+<h3 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h3><h4 id="大量的key同一时间过期"><a href="#大量的key同一时间过期" class="headerlink" title="大量的key同一时间过期"></a>大量的key同一时间过期</h4><p>大量的key过期时间设置的过于集中，到过期的那个时间点，Redis可能会出现短暂的卡顿现象。严重的话会出现缓存雪崩</p>
+<p>过期时间加上随机值</p>
+<h4 id="redis分布式锁"><a href="#redis分布式锁" class="headerlink" title="redis分布式锁"></a>redis分布式锁</h4><p>先拿setnx来争抢锁，抢到之后，再用expire给锁加一个过期时间防止锁忘记了释放</p>
+<p>如果set后，设置expire之前意外crash，setnx和expire合成一条指令来用</p>
+<h4 id="查找指定前缀的key"><a href="#查找指定前缀的key" class="headerlink" title="查找指定前缀的key"></a>查找指定前缀的key</h4><p>keys指令可以扫出指定模式的key列表，如果这个redis正在给线上的业务提供服务，那使用keys指令会有什么问题？</p>
+<p>Redis的单线程的。keys指令会导致线程阻塞一段时间，线上服务会停顿，直到指令执行完毕，服务才能恢复。这个时候可以使用scan指令，scan指令可以无阻塞的提取出指定模式的key列表，但是会有一定的重复概率，在客户端做一次去重就可以了，但是整体所花费的时间会比直接用keys指令长</p>
+<p>增量式的，但是期间被更改，不能完全保证</p>
+<h4 id="redis做异步队列"><a href="#redis做异步队列" class="headerlink" title="redis做异步队列"></a>redis做异步队列</h4><p>rpush生产消息，lpop消费消息。当lpop没有消息的时候，要适当sleep一会再重试</p>
+<p>list还有个指令叫blpop，在没有消息的时候，它会阻塞住直到消息到来</p>
+<p>使用pub/sub主题订阅者模式，可以实现 1:N 的消息队列，但有缺点在消费者下线的情况下，生产的消息会丢失，得使用专业的消息队列如RocketMQ等</p>
+<p>实现延时队列：使用sortedset，拿时间戳作为score，消息内容作为key调用zadd来生产消息，消费者用zrangebyscore指令获取N秒之前的数据轮询进行处理</p>
+<h4 id="redis持久化，主从数据交互"><a href="#redis持久化，主从数据交互" class="headerlink" title="redis持久化，主从数据交互"></a>redis持久化，主从数据交互</h4><p>RDB：RDB 持久化机制，是对 Redis 中的数据执行周期性的持久化。<br>AOF：AOF 机制对每条写入命令作为日志，以 append-only 的模式写入一个日志文件中，因为这个模式是只追加的方式，所以没有任何磁盘寻址的开销，所以很快，有点像Mysql中的binlog。</p>
+<p>RDB做镜像全量持久化，AOF做增量持久化。因为RDB会耗费较长时间，不够实时，在停机的时候会导致大量丢失数据，所以需要AOF来配合使用。在redis实例重启时，会使用RDB持久化文件重新构建内存，再使用AOF重放近期的操作指令来实现完整恢复重启之前的状态</p>
+<p>AOF持久化开启且存在AOF文件时，优先加载AOF文件；AOF关闭或者AOF文件不存在时，加载RDB文件；加载AOF/RDB文件城后，Redis启动成功</p>
+<p>RDB更适合做冷备，AOF更适合做热备</p>
+<p>两种方式的优缺点：</p>
+<p>1、RDB对Redis的性能影响非常小，是因为在同步数据的时候他只是fork了一个子进程去做持久化的，而且他在数据恢复的时候速度比AOF来的快</p>
+<p>2、RDB都是快照文件，都是默认五分钟甚至更久的时间才会生成一次，这意味着你这次同步到下次同步这中间五分钟的数据都很可能全部丢失掉。AOF则最多丢一秒，数据完整性不一样</p>
+<p>3、RDB在生成数据快照的时候，如果文件很大，客户端可能会暂停几毫秒甚至几秒</p>
+<p>4、AOF是一秒一次去通过一个后台的线程fsync操作，那最多丢这一秒的数据，写入的方式是追加，减少磁盘开销</p>
+<p>5、AOF开启后，Redis支持写的QPS会比RDB支持写的要低</p>
+<p>第一时间用RDB恢复，然后AOF做数据补全</p>
+<p>RDB快照的数据生成的时候，缓存区也必须同时开始接受新请求，不然你旧的数据过去了，你在同步期间的增量数据咋办</p>
+<p>aof重写：原理 就是 开辟一个子进程 对内存进行 遍历 转换成一系列 Redis 的操作指令，序列化到一个新的 AOF 日志文件 中。序列化完毕后再将操作期间发生的 增量 AOF 日志 追加到这个新的 AOF 日志文件中</p>
+<h4 id="Pipelibne"><a href="#Pipelibne" class="headerlink" title="Pipelibne"></a>Pipelibne</h4><p>可以将多次IO往返的时间缩减为一次，前提是pipeline执行的指令之间没有因果相关性</p>
+<h4 id="redis同步机制"><a href="#redis同步机制" class="headerlink" title="redis同步机制"></a>redis同步机制</h4><p>第一次同步时，主节点做一次bgsave，并同时将后续修改操作记录到内存buffer，待完成后将RDB文件全量同步到复制节点，复制节点接受完成后将RDB镜像加载到内存。加载完成后，再通知主节点将期间修改的操作记录同步到复制节点进行重放就完成了同步过程。后续的增量数据通过AOF日志同步即可</p>
+<p>传输过程中有什么网络问题啥的，会自动重连的，并且连接之后会把缺少的数据补上的</p>
+<h4 id="为啥redis快"><a href="#为啥redis快" class="headerlink" title="为啥redis快"></a>为啥redis快</h4><p>Redis采用的是基于内存的采用的是单进程单线程模型的 KV 数据库，由C语言编写，官方提供的数据是可以达到100000+的QPS</p>
+<p>1、完全基于内存，绝大部分请求是纯粹的内存操作，非常快速</p>
+<p>2、数据结构简单，数据操作简单</p>
+<p>3、采用了单线程，避免了上下文切换，和竞争，也不存在多线程多进程的cpu消耗</p>
+<p>4、多路io复用模型，非阻塞io</p>
+<p>5、底层实现，Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求</p>
+<h4 id="单线程多核"><a href="#单线程多核" class="headerlink" title="单线程多核"></a>单线程多核</h4><p>开多个实例</p>
+<h4 id="哨兵集群sentinel监控"><a href="#哨兵集群sentinel监控" class="headerlink" title="哨兵集群sentinel监控"></a>哨兵集群sentinel监控</h4><p>集群监控：负责监控 Redis master 和 slave 进程是否正常工作。<br>消息通知：如果某个 Redis 实例有故障，那么哨兵负责发送消息作为报警通知给管理员。<br>故障转移：如果 master node 挂掉了，会自动转移到 slave node 上。<br>配置中心：如果故障转移发生了，通知 client 客户端新的 master 地址</p>
+<h4 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h4><p>Redis的过期策略，是有定期删除+惰性删除两种</p>
+<p>从设置过期时间的key里随机选取 检查，达到过期时间的就删除，全扫描量太大</p>
+<p>惰性删除：定期没删的，查询的时候来检查是否过期</p>
+<p>既没定期删，也没访问，lru解决</p>
+<h4 id="缓存击穿，穿透，雪崩"><a href="#缓存击穿，穿透，雪崩" class="headerlink" title="缓存击穿，穿透，雪崩"></a>缓存击穿，穿透，雪崩</h4><p>击穿：热点数据不过期设置</p>
+<p>穿透：加校验，布隆过滤器反向校验</p>
+<p>雪崩：重启，过期随机时间</p>
+<h4 id="主从之间数据同步"><a href="#主从之间数据同步" class="headerlink" title="主从之间数据同步"></a>主从之间数据同步</h4><p>单机QPS是有上限的，而且Redis的特性就是必须支撑读高并发的，master机器去写，数据同步给别的slave机器</p>
+<h4 id="redis线程模型"><a href="#redis线程模型" class="headerlink" title="redis线程模型"></a>redis线程模型</h4><p>文件事件处理器是单线程的，采用 IO 多路复用机制同时监听多个 Socket，根据 Socket 上的事件来选择对应的事件处理器进行处理</p>
+<p>多个socket，io多路复用，文件事件分派器，文件处理器</p>
+<p>多个 Socket 可能会并发产生不同的操作，每个操作对应不同的文件事件，但是 IO 多路复用程序会监听多个 Socket，会将 Socket 产生的事件放入队列中排队，事件分派器每次从队列中取出一个事件，把该事件交给对应的事件处理器进行处理</p>
+<h4 id="redis慢的原因"><a href="#redis慢的原因" class="headerlink" title="redis慢的原因"></a>redis慢的原因</h4><p>1、实例内存达到上限：max值，达到max值会踢出一些数据，内存维持在max下，lru淘汰，扩充内存</p>
+<p>2、大key问题，操作大key，就会消耗比较多的时间与内存，业务分解</p>
+<p>3、复杂的操作：CONFIG SET slowlog-log-slower-than 5000，On操作，N比较大，或者组装数据，网络问题</p>
+<p>4、集中过期：redis定时任务检查主动过期时，大量的key都过期</p>
+<p>5、fork子进程，持久化，拷贝数据量大，在这个时间段内操作就会耗时比较严重</p>
+<p>6、申请内存大页，内存页4kb，linux2.6。38支持2mb内存申请，Redis 在申请内存时也会以 2MB 为单位向操作系统申请，申请内存的耗时变长，进而导致每个写请求的延迟增加，影响到 Redis 性能</p>
+<p>7、AOF阻塞：刷磁盘的时候，磁盘负载过高，导致子进程阻塞，不能返回，再次aofwrite的时候就会影响redis性能</p>
+<h2 id="Codis"><a href="#Codis" class="headerlink" title="Codis"></a>Codis</h2><p>Codis就是起着一个中间代理的作用，能够把所有的Redis实例当成一个来使用，在客户端操作着SDK的时候和操作Redis的时候是一样的，没有差别。</p>
+<p>因为Codis是一个无状态的，所以可以增加多个Codis来提升QPS,同时也可以起着容灾的作用。</p>
+<h3 id="codis分片"><a href="#codis分片" class="headerlink" title="codis分片"></a>codis分片</h3><p>Codis会把所有的key分成1024个槽，这1024个槽对应着的就是Redis的集群，这个在Codis中是会在内存中维护着这1024个槽与Redis实例的映射关系</p>
+<h3 id="槽位同步"><a href="#槽位同步" class="headerlink" title="槽位同步"></a>槽位同步</h3><p>ZooKeeper监听槽位变化，会及时同步</p>
+<h3 id="codis扩容"><a href="#codis扩容" class="headerlink" title="codis扩容"></a>codis扩容</h3><p>在迁移的时候，会在原来的Redis节点和新的Redis里都保存着迁移的槽位信息，在迁移的过程中，如果有key打进将要迁移或者正在迁移的旧槽位的时候，这个时候Codis的处理机制是，先是将这个key强制迁移到新的Redis节点中，然后再告诉Codis,下次如果有新的key的打在这个槽位中的话，那么转发到新的节点。</p>
+<p>最后自动均衡</p>
+<h3 id="codis不支持事务，不支持MSETNX"><a href="#codis不支持事务，不支持MSETNX" class="headerlink" title="codis不支持事务，不支持MSETNX"></a>codis不支持事务，不支持MSETNX</h3><p>因为key可能存在在多个Redis的实例中，如果某个实例的设值成功，而另一个实例的设值不成功，从本质上讲这是不成功的，但是分布在多个实例中的Redis是没有回滚机制的，所以会产生脏数据</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/22/%E9%80%92%E5%BD%92%E5%88%86%E6%B2%BB%E5%9B%9E%E6%BA%AF%E4%B8%93%E9%A2%98/" rel="prev" title="递归分治回溯，bfs专题">
+                  <i class="fa fa-angle-left"></i> 递归分治回溯，bfs专题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/15/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%93%E9%A2%98/" rel="next" title="动态规划专题">
+                  动态规划专题 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

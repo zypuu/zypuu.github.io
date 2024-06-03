@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypuu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="GO的WaitGroup用法，以及源码分析，以及使用注意事项">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO的WaitGroup">
+<meta property="og:url" content="https://zypuu.github.io/2024/04/20/GO%E7%9A%84WaitGroup/index.html">
+<meta property="og:site_name" content="All-Nothing">
+<meta property="og:description" content="GO的WaitGroup用法，以及源码分析，以及使用注意事项">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-04-20T03:02:20.000Z">
+<meta property="article:modified_time" content="2024-06-03T09:11:29.919Z">
+<meta property="article:author" content="ZYP">
+<meta property="article:tag" content="GO">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypuu.github.io/2024/04/20/GO%E7%9A%84WaitGroup/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://zypuu.github.io/2024/04/20/GO%E7%9A%84WaitGroup/","path":"2024/04/20/GO的WaitGroup/","title":"GO的WaitGroup"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GO的WaitGroup | All-Nothing</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="All-Nothing" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">All-Nothing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Life has a funny way of working out, just when you start to believe it never will</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archive/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#WaitGroup%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">WaitGroup使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WaitGroup%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">WaitGroup结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Add"><span class="nav-number">2.2.</span> <span class="nav-text">Add</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Done"><span class="nav-number">2.3.</span> <span class="nav-text">Done</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Wait"><span class="nav-number">2.4.</span> <span class="nav-text">Wait</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYP"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZYP</p>
+  <div class="site-description" itemprop="description">Give it a try, whispered the HEART</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archive/">
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypuu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypuu" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:375133421@qq.com" title="E-Mail → mailto:375133421@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://zypuu.github.io/2024/04/20/GO%E7%9A%84WaitGroup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZYP">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="All-Nothing">
+      <meta itemprop="description" content="Give it a try, whispered the HEART">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GO的WaitGroup | All-Nothing">
+      <meta itemprop="description" content="GO的WaitGroup用法，以及源码分析，以及使用注意事项">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GO的WaitGroup
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-04-20 11:02:20" itemprop="dateCreated datePublished" datetime="2024-04-20T11:02:20+08:00">2024-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-03 17:11:29" itemprop="dateModified" datetime="2024-06-03T17:11:29+08:00">2024-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GO/" itemprop="url" rel="index"><span itemprop="name">GO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">GO的WaitGroup用法，以及源码分析，以及使用注意事项</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Go语言中的WaitGroup类似Java的CountDownLatch，任务检查点，任务等待点，比如有一个主任务，执行到某一时刻需要执行两个子任务，主任务等待阻塞，两个子任务执行完毕后再执行主任务，这就需要一个任务阻塞检查点，等待子任务执行完毕</p>
+<h3 id="WaitGroup使用"><a href="#WaitGroup使用" class="headerlink" title="WaitGroup使用"></a>WaitGroup使用</h3><p>示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wg.Add(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">go</span> createRand()</span><br><span class="line"></span><br><span class="line">wg.Add(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">go</span> sumResult()</span><br><span class="line">wg.Wait()</span><br><span class="line"><span class="keyword">for</span> v := <span class="keyword">range</span> resultChan &#123;</span><br><span class="line">	j := (*v).job</span><br><span class="line">	s := (*v).sum</span><br><span class="line">	fmt.Println(<span class="string">&quot;1111&quot;</span>, j, s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建两个协程方法，产生随机数，计算结果，主线程等待计算结果后，再打印结果</p>
+<p>一共有三个方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(wg *WaitGroup) Add(delta int)</span><br><span class="line">(wg *WaitGroup) Done()</span><br><span class="line">(wg *WaitGroup) Wait()</span><br></pre></td></tr></table></figure>
+
+<p><code>Add</code> 方法用于设置 WaitGroup 的计数值，可以理解为子任务的数量</p>
+<p><code>Done</code> 方法用于将 WaitGroup 的计数值减一，可以理解为完成一个子任务</p>
+<p><code>Wait</code> 方法用于阻塞调用者，直到 WaitGroup 的计数值为0，即所有子任务都完成</p>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="WaitGroup结构"><a href="#WaitGroup结构" class="headerlink" title="WaitGroup结构"></a>WaitGroup结构</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> WaitGroup <span class="keyword">struct</span> &#123;</span><br><span class="line">    noCopy noCopy <span class="comment">// noCopy 字段标识，由于 WaitGroup 不能复制，方便工具检测</span></span><br><span class="line">    state1 [<span class="number">3</span>]<span class="keyword">uint32</span>  <span class="comment">// 12个字节，8个字节标识 计数值和等待数量，4个字节用于标识信号量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>state1 是个复合字段，会拆分为两部分： 64位（8个字节）的 statep 作为一个整体用于原子操作, 其中前面4个字节表示计数值，后面四个字节表示等待数量；剩余 32位（4个字节）semap 用于标识信号量。</p>
+<p>Go语言中对于64位的变量进行原子操作，需要保证该变量是 64位对齐 的，也就是要保证这 8个字节 的首地址是 8 的整数倍。因此当 state1 的首地址是 8 的整数倍时，取前8个字节作为 statep ，后4个字节作为 semap；当 state1 的首地址不是 8 的整数倍时，取后8个字节作为 statep ，前4个字节作为 semap。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(wg *WaitGroup)</span> <span class="title">state</span><span class="params">()</span> <span class="params">(statep *<span class="keyword">uint64</span>, semap *<span class="keyword">uint32</span>)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 首地址是8的倍数时，前8个字节为 statep, 后四个字节为 semap</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">uintptr</span>(unsafe.Pointer(&amp;wg.state1))%<span class="number">8</span> == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (*<span class="keyword">uint64</span>)(unsafe.Pointer(&amp;wg.state1)), &amp;wg.state1[<span class="number">2</span>]</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">        </span><br><span class="line">    <span class="comment">// 后8个字节为 statep, 前四个字节为 semap  </span></span><br><span class="line">        <span class="keyword">return</span> (*<span class="keyword">uint64</span>)(unsafe.Pointer(&amp;wg.state1[<span class="number">1</span>])), &amp;wg.state1[<span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Add"><a href="#Add" class="headerlink" title="Add"></a>Add</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(wg *WaitGroup)</span> <span class="title">Add</span><span class="params">(delta <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 拿到计数值等待者变量 statep 和 信号量 semap</span></span><br><span class="line">    statep, semap := wg.state()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计数值加上 delta: statep 的前四个字节是计数值，因此将 delta 前移 32位</span></span><br><span class="line">    state := atomic.AddUint64(statep, <span class="keyword">uint64</span>(delta)&lt;&lt;<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计数值</span></span><br><span class="line">    v := <span class="keyword">int32</span>(state &gt;&gt; <span class="number">32</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待者数量</span></span><br><span class="line">    w := <span class="keyword">uint32</span>(state)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果加上 delta 之后，计数值变为负数，不合法，panic</span></span><br><span class="line">    <span class="keyword">if</span> v &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">panic</span>(<span class="string">&quot;sync: negative WaitGroup counter&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// delta &gt; 0 &amp;&amp; v == int32(delta) : 表示从 0 开始添加计数值</span></span><br><span class="line">    <span class="comment">// w!=0 ：表示已经有了等待者</span></span><br><span class="line">    <span class="comment">// 说明在添加计数值的时候，同时添加了等待者，非法操作。添加等待者需要在添加计数值之后</span></span><br><span class="line">    <span class="keyword">if</span> w != <span class="number">0</span> &amp;&amp; delta &gt; <span class="number">0</span> &amp;&amp; v == <span class="keyword">int32</span>(delta) &#123;</span><br><span class="line">        <span class="built_in">panic</span>(<span class="string">&quot;sync: WaitGroup misuse: Add called concurrently with Wait&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// v&gt;0 : 计数值不等于0，不需要唤醒等待者，直接返回</span></span><br><span class="line">    <span class="comment">// w==0: 没有等待者，不需要唤醒，直接返回</span></span><br><span class="line">    <span class="keyword">if</span> v &gt; <span class="number">0</span> || w == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 再次检查数据是否一致</span></span><br><span class="line">    <span class="keyword">if</span> *statep != state &#123;</span><br><span class="line">        <span class="built_in">panic</span>(<span class="string">&quot;sync: WaitGroup misuse: Add called concurrently with Wait&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 到这里说明计数值为0，且等待者大于0，需要唤醒所有的等待者，并把系统置为初始状态（0状态）</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 将计数值和等待者数量都置为0</span></span><br><span class="line">    *statep = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 唤醒等待者</span></span><br><span class="line">    <span class="keyword">for</span> ; w != <span class="number">0</span>; w-- &#123;</span><br><span class="line">        runtime_Semrelease(semap, <span class="literal">false</span>, <span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Done"><a href="#Done" class="headerlink" title="Done"></a>Done</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 完成一个任务，将计数值减一，当计数值减为0时，需要唤醒所有的等待者</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(wg *WaitGroup)</span> <span class="title">Done</span><span class="params">()</span></span> &#123;</span><br><span class="line">    wg.Add(<span class="number">-1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Add 方法用于添加一个计数值（负数相当于减），当计数值变为0后， Wait 方法阻塞的所有等待者都会被释放，计数值变为负数是非法操作，产生 panic，当计数值为0时（初始状态），Add 方法不能和 Wait 方法并发调用，需要保证 Add 方法在 Wait 方法之前调用，否则会 panic</p>
+<h4 id="Wait"><a href="#Wait" class="headerlink" title="Wait"></a>Wait</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用 Wait 方法会被阻塞，直到 计数值 变为0</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(wg *WaitGroup)</span> <span class="title">Wait</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取计数、等待数和信号量</span></span><br><span class="line">    statep, semap := wg.state()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        state := atomic.LoadUint64(statep)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计数值</span></span><br><span class="line">        v := <span class="keyword">int32</span>(state &gt;&gt; <span class="number">32</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 等待者数量</span></span><br><span class="line">        w := <span class="keyword">uint32</span>(state)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计数值数量为0，直接返回，无需等待</span></span><br><span class="line">        <span class="keyword">if</span> v == <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 到这里说明计数值数量大于0</span></span><br><span class="line">        <span class="comment">// 增加等待者数量：这里会有竞争，比如多个 Wait 调用，或者在同时调用 Add 方法，增加不成功会继续 for 循环</span></span><br><span class="line">        <span class="keyword">if</span> atomic.CompareAndSwapUint64(statep, state, state+<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="comment">// 增加成功后，阻塞在信号量这里，等待被唤醒</span></span><br><span class="line">            runtime_Semacquire(semap)</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 被唤醒的时候，应该是0状态。如果重用 WaitGroup，需要等 Wait 返回</span></span><br><span class="line">            <span class="keyword">if</span> *statep != <span class="number">0</span> &#123;</span><br><span class="line">                <span class="built_in">panic</span>(<span class="string">&quot;sync: WaitGroup is reused before previous Wait has returned&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>根据源码分析，我们可以得到如何使用waitGroup可以避免panic：</p>
+<p>1、保证 Add 在 Wait 前调用</p>
+<p>2、Add 中不传递负数</p>
+<p>3、任务完成后不要忘记调用 Done 方法，建议使用 defer wg.Done()</p>
+<p>4、不要复制使用 WaitGroup，函数传递时使用指针传递</p>
+<p>5、尽量不复用 WaigGroup，减少出问题的风险</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GO/" rel="tag"># GO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/18/%E6%9C%AA%E6%9D%A5%E4%BF%A1%E6%81%AF%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF/" rel="prev" title="未来信息综合技术">
+                  <i class="fa fa-angle-left"></i> 未来信息综合技术
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/03/Git%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="next" title="Git工作流">
+                  Git工作流 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZYP</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">617k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:21</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/zypuu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
