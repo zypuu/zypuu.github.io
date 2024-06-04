@@ -117,37 +117,6 @@
       </tags>
   </entry>
   <entry>
-    <title>配置缓存</title>
-    <url>/2018/04/20/Django%E5%BA%94%E7%94%A8%E7%BC%93%E5%AD%98/</url>
-    <content><![CDATA[<h2 id="Django配置缓存"><a href="#Django配置缓存" class="headerlink" title="Django配置缓存"></a>Django配置缓存</h2><p>在Django REST framework中使用缓存，可以通过drf-extensions扩展来实现。使用文档<a href="http://chibisov.github.io/drf-extensions/docs/#caching">点这里</a></p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-extensions</span><br></pre></td></tr></table></figure>
-
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="直接添加装饰器"><a href="#直接添加装饰器" class="headerlink" title="直接添加装饰器"></a>直接添加装饰器</h4><p>首先导入工具</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework_extensions.cache.decorators <span class="keyword">import</span> cache_response</span><br></pre></td></tr></table></figure>
-<p>即在视图类里面的方法前添加装饰器</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class CityView(views.APIView):</span><br><span class="line">    @cache_response()</span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
-<p>cache_response可以添加两个参数</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">@cache_response(timeout=<span class="number">60</span>*<span class="number">60</span>, cache=<span class="string">&#x27;default&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>timeout : 缓存的过期时间<br>cache=’default’ ：django的缓存后端，即在settings中的cache配置</p>
-<p>如果不写参数，则使用默认值，默认值在配置中添加代码：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用扩展类继承"><a href="#使用扩展类继承" class="headerlink" title="使用扩展类继承"></a>使用扩展类继承</h4><p>除了直接添加装饰器的方法，也可以使用drf-extensions提供的扩展类</p>
-<p>drf-extensions提供了三种扩展类<br>导入工具：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">rest_framework_extensions.cache.mixins</span><br></pre></td></tr></table></figure>
-<p>三个扩展类都在里面。</p>
-<p> 1.ListCacheResponseMixin<br> 用于缓存列表数据类的视图，配合ListModelMixin扩展类使用<br> 2. RetrieveCacheResponseMixin<br>用于缓存返回单一数据的视图，与RetrieveModelMixin扩展类配合使用<br> 3. CacheResponseMixin<br> 为视图集同时补充List和Retrieve两种缓存，与ListModelMixin和RetrieveModelMixin一起配合使用。</p>
-<p>使用方法直接视图类继承即可。<br>在settings中添加配置，即可设置过期时间与cache</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>web</category>
-      </categories>
-      <tags>
-        <tag>缓存</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DJANGO框架如何实现用户多认证方式登录与第三方授权登录</title>
     <url>/2018/06/11/DJANGO%E6%A1%86%E6%9E%B6%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95/</url>
     <content><![CDATA[<h2 id="多种认证方式登录"><a href="#多种认证方式登录" class="headerlink" title="多种认证方式登录"></a>多种认证方式登录</h2><p>Django框架提供了认证系统，详情看文档<a href="https://yiyibooks.cn/xx/Django_1.11.6/topics/auth/index.html">Django认证系统官方文档</a></p>
@@ -207,6 +176,97 @@
       </categories>
       <tags>
         <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>配置缓存</title>
+    <url>/2018/04/20/Django%E5%BA%94%E7%94%A8%E7%BC%93%E5%AD%98/</url>
+    <content><![CDATA[<h2 id="Django配置缓存"><a href="#Django配置缓存" class="headerlink" title="Django配置缓存"></a>Django配置缓存</h2><p>在Django REST framework中使用缓存，可以通过drf-extensions扩展来实现。使用文档<a href="http://chibisov.github.io/drf-extensions/docs/#caching">点这里</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-extensions</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="直接添加装饰器"><a href="#直接添加装饰器" class="headerlink" title="直接添加装饰器"></a>直接添加装饰器</h4><p>首先导入工具</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework_extensions.cache.decorators <span class="keyword">import</span> cache_response</span><br></pre></td></tr></table></figure>
+<p>即在视图类里面的方法前添加装饰器</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">class CityView(views.APIView):</span><br><span class="line">    @cache_response()</span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+<p>cache_response可以添加两个参数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">@cache_response(timeout=<span class="number">60</span>*<span class="number">60</span>, cache=<span class="string">&#x27;default&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>timeout : 缓存的过期时间<br>cache=’default’ ：django的缓存后端，即在settings中的cache配置</p>
+<p>如果不写参数，则使用默认值，默认值在配置中添加代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用扩展类继承"><a href="#使用扩展类继承" class="headerlink" title="使用扩展类继承"></a>使用扩展类继承</h4><p>除了直接添加装饰器的方法，也可以使用drf-extensions提供的扩展类</p>
+<p>drf-extensions提供了三种扩展类<br>导入工具：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">rest_framework_extensions.cache.mixins</span><br></pre></td></tr></table></figure>
+<p>三个扩展类都在里面。</p>
+<p> 1.ListCacheResponseMixin<br> 用于缓存列表数据类的视图，配合ListModelMixin扩展类使用<br> 2. RetrieveCacheResponseMixin<br>用于缓存返回单一数据的视图，与RetrieveModelMixin扩展类配合使用<br> 3. CacheResponseMixin<br> 为视图集同时补充List和Retrieve两种缓存，与ListModelMixin和RetrieveModelMixin一起配合使用。</p>
+<p>使用方法直接视图类继承即可。<br>在settings中添加配置，即可设置过期时间与cache</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># DRF扩展</span><br><span class="line">REST_FRAMEWORK_EXTENSIONS = &#123;</span><br><span class="line">    # 缓存时间</span><br><span class="line">    <span class="string">&#x27;DEFAULT_CACHE_RESPONSE_TIMEOUT&#x27;</span>: <span class="number">60</span> * <span class="number">60</span>,</span><br><span class="line">    # 缓存存储</span><br><span class="line">    <span class="string">&#x27;DEFAULT_USE_CACHE&#x27;</span>: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>web</category>
+      </categories>
+      <tags>
+        <tag>缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Elasticsearch的使用</title>
+    <url>/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h2><p>ES=elaticsearch简写， Elasticsearch是一个开源的高扩展的分布式全文检索引擎，它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。<br>Elasticsearch也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。</p>
+<h2 id="ES工作原理"><a href="#ES工作原理" class="headerlink" title="ES工作原理"></a>ES工作原理</h2><p>当ElasticSearch的节点启动后，它会利用多播(multicast)(或者单播，如果用户更改了配置)寻找集群中的其它节点，并与之建立连接。这个过程如下图所示：<br><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/1.jpg" alt="1"></p>
+<h2 id="ES核心概念"><a href="#ES核心概念" class="headerlink" title="ES核心概念"></a>ES核心概念</h2><h3 id="Cluster：集群"><a href="#Cluster：集群" class="headerlink" title="Cluster：集群"></a>Cluster：集群</h3><p>ES可以作为一个独立的单个搜索服务器。不过，为了处理大型数据集，实现容错和高可用性，ES可以运行在许多互相合作的服务器上。这些服务器的集合称为集群。</p>
+<h3 id="Node：节点"><a href="#Node：节点" class="headerlink" title="Node：节点"></a>Node：节点</h3><p>形成集群的每个服务器称为节点。</p>
+<h3 id="Shard：分片"><a href="#Shard：分片" class="headerlink" title="Shard：分片"></a>Shard：分片</h3><p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。<br>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的。</p>
+<h3 id="Replia：副本"><a href="#Replia：副本" class="headerlink" title="Replia：副本"></a>Replia：副本</h3><p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+<h3 id="全文检索"><a href="#全文检索" class="headerlink" title="全文检索"></a>全文检索</h3><p>全文检索就是对一篇文章进行索引，可以根据关键字搜索，类似于mysql里的like语句。<br>全文索引就是把内容根据词的意义进行分词，然后分别创建索引，例如”你们的激情是因为什么事情来的” 可能会被分词成：“你们“，”激情“，“什么事情“，”来“ 等token，这样当你搜索“你们” 或者 “激情” 都会把这句搜出来。</p>
+<h2 id="ES数据架构的主要概念（与关系数据库Mysql对比）"><a href="#ES数据架构的主要概念（与关系数据库Mysql对比）" class="headerlink" title="ES数据架构的主要概念（与关系数据库Mysql对比）"></a>ES数据架构的主要概念（与关系数据库Mysql对比）</h2><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/2.jpg" class>
+<p>（1）关系型数据库中的数据库（DataBase），等价于ES中的索引（Index）<br>（2）一个数据库下面有N张表（Table），等价于1个索引Index下面有N多类型（Type），<br>（3）一个数据库表（Table）下的数据由多行（ROW）多列（column，属性）组成，等价于1个Type由多个文档（Document）和多Field组成。<br>（4）在一个关系型数据库里面，schema定义了表、每个表的字段，还有表和字段之间的关系。 与之对应的，在ES中：Mapping定义索引下的Type的字段处理规则，即索引如何建立、索引类型、是否保存原始索引JSON文档、是否压缩原始JSON文档、是否需要分词处理、如何进行分词处理等。<br>（5）在数据库中的增insert、删delete、改update、查search操作等价于ES中的增PUT/POST、删Delete、改_update、查GET.</p>
+<h2 id="简单使用ES"><a href="#简单使用ES" class="headerlink" title="简单使用ES"></a>简单使用ES</h2><h3 id="使用Docker安装Elasticsearch及其扩展"><a href="#使用Docker安装Elasticsearch及其扩展" class="headerlink" title="使用Docker安装Elasticsearch及其扩展"></a>使用Docker安装Elasticsearch及其扩展</h3><p>获取镜像，可以通过网络pull</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker image pull delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+<p>修改elasticsearch的配置文件 elasticsearc-2.4.6/config/elasticsearch.yml第54行，更改ip地址为本机ip地址</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">network.host: 自己机器的IP地址</span><br></pre></td></tr></table></figure>
+<p>创建docker容器运行</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker run -dti --network=host --name=elasticsearch -v /home/python/elasticsearch-<span class="number">2.4</span><span class="number">.6</span>/config:<span class="regexp">/usr/</span>share/elasticsearch/config delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用haystack对接Elasticsearch"><a href="#使用haystack对接Elasticsearch" class="headerlink" title="使用haystack对接Elasticsearch"></a>使用haystack对接Elasticsearch</h3><p>Haystack为Django提供了模块化的搜索。它的特点是统一的，熟悉的API，可以让你在不修改代码的情况下使用不同的搜索后端（比如 Solr, Elasticsearch, Whoosh, Xapian 等等）。</p>
+<p>这里通过使用haystack来调用Elasticsearch搜索引擎。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-haystack</span><br><span class="line">pip install elasticsearch==<span class="number">2.4</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<p>drf-haystack是为了在REST framework中使用haystack而进行的封装（如果在Django中使用haystack，则安装django-haystack即可）。</p>
+<h4 id="注册应用"><a href="#注册应用" class="headerlink" title="注册应用"></a>注册应用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;haystack&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># Haystack</span><br><span class="line">HAYSTACK_CONNECTIONS = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine&#x27;</span>,</span><br><span class="line">        # 端口号固定为9200</span><br><span class="line">        <span class="string">&#x27;URL&#x27;</span>: <span class="string">&#x27;http://es的IP:9200/&#x27;</span>,</span><br><span class="line">        # 指定elasticsearch建立的索引库的名称</span><br><span class="line">        <span class="string">&#x27;INDEX_NAME&#x27;</span>: <span class="string">&#x27;名称自定&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 当添加、修改、删除数据时，自动生成索引</span><br><span class="line">HAYSTACK_SIGNAL_PROCESSOR = <span class="string">&#x27;haystack.signals.RealtimeSignalProcessor&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<p>HAYSTACK_SIGNAL_PROCESSOR 的配置保证了在Django运行起来后，有新的数据产生时，haystack仍然可以让Elasticsearch实时生成新数据的索引</p>
+<h4 id="创建索引类"><a href="#创建索引类" class="headerlink" title="创建索引类"></a>创建索引类</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> haystack <span class="keyword">import</span> indexes</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> SKU</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class SKUIndex(indexes.SearchIndex, indexes.Indexable):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引数据模型类</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    text = indexes.CharField(<span class="built_in">document</span>=True, use_template=True)</span><br><span class="line"></span><br><span class="line">    def get_model(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回建立索引的模型类&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> SKU</span><br><span class="line"></span><br><span class="line">    def index_queryset(self, using=None):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回要建立索引的数据查询集&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.get_model().objects.filter(is_launched=True)</span><br></pre></td></tr></table></figure>
+<p>在SKUIndex建立的字段，都可以借助haystack由elasticsearch搜索引擎查询。</p>
+<p>其中text字段我们声明为document=True，表名该字段是主要进行关键字查询的字段， 该字段的索引值可以由多个数据库模型类字段组成，具体由哪些模型类字段组成，我们用use_template=True表示后续通过模板来指明。</p>
+<p>在REST framework中，索引类的字段会作为查询结果返回数据的来源。</p>
+<h4 id="在templates目录中创建text字段使用的模板文件"><a href="#在templates目录中创建text字段使用的模板文件" class="headerlink" title="在templates目录中创建text字段使用的模板文件"></a>在templates目录中创建text字段使用的模板文件</h4><p>具体在templates/search/indexes/goods/sku_text.txt文件中定义</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;&#123; object.name &#125;&#125;</span><br><span class="line">&#123;&#123; object.caption &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>此模板指明当将关键词通过text参数名传递时，可以通过sku的name、caption、id来进行关键字索引查询。</p>
+<h4 id="手动生成初始索引"><a href="#手动生成初始索引" class="headerlink" title="手动生成初始索引"></a>手动生成初始索引</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">python manage.py rebuild_index</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建序列化器"><a href="#创建序列化器" class="headerlink" title="创建序列化器"></a>创建序列化器</h4><p>在goods/serializers.py中创建haystack序列化器</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.serializers <span class="keyword">import</span> HaystackSerializer</span><br><span class="line"><span class="keyword">from</span> .search_indexes <span class="keyword">import</span> SKUIndex</span><br><span class="line"></span><br><span class="line">class SKUIndexSerializer(HaystackSerializer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引结果数据序列化器</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    object = SKUSerializer(read_only=True)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        index_classes = [SKUIndex]</span><br><span class="line">        fields = (</span><br><span class="line">            &#x27;text&#x27;,  # 用于接收查询关键字</span><br><span class="line">            &#x27;object&#x27;  # 用于返回查询结果</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<p>下面的搜索视图使用SKUIndexSerializer序列化器用来检查前端传入的参数text，并且检索出数据后再使用这个序列化器返回给前端；</p>
+<p>SKUIndexSerializer序列化器中的object字段是用来向前端返回数据时序列化的字段。</p>
+<p>Haystack通过Elasticsearch检索出匹配关键词的搜索结果后，还会在数据库中取出完整的数据库模型类对象，放到搜索结果的object属性中，并将结果通过SKUIndexSerializer序列化器进行序列化。所以我们可以通过声明搜索结果的object字段以SKUSerializer序列化的形式进行处理，明确要返回的搜索结果中每个数据对象包含哪些字段。</p>
+<h4 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h4><p>在goods/views.py中创建视图</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.viewsets <span class="keyword">import</span> HaystackViewSet</span><br><span class="line"><span class="keyword">from</span> .serializers <span class="keyword">import</span> SKUIndexSerializer</span><br><span class="line"></span><br><span class="line">class SKUSearchViewSet(HaystackViewSet):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU搜索</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    index_models = [SKU]</span><br><span class="line"></span><br><span class="line">    serializer_class = SKUIndexSerializer</span><br></pre></td></tr></table></figure>
+<p>注意：<br>该视图会返回搜索结果的列表数据，所以可以为视图增加REST framework的分页功能。<br>我们在实现商品列表页面时已经定义了全局的分页配置，所以此搜索视图会使用全局的分页配置。</p>
+<h4 id="定义路由"><a href="#定义路由" class="headerlink" title="定义路由"></a>定义路由</h4><p>在goods/urls.py中通过REST framework的router来定义路由</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.routers <span class="keyword">import</span> DefaultRouter</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">router = DefaultRouter()</span><br><span class="line">router.register(<span class="string">&#x27;skus/search&#x27;</span>, views.SKUSearchViewSet, base_name=<span class="string">&#x27;skus_search&#x27;</span>)</span><br><span class="line"></span><br><span class="line">urlpatterns += router.urls</span><br></pre></td></tr></table></figure>
+
+<h4 id="bug说明"><a href="#bug说明" class="headerlink" title="bug说明"></a>bug说明</h4><p>如果在配置完haystack并启动程序后，出现如下异常，是因为drf-haystack还没有适配最新版本的REST framework框架</p>
+<img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/3.jpg" class>
+<p>可以通过修改REST framework框架代码，补充_get_count函数定义即可</p>
+<p>文件路径 虚拟环境下的 lib/python3.6/site-packages/rest_framework/pagination.py</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def _get_count(queryset):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    Determine an object count, supporting either querysets or regular lists.</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> queryset.count()</span><br><span class="line">    except (AttributeError, <span class="built_in">TypeError</span>):</span><br><span class="line">        <span class="keyword">return</span> len(queryset)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -298,66 +358,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Elasticsearch的使用</title>
-    <url>/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h2><p>ES=elaticsearch简写， Elasticsearch是一个开源的高扩展的分布式全文检索引擎，它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。<br>Elasticsearch也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。</p>
-<h2 id="ES工作原理"><a href="#ES工作原理" class="headerlink" title="ES工作原理"></a>ES工作原理</h2><p>当ElasticSearch的节点启动后，它会利用多播(multicast)(或者单播，如果用户更改了配置)寻找集群中的其它节点，并与之建立连接。这个过程如下图所示：<br><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/1.jpg" alt="1"></p>
-<h2 id="ES核心概念"><a href="#ES核心概念" class="headerlink" title="ES核心概念"></a>ES核心概念</h2><h3 id="Cluster：集群"><a href="#Cluster：集群" class="headerlink" title="Cluster：集群"></a>Cluster：集群</h3><p>ES可以作为一个独立的单个搜索服务器。不过，为了处理大型数据集，实现容错和高可用性，ES可以运行在许多互相合作的服务器上。这些服务器的集合称为集群。</p>
-<h3 id="Node：节点"><a href="#Node：节点" class="headerlink" title="Node：节点"></a>Node：节点</h3><p>形成集群的每个服务器称为节点。</p>
-<h3 id="Shard：分片"><a href="#Shard：分片" class="headerlink" title="Shard：分片"></a>Shard：分片</h3><p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。<br>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的。</p>
-<h3 id="Replia：副本"><a href="#Replia：副本" class="headerlink" title="Replia：副本"></a>Replia：副本</h3><p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
-<h3 id="全文检索"><a href="#全文检索" class="headerlink" title="全文检索"></a>全文检索</h3><p>全文检索就是对一篇文章进行索引，可以根据关键字搜索，类似于mysql里的like语句。<br>全文索引就是把内容根据词的意义进行分词，然后分别创建索引，例如”你们的激情是因为什么事情来的” 可能会被分词成：“你们“，”激情“，“什么事情“，”来“ 等token，这样当你搜索“你们” 或者 “激情” 都会把这句搜出来。</p>
-<h2 id="ES数据架构的主要概念（与关系数据库Mysql对比）"><a href="#ES数据架构的主要概念（与关系数据库Mysql对比）" class="headerlink" title="ES数据架构的主要概念（与关系数据库Mysql对比）"></a>ES数据架构的主要概念（与关系数据库Mysql对比）</h2><img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/2.jpg" class>
-<p>（1）关系型数据库中的数据库（DataBase），等价于ES中的索引（Index）<br>（2）一个数据库下面有N张表（Table），等价于1个索引Index下面有N多类型（Type），<br>（3）一个数据库表（Table）下的数据由多行（ROW）多列（column，属性）组成，等价于1个Type由多个文档（Document）和多Field组成。<br>（4）在一个关系型数据库里面，schema定义了表、每个表的字段，还有表和字段之间的关系。 与之对应的，在ES中：Mapping定义索引下的Type的字段处理规则，即索引如何建立、索引类型、是否保存原始索引JSON文档、是否压缩原始JSON文档、是否需要分词处理、如何进行分词处理等。<br>（5）在数据库中的增insert、删delete、改update、查search操作等价于ES中的增PUT/POST、删Delete、改_update、查GET.</p>
-<h2 id="简单使用ES"><a href="#简单使用ES" class="headerlink" title="简单使用ES"></a>简单使用ES</h2><h3 id="使用Docker安装Elasticsearch及其扩展"><a href="#使用Docker安装Elasticsearch及其扩展" class="headerlink" title="使用Docker安装Elasticsearch及其扩展"></a>使用Docker安装Elasticsearch及其扩展</h3><p>获取镜像，可以通过网络pull</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker image pull delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
-<p>修改elasticsearch的配置文件 elasticsearc-2.4.6/config/elasticsearch.yml第54行，更改ip地址为本机ip地址</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">network.host: 自己机器的IP地址</span><br></pre></td></tr></table></figure>
-<p>创建docker容器运行</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">docker run -dti --network=host --name=elasticsearch -v /home/python/elasticsearch-<span class="number">2.4</span><span class="number">.6</span>/config:<span class="regexp">/usr/</span>share/elasticsearch/config delron/elasticsearch-ik:<span class="number">2.4</span><span class="number">.6</span>-<span class="number">1.0</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="使用haystack对接Elasticsearch"><a href="#使用haystack对接Elasticsearch" class="headerlink" title="使用haystack对接Elasticsearch"></a>使用haystack对接Elasticsearch</h3><p>Haystack为Django提供了模块化的搜索。它的特点是统一的，熟悉的API，可以让你在不修改代码的情况下使用不同的搜索后端（比如 Solr, Elasticsearch, Whoosh, Xapian 等等）。</p>
-<p>这里通过使用haystack来调用Elasticsearch搜索引擎。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">pip install drf-haystack</span><br><span class="line">pip install elasticsearch==<span class="number">2.4</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
-<p>drf-haystack是为了在REST framework中使用haystack而进行的封装（如果在Django中使用haystack，则安装django-haystack即可）。</p>
-<h4 id="注册应用"><a href="#注册应用" class="headerlink" title="注册应用"></a>注册应用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;haystack&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># Haystack</span><br><span class="line">HAYSTACK_CONNECTIONS = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine&#x27;</span>,</span><br><span class="line">        # 端口号固定为9200</span><br><span class="line">        <span class="string">&#x27;URL&#x27;</span>: <span class="string">&#x27;http://es的IP:9200/&#x27;</span>,</span><br><span class="line">        # 指定elasticsearch建立的索引库的名称</span><br><span class="line">        <span class="string">&#x27;INDEX_NAME&#x27;</span>: <span class="string">&#x27;名称自定&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 当添加、修改、删除数据时，自动生成索引</span><br><span class="line">HAYSTACK_SIGNAL_PROCESSOR = <span class="string">&#x27;haystack.signals.RealtimeSignalProcessor&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>注意：</p>
-<p>HAYSTACK_SIGNAL_PROCESSOR 的配置保证了在Django运行起来后，有新的数据产生时，haystack仍然可以让Elasticsearch实时生成新数据的索引</p>
-<h4 id="创建索引类"><a href="#创建索引类" class="headerlink" title="创建索引类"></a>创建索引类</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> haystack <span class="keyword">import</span> indexes</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> SKU</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class SKUIndex(indexes.SearchIndex, indexes.Indexable):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引数据模型类</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    text = indexes.CharField(<span class="built_in">document</span>=True, use_template=True)</span><br><span class="line"></span><br><span class="line">    def get_model(self):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回建立索引的模型类&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> SKU</span><br><span class="line"></span><br><span class="line">    def index_queryset(self, using=None):</span><br><span class="line">        <span class="string">&quot;&quot;</span><span class="string">&quot;返回要建立索引的数据查询集&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.get_model().objects.filter(is_launched=True)</span><br></pre></td></tr></table></figure>
-<p>在SKUIndex建立的字段，都可以借助haystack由elasticsearch搜索引擎查询。</p>
-<p>其中text字段我们声明为document=True，表名该字段是主要进行关键字查询的字段， 该字段的索引值可以由多个数据库模型类字段组成，具体由哪些模型类字段组成，我们用use_template=True表示后续通过模板来指明。</p>
-<p>在REST framework中，索引类的字段会作为查询结果返回数据的来源。</p>
-<h4 id="在templates目录中创建text字段使用的模板文件"><a href="#在templates目录中创建text字段使用的模板文件" class="headerlink" title="在templates目录中创建text字段使用的模板文件"></a>在templates目录中创建text字段使用的模板文件</h4><p>具体在templates/search/indexes/goods/sku_text.txt文件中定义</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;&#123; object.name &#125;&#125;</span><br><span class="line">&#123;&#123; object.caption &#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>此模板指明当将关键词通过text参数名传递时，可以通过sku的name、caption、id来进行关键字索引查询。</p>
-<h4 id="手动生成初始索引"><a href="#手动生成初始索引" class="headerlink" title="手动生成初始索引"></a>手动生成初始索引</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">python manage.py rebuild_index</span><br></pre></td></tr></table></figure>
-
-<h4 id="创建序列化器"><a href="#创建序列化器" class="headerlink" title="创建序列化器"></a>创建序列化器</h4><p>在goods/serializers.py中创建haystack序列化器</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.serializers <span class="keyword">import</span> HaystackSerializer</span><br><span class="line"><span class="keyword">from</span> .search_indexes <span class="keyword">import</span> SKUIndex</span><br><span class="line"></span><br><span class="line">class SKUIndexSerializer(HaystackSerializer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU索引结果数据序列化器</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    object = SKUSerializer(read_only=True)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        index_classes = [SKUIndex]</span><br><span class="line">        fields = (</span><br><span class="line">            &#x27;text&#x27;,  # 用于接收查询关键字</span><br><span class="line">            &#x27;object&#x27;  # 用于返回查询结果</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
-<p>下面的搜索视图使用SKUIndexSerializer序列化器用来检查前端传入的参数text，并且检索出数据后再使用这个序列化器返回给前端；</p>
-<p>SKUIndexSerializer序列化器中的object字段是用来向前端返回数据时序列化的字段。</p>
-<p>Haystack通过Elasticsearch检索出匹配关键词的搜索结果后，还会在数据库中取出完整的数据库模型类对象，放到搜索结果的object属性中，并将结果通过SKUIndexSerializer序列化器进行序列化。所以我们可以通过声明搜索结果的object字段以SKUSerializer序列化的形式进行处理，明确要返回的搜索结果中每个数据对象包含哪些字段。</p>
-<h4 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h4><p>在goods/views.py中创建视图</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> drf_haystack.viewsets <span class="keyword">import</span> HaystackViewSet</span><br><span class="line"><span class="keyword">from</span> .serializers <span class="keyword">import</span> SKUIndexSerializer</span><br><span class="line"></span><br><span class="line">class SKUSearchViewSet(HaystackViewSet):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    SKU搜索</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    index_models = [SKU]</span><br><span class="line"></span><br><span class="line">    serializer_class = SKUIndexSerializer</span><br></pre></td></tr></table></figure>
-<p>注意：<br>该视图会返回搜索结果的列表数据，所以可以为视图增加REST framework的分页功能。<br>我们在实现商品列表页面时已经定义了全局的分页配置，所以此搜索视图会使用全局的分页配置。</p>
-<h4 id="定义路由"><a href="#定义路由" class="headerlink" title="定义路由"></a>定义路由</h4><p>在goods/urls.py中通过REST framework的router来定义路由</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.routers <span class="keyword">import</span> DefaultRouter</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">router = DefaultRouter()</span><br><span class="line">router.register(<span class="string">&#x27;skus/search&#x27;</span>, views.SKUSearchViewSet, base_name=<span class="string">&#x27;skus_search&#x27;</span>)</span><br><span class="line"></span><br><span class="line">urlpatterns += router.urls</span><br></pre></td></tr></table></figure>
-
-<h4 id="bug说明"><a href="#bug说明" class="headerlink" title="bug说明"></a>bug说明</h4><p>如果在配置完haystack并启动程序后，出现如下异常，是因为drf-haystack还没有适配最新版本的REST framework框架</p>
-<img src="/2018/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/08/01/Elasticsearch%E7%9A%84%E4%BD%BF%E7%94%A8/3.jpg" class>
-<p>可以通过修改REST framework框架代码，补充_get_count函数定义即可</p>
-<p>文件路径 虚拟环境下的 lib/python3.6/site-packages/rest_framework/pagination.py</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">def _get_count(queryset):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    Determine an object count, supporting either querysets or regular lists.</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> queryset.count()</span><br><span class="line">    except (AttributeError, <span class="built_in">TypeError</span>):</span><br><span class="line">        <span class="keyword">return</span> len(queryset)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>Elasticsearch</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>GO的WaitGroup</title>
     <url>/2024/04/20/GO%E7%9A%84WaitGroup/</url>
     <content><![CDATA[<p>Go语言中的WaitGroup类似Java的CountDownLatch，任务检查点，任务等待点，比如有一个主任务，执行到某一时刻需要执行两个子任务，主任务等待阻塞，两个子任务执行完毕后再执行主任务，这就需要一个任务阻塞检查点，等待子任务执行完毕</p>
@@ -395,50 +395,7 @@
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO环境安装</title>
-    <url>/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h2 id="安装包下载、安装"><a href="#安装包下载、安装" class="headerlink" title="安装包下载、安装"></a>安装包下载、安装</h2><p>去官网下载go安装包即可，根据自己的操作系统。</p>
-<p>提取到 /usr/local 目录，在 /usr/local/go 中创建Go目录树</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz</span><br></pre></td></tr></table></figure>
-<p>sudo运行，或者root用户</p>
-<h2 id="环境变量设置"><a href="#环境变量设置" class="headerlink" title="环境变量设置"></a>环境变量设置</h2><p>要将 /usr/local/go/bin 添加到 PATH 环境变量， 你需要将此行添加到你的 /etc/profile（全系统安装）或 $HOME/.profile 文件中</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> PATH=$PATH:<span class="regexp">/usr/</span>local/go/bin</span><br></pre></td></tr></table></figure>
-
-<p>如果安装到其他位置，则需要设置GOROOT</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br><span class="line"><span class="keyword">export</span> PATH=$PATH:$GOROOT/bin</span><br></pre></td></tr></table></figure>
-
-<h2 id="相关环境变量参数"><a href="#相关环境变量参数" class="headerlink" title="相关环境变量参数"></a>相关环境变量参数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">go env</span><br><span class="line">go version</span><br></pre></td></tr></table></figure>
-
-<p>go env可查看go的环境变量参数，go version 可查看go的版本</p>
-<h3 id="GO111Module"><a href="#GO111Module" class="headerlink" title="GO111Module"></a>GO111Module</h3><p>go 1.11才有的特性</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on # 开启GoModule特性</span><br></pre></td></tr></table></figure>
-<p>GO111MODULE解释, 当为on时则使用Go Modules,go 会忽略 $GOPATH和 vendor文件夹,只根据go.mod下载依赖。</p>
-<p>当为 off时则不适用新特性 Go Modules支持，它会查找 vendor目录和 $GOPATH来查找依赖关系，也就是继续使用“GOPATH模式”。</p>
-<p>当为 auto时或未设置时则根据当前项目目录下是否存在 go.mod文件或 $GOPATH/src之外并且其本身包含go.mod文件时才会使用新特性 Go Modules模式，</p>
-<p>并且auto为 GO111MODULE的默认值。</p>
-<h3 id="GOPATH"><a href="#GOPATH" class="headerlink" title="GOPATH"></a>GOPATH</h3><p>表示go的工作目录，这个目录指定了需要从哪个地方寻找GO的包、可执行程序等，这个目录可以是多个目录表示</p>
-<h3 id="GOROOT"><a href="#GOROOT" class="headerlink" title="GOROOT"></a>GOROOT</h3><p>表示的是go语言编译、工具、标准库等的安装路径。</p>
-<p>在Linux下设置GOROOT目录：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br></pre></td></tr></table></figure>
-
-<h3 id="GOPROXY"><a href="#GOPROXY" class="headerlink" title="GOPROXY"></a>GOPROXY</h3><p>简单来说就是一个代理，让我们更方便的下载哪些由于墙的原因而导致无法下载的第三方包，</p>
-<p><a href="http://proxy.golang.org/">http://proxy.golang.org</a> 在中国无法访问，故而建议使用 <a href="http://goproxy.cn/">http://goproxy.cn</a> 作为替代</p>
-<h2 id="GO-MOD"><a href="#GO-MOD" class="headerlink" title="GO MOD"></a>GO MOD</h2><h3 id="初始化模块"><a href="#初始化模块" class="headerlink" title="初始化模块"></a>初始化模块</h3><p>go mod init &lt;项目模块名称&gt;</p>
-<h3 id="依赖关系处理-根据go-mod文件"><a href="#依赖关系处理-根据go-mod文件" class="headerlink" title="依赖关系处理 ,根据go.mod文件"></a>依赖关系处理 ,根据go.mod文件</h3><p>go mod tidy</p>
-<h3 id="将依赖包复制到项目下的-vendor目录。"><a href="#将依赖包复制到项目下的-vendor目录。" class="headerlink" title="将依赖包复制到项目下的 vendor目录。"></a>将依赖包复制到项目下的 vendor目录。</h3><p>go mod vendor<br>如果包被屏蔽(墙),可以使用这个命令，随后使用go build -mod=vendor编译</p>
-<h3 id="显示依赖关系"><a href="#显示依赖关系" class="headerlink" title="显示依赖关系"></a>显示依赖关系</h3><p>go list -m all</p>
-<h3 id="显示详细依赖关系"><a href="#显示详细依赖关系" class="headerlink" title="显示详细依赖关系"></a>显示详细依赖关系</h3><p>go list -m -json all</p>
-<h3 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h3><p>go mod download [path@version]<br>[path@version]是非必写的</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -514,7 +471,50 @@
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO环境安装</title>
+    <url>/2020/12/19/GO%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h2 id="安装包下载、安装"><a href="#安装包下载、安装" class="headerlink" title="安装包下载、安装"></a>安装包下载、安装</h2><p>去官网下载go安装包即可，根据自己的操作系统。</p>
+<p>提取到 /usr/local 目录，在 /usr/local/go 中创建Go目录树</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz</span><br></pre></td></tr></table></figure>
+<p>sudo运行，或者root用户</p>
+<h2 id="环境变量设置"><a href="#环境变量设置" class="headerlink" title="环境变量设置"></a>环境变量设置</h2><p>要将 /usr/local/go/bin 添加到 PATH 环境变量， 你需要将此行添加到你的 /etc/profile（全系统安装）或 $HOME/.profile 文件中</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> PATH=$PATH:<span class="regexp">/usr/</span>local/go/bin</span><br></pre></td></tr></table></figure>
+
+<p>如果安装到其他位置，则需要设置GOROOT</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br><span class="line"><span class="keyword">export</span> PATH=$PATH:$GOROOT/bin</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关环境变量参数"><a href="#相关环境变量参数" class="headerlink" title="相关环境变量参数"></a>相关环境变量参数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">go env</span><br><span class="line">go version</span><br></pre></td></tr></table></figure>
+
+<p>go env可查看go的环境变量参数，go version 可查看go的版本</p>
+<h3 id="GO111Module"><a href="#GO111Module" class="headerlink" title="GO111Module"></a>GO111Module</h3><p>go 1.11才有的特性</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on # 开启GoModule特性</span><br></pre></td></tr></table></figure>
+<p>GO111MODULE解释, 当为on时则使用Go Modules,go 会忽略 $GOPATH和 vendor文件夹,只根据go.mod下载依赖。</p>
+<p>当为 off时则不适用新特性 Go Modules支持，它会查找 vendor目录和 $GOPATH来查找依赖关系，也就是继续使用“GOPATH模式”。</p>
+<p>当为 auto时或未设置时则根据当前项目目录下是否存在 go.mod文件或 $GOPATH/src之外并且其本身包含go.mod文件时才会使用新特性 Go Modules模式，</p>
+<p>并且auto为 GO111MODULE的默认值。</p>
+<h3 id="GOPATH"><a href="#GOPATH" class="headerlink" title="GOPATH"></a>GOPATH</h3><p>表示go的工作目录，这个目录指定了需要从哪个地方寻找GO的包、可执行程序等，这个目录可以是多个目录表示</p>
+<h3 id="GOROOT"><a href="#GOROOT" class="headerlink" title="GOROOT"></a>GOROOT</h3><p>表示的是go语言编译、工具、标准库等的安装路径。</p>
+<p>在Linux下设置GOROOT目录：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> GOROOT=$HOME/go</span><br></pre></td></tr></table></figure>
+
+<h3 id="GOPROXY"><a href="#GOPROXY" class="headerlink" title="GOPROXY"></a>GOPROXY</h3><p>简单来说就是一个代理，让我们更方便的下载哪些由于墙的原因而导致无法下载的第三方包，</p>
+<p><a href="http://proxy.golang.org/">http://proxy.golang.org</a> 在中国无法访问，故而建议使用 <a href="http://goproxy.cn/">http://goproxy.cn</a> 作为替代</p>
+<h2 id="GO-MOD"><a href="#GO-MOD" class="headerlink" title="GO MOD"></a>GO MOD</h2><h3 id="初始化模块"><a href="#初始化模块" class="headerlink" title="初始化模块"></a>初始化模块</h3><p>go mod init &lt;项目模块名称&gt;</p>
+<h3 id="依赖关系处理-根据go-mod文件"><a href="#依赖关系处理-根据go-mod文件" class="headerlink" title="依赖关系处理 ,根据go.mod文件"></a>依赖关系处理 ,根据go.mod文件</h3><p>go mod tidy</p>
+<h3 id="将依赖包复制到项目下的-vendor目录。"><a href="#将依赖包复制到项目下的-vendor目录。" class="headerlink" title="将依赖包复制到项目下的 vendor目录。"></a>将依赖包复制到项目下的 vendor目录。</h3><p>go mod vendor<br>如果包被屏蔽(墙),可以使用这个命令，随后使用go build -mod=vendor编译</p>
+<h3 id="显示依赖关系"><a href="#显示依赖关系" class="headerlink" title="显示依赖关系"></a>显示依赖关系</h3><p>go list -m all</p>
+<h3 id="显示详细依赖关系"><a href="#显示详细依赖关系" class="headerlink" title="显示详细依赖关系"></a>显示详细依赖关系</h3><p>go list -m -json all</p>
+<h3 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h3><p>go mod download [path@version]<br>[path@version]是非必写的</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -545,7 +545,7 @@
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -635,7 +635,7 @@
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -704,7 +704,71 @@
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO的基本数据结构：int，字符串，结构体，指针</title>
+    <url>/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h2 id="int类型"><a href="#int类型" class="headerlink" title="int类型"></a>int类型</h2><p><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/1.png" alt="1"></p>
+<p>变量i属于类型int，在内存中用一个32位字长(word)表示</p>
+<p>变量j由于做了精确的转换，属于int32类型。尽管i和j有着相同的内存布局，但是它们属于不同的类型</p>
+<p>变量f属于float类型，Go语言当前使用32位浮点型值表示(float32)。它与int32很像，但是内部实现不同。</p>
+<p>接下来，变量bytes的类型是[5]byte，一个由5个字节组成的数组。它的内存表示就是连起来的5个字节，就像C的数组。类似地，变量primes是4个int的数组。</p>
+<h2 id="string类型"><a href="#string类型" class="headerlink" title="string类型"></a>string类型</h2><p>字符串在Go语言内存模型中用一个2字长的数据结构表示。它包含一个指向字符串存储数据的指针和一个长度数据</p>
+<p><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/2.png" alt="2"></p>
+<p>因为string类型是不可变的，对于多字符串共享同一个存储数据是安全的。切分操作str[i:j]会得到一个新的2字长结构，一个可能不同的但仍指向同一个字节序列(即上文说的存储数据)的指针和长度数据。</p>
+<p>这意味着字符串切分可以在不涉及内存分配或复制操作。这使得字符串切分的效率等同于传递下标</p>
+<h3 id="string的遍历"><a href="#string的遍历" class="headerlink" title="string的遍历"></a>string的遍历</h3><p>要么string打印，要么fmt格式化输出，得到字符串，不然得到的是byte类型</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">fmt.Println(<span class="string">&quot;方法一  格式化打印&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch1</span> := range str &#123;</span><br><span class="line">      fmt.Printf(<span class="string">&quot;%q&quot;</span>,ch1) <span class="comment">//单引号围绕的字符字面值，由go语法安全的转义</span></span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(<span class="string">&quot;方法二  转化输出格式&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch2</span> := range str &#123;</span><br><span class="line">      fmt.Println(string(ch2))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="strings包常用操作"><a href="#strings包常用操作" class="headerlink" title="strings包常用操作"></a>strings包常用操作</h3><h4 id="Count-s-string-str-string-int"><a href="#Count-s-string-str-string-int" class="headerlink" title="Count(s string, str string) int"></a>Count(s string, str string) int</h4><p>计算字符串str在s中的非重叠个数。如果str为空串则返回s中的字符（非字节）个数+1。</p>
+<h4 id="Index-s-string-str-string-int"><a href="#Index-s-string-str-string-int" class="headerlink" title="Index(s string, str string) int"></a>Index(s string, str string) int</h4><p>返回子串str在字符串s中第一次出现的位置。如果找不到则返回-1；如果str为空，则返回0。</p>
+<h4 id="LastIndex-s-string-str-string-int"><a href="#LastIndex-s-string-str-string-int" class="headerlink" title="LastIndex(s string, str string) int"></a>LastIndex(s string, str string) int</h4><p>返回子串str在字符串s中最后一次出现的位置。如果找不到则返回-1；如果str为空则返回字符串s的长度。</p>
+<h4 id="IndexRune-s-string-r-rune-int"><a href="#IndexRune-s-string-r-rune-int" class="headerlink" title="IndexRune(s string, r rune) int"></a>IndexRune(s string, r rune) int</h4><p>返回字符r在字符串s中第一次出现的位置。如果找不到则返回-1。</p>
+<h4 id="IndexAny-s-string-str-string-int"><a href="#IndexAny-s-string-str-string-int" class="headerlink" title="IndexAny(s string, str string) int"></a>IndexAny(s string, str string) int</h4><p>返回字符串str中的任何一个字符在字符串s中第一次出现的位置。如果找不到或str为空则返回-1。</p>
+<h4 id="LastIndexAny-s-string-str-string-int"><a href="#LastIndexAny-s-string-str-string-int" class="headerlink" title="LastIndexAny(s string, str string) int"></a>LastIndexAny(s string, str string) int</h4><p>返回字符串str中的任何一个字符在字符串s中最后一次出现的位置。如果找不到或str为空则返回-1。</p>
+<h4 id="Contains-s-string-str-string-bool"><a href="#Contains-s-string-str-string-bool" class="headerlink" title="Contains(s string, str string) bool"></a>Contains(s string, str string) bool</h4><p>判断字符串s中是否包含个子串str。包含或者str为空则返回true。</p>
+<h4 id="ContainsAny-s-string-str-string-bool"><a href="#ContainsAny-s-string-str-string-bool" class="headerlink" title="ContainsAny(s string, str string) bool"></a>ContainsAny(s string, str string) bool</h4><p>判断字符串s中是否包含个子串str中的任何一个字符。包含则返回true，如果str为空则返回false。</p>
+<h4 id="ContainsRune-s-string-r-rune-bool"><a href="#ContainsRune-s-string-r-rune-bool" class="headerlink" title="ContainsRune(s string, r rune) bool"></a>ContainsRune(s string, r rune) bool</h4><p>判断字符串s中是否包含字符r。</p>
+<h4 id="SplitN-s-str-string-n-int-string"><a href="#SplitN-s-str-string-n-int-string" class="headerlink" title="SplitN(s, str string, n int) []string"></a>SplitN(s, str string, n int) []string</h4><p>以str为分隔符，将s切分成多个子串，结果中<strong>不包含</strong>str本身。如果str为空则将s切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。参数n表示最多切分出几个子串，超出的部分将不再切分，最后一个n包含了所有剩下的不切分。如果n为0，则返回nil；如果n小于0，则不限制切分个数，全部切分。</p>
+<h4 id="SplitAfterN-s-str-string-n-int-string"><a href="#SplitAfterN-s-str-string-n-int-string" class="headerlink" title="SplitAfterN(s, str string, n int) []string"></a>SplitAfterN(s, str string, n int) []string</h4><p>以str为分隔符，将s切分成多个子串，结果中<strong>包含</strong>str本身。如果str为空，则将s切分成Unicode字符列表。如果s 中没有str子串，则将整个s作为 []string 的第一个元素返回。参数n表示最多切分出几个子串，超出的部分将不再切分。如果n为0，则返回 nil；如果 n 小于 0，则不限制切分个数，全部切分。</p>
+<h4 id="Split-s-str-string-string"><a href="#Split-s-str-string-string" class="headerlink" title="Split(s, str string) []string"></a>Split(s, str string) []string</h4><p>以str为分隔符，将s切分成多个子切片，结果中<strong>不包含</strong>str本身。如果str为空，则将s切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。</p>
+<h4 id="SplitAfter-s-str-string-string"><a href="#SplitAfter-s-str-string-string" class="headerlink" title="SplitAfter(s, str string) []string"></a>SplitAfter(s, str string) []string</h4><p>以str为分隔符，将s切分成多个子切片，结果中<strong>包含</strong>str本身。如果 str 为空，则将 s 切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。</p>
+<h4 id="Fields-s-string-string"><a href="#Fields-s-string-string" class="headerlink" title="Fields(s string) []string"></a>Fields(s string) []string</h4><p>以连续的空白字符为分隔符，将s切分成多个子串，结果中不包含空白字符本身。空白字符有：\t, \n, \v, \f, \r, ’ ‘, U+0085 (NEL), U+00A0 (NBSP) 。如果 s 中只包含空白字符，则返回一个空列表。</p>
+<h4 id="FieldsFunc-s-string-f-func-rune-bool-string"><a href="#FieldsFunc-s-string-f-func-rune-bool-string" class="headerlink" title="FieldsFunc(s string, f func(rune) bool) []string"></a>FieldsFunc(s string, f func(rune) bool) []string</h4><p>以一个或多个满足f(rune)的字符为分隔符，将s切分成多个子串，结果中不包含分隔符本身。如果s中没有满足f(rune)的字符，则返回一个空列表。</p>
+<h4 id="Join-s-string-str-string-string"><a href="#Join-s-string-str-string-string" class="headerlink" title="Join(s []string, str string) string"></a>Join(s []string, str string) string</h4><p>将s中的子串连接成一个单独的字符串，子串之间用str分隔。</p>
+<h4 id="HasPrefix-s-string-prefix-string-bool"><a href="#HasPrefix-s-string-prefix-string-bool" class="headerlink" title="HasPrefix(s string, prefix string) bool"></a>HasPrefix(s string, prefix string) bool</h4><p>判断字符串s是否以prefix开头。</p>
+<h4 id="HasSuffix-s-suffix-string-bool"><a href="#HasSuffix-s-suffix-string-bool" class="headerlink" title="HasSuffix(s, suffix string) bool"></a>HasSuffix(s, suffix string) bool</h4><p>判断字符串s是否以prefix结尾。</p>
+<h4 id="Map-f-func-rune-rune-s-string-string"><a href="#Map-f-func-rune-rune-s-string-string" class="headerlink" title="Map(f func(rune) rune, s string) string"></a>Map(f func(rune) rune, s string) string</h4><p>将s中满足f(rune)的字符替换为f(rune)的返回值。如果f(rune)返回负数，则相应的字符将被删除。</p>
+<h4 id="Repeat-s-string-n-int-string"><a href="#Repeat-s-string-n-int-string" class="headerlink" title="Repeat(s string, n int) string"></a>Repeat(s string, n int) string</h4><p>将n个字符串s连接成一个新的字符串。</p>
+<h4 id="ToUpper-s-string-string"><a href="#ToUpper-s-string-string" class="headerlink" title="ToUpper(s string) string"></a>ToUpper(s string) string</h4><p>将s中的所有字符修改为其大写格式。对于非ASCII字符，它的大写格式需要查表转换。</p>
+<h4 id="ToLower-s-string-string"><a href="#ToLower-s-string-string" class="headerlink" title="ToLower(s string) string"></a>ToLower(s string) string</h4><p>将s中的所有字符修改为其小写格式。对于非ASCII字符，它的小写格式需要查表转换。</p>
+<h4 id="ToTitle-s-string-string"><a href="#ToTitle-s-string-string" class="headerlink" title="ToTitle(s string) string"></a>ToTitle(s string) string</h4><p>将s中的所有字符修改为其Title格式，大部分字符的Title格式就是Upper格式，只有少数字符的Title格式是特殊字符。这里的ToTitle主要给Title函数调用。</p>
+<h4 id="TrimLeftFunc-s-string-f-func-rune-bool-string"><a href="#TrimLeftFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimLeftFunc(s string, f func(rune) bool) string"></a>TrimLeftFunc(s string, f func(rune) bool) string</h4><p>删除s头部连续的满足f(rune)的字符。</p>
+<h4 id="TrimRightFunc-s-string-f-func-rune-bool-string"><a href="#TrimRightFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimRightFunc(s string, f func(rune) bool) string"></a>TrimRightFunc(s string, f func(rune) bool) string</h4><p>删除s尾部连续的满足f(rune)的字符。</p>
+<h4 id="TrimFunc-s-string-f-func-rune-bool-string"><a href="#TrimFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimFunc(s string, f func(rune) bool) string"></a>TrimFunc(s string, f func(rune) bool) string</h4><p>删除s首尾连续的满足f(rune)的字符。</p>
+<h4 id="IndexFunc-s-string-f-func-rune-bool-int"><a href="#IndexFunc-s-string-f-func-rune-bool-int" class="headerlink" title="IndexFunc(s string, f func(rune) bool) int"></a>IndexFunc(s string, f func(rune) bool) int</h4><p>返回s中第一个满足f(rune) 的字符的字节位置。如果没有满足 f(rune) 的字符，则返回 -1。</p>
+<h4 id="LastIndexFunc-s-string-f-func-rune-bool-int"><a href="#LastIndexFunc-s-string-f-func-rune-bool-int" class="headerlink" title="LastIndexFunc(s string, f func(rune) bool) int"></a>LastIndexFunc(s string, f func(rune) bool) int</h4><p>返回s中最后一个满足f(rune)的字符的字节位置。如果没有满足 f(rune) 的字符，则返回 -1。</p>
+<h4 id="Trim-s-string-str-string-string"><a href="#Trim-s-string-str-string-string" class="headerlink" title="Trim(s string, str string) string"></a>Trim(s string, str string) string</h4><p>删除s首尾连续的包含在str中的字符。</p>
+<h4 id="TrimLeft-s-string-str-string-string"><a href="#TrimLeft-s-string-str-string-string" class="headerlink" title="TrimLeft(s string, str string) string"></a>TrimLeft(s string, str string) string</h4><p>删除s头部连续的包含在str中的字符串。</p>
+<h4 id="TrimRight-s-string-str-string-string"><a href="#TrimRight-s-string-str-string-string" class="headerlink" title="TrimRight(s string, str string) string"></a>TrimRight(s string, str string) string</h4><p>删除s尾部连续的包含在str中的字符串。</p>
+<h4 id="TrimSpace-s-string-string"><a href="#TrimSpace-s-string-string" class="headerlink" title="TrimSpace(s string) string"></a>TrimSpace(s string) string</h4><p>删除s首尾连续的的空白字符。</p>
+<h4 id="TrimPrefix-s-prefix-string-string"><a href="#TrimPrefix-s-prefix-string-string" class="headerlink" title="TrimPrefix(s, prefix string) string"></a>TrimPrefix(s, prefix string) string</h4><p>删除s头部的prefix字符串。如果s不是以prefix开头，则返回原始s。</p>
+<h4 id="TrimSuffix-s-suffix-string-string"><a href="#TrimSuffix-s-suffix-string-string" class="headerlink" title="TrimSuffix(s, suffix string) string"></a>TrimSuffix(s, suffix string) string</h4><p>删除s尾部的suffix字符串。如果s不是以suffix结尾，则返回原始s。（只去掉一次，注意和TrimRight区别）</p>
+<h4 id="Replace-s-old-new-string-n-int-string"><a href="#Replace-s-old-new-string-n-int-string" class="headerlink" title="Replace(s, old, new string, n int) string"></a>Replace(s, old, new string, n int) string</h4><p>返回s的副本，并将副本中的old字符串替换为new字符串，替换次数为n次，如果n为-1，则全部替换；如果 old 为空，则在副本的每个字符之间都插入一个new。</p>
+<h4 id="EqualFold-s1-s2-string-bool"><a href="#EqualFold-s1-s2-string-bool" class="headerlink" title="EqualFold(s1, s2 string) bool"></a>EqualFold(s1, s2 string) bool</h4><p>比较UTF-8编码在小写的条件下是否相等，不区分大小写，同时它还会对特殊字符进行转换。比如将“ϕ”转换为“Φ”、将“Ǆ”转换为“ǅ”等，然后再进行比较。<br>“==”比较字符串是否相等，区分大小写，返回bool。</p>
+<h4 id="Compare-s1-string-s2-string-int1"><a href="#Compare-s1-string-s2-string-int1" class="headerlink" title="Compare(s1 string, s2 string) int1"></a>Compare(s1 string, s2 string) int1</h4><p>比较字符串，区分大小写，比”==”速度快。相等为0，不相等为-1。</p>
+<h2 id="结构体和指针"><a href="#结构体和指针" class="headerlink" title="结构体和指针"></a>结构体和指针</h2><p>type Point struct { X, Y int }<br><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/3.png" alt="3"><br>Point{10,20}表示一个已初始化的Point类型。对它进行取地址表示一个指向刚刚分配和初始化的Point类型</p>
+<p>结构体的域在内存中是紧挨着排列的。</p>
+<p>出于效率的考虑，大型的结构体通常都使用结构体指针的方式，直接传递给函数，或者从函数中返回</p>
+<p>1.当函数本意是修改原始数据，用指针传递<br>2.结构体很大，用指针传递<br>3.结构体很小，不打算修改内容，用值传递，值传递是传递实参的副本，对本身没有影响</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1111,71 +1175,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO的基本数据结构：int，字符串，结构体，指针</title>
-    <url>/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<h2 id="int类型"><a href="#int类型" class="headerlink" title="int类型"></a>int类型</h2><p><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/1.png" alt="1"></p>
-<p>变量i属于类型int，在内存中用一个32位字长(word)表示</p>
-<p>变量j由于做了精确的转换，属于int32类型。尽管i和j有着相同的内存布局，但是它们属于不同的类型</p>
-<p>变量f属于float类型，Go语言当前使用32位浮点型值表示(float32)。它与int32很像，但是内部实现不同。</p>
-<p>接下来，变量bytes的类型是[5]byte，一个由5个字节组成的数组。它的内存表示就是连起来的5个字节，就像C的数组。类似地，变量primes是4个int的数组。</p>
-<h2 id="string类型"><a href="#string类型" class="headerlink" title="string类型"></a>string类型</h2><p>字符串在Go语言内存模型中用一个2字长的数据结构表示。它包含一个指向字符串存储数据的指针和一个长度数据</p>
-<p><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/2.png" alt="2"></p>
-<p>因为string类型是不可变的，对于多字符串共享同一个存储数据是安全的。切分操作str[i:j]会得到一个新的2字长结构，一个可能不同的但仍指向同一个字节序列(即上文说的存储数据)的指针和长度数据。</p>
-<p>这意味着字符串切分可以在不涉及内存分配或复制操作。这使得字符串切分的效率等同于传递下标</p>
-<h3 id="string的遍历"><a href="#string的遍历" class="headerlink" title="string的遍历"></a>string的遍历</h3><p>要么string打印，要么fmt格式化输出，得到字符串，不然得到的是byte类型</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">fmt.Println(<span class="string">&quot;方法一  格式化打印&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch1</span> := range str &#123;</span><br><span class="line">      fmt.Printf(<span class="string">&quot;%q&quot;</span>,ch1) <span class="comment">//单引号围绕的字符字面值，由go语法安全的转义</span></span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(<span class="string">&quot;方法二  转化输出格式&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> _, <span class="attr">ch2</span> := range str &#123;</span><br><span class="line">      fmt.Println(string(ch2))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="strings包常用操作"><a href="#strings包常用操作" class="headerlink" title="strings包常用操作"></a>strings包常用操作</h3><h4 id="Count-s-string-str-string-int"><a href="#Count-s-string-str-string-int" class="headerlink" title="Count(s string, str string) int"></a>Count(s string, str string) int</h4><p>计算字符串str在s中的非重叠个数。如果str为空串则返回s中的字符（非字节）个数+1。</p>
-<h4 id="Index-s-string-str-string-int"><a href="#Index-s-string-str-string-int" class="headerlink" title="Index(s string, str string) int"></a>Index(s string, str string) int</h4><p>返回子串str在字符串s中第一次出现的位置。如果找不到则返回-1；如果str为空，则返回0。</p>
-<h4 id="LastIndex-s-string-str-string-int"><a href="#LastIndex-s-string-str-string-int" class="headerlink" title="LastIndex(s string, str string) int"></a>LastIndex(s string, str string) int</h4><p>返回子串str在字符串s中最后一次出现的位置。如果找不到则返回-1；如果str为空则返回字符串s的长度。</p>
-<h4 id="IndexRune-s-string-r-rune-int"><a href="#IndexRune-s-string-r-rune-int" class="headerlink" title="IndexRune(s string, r rune) int"></a>IndexRune(s string, r rune) int</h4><p>返回字符r在字符串s中第一次出现的位置。如果找不到则返回-1。</p>
-<h4 id="IndexAny-s-string-str-string-int"><a href="#IndexAny-s-string-str-string-int" class="headerlink" title="IndexAny(s string, str string) int"></a>IndexAny(s string, str string) int</h4><p>返回字符串str中的任何一个字符在字符串s中第一次出现的位置。如果找不到或str为空则返回-1。</p>
-<h4 id="LastIndexAny-s-string-str-string-int"><a href="#LastIndexAny-s-string-str-string-int" class="headerlink" title="LastIndexAny(s string, str string) int"></a>LastIndexAny(s string, str string) int</h4><p>返回字符串str中的任何一个字符在字符串s中最后一次出现的位置。如果找不到或str为空则返回-1。</p>
-<h4 id="Contains-s-string-str-string-bool"><a href="#Contains-s-string-str-string-bool" class="headerlink" title="Contains(s string, str string) bool"></a>Contains(s string, str string) bool</h4><p>判断字符串s中是否包含个子串str。包含或者str为空则返回true。</p>
-<h4 id="ContainsAny-s-string-str-string-bool"><a href="#ContainsAny-s-string-str-string-bool" class="headerlink" title="ContainsAny(s string, str string) bool"></a>ContainsAny(s string, str string) bool</h4><p>判断字符串s中是否包含个子串str中的任何一个字符。包含则返回true，如果str为空则返回false。</p>
-<h4 id="ContainsRune-s-string-r-rune-bool"><a href="#ContainsRune-s-string-r-rune-bool" class="headerlink" title="ContainsRune(s string, r rune) bool"></a>ContainsRune(s string, r rune) bool</h4><p>判断字符串s中是否包含字符r。</p>
-<h4 id="SplitN-s-str-string-n-int-string"><a href="#SplitN-s-str-string-n-int-string" class="headerlink" title="SplitN(s, str string, n int) []string"></a>SplitN(s, str string, n int) []string</h4><p>以str为分隔符，将s切分成多个子串，结果中<strong>不包含</strong>str本身。如果str为空则将s切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。参数n表示最多切分出几个子串，超出的部分将不再切分，最后一个n包含了所有剩下的不切分。如果n为0，则返回nil；如果n小于0，则不限制切分个数，全部切分。</p>
-<h4 id="SplitAfterN-s-str-string-n-int-string"><a href="#SplitAfterN-s-str-string-n-int-string" class="headerlink" title="SplitAfterN(s, str string, n int) []string"></a>SplitAfterN(s, str string, n int) []string</h4><p>以str为分隔符，将s切分成多个子串，结果中<strong>包含</strong>str本身。如果str为空，则将s切分成Unicode字符列表。如果s 中没有str子串，则将整个s作为 []string 的第一个元素返回。参数n表示最多切分出几个子串，超出的部分将不再切分。如果n为0，则返回 nil；如果 n 小于 0，则不限制切分个数，全部切分。</p>
-<h4 id="Split-s-str-string-string"><a href="#Split-s-str-string-string" class="headerlink" title="Split(s, str string) []string"></a>Split(s, str string) []string</h4><p>以str为分隔符，将s切分成多个子切片，结果中<strong>不包含</strong>str本身。如果str为空，则将s切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。</p>
-<h4 id="SplitAfter-s-str-string-string"><a href="#SplitAfter-s-str-string-string" class="headerlink" title="SplitAfter(s, str string) []string"></a>SplitAfter(s, str string) []string</h4><p>以str为分隔符，将s切分成多个子切片，结果中<strong>包含</strong>str本身。如果 str 为空，则将 s 切分成Unicode字符列表。如果s中没有str子串，则将整个s作为[]string的第一个元素返回。</p>
-<h4 id="Fields-s-string-string"><a href="#Fields-s-string-string" class="headerlink" title="Fields(s string) []string"></a>Fields(s string) []string</h4><p>以连续的空白字符为分隔符，将s切分成多个子串，结果中不包含空白字符本身。空白字符有：\t, \n, \v, \f, \r, ’ ‘, U+0085 (NEL), U+00A0 (NBSP) 。如果 s 中只包含空白字符，则返回一个空列表。</p>
-<h4 id="FieldsFunc-s-string-f-func-rune-bool-string"><a href="#FieldsFunc-s-string-f-func-rune-bool-string" class="headerlink" title="FieldsFunc(s string, f func(rune) bool) []string"></a>FieldsFunc(s string, f func(rune) bool) []string</h4><p>以一个或多个满足f(rune)的字符为分隔符，将s切分成多个子串，结果中不包含分隔符本身。如果s中没有满足f(rune)的字符，则返回一个空列表。</p>
-<h4 id="Join-s-string-str-string-string"><a href="#Join-s-string-str-string-string" class="headerlink" title="Join(s []string, str string) string"></a>Join(s []string, str string) string</h4><p>将s中的子串连接成一个单独的字符串，子串之间用str分隔。</p>
-<h4 id="HasPrefix-s-string-prefix-string-bool"><a href="#HasPrefix-s-string-prefix-string-bool" class="headerlink" title="HasPrefix(s string, prefix string) bool"></a>HasPrefix(s string, prefix string) bool</h4><p>判断字符串s是否以prefix开头。</p>
-<h4 id="HasSuffix-s-suffix-string-bool"><a href="#HasSuffix-s-suffix-string-bool" class="headerlink" title="HasSuffix(s, suffix string) bool"></a>HasSuffix(s, suffix string) bool</h4><p>判断字符串s是否以prefix结尾。</p>
-<h4 id="Map-f-func-rune-rune-s-string-string"><a href="#Map-f-func-rune-rune-s-string-string" class="headerlink" title="Map(f func(rune) rune, s string) string"></a>Map(f func(rune) rune, s string) string</h4><p>将s中满足f(rune)的字符替换为f(rune)的返回值。如果f(rune)返回负数，则相应的字符将被删除。</p>
-<h4 id="Repeat-s-string-n-int-string"><a href="#Repeat-s-string-n-int-string" class="headerlink" title="Repeat(s string, n int) string"></a>Repeat(s string, n int) string</h4><p>将n个字符串s连接成一个新的字符串。</p>
-<h4 id="ToUpper-s-string-string"><a href="#ToUpper-s-string-string" class="headerlink" title="ToUpper(s string) string"></a>ToUpper(s string) string</h4><p>将s中的所有字符修改为其大写格式。对于非ASCII字符，它的大写格式需要查表转换。</p>
-<h4 id="ToLower-s-string-string"><a href="#ToLower-s-string-string" class="headerlink" title="ToLower(s string) string"></a>ToLower(s string) string</h4><p>将s中的所有字符修改为其小写格式。对于非ASCII字符，它的小写格式需要查表转换。</p>
-<h4 id="ToTitle-s-string-string"><a href="#ToTitle-s-string-string" class="headerlink" title="ToTitle(s string) string"></a>ToTitle(s string) string</h4><p>将s中的所有字符修改为其Title格式，大部分字符的Title格式就是Upper格式，只有少数字符的Title格式是特殊字符。这里的ToTitle主要给Title函数调用。</p>
-<h4 id="TrimLeftFunc-s-string-f-func-rune-bool-string"><a href="#TrimLeftFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimLeftFunc(s string, f func(rune) bool) string"></a>TrimLeftFunc(s string, f func(rune) bool) string</h4><p>删除s头部连续的满足f(rune)的字符。</p>
-<h4 id="TrimRightFunc-s-string-f-func-rune-bool-string"><a href="#TrimRightFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimRightFunc(s string, f func(rune) bool) string"></a>TrimRightFunc(s string, f func(rune) bool) string</h4><p>删除s尾部连续的满足f(rune)的字符。</p>
-<h4 id="TrimFunc-s-string-f-func-rune-bool-string"><a href="#TrimFunc-s-string-f-func-rune-bool-string" class="headerlink" title="TrimFunc(s string, f func(rune) bool) string"></a>TrimFunc(s string, f func(rune) bool) string</h4><p>删除s首尾连续的满足f(rune)的字符。</p>
-<h4 id="IndexFunc-s-string-f-func-rune-bool-int"><a href="#IndexFunc-s-string-f-func-rune-bool-int" class="headerlink" title="IndexFunc(s string, f func(rune) bool) int"></a>IndexFunc(s string, f func(rune) bool) int</h4><p>返回s中第一个满足f(rune) 的字符的字节位置。如果没有满足 f(rune) 的字符，则返回 -1。</p>
-<h4 id="LastIndexFunc-s-string-f-func-rune-bool-int"><a href="#LastIndexFunc-s-string-f-func-rune-bool-int" class="headerlink" title="LastIndexFunc(s string, f func(rune) bool) int"></a>LastIndexFunc(s string, f func(rune) bool) int</h4><p>返回s中最后一个满足f(rune)的字符的字节位置。如果没有满足 f(rune) 的字符，则返回 -1。</p>
-<h4 id="Trim-s-string-str-string-string"><a href="#Trim-s-string-str-string-string" class="headerlink" title="Trim(s string, str string) string"></a>Trim(s string, str string) string</h4><p>删除s首尾连续的包含在str中的字符。</p>
-<h4 id="TrimLeft-s-string-str-string-string"><a href="#TrimLeft-s-string-str-string-string" class="headerlink" title="TrimLeft(s string, str string) string"></a>TrimLeft(s string, str string) string</h4><p>删除s头部连续的包含在str中的字符串。</p>
-<h4 id="TrimRight-s-string-str-string-string"><a href="#TrimRight-s-string-str-string-string" class="headerlink" title="TrimRight(s string, str string) string"></a>TrimRight(s string, str string) string</h4><p>删除s尾部连续的包含在str中的字符串。</p>
-<h4 id="TrimSpace-s-string-string"><a href="#TrimSpace-s-string-string" class="headerlink" title="TrimSpace(s string) string"></a>TrimSpace(s string) string</h4><p>删除s首尾连续的的空白字符。</p>
-<h4 id="TrimPrefix-s-prefix-string-string"><a href="#TrimPrefix-s-prefix-string-string" class="headerlink" title="TrimPrefix(s, prefix string) string"></a>TrimPrefix(s, prefix string) string</h4><p>删除s头部的prefix字符串。如果s不是以prefix开头，则返回原始s。</p>
-<h4 id="TrimSuffix-s-suffix-string-string"><a href="#TrimSuffix-s-suffix-string-string" class="headerlink" title="TrimSuffix(s, suffix string) string"></a>TrimSuffix(s, suffix string) string</h4><p>删除s尾部的suffix字符串。如果s不是以suffix结尾，则返回原始s。（只去掉一次，注意和TrimRight区别）</p>
-<h4 id="Replace-s-old-new-string-n-int-string"><a href="#Replace-s-old-new-string-n-int-string" class="headerlink" title="Replace(s, old, new string, n int) string"></a>Replace(s, old, new string, n int) string</h4><p>返回s的副本，并将副本中的old字符串替换为new字符串，替换次数为n次，如果n为-1，则全部替换；如果 old 为空，则在副本的每个字符之间都插入一个new。</p>
-<h4 id="EqualFold-s1-s2-string-bool"><a href="#EqualFold-s1-s2-string-bool" class="headerlink" title="EqualFold(s1, s2 string) bool"></a>EqualFold(s1, s2 string) bool</h4><p>比较UTF-8编码在小写的条件下是否相等，不区分大小写，同时它还会对特殊字符进行转换。比如将“ϕ”转换为“Φ”、将“Ǆ”转换为“ǅ”等，然后再进行比较。<br>“==”比较字符串是否相等，区分大小写，返回bool。</p>
-<h4 id="Compare-s1-string-s2-string-int1"><a href="#Compare-s1-string-s2-string-int1" class="headerlink" title="Compare(s1 string, s2 string) int1"></a>Compare(s1 string, s2 string) int1</h4><p>比较字符串，区分大小写，比”==”速度快。相等为0，不相等为-1。</p>
-<h2 id="结构体和指针"><a href="#结构体和指针" class="headerlink" title="结构体和指针"></a>结构体和指针</h2><p>type Point struct { X, Y int }<br><img src="/2020/12/22/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aint%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%8C%E6%8C%87%E9%92%88/3.png" alt="3"><br>Point{10,20}表示一个已初始化的Point类型。对它进行取地址表示一个指向刚刚分配和初始化的Point类型</p>
-<p>结构体的域在内存中是紧挨着排列的。</p>
-<p>出于效率的考虑，大型的结构体通常都使用结构体指针的方式，直接传递给函数，或者从函数中返回</p>
-<p>1.当函数本意是修改原始数据，用指针传递<br>2.结构体很大，用指针传递<br>3.结构体很小，不打算修改内容，用值传递，值传递是传递实参的副本，对本身没有影响</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1256,7 +1256,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1289,112 +1289,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO基本数据结构：slice</title>
-    <url>/2020/12/21/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aslice/</url>
-    <content><![CDATA[<p>一个slice是一个数组某个部分的引用。在内存中，它是一个包含3个域的结构体，</p>
-<p>分为3个部分：</p>
-<p>1.指向slice的指针<br>2.slice的长度，长度是下标操作的上界，如x[i]中i必须小于长度<br>3.slice的容量，容量是分割操作的上界，如x[i:j]中j不能大于容量</p>
-<p><img src="/2020/12/21/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aslice/1.png" alt="1"></p>
-<p>数组的slice不是复制操作，而是一个新的数据结构，新的指针，x[1:3]它只是写了一个新的slice结构的属性来引用相同的存储数据</p>
-<h3 id="slice的扩容"><a href="#slice的扩容" class="headerlink" title="slice的扩容"></a>slice的扩容</h3><p>其实slice在Go的运行时库中就是一个<br>C语言动态数组的实现，<br>在$GOROOT/src/pkg/runtime/runtime.h中可以看到它的定义</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">struct    Slice</span><br><span class="line">&#123;    <span class="comment">// must not move anything</span></span><br><span class="line">    byte*    array;        <span class="comment">// actual data</span></span><br><span class="line">    uintgo    len;        <span class="comment">// number of elements</span></span><br><span class="line">    uintgo    cap;        <span class="comment">// allocated number of elements</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>对slice进行append的操作时，slice会自动扩容</p>
-<p>规则：<br>1、扩容后的大小是当前大小的2倍以上，则是新大小</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	size = newSize</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>2、如果扩容后的大小小于当前大小的2倍，则循环以下操作：<br>    1.当前大小小于1024,则按2倍大小增长<br>    2.当前大小大于1024，则按1/4倍大小增长<br>增长后的大小超过新大小，则结束循环</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> oldSize &gt; newSize &#123;</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> oldSize &lt; <span class="number">1024</span> &#123;</span><br><span class="line">				oldSize += <span class="number">2</span>* oldSize</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				oldSize += <span class="number">1</span>/<span class="number">4</span>* oldSize</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="go协程下的slice扩容append"><a href="#go协程下的slice扩容append" class="headerlink" title="go协程下的slice扩容append"></a>go协程下的slice扩容append</h3><p>问题：go协程下，进行append操作，append并不是协程安全，往一个slice下添加，并发高，会出现问题</p>
-<h4 id="方法1，索引处理"><a href="#方法1，索引处理" class="headerlink" title="方法1，索引处理"></a>方法1，索引处理</h4><p>设置一个全局slice</p>
-<p>go协程下，不进行append，而是对全局slice，利用局部索引赋值，在for循环，go协程结束后，对其进行处理</p>
-<p>开销比较小</p>
-<h4 id="方法2，channel"><a href="#方法2，channel" class="headerlink" title="方法2，channel"></a>方法2，channel</h4><h4 id="方法3，加锁"><a href="#方法3，加锁" class="headerlink" title="方法3，加锁"></a>方法3，加锁</h4><p>对append操作进行上锁，append完进行解锁</p>
-<p>开销比较大</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> l sync.Mutex</span><br><span class="line"></span><br><span class="line">l.Lock() <span class="comment">// 加锁</span></span><br><span class="line">a = append(a, <span class="number">1</span>)</span><br><span class="line">l.Unlock() <span class="comment">// 解锁</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="slice添加元素"><a href="#slice添加元素" class="headerlink" title="slice添加元素"></a>slice添加元素</h3><h4 id="追加元素"><a href="#追加元素" class="headerlink" title="追加元素"></a>追加元素</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">a = append(a, i)</span><br></pre></td></tr></table></figure>
-
-<h4 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h4><h5 id="创建临时切片"><a href="#创建临时切片" class="headerlink" title="创建临时切片"></a>创建临时切片</h5><p>取前2位，然后插入3，再把后几位加上</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []int&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line"><span class="keyword">var</span> b= a[<span class="number">2</span>:]</span><br><span class="line">b = append([]int&#123;<span class="number">3</span>&#125;,b[<span class="number">0</span>:]...)</span><br><span class="line">a=append(a[<span class="number">0</span>:<span class="number">2</span>],b...)</span><br></pre></td></tr></table></figure>
-<h5 id="append链式操作"><a href="#append链式操作" class="headerlink" title="append链式操作"></a>append链式操作</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []int&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line">a=append(a[:<span class="number">2</span>],append([]int&#123;<span class="number">3</span>&#125;,a[<span class="number">2</span>:]...)...)</span><br></pre></td></tr></table></figure>
-
-<h5 id="copy操作"><a href="#copy操作" class="headerlink" title="copy操作"></a>copy操作</h5><p>新添加一个0，然后复制，不需要新开切片</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []int&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line">a=append(a,<span class="number">0</span>)</span><br><span class="line"><span class="comment">// copy前a[3:]是[5,6,0]，a[2:]是[4,5,6,0]</span></span><br><span class="line"><span class="comment">// 两个长度不同进行copy，取最短长度，把后面那个值，放到前面去</span></span><br><span class="line"><span class="comment">// 则结果位a[3:]就是[4,5,6]</span></span><br><span class="line"><span class="comment">// a为[1,2,4,4,5,6]</span></span><br><span class="line"><span class="comment">// 最后再修改第三个值，完成插入</span></span><br><span class="line">copy(a[<span class="number">3</span>:],a[<span class="number">2</span>:])</span><br><span class="line">a[<span class="number">2</span>]=<span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>这种方法比较高效</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">s = append(s, zero_value)</span><br><span class="line">copy(s[i+<span class="number">1</span>:], s[i:])</span><br><span class="line">s[i] = x</span><br></pre></td></tr></table></figure>
-
-<h3 id="slice删除元素"><a href="#slice删除元素" class="headerlink" title="slice删除元素"></a>slice删除元素</h3><p>根据下标删除元素</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//删除元素 3 索引(下标) 3</span></span><br><span class="line">index := <span class="number">3</span></span><br><span class="line"><span class="comment">// 这里通过 append 方法 分成两个然后合并</span></span><br><span class="line"><span class="comment">// append(切片名,追加的元素) 切片名这里我们进行切割一个新的切片DelIndex[:index] 追加的元素将索引后面的元素追加</span></span><br><span class="line"><span class="comment">// DelIndex[index+1:]...) 为什么追加会有...三个点, 因为是一个切片 所以需要展开</span></span><br><span class="line">DelIndex = append(DelIndex[:index], DelIndex[index+<span class="number">1</span>:]...)</span><br></pre></td></tr></table></figure>
-
-<h3 id="slice反转"><a href="#slice反转" class="headerlink" title="slice反转"></a>slice反转</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func reverse(s []byte) []byte &#123;</span><br><span class="line">	<span class="keyword">for</span> i, <span class="attr">j</span> := <span class="number">0</span>, len(s)-<span class="number">1</span>; i &lt; j; i, j = i+<span class="number">1</span>, j-<span class="number">1</span> &#123;</span><br><span class="line">		s[i], s[j] = s[j], s[i]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func reverseSlice (arr []int) &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(arr)/<span class="number">2</span>; i++ &#123;</span><br><span class="line">        arr[i], arr[len(arr)-<span class="number">1</span>-i] = arr[len(arr)-<span class="number">1</span>-i], arr[i] </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO的程序启动</title>
-    <url>/2020/12/29/GO%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8/</url>
-    <content><![CDATA[<p>启动流程大致如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">_rt0_amd64_darwin   # 通过参数argc和argv等，确定栈的位置，得到寄存器</span><br><span class="line"></span><br><span class="line">main  # 跳转到本文件main，继续执行</span><br><span class="line"></span><br><span class="line">_rt0_amd64  # 设置好m-&gt;g0的栈,将当前的SP设置为stackbase,将SP往下大约64K的地方设置为stackguard,然后会获取处理器信息,然后设置本地线程存储</span><br><span class="line"></span><br><span class="line">runtime.check # 检测像int8,int16,float等是否是预期的大小，检测cas操作是否正常</span><br><span class="line"></span><br><span class="line">runtime.args # 去 stack 里读取参数和环境变量，执行文件的绝对路径初始化</span><br><span class="line"></span><br><span class="line">runtime.osinit # 初始化OS:获取CPU数量和内存页大小初始化</span><br><span class="line"></span><br><span class="line">runtime.hashinit # 使用读/dev/urandom的方式从内核获得随机数种子</span><br><span class="line"></span><br><span class="line">runtime.schedinit # 初始化调度，命令行参数、环境变量、gc、栈空间、内存管理、所有P实例、HASH算法等初始化</span><br><span class="line"></span><br><span class="line">runtime.newproc # 创建一个goruntine并执行，执行函数为 runtime.main</span><br><span class="line"></span><br><span class="line">runtime.mstart # 启动这个m，即m0，里面会调用schedule函数进入调度状态</span><br><span class="line"></span><br><span class="line">main.main # 用户的main函数</span><br><span class="line"></span><br><span class="line">runtime.exit</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="本地线程存储"><a href="#本地线程存储" class="headerlink" title="本地线程存储"></a>本地线程存储</h2><p>每个goroutine都有自己的控制信息，这些信息是存放在一个结构体G中</p>
-<p>有一个全局变量g是结构体G的指针，我们希望只有唯一的全局变量g，保证全局唯一，而不是g0，g1，g2</p>
-<p>每个线程访问它，得到自己线程的G，这种情况下就需要本地线程存储。</p>
-<p>g确实是一个全局变量，却在不同线程有多份不同的副本。每个goroutine去访问g时，都是对应到自己线程的这一份副本</p>
-<h2 id="调度器初始化"><a href="#调度器初始化" class="headerlink" title="调度器初始化"></a>调度器初始化</h2><p>注释写在代码里，大概流程如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func <span class="function"><span class="title">schedinit</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="comment">// raceinit must be the first call to race detector.</span></span><br><span class="line">	<span class="comment">// In particular, it must be done before mallocinit below calls racemapshadow.</span></span><br><span class="line">	<span class="comment">// 从TLS中获取g实例</span></span><br><span class="line">    _g_ := getg()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">        _g_.racectx, raceprocctx0 = raceinit()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置全局线程数上限</span></span><br><span class="line">    sched.maxmcount = <span class="number">10000</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化一系列函数所在的PC计数器，用于traceback</span></span><br><span class="line">    tracebackinit()</span><br><span class="line">    <span class="comment">// 貌似是验证链接器符号的正确性</span></span><br><span class="line">    moduledataverify()</span><br><span class="line">    <span class="comment">// 栈的初始化</span></span><br><span class="line">    stackinit()</span><br><span class="line">    <span class="comment">// 内存分配器初始化</span></span><br><span class="line">    mallocinit()</span><br><span class="line">    mcommoninit(_g_.m)</span><br><span class="line">    <span class="comment">// 初始化AES HASH算法</span></span><br><span class="line">    alginit()       <span class="comment">// maps must not be used before this call</span></span><br><span class="line">    modulesinit()   <span class="comment">// provides activeModules</span></span><br><span class="line">    typelinksinit() <span class="comment">// uses maps, activeModules</span></span><br><span class="line">    itabsinit()     <span class="comment">// uses activeModules</span></span><br><span class="line"></span><br><span class="line">    msigsave(_g_.m)</span><br><span class="line">    initSigmask = _g_.m.sigmask</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取命令行参数</span></span><br><span class="line">    <span class="comment">// 例如: ./$GOPATH/test/main test1 test2</span></span><br><span class="line">    <span class="comment">// 执行goargs得到runtime.argslice = []string len: 3, cap: 3, [&quot;main&quot;,&quot;test1&quot;,&quot;test2&quot;]</span></span><br><span class="line">    goargs()</span><br><span class="line">    <span class="comment">// 获取所有的环境变量</span></span><br><span class="line">    goenvs()</span><br><span class="line">    parsedebugvars()</span><br><span class="line">    <span class="comment">// gc初始化</span></span><br><span class="line">    gcinit()</span><br><span class="line"></span><br><span class="line">    sched.lastpoll = uint64(nanotime())</span><br><span class="line"></span><br><span class="line">    <span class="comment">// P个数检查</span></span><br><span class="line">    procs := ncpu</span><br><span class="line">    <span class="keyword">if</span> n, <span class="attr">ok</span> := atoi32(gogetenv(<span class="string">&quot;GOMAXPROCS&quot;</span>)); ok &amp;&amp; n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        procs = n</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> procs &gt; _MaxGomaxprocs &#123;</span><br><span class="line">        procs = _MaxGomaxprocs</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 所有P的初始化</span></span><br><span class="line">    <span class="keyword">if</span> procresize(procs) != nil &#123;</span><br><span class="line">        <span class="keyword">throw</span>(<span class="string">&quot;unknown runnable goroutine during bootstrap&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> buildVersion == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// Condition should never trigger. This code just serves</span></span><br><span class="line">        <span class="comment">// to ensure runtime·buildVersion is kept in the resulting binary.</span></span><br><span class="line">        buildVersion = <span class="string">&quot;unknown&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>GO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GO的连续栈</title>
-    <url>/2020/12/28/GO%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%A0%88/</url>
-    <content><![CDATA[<p>Go语言支持goroutine，每个goroutine需要能够运行，所以它们都有自己的栈</p>
-<p>所以栈的空间是随着需要自动增长的，每个goroutine开始只分配很小的栈空间</p>
-<p>所以开了千万个goroutine也不会耗尽内存</p>
-<p>continuous stack</p>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>1.调用栈默认大小是4K（1.7修改为2K），最大栈1G，超出将panic<br>2.每次执行函数调用时，runtime就会进行检测，当前栈的大小不够用，会触发中断<br>3.runtime会保存此时函数运行的上下文<br>4.分配一个新的足够大的栈空间，进行2倍指数扩容将旧栈的内容拷贝到新栈中，并做一些设置，使得当函数恢复运行时，函数会在新分配的栈中继续执行</p>
-<h3 id="捕获栈空间不足，实行中断"><a href="#捕获栈空间不足，实行中断" class="headerlink" title="捕获栈空间不足，实行中断"></a>捕获栈空间不足，实行中断</h3><p>1.比较栈指针寄存器和G结构体的stackguard<br>2.SP大于g-&gt;stackguard，runtime.morestack(保存M，连接旧栈新栈)，runtime.newstack(新栈)</p>
-<p>每个goroutine对应一个结构体G，大致相当于进程控制块的概念<br>结构体中存了stackbase和stackguard，用于确定这个goroutine使用的栈空间信息<br>如果栈指针寄存器(SP)值超越了stackguard就需要扩展栈空间</p>
-<p>汇编如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    TEXT    <span class="string">&quot;&quot;</span>.main+<span class="number">0</span>(SB),$<span class="number">0</span>-<span class="number">0</span></span><br><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    MOVQ    (TLS),CX</span><br><span class="line"><span class="number">0x0009</span> <span class="number">00009</span> (test.go:<span class="number">3</span>)    CMPQ    SP,(CX)</span><br><span class="line"><span class="number">0x000c</span> <span class="number">00012</span> (test.go:<span class="number">3</span>)    JHI    ,<span class="number">21</span></span><br><span class="line"><span class="number">0x000e</span> <span class="number">00014</span> (test.go:<span class="number">3</span>)    CALL    ,runtime.morestack00_noctxt(SB)</span><br><span class="line"><span class="number">0x0013</span> <span class="number">00019</span> (test.go:<span class="number">3</span>)    JMP    ,<span class="number">0</span></span><br><span class="line"><span class="number">0x0015</span> <span class="number">00021</span> (test.go:<span class="number">3</span>)    NOP    ,</span><br></pre></td></tr></table></figure>
-<p>如果SP大于g-&gt;stackguard了，则会调用runtime.morestack函数.开始中断，新建栈空间</p>
-<p>runtime.morestack是用汇编实现的，做的事情大致是将一些信息存在M结构体中，这些信息包括当前栈桢，参数，当前函数调用，函数返回地址（两个返回地址，一个是runtime.morestack的函数地址，一个是f的返回地址）。通过这些信息可以把新栈和旧栈链起来</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> runtime.morestack() &#123;</span><br><span class="line">    <span class="keyword">if</span>(g == g0) &#123;</span><br><span class="line">        panic();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        m-&gt;morebuf.gobuf_pc = getCallerCallerPC();</span><br><span class="line">        <span class="keyword">void</span> *SP = getCallerSP();</span><br><span class="line">        m-&gt;morebuf.gobuf_sp = SP;</span><br><span class="line">        m-&gt;moreargp = SP;</span><br><span class="line">        m-&gt;morebuf.gobuf_g = g;</span><br><span class="line">        m-&gt;morepc = getCallerPC();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">void</span> *g0 = m-&gt;g0;</span><br><span class="line">        g = g0;</span><br><span class="line">        setSP(g0-&gt;g_sched.gobuf_sp);</span><br><span class="line">        runtime.newstack();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后调用runtime.newstack，建立新的栈空间</p>
-<p>PS：newstack是切换到m-&gt;g0的栈中去调用的。m-&gt;g0是调度器栈，go的运行时库的调度器使用的都是m-&gt;g0。</p>
-<h3 id="旧栈数据复制到新栈"><a href="#旧栈数据复制到新栈" class="headerlink" title="旧栈数据复制到新栈"></a>旧栈数据复制到新栈</h3><p>1.runtime.morestack会调用于runtime.newstack<br>2.newstack：分配一个足够大的新的空间，将旧的栈中的数据复制到新的栈中</p>
-<p>复制数据的过程中要考虑指针失效问题</p>
-<p>某个指针引用旧栈的地址，搬到新栈后，旧栈会被释放，指针失效</p>
-<p>所以要修改指针地址：</p>
-<p>1.当前栈帧之前的每一个栈帧，对其中的每一个指针，检测指针指向的地址<br>2.如果指向地址是落在旧栈范围内的，则将它加上一个偏移使它指向新栈的相应地址。这个偏移值等于新栈基地址减旧栈基地址。</p>
-<p>恢复运行：<br>1.切换到当前g<br>2.runtime.oldstack从过去保存旧栈的信息拿到相关信息<br>3.runtime.gogo根据旧的信息恢复上下文，运行</p>
-<p>整个过程就完成了。</p>
-<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>1.比较SP与g的stackguard，SP大于g-&gt;stackguard，开始连续栈扩容<br>2.调用runtime.morestack，主要功能是保存当前的栈的一些信息<br>3.调用runtime.newstack，函数的主要功能是分配空间，装饰此空间，复制数据到新空间，修改指针<br>4.gogocall的方式切换到新分配的栈，获取旧的信息，恢复上下文，继续运行</p>
-<p>栈缩容：是在垃圾回收的里处理的，当检测到栈只使用了不到1/4时，栈缩小为原来的1/2</p>
-]]></content>
-      <categories>
-        <category>GO</category>
-      </categories>
-      <tags>
-        <tag>内存</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1476,7 +1371,112 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO的连续栈</title>
+    <url>/2020/12/28/GO%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%A0%88/</url>
+    <content><![CDATA[<p>Go语言支持goroutine，每个goroutine需要能够运行，所以它们都有自己的栈</p>
+<p>所以栈的空间是随着需要自动增长的，每个goroutine开始只分配很小的栈空间</p>
+<p>所以开了千万个goroutine也不会耗尽内存</p>
+<p>continuous stack</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>1.调用栈默认大小是4K（1.7修改为2K），最大栈1G，超出将panic<br>2.每次执行函数调用时，runtime就会进行检测，当前栈的大小不够用，会触发中断<br>3.runtime会保存此时函数运行的上下文<br>4.分配一个新的足够大的栈空间，进行2倍指数扩容将旧栈的内容拷贝到新栈中，并做一些设置，使得当函数恢复运行时，函数会在新分配的栈中继续执行</p>
+<h3 id="捕获栈空间不足，实行中断"><a href="#捕获栈空间不足，实行中断" class="headerlink" title="捕获栈空间不足，实行中断"></a>捕获栈空间不足，实行中断</h3><p>1.比较栈指针寄存器和G结构体的stackguard<br>2.SP大于g-&gt;stackguard，runtime.morestack(保存M，连接旧栈新栈)，runtime.newstack(新栈)</p>
+<p>每个goroutine对应一个结构体G，大致相当于进程控制块的概念<br>结构体中存了stackbase和stackguard，用于确定这个goroutine使用的栈空间信息<br>如果栈指针寄存器(SP)值超越了stackguard就需要扩展栈空间</p>
+<p>汇编如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    TEXT    <span class="string">&quot;&quot;</span>.main+<span class="number">0</span>(SB),$<span class="number">0</span>-<span class="number">0</span></span><br><span class="line"><span class="number">000000</span> <span class="number">00000</span> (test.go:<span class="number">3</span>)    MOVQ    (TLS),CX</span><br><span class="line"><span class="number">0x0009</span> <span class="number">00009</span> (test.go:<span class="number">3</span>)    CMPQ    SP,(CX)</span><br><span class="line"><span class="number">0x000c</span> <span class="number">00012</span> (test.go:<span class="number">3</span>)    JHI    ,<span class="number">21</span></span><br><span class="line"><span class="number">0x000e</span> <span class="number">00014</span> (test.go:<span class="number">3</span>)    CALL    ,runtime.morestack00_noctxt(SB)</span><br><span class="line"><span class="number">0x0013</span> <span class="number">00019</span> (test.go:<span class="number">3</span>)    JMP    ,<span class="number">0</span></span><br><span class="line"><span class="number">0x0015</span> <span class="number">00021</span> (test.go:<span class="number">3</span>)    NOP    ,</span><br></pre></td></tr></table></figure>
+<p>如果SP大于g-&gt;stackguard了，则会调用runtime.morestack函数.开始中断，新建栈空间</p>
+<p>runtime.morestack是用汇编实现的，做的事情大致是将一些信息存在M结构体中，这些信息包括当前栈桢，参数，当前函数调用，函数返回地址（两个返回地址，一个是runtime.morestack的函数地址，一个是f的返回地址）。通过这些信息可以把新栈和旧栈链起来</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> runtime.morestack() &#123;</span><br><span class="line">    <span class="keyword">if</span>(g == g0) &#123;</span><br><span class="line">        panic();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        m-&gt;morebuf.gobuf_pc = getCallerCallerPC();</span><br><span class="line">        <span class="keyword">void</span> *SP = getCallerSP();</span><br><span class="line">        m-&gt;morebuf.gobuf_sp = SP;</span><br><span class="line">        m-&gt;moreargp = SP;</span><br><span class="line">        m-&gt;morebuf.gobuf_g = g;</span><br><span class="line">        m-&gt;morepc = getCallerPC();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">void</span> *g0 = m-&gt;g0;</span><br><span class="line">        g = g0;</span><br><span class="line">        setSP(g0-&gt;g_sched.gobuf_sp);</span><br><span class="line">        runtime.newstack();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后调用runtime.newstack，建立新的栈空间</p>
+<p>PS：newstack是切换到m-&gt;g0的栈中去调用的。m-&gt;g0是调度器栈，go的运行时库的调度器使用的都是m-&gt;g0。</p>
+<h3 id="旧栈数据复制到新栈"><a href="#旧栈数据复制到新栈" class="headerlink" title="旧栈数据复制到新栈"></a>旧栈数据复制到新栈</h3><p>1.runtime.morestack会调用于runtime.newstack<br>2.newstack：分配一个足够大的新的空间，将旧的栈中的数据复制到新的栈中</p>
+<p>复制数据的过程中要考虑指针失效问题</p>
+<p>某个指针引用旧栈的地址，搬到新栈后，旧栈会被释放，指针失效</p>
+<p>所以要修改指针地址：</p>
+<p>1.当前栈帧之前的每一个栈帧，对其中的每一个指针，检测指针指向的地址<br>2.如果指向地址是落在旧栈范围内的，则将它加上一个偏移使它指向新栈的相应地址。这个偏移值等于新栈基地址减旧栈基地址。</p>
+<p>恢复运行：<br>1.切换到当前g<br>2.runtime.oldstack从过去保存旧栈的信息拿到相关信息<br>3.runtime.gogo根据旧的信息恢复上下文，运行</p>
+<p>整个过程就完成了。</p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>1.比较SP与g的stackguard，SP大于g-&gt;stackguard，开始连续栈扩容<br>2.调用runtime.morestack，主要功能是保存当前的栈的一些信息<br>3.调用runtime.newstack，函数的主要功能是分配空间，装饰此空间，复制数据到新空间，修改指针<br>4.gogocall的方式切换到新分配的栈，获取旧的信息，恢复上下文，继续运行</p>
+<p>栈缩容：是在垃圾回收的里处理的，当检测到栈只使用了不到1/4时，栈缩小为原来的1/2</p>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>内存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO的程序启动</title>
+    <url>/2020/12/29/GO%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8/</url>
+    <content><![CDATA[<p>启动流程大致如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">_rt0_amd64_darwin   # 通过参数argc和argv等，确定栈的位置，得到寄存器</span><br><span class="line"></span><br><span class="line">main  # 跳转到本文件main，继续执行</span><br><span class="line"></span><br><span class="line">_rt0_amd64  # 设置好m-&gt;g0的栈,将当前的SP设置为stackbase,将SP往下大约64K的地方设置为stackguard,然后会获取处理器信息,然后设置本地线程存储</span><br><span class="line"></span><br><span class="line">runtime.check # 检测像int8,int16,float等是否是预期的大小，检测cas操作是否正常</span><br><span class="line"></span><br><span class="line">runtime.args # 去 stack 里读取参数和环境变量，执行文件的绝对路径初始化</span><br><span class="line"></span><br><span class="line">runtime.osinit # 初始化OS:获取CPU数量和内存页大小初始化</span><br><span class="line"></span><br><span class="line">runtime.hashinit # 使用读/dev/urandom的方式从内核获得随机数种子</span><br><span class="line"></span><br><span class="line">runtime.schedinit # 初始化调度，命令行参数、环境变量、gc、栈空间、内存管理、所有P实例、HASH算法等初始化</span><br><span class="line"></span><br><span class="line">runtime.newproc # 创建一个goruntine并执行，执行函数为 runtime.main</span><br><span class="line"></span><br><span class="line">runtime.mstart # 启动这个m，即m0，里面会调用schedule函数进入调度状态</span><br><span class="line"></span><br><span class="line">main.main # 用户的main函数</span><br><span class="line"></span><br><span class="line">runtime.exit</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="本地线程存储"><a href="#本地线程存储" class="headerlink" title="本地线程存储"></a>本地线程存储</h2><p>每个goroutine都有自己的控制信息，这些信息是存放在一个结构体G中</p>
+<p>有一个全局变量g是结构体G的指针，我们希望只有唯一的全局变量g，保证全局唯一，而不是g0，g1，g2</p>
+<p>每个线程访问它，得到自己线程的G，这种情况下就需要本地线程存储。</p>
+<p>g确实是一个全局变量，却在不同线程有多份不同的副本。每个goroutine去访问g时，都是对应到自己线程的这一份副本</p>
+<h2 id="调度器初始化"><a href="#调度器初始化" class="headerlink" title="调度器初始化"></a>调度器初始化</h2><p>注释写在代码里，大概流程如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func <span class="function"><span class="title">schedinit</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="comment">// raceinit must be the first call to race detector.</span></span><br><span class="line">	<span class="comment">// In particular, it must be done before mallocinit below calls racemapshadow.</span></span><br><span class="line">	<span class="comment">// 从TLS中获取g实例</span></span><br><span class="line">    _g_ := getg()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">        _g_.racectx, raceprocctx0 = raceinit()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置全局线程数上限</span></span><br><span class="line">    sched.maxmcount = <span class="number">10000</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化一系列函数所在的PC计数器，用于traceback</span></span><br><span class="line">    tracebackinit()</span><br><span class="line">    <span class="comment">// 貌似是验证链接器符号的正确性</span></span><br><span class="line">    moduledataverify()</span><br><span class="line">    <span class="comment">// 栈的初始化</span></span><br><span class="line">    stackinit()</span><br><span class="line">    <span class="comment">// 内存分配器初始化</span></span><br><span class="line">    mallocinit()</span><br><span class="line">    mcommoninit(_g_.m)</span><br><span class="line">    <span class="comment">// 初始化AES HASH算法</span></span><br><span class="line">    alginit()       <span class="comment">// maps must not be used before this call</span></span><br><span class="line">    modulesinit()   <span class="comment">// provides activeModules</span></span><br><span class="line">    typelinksinit() <span class="comment">// uses maps, activeModules</span></span><br><span class="line">    itabsinit()     <span class="comment">// uses activeModules</span></span><br><span class="line"></span><br><span class="line">    msigsave(_g_.m)</span><br><span class="line">    initSigmask = _g_.m.sigmask</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取命令行参数</span></span><br><span class="line">    <span class="comment">// 例如: ./$GOPATH/test/main test1 test2</span></span><br><span class="line">    <span class="comment">// 执行goargs得到runtime.argslice = []string len: 3, cap: 3, [&quot;main&quot;,&quot;test1&quot;,&quot;test2&quot;]</span></span><br><span class="line">    goargs()</span><br><span class="line">    <span class="comment">// 获取所有的环境变量</span></span><br><span class="line">    goenvs()</span><br><span class="line">    parsedebugvars()</span><br><span class="line">    <span class="comment">// gc初始化</span></span><br><span class="line">    gcinit()</span><br><span class="line"></span><br><span class="line">    sched.lastpoll = uint64(nanotime())</span><br><span class="line"></span><br><span class="line">    <span class="comment">// P个数检查</span></span><br><span class="line">    procs := ncpu</span><br><span class="line">    <span class="keyword">if</span> n, <span class="attr">ok</span> := atoi32(gogetenv(<span class="string">&quot;GOMAXPROCS&quot;</span>)); ok &amp;&amp; n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        procs = n</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> procs &gt; _MaxGomaxprocs &#123;</span><br><span class="line">        procs = _MaxGomaxprocs</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 所有P的初始化</span></span><br><span class="line">    <span class="keyword">if</span> procresize(procs) != nil &#123;</span><br><span class="line">        <span class="keyword">throw</span>(<span class="string">&quot;unknown runnable goroutine during bootstrap&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> buildVersion == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// Condition should never trigger. This code just serves</span></span><br><span class="line">        <span class="comment">// to ensure runtime·buildVersion is kept in the resulting binary.</span></span><br><span class="line">        buildVersion = <span class="string">&quot;unknown&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GO基本数据结构：slice</title>
+    <url>/2020/12/21/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aslice/</url>
+    <content><![CDATA[<p>一个slice是一个数组某个部分的引用。在内存中，它是一个包含3个域的结构体，</p>
+<p>分为3个部分：</p>
+<p>1.指向slice的指针<br>2.slice的长度，长度是下标操作的上界，如x[i]中i必须小于长度<br>3.slice的容量，容量是分割操作的上界，如x[i:j]中j不能大于容量</p>
+<p><img src="/2020/12/21/GO%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9Aslice/1.png" alt="1"></p>
+<p>数组的slice不是复制操作，而是一个新的数据结构，新的指针，x[1:3]它只是写了一个新的slice结构的属性来引用相同的存储数据</p>
+<h3 id="slice的扩容"><a href="#slice的扩容" class="headerlink" title="slice的扩容"></a>slice的扩容</h3><p>其实slice在Go的运行时库中就是一个<br>C语言动态数组的实现，<br>在$GOROOT/src/pkg/runtime/runtime.h中可以看到它的定义</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">struct    Slice</span><br><span class="line">&#123;    <span class="comment">// must not move anything</span></span><br><span class="line">    byte*    array;        <span class="comment">// actual data</span></span><br><span class="line">    uintgo    len;        <span class="comment">// number of elements</span></span><br><span class="line">    uintgo    cap;        <span class="comment">// allocated number of elements</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对slice进行append的操作时，slice会自动扩容</p>
+<p>规则：<br>1、扩容后的大小是当前大小的2倍以上，则是新大小</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	size = newSize</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>2、如果扩容后的大小小于当前大小的2倍，则循环以下操作：<br>    1.当前大小小于1024,则按2倍大小增长<br>    2.当前大小大于1024，则按1/4倍大小增长<br>增长后的大小超过新大小，则结束循环</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> newSize &gt;= <span class="number">2</span>* oldSize &#123;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> oldSize &gt; newSize &#123;</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> oldSize &lt; <span class="number">1024</span> &#123;</span><br><span class="line">				oldSize += <span class="number">2</span>* oldSize</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				oldSize += <span class="number">1</span>/<span class="number">4</span>* oldSize</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="go协程下的slice扩容append"><a href="#go协程下的slice扩容append" class="headerlink" title="go协程下的slice扩容append"></a>go协程下的slice扩容append</h3><p>问题：go协程下，进行append操作，append并不是协程安全，往一个slice下添加，并发高，会出现问题</p>
+<h4 id="方法1，索引处理"><a href="#方法1，索引处理" class="headerlink" title="方法1，索引处理"></a>方法1，索引处理</h4><p>设置一个全局slice</p>
+<p>go协程下，不进行append，而是对全局slice，利用局部索引赋值，在for循环，go协程结束后，对其进行处理</p>
+<p>开销比较小</p>
+<h4 id="方法2，channel"><a href="#方法2，channel" class="headerlink" title="方法2，channel"></a>方法2，channel</h4><h4 id="方法3，加锁"><a href="#方法3，加锁" class="headerlink" title="方法3，加锁"></a>方法3，加锁</h4><p>对append操作进行上锁，append完进行解锁</p>
+<p>开销比较大</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> l sync.Mutex</span><br><span class="line"></span><br><span class="line">l.Lock() <span class="comment">// 加锁</span></span><br><span class="line">a = append(a, <span class="number">1</span>)</span><br><span class="line">l.Unlock() <span class="comment">// 解锁</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="slice添加元素"><a href="#slice添加元素" class="headerlink" title="slice添加元素"></a>slice添加元素</h3><h4 id="追加元素"><a href="#追加元素" class="headerlink" title="追加元素"></a>追加元素</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">a = append(a, i)</span><br></pre></td></tr></table></figure>
+
+<h4 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h4><h5 id="创建临时切片"><a href="#创建临时切片" class="headerlink" title="创建临时切片"></a>创建临时切片</h5><p>取前2位，然后插入3，再把后几位加上</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []int&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line"><span class="keyword">var</span> b= a[<span class="number">2</span>:]</span><br><span class="line">b = append([]int&#123;<span class="number">3</span>&#125;,b[<span class="number">0</span>:]...)</span><br><span class="line">a=append(a[<span class="number">0</span>:<span class="number">2</span>],b...)</span><br></pre></td></tr></table></figure>
+<h5 id="append链式操作"><a href="#append链式操作" class="headerlink" title="append链式操作"></a>append链式操作</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []int&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line">a=append(a[:<span class="number">2</span>],append([]int&#123;<span class="number">3</span>&#125;,a[<span class="number">2</span>:]...)...)</span><br></pre></td></tr></table></figure>
+
+<h5 id="copy操作"><a href="#copy操作" class="headerlink" title="copy操作"></a>copy操作</h5><p>新添加一个0，然后复制，不需要新开切片</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []int&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line">a=append(a,<span class="number">0</span>)</span><br><span class="line"><span class="comment">// copy前a[3:]是[5,6,0]，a[2:]是[4,5,6,0]</span></span><br><span class="line"><span class="comment">// 两个长度不同进行copy，取最短长度，把后面那个值，放到前面去</span></span><br><span class="line"><span class="comment">// 则结果位a[3:]就是[4,5,6]</span></span><br><span class="line"><span class="comment">// a为[1,2,4,4,5,6]</span></span><br><span class="line"><span class="comment">// 最后再修改第三个值，完成插入</span></span><br><span class="line">copy(a[<span class="number">3</span>:],a[<span class="number">2</span>:])</span><br><span class="line">a[<span class="number">2</span>]=<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>这种方法比较高效</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">s = append(s, zero_value)</span><br><span class="line">copy(s[i+<span class="number">1</span>:], s[i:])</span><br><span class="line">s[i] = x</span><br></pre></td></tr></table></figure>
+
+<h3 id="slice删除元素"><a href="#slice删除元素" class="headerlink" title="slice删除元素"></a>slice删除元素</h3><p>根据下标删除元素</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//删除元素 3 索引(下标) 3</span></span><br><span class="line">index := <span class="number">3</span></span><br><span class="line"><span class="comment">// 这里通过 append 方法 分成两个然后合并</span></span><br><span class="line"><span class="comment">// append(切片名,追加的元素) 切片名这里我们进行切割一个新的切片DelIndex[:index] 追加的元素将索引后面的元素追加</span></span><br><span class="line"><span class="comment">// DelIndex[index+1:]...) 为什么追加会有...三个点, 因为是一个切片 所以需要展开</span></span><br><span class="line">DelIndex = append(DelIndex[:index], DelIndex[index+<span class="number">1</span>:]...)</span><br></pre></td></tr></table></figure>
+
+<h3 id="slice反转"><a href="#slice反转" class="headerlink" title="slice反转"></a>slice反转</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func reverse(s []byte) []byte &#123;</span><br><span class="line">	<span class="keyword">for</span> i, <span class="attr">j</span> := <span class="number">0</span>, len(s)-<span class="number">1</span>; i &lt; j; i, j = i+<span class="number">1</span>, j-<span class="number">1</span> &#123;</span><br><span class="line">		s[i], s[j] = s[j], s[i]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func reverseSlice (arr []int) &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; len(arr)/<span class="number">2</span>; i++ &#123;</span><br><span class="line">        arr[i], arr[len(arr)-<span class="number">1</span>-i] = arr[len(arr)-<span class="number">1</span>-i], arr[i] </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>GO</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1549,7 +1549,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1571,7 +1571,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1586,7 +1586,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>Go</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1611,7 +1611,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1658,7 +1658,7 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1810,40 +1810,6 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>Git撤销回滚</title>
-    <url>/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/</url>
-    <content><![CDATA[<p>了解git如何撤销回滚，先了解git的工作流</p>
-<h2 id="git工作流"><a href="#git工作流" class="headerlink" title="git工作流"></a>git工作流</h2><p>完成一次完整的本地分支git提交工作，分为三个区域</p>
-<p>工作区：即自己当前分支所修改的代码，git add xx 之前的！不包括 git add xx 和 git commit xxx 之后的。</p>
-<p>暂存区：已经 git add xxx 进去，且未 git commit xxx 的。</p>
-<p>本地分支：已经git commit -m xxx 提交到本地分支的。</p>
-<p> <img src="/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/1.png" alt="1"></p>
-<p>代码回滚</p>
-<p>在上传代码到远程仓库的时候，不免会出现问题，任何过程都有可能要回滚代码</p>
-<h2 id="如何回滚"><a href="#如何回滚" class="headerlink" title="如何回滚"></a>如何回滚</h2><p>分为以下几种场景</p>
-<h3 id="工作区的代码"><a href="#工作区的代码" class="headerlink" title="工作区的代码"></a>工作区的代码</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git checkout ./a.txt   # 丢弃某个文件，或者</span><br><span class="line">git checkout ./       # 丢弃全部</span><br></pre></td></tr></table></figure>
-<p>注意：git checkout – . 丢弃全部，也包括：新增的文件会被删除、删除的文件会恢复回来、修改的文件会回去。这几个前提都说的是，回到暂存区之前的样子。对之前保存在暂存区里的代码不会有任何影响。对commit提交到本地分支的代码就更没影响了。当然，如果你之前压根都没有暂存或commit，那就是回到你上次pull下来的样子了</p>
-<h3 id="代码git-add到缓存区，并未commit提交"><a href="#代码git-add到缓存区，并未commit提交" class="headerlink" title="代码git add到缓存区，并未commit提交"></a>代码git add到缓存区，并未commit提交</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset HEAD .  或者</span><br><span class="line">git reset HEAD a.txt</span><br></pre></td></tr></table></figure>
-
-<p>这个命令仅改变暂存区，并不改变工作区，这意味着在无任何其他操作的情况下，工作区中的实际文件同该命令运行之前无任何变化</p>
-<h3 id="git-commit到本地分支、但没有git-push到远程"><a href="#git-commit到本地分支、但没有git-push到远程" class="headerlink" title="git commit到本地分支、但没有git push到远程"></a>git commit到本地分支、但没有git push到远程</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;  # 回到其中你想要的某个版</span><br><span class="line">或者</span><br><span class="line">git reset --hard HEAD^  # 回到最新的一次提交</span><br><span class="line">或者</span><br><span class="line">git reset HEAD^  # 此时代码保留，回到 git add 之前</span><br></pre></td></tr></table></figure>
-
-<h3 id="git-push把修改提交到远程仓库"><a href="#git-push把修改提交到远程仓库" class="headerlink" title="git push把修改提交到远程仓库"></a>git push把修改提交到远程仓库</h3><p>reset和revert两种方式</p>
-<h4 id="通过git-reset是直接删除指定的commit"><a href="#通过git-reset是直接删除指定的commit" class="headerlink" title="通过git reset是直接删除指定的commit"></a>通过git reset是直接删除指定的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;</span><br><span class="line">git push origin HEAD --force # 强制提交一次，之前错误的提交就从远程仓库删除</span><br></pre></td></tr></table></figure>
-<h4 id="通过git-revert是用一次新的commit来回滚之前的commit"><a href="#通过git-revert是用一次新的commit来回滚之前的commit" class="headerlink" title="通过git revert是用一次新的commit来回滚之前的commit"></a>通过git revert是用一次新的commit来回滚之前的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git revert &lt;commit_id&gt;  # 撤销指定的版本，撤销也会作为一次提交进行保存</span><br></pre></td></tr></table></figure>
-
-
-
-
-]]></content>
-      <categories>
-        <category>Git代码管理</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git查看文件历史</title>
     <url>/2019/03/04/Git%E6%9F%A5%E7%9C%8B%E8%AE%B0%E5%BD%95%E7%9B%B8%E5%85%B3/</url>
     <content><![CDATA[<h4 id="显示commit历史，以及每次commit发生变更的文件"><a href="#显示commit历史，以及每次commit发生变更的文件" class="headerlink" title="显示commit历史，以及每次commit发生变更的文件"></a>显示commit历史，以及每次commit发生变更的文件</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log --stat</span><br></pre></td></tr></table></figure>
@@ -1893,46 +1859,31 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>Git的reset与revert的区别</title>
-    <url>/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h2 id="git的head理解"><a href="#git的head理解" class="headerlink" title="git的head理解"></a>git的head理解</h2><p>使用git的每次提交，Git都会自动把它们串成一条时间线，这条时间线就是一个分支。如果没有新建分支，那么只有一条时间线，即只有一个分支，在Git里，这个分支叫主分支，即master分支。有一个HEAD指针指向当前分支（只有一个分支的情况下会指向master，而master是指向最新提交）</p>
-<h2 id="reset操作"><a href="#reset操作" class="headerlink" title="reset操作"></a>reset操作</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>git reset的作用是修改HEAD的位置，即将HEAD指向的位置改变为之前存在的某个版本</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
-<p>reset之后，目标版本之后的版本会被删除，更新为reset的版本</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/2.png" alt="2"></p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>如果想恢复到之前某个提交的版本，且那个版本之后提交的版本我们都不要了，就可以用这种方法</p>
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+    <title>Git撤销回滚</title>
+    <url>/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/</url>
+    <content><![CDATA[<p>了解git如何撤销回滚，先了解git的工作流</p>
+<h2 id="git工作流"><a href="#git工作流" class="headerlink" title="git工作流"></a>git工作流</h2><p>完成一次完整的本地分支git提交工作，分为三个区域</p>
+<p>工作区：即自己当前分支所修改的代码，git add xx 之前的！不包括 git add xx 和 git commit xxx 之后的。</p>
+<p>暂存区：已经 git add xxx 进去，且未 git commit xxx 的。</p>
+<p>本地分支：已经git commit -m xxx 提交到本地分支的。</p>
+<p> <img src="/2019/11/05/Git%E6%92%A4%E9%94%80%E5%9B%9E%E6%BB%9A/1.png" alt="1"></p>
+<p>代码回滚</p>
+<p>在上传代码到远程仓库的时候，不免会出现问题，任何过程都有可能要回滚代码</p>
+<h2 id="如何回滚"><a href="#如何回滚" class="headerlink" title="如何回滚"></a>如何回滚</h2><p>分为以下几种场景</p>
+<h3 id="工作区的代码"><a href="#工作区的代码" class="headerlink" title="工作区的代码"></a>工作区的代码</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git checkout ./a.txt   # 丢弃某个文件，或者</span><br><span class="line">git checkout ./       # 丢弃全部</span><br></pre></td></tr></table></figure>
+<p>注意：git checkout – . 丢弃全部，也包括：新增的文件会被删除、删除的文件会恢复回来、修改的文件会回去。这几个前提都说的是，回到暂存区之前的样子。对之前保存在暂存区里的代码不会有任何影响。对commit提交到本地分支的代码就更没影响了。当然，如果你之前压根都没有暂存或commit，那就是回到你上次pull下来的样子了</p>
+<h3 id="代码git-add到缓存区，并未commit提交"><a href="#代码git-add到缓存区，并未commit提交" class="headerlink" title="代码git add到缓存区，并未commit提交"></a>代码git add到缓存区，并未commit提交</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset HEAD .  或者</span><br><span class="line">git reset HEAD a.txt</span><br></pre></td></tr></table></figure>
 
-<p>如下图所示，选择要回退的commit ID</p>
-<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/3.png" alt="3"></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
+<p>这个命令仅改变暂存区，并不改变工作区，这意味着在无任何其他操作的情况下，工作区中的实际文件同该命令运行之前无任何变化</p>
+<h3 id="git-commit到本地分支、但没有git-push到远程"><a href="#git-commit到本地分支、但没有git-push到远程" class="headerlink" title="git commit到本地分支、但没有git push到远程"></a>git commit到本地分支、但没有git push到远程</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;  # 回到其中你想要的某个版</span><br><span class="line">或者</span><br><span class="line">git reset --hard HEAD^  # 回到最新的一次提交</span><br><span class="line">或者</span><br><span class="line">git reset HEAD^  # 此时代码保留，回到 git add 之前</span><br></pre></td></tr></table></figure>
 
-<p>然后提交更改</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
-<p>PS： “git push”会报错，因为我们本地库HEAD指向的版本比远程库的要旧</p>
-<p>强推则回退成功</p>
-<h2 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p> git revert是用于“反做”某一个版本，以达到撤销该版本的修改的目的。比如，我们commit了三个版本（版本一、版本二、 版本三），突然发现版本二不行（如：有bug），想要撤销版本二，但又不想影响撤销版本三的提交，就可以用 git revert 命令来反做版本二，生成新的版本四，这个版本四里会保留版本三的东西，但撤销了版本二的东西</p>
-<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/4.png" alt="4"></p>
-<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/5.png" alt="5"></p>
-<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>如果我们想撤销之前的某一版本，但是又想保留该目标版本后面的版本，记录下这整个版本变动流程，就可以用这种方法。</p>
-<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+<h3 id="git-push把修改提交到远程仓库"><a href="#git-push把修改提交到远程仓库" class="headerlink" title="git push把修改提交到远程仓库"></a>git push把修改提交到远程仓库</h3><p>reset和revert两种方式</p>
+<h4 id="通过git-reset是直接删除指定的commit"><a href="#通过git-reset是直接删除指定的commit" class="headerlink" title="通过git reset是直接删除指定的commit"></a>通过git reset是直接删除指定的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git reset --hard &lt;commit_id&gt;</span><br><span class="line">git push origin HEAD --force # 强制提交一次，之前错误的提交就从远程仓库删除</span><br></pre></td></tr></table></figure>
+<h4 id="通过git-revert是用一次新的commit来回滚之前的commit"><a href="#通过git-revert是用一次新的commit来回滚之前的commit" class="headerlink" title="通过git revert是用一次新的commit来回滚之前的commit"></a>通过git revert是用一次新的commit来回滚之前的commit</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">git log # 得到你需要回退一次提交的commit id</span><br><span class="line">git revert &lt;commit_id&gt;  # 撤销指定的版本，撤销也会作为一次提交进行保存</span><br></pre></td></tr></table></figure>
 
-<p>选择要反做的版本号，撤销该版本的修改</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git revert -n 版本号</span><br></pre></td></tr></table></figure>
 
-<p>PS： 这里可能会出现冲突，那么需要手动修改冲突的文件。而且要git add 文件名。</p>
-<p>提交反做的内容</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;新提交说明&quot;</span> </span><br></pre></td></tr></table></figure>
 
-<p>这时可以git log查看本地的版本信息，会发现新增一个版本</p>
-<p>git push推上去</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
 
-<p>反做成功</p>
-<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><p>reset： 回滚“到”某个版本</p>
-<p>revert： 回滚某个版本</p>
 ]]></content>
       <categories>
         <category>Git代码管理</category>
@@ -2055,7 +2006,56 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
         <category>GO</category>
       </categories>
       <tags>
-        <tag>GO</tag>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git的reset与revert的区别</title>
+    <url>/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="git的head理解"><a href="#git的head理解" class="headerlink" title="git的head理解"></a>git的head理解</h2><p>使用git的每次提交，Git都会自动把它们串成一条时间线，这条时间线就是一个分支。如果没有新建分支，那么只有一条时间线，即只有一个分支，在Git里，这个分支叫主分支，即master分支。有一个HEAD指针指向当前分支（只有一个分支的情况下会指向master，而master是指向最新提交）</p>
+<h2 id="reset操作"><a href="#reset操作" class="headerlink" title="reset操作"></a>reset操作</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>git reset的作用是修改HEAD的位置，即将HEAD指向的位置改变为之前存在的某个版本</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<p>reset之后，目标版本之后的版本会被删除，更新为reset的版本</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/2.png" alt="2"></p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>如果想恢复到之前某个提交的版本，且那个版本之后提交的版本我们都不要了，就可以用这种方法</p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示，选择要回退的commit ID</p>
+<p><img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/3.png" alt="3"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
+
+<p>然后提交更改</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+<p>PS： “git push”会报错，因为我们本地库HEAD指向的版本比远程库的要旧</p>
+<p>强推则回退成功</p>
+<h2 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p> git revert是用于“反做”某一个版本，以达到撤销该版本的修改的目的。比如，我们commit了三个版本（版本一、版本二、 版本三），突然发现版本二不行（如：有bug），想要撤销版本二，但又不想影响撤销版本三的提交，就可以用 git revert 命令来反做版本二，生成新的版本四，这个版本四里会保留版本三的东西，但撤销了版本二的东西</p>
+<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/4.png" alt="4"></p>
+<p> <img src="/2019/12/12/Git%E7%9A%84reset%E4%B8%8Erevert%E7%9A%84%E5%8C%BA%E5%88%AB/5.png" alt="5"></p>
+<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>如果我们想撤销之前的某一版本，但是又想保留该目标版本后面的版本，记录下这整个版本变动流程，就可以用这种方法。</p>
+<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><p>git log 查看当前分支版本号，commit ID</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git log -p</span><br></pre></td></tr></table></figure>
+
+<p>选择要反做的版本号，撤销该版本的修改</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git revert -n 版本号</span><br></pre></td></tr></table></figure>
+
+<p>PS： 这里可能会出现冲突，那么需要手动修改冲突的文件。而且要git add 文件名。</p>
+<p>提交反做的内容</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;新提交说明&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这时可以git log查看本地的版本信息，会发现新增一个版本</p>
+<p>git push推上去</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<p>反做成功</p>
+<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><p>reset： 回滚“到”某个版本</p>
+<p>revert： 回滚某个版本</p>
+]]></content>
+      <categories>
+        <category>Git代码管理</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -2419,56 +2419,6 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
-    <title>Java垃圾回收</title>
-    <url>/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</url>
-    <content><![CDATA[<h2 id="如何确定垃圾"><a href="#如何确定垃圾" class="headerlink" title="如何确定垃圾"></a>如何确定垃圾</h2><h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>给对象添加一个引用计数器,当对象增加一个引用时计数器加 1,引用失效时计数器减 1。引用计数为 0 的对象可被回收，但是会出现问题，如果出现循环引用的话，引用计数永远不可能为0，所以，该对象永远不会被回收</p>
-<h3 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h3><p>为了解决引用计数法的循环引用问题，Java 使用了可达性分析的方法。通过一系列的“GC roots”对象作为起点搜索。如果在“GC roots”和一个对象之间没有可达路径，则称该对象是不可达的。要注意的是，不可达对象不等价于可回收对象，不可达对象变为可回收对象至少要经过两次标记<br>过程。两次标记后仍然是可回收对象，则将面临回收。</p>
-<h3 id="Java-引用类型"><a href="#Java-引用类型" class="headerlink" title="Java 引用类型"></a>Java 引用类型</h3><h4 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h4><p>把一个对象赋给一个引用变量，这个引用变量就是一个强引用。当一个对象被强引用变量引用时，它处于可达状态，它是不可能被垃圾回收机制回收的，即使该对象以后永远都不会被用到 JVM 也不会回收。因此强引用是造成 Java 内存泄漏的主要原因之一</p>
-<h4 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h4><p>弱引用需要用 WeakReference 类来实现，它比软引用的生存期更短，对于只有弱引用的对象来说，只要垃圾回收机制一运行，不管 JVM 的内存空间是否足够，总会回收该对象占用的内存</p>
-<h4 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h4><p>软引用需要用 SoftReference 类来实现，对于只有软引用的对象来说，当系统内存足够时它不会被回收，当系统内存空间不足时它会被回收。软引用通常用在对内存敏感的程序中。</p>
-<h4 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h4><p>虚引用需要 PhantomReference 类来实现，它不能单独使用，必须和引用队列联合使用。虚引用的主要作用是跟踪对象被垃圾回收的状态</p>
-<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><p>（更多详情可以看 Go的垃圾回收算法，进行比对 <a href="https://zypuu.github.io/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">GO的垃圾回收</a>）</p>
-<h3 id="标记清除Mark-Sweep"><a href="#标记清除Mark-Sweep" class="headerlink" title="标记清除Mark-Sweep"></a>标记清除Mark-Sweep</h3><p>最基础的垃圾回收算法，分为两个阶段，标注和清除。标记阶段标记出所有需要回收的对象，清除阶段回收被标记的对象所占用的空间<br><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/1.jpg" alt="1"><br>该算法最大的问题是内存碎片化严重，后续可能发生大对象不能找到可利用空间的问题</p>
-<h3 id="标记复制Mark-Copying"><a href="#标记复制Mark-Copying" class="headerlink" title="标记复制Mark-Copying"></a>标记复制Mark-Copying</h3><p>为了解决 Mark-Sweep 算法内存碎片化的缺陷而被提出的算法。按内存容量将内存划分为等大小<br>的两块。每次只使用其中一块，当这一块内存满后将尚存活的对象复制到另一块上去，把已使用<br>的内存清掉<br><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/2.jpg" alt="1"><br>算法虽然实现简单，内存效率高，不易产生碎片，但是最大的问题是可用内存被压缩到了原<br>本的一半。且存活对象增多的话，Copying 算法的效率会大大降低</p>
-<h3 id="标记整理Mark-Copying"><a href="#标记整理Mark-Copying" class="headerlink" title="标记整理Mark-Copying"></a>标记整理Mark-Copying</h3><p>结合了以上两个算法，为了避免缺陷而提出。标记阶段和 Mark-Sweep 算法相同，标记后不是清<br>理对象，而是将存活对象移向内存的一端。然后清除端边界外的对象</p>
-<p><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/3.jpg" alt="1"></p>
-<h3 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h3><p>分代收集法是目前大部分 JVM 所采用的方法，其核心思想是根据对象存活的不同生命周期将内存划分为不同的域，一般情况下将 GC 堆划分为老生代和新生代。<br>老生代的特点是每次垃圾回收时只有少量对象需要被回收<br>新生代的特点是每次垃圾回收时都有大量垃圾需要被回收<br>因此可以根据不同区域选择不同的算法</p>
-<h4 id="新生代标记复制"><a href="#新生代标记复制" class="headerlink" title="新生代标记复制"></a>新生代标记复制</h4><p>因为新生代中每次垃圾回收都要回收大部分对象，即要复制的操作比较少，但通常并不是按照 1：1 来划分新生代。一般将新生代划分为一块较大的 Eden 空间和两个较小的 Survivor 空间(From Space, To Space)，每次使用Eden 空间和其中的一块 Survivor 空间，当进行回收时，将该两块空间中还存活的对象复制到另一块 Survivor 空间中。</p>
-<p>每次垃圾收集都能发现大批对象已死, 只有少量存活. 因此选用复制算法, 只需要付出少量<br>存活对象的复制成本就可以完成收集</p>
-<h4 id="老年代标记整理"><a href="#老年代标记整理" class="headerlink" title="老年代标记整理"></a>老年代标记整理</h4><p>因为对象存活率高、没有额外空间对它进行分配担保, 就必须采用“标记—清理”或“标<br>记—整理”算法来进行回收, 不必进行内存复制, 且直接腾出空闲内存</p>
-<ol>
-<li>JAVA 虚拟机提到过的处于方法区的永生代(Permanet Generation)，它用来存储 class 类，<br>常量，方法描述等。对永生代的回收主要包括废弃常量和无用的类。</li>
-<li>对象的内存分配主要在新生代的 Eden Space 和 Survivor Space 的 From Space(Survivor 目<br>前存放对象的那一块)，少数情况会直接分配到老生代。</li>
-<li>当新生代的 Eden Space 和 From Space 空间不足时就会发生一次 GC，进行 GC 后，Eden<br>Space 和 From Space 区的存活对象会被挪到 To Space，然后将 Eden Space 和 From<br>Space 进行清理。</li>
-<li>如果 To Space 无法足够存储某个对象，则将这个对象存储到老生代。</li>
-<li>在进行 GC 后，使用的便是 Eden Space 和 To Space 了，如此反复循环。</li>
-<li>当对象在 Survivor 区躲过一次 GC 后，其年龄就会+1。默认情况下年龄到达 15 的对象会被<br>移到老生代中</li>
-</ol>
-<h3 id="分区收集算法"><a href="#分区收集算法" class="headerlink" title="分区收集算法"></a>分区收集算法</h3><p>分区算法则将整个堆空间划分为连续的不同小区间, 每个小区间独立使用, 独立回收. 这样做的好处是可以控制一次回收多少个小区间 , 根据目标停顿时间, 每次合理地回收若干个小区间(而不是<br>整个堆), 从而减少一次 GC 所产生的停顿。</p>
-<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><h3 id="新生代垃圾回收器"><a href="#新生代垃圾回收器" class="headerlink" title="新生代垃圾回收器"></a>新生代垃圾回收器</h3><h4 id="Serial-垃圾收集器（单线程、复制算法）"><a href="#Serial-垃圾收集器（单线程、复制算法）" class="headerlink" title="Serial 垃圾收集器（单线程、复制算法）"></a>Serial 垃圾收集器（单线程、复制算法）</h4><p>最基本垃圾收集器，使用复制算法，曾经是JDK1.3.1 之前新生代唯一的垃圾收集器。Serial 是一个单线程的收集器，它不但只会使用一个 CPU 或一条线程去完成垃圾收集工作，并且在进行垃圾收集的同时，必须暂停其他所有的工作线程，直到垃圾收集结束。<br>Serial 垃圾收集器虽然在收集垃圾过程中需要暂停所有其他的工作线程，但是它简单高效，对于限<br>定单个 CPU 环境来说，没有线程交互的开销，可以获得最高的单线程垃圾收集效率，因此 Serial<br>垃圾收集器依然是 java 虚拟机运行在 Client 模式下默认的新生代垃圾收集器</p>
-<h4 id="ParNew-垃圾收集器（Serial-多线程）"><a href="#ParNew-垃圾收集器（Serial-多线程）" class="headerlink" title="ParNew 垃圾收集器（Serial+多线程）"></a>ParNew 垃圾收集器（Serial+多线程）</h4><p>收集器默认开启和 CPU 数目相同的线程数，ParNew虽然是除了多线程外和Serial 收集器几乎完全一样，但是ParNew垃圾收集器是很多 java<br>虚拟机运行在 Server 模式下新生代的默认垃圾收集器</p>
-<h4 id="Parallel-Scavenge-收集器（多线程复制算法、高效）"><a href="#Parallel-Scavenge-收集器（多线程复制算法、高效）" class="headerlink" title="Parallel Scavenge 收集器（多线程复制算法、高效）"></a>Parallel Scavenge 收集器（多线程复制算法、高效）</h4><p>自适应调节策略也是 ParallelScavenge 收集器与 ParNew 收集器的一个重要区别，同样使用复制算法，也是一个多线程的垃圾收集器，它重点关注的是程序达到一个可控制的吞吐量（吞吐量=运行用户代码时间/(运行用户代码时间+垃圾收集时间)）高吞吐量可以最高效率地利用 CPU 时间，尽快地完成程序的运算任务，主要适用于在后台运算而不需要太多交互的任务</p>
-<h3 id="老年代垃圾回收器"><a href="#老年代垃圾回收器" class="headerlink" title="老年代垃圾回收器"></a>老年代垃圾回收器</h3><h4 id="Serial-Old-收集器（单线程标记整理算法-）"><a href="#Serial-Old-收集器（单线程标记整理算法-）" class="headerlink" title="Serial Old 收集器（单线程标记整理算法 ）"></a>Serial Old 收集器（单线程标记整理算法 ）</h4><p>Serial Old 是 Serial 垃圾收集器年老代版本，它同样是个单线程的收集器，使用标记-整理算法，<br>这个收集器也主要是运行在 Client 默认的 java 虚拟机默认的年老代垃圾收集器</p>
-<h4 id="Parallel-Old-收集器（多线程标记整理算法）"><a href="#Parallel-Old-收集器（多线程标记整理算法）" class="headerlink" title="Parallel Old 收集器（多线程标记整理算法）"></a>Parallel Old 收集器（多线程标记整理算法）</h4><p>Parallel Old 收集器是Parallel Scavenge的年老代版本，使用多线程的标记-整理算法，在 JDK1.6<br>才开始提供</p>
-<h4 id="CMS-收集器（多线程标记清除算法）"><a href="#CMS-收集器（多线程标记清除算法）" class="headerlink" title="CMS 收集器（多线程标记清除算法）"></a>CMS 收集器（多线程标记清除算法）</h4><p>Concurrent mark sweep(CMS)收集器是一种年老代垃圾收集器，其最主要目标是获取最短垃圾回收停顿时间，和其他年老代使用标记-整理算法不同，它使用多线程的标记-清除算法。最短的垃圾收集停顿时间可以为交互比较高的程序提高用户体验</p>
-<h5 id="初始标记"><a href="#初始标记" class="headerlink" title="初始标记"></a>初始标记</h5><p>只是标记一下 GC Roots 能直接关联的对象，速度很快，仍然需要暂停所有的工作线程。</p>
-<h5 id="并发标记"><a href="#并发标记" class="headerlink" title="并发标记"></a>并发标记</h5><p>进行 GC Roots 跟踪的过程，和用户线程一起工作，不需要暂停工作线程。</p>
-<h5 id="重新标记"><a href="#重新标记" class="headerlink" title="重新标记"></a>重新标记</h5><p>为了修正在并发标记期间，因用户程序继续运行而导致标记产生变动的那一部分对象的标记<br>记录，仍然需要暂停所有的工作线程</p>
-<h5 id="并发清除"><a href="#并发清除" class="headerlink" title="并发清除"></a>并发清除</h5><p>清除 GC Roots 不可达对象，和用户线程一起工作，不需要暂停工作线程。由于耗时最长的并<br>发标记和并发清除过程中，垃圾收集线程可以和用户现在一起并发工作，所以总体上来看<br>CMS 收集器的内存回收和用户线程是一起并发地执行</p>
-<h4 id="G1-收集器"><a href="#G1-收集器" class="headerlink" title="G1 收集器"></a>G1 收集器</h4><p>Garbage first 垃圾收集器是目前垃圾收集器理论发展的最前沿成果，相比与 CMS 收集器，G1 收<br>集器两个最突出的改进是：</p>
-<ol>
-<li>基于标记-整理算法，不产生内存碎片。</li>
-<li>可以非常精确控制停顿时间，在不牺牲吞吐量前提下，实现低停顿垃圾回收。<br>G1 收集器避免全区域垃圾收集，它把堆内存划分为大小固定的几个独立区域，并且跟踪这些区域<br>的垃圾收集进度，同时在后台维护一个优先级列表，每次根据所允许的收集时间，优先回收垃圾<br>最多的区域。区域划分和优先级区域回收机制，确保 G1 收集器可以在有限时间获得最高的垃圾收<br>集效率</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>垃圾回收</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java并发CAS</title>
     <url>/2023/04/15/Java%E5%B9%B6%E5%8F%91CAS/</url>
     <content><![CDATA[<h2 id="什么是CAS"><a href="#什么是CAS" class="headerlink" title="什么是CAS"></a>什么是CAS</h2><p>Compare And Swap，比较并交换，是一条CPU的并发原语，CAS操作对应的CPU指令是CMPXCHG（Compare and Exchange）指令。CMPXCHG指令是一种原子指令，用于比较内存中的值与一个寄存器中的值，如果相等，则将新的值存入内存中；如果不相等，则不执行任何操作。这个操作是原子的，即在执行过程中不会被中断，由操作系统保证。</p>
@@ -2582,6 +2532,56 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </categories>
       <tags>
         <tag>jvm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java垃圾回收</title>
+    <url>/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</url>
+    <content><![CDATA[<h2 id="如何确定垃圾"><a href="#如何确定垃圾" class="headerlink" title="如何确定垃圾"></a>如何确定垃圾</h2><h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>给对象添加一个引用计数器,当对象增加一个引用时计数器加 1,引用失效时计数器减 1。引用计数为 0 的对象可被回收，但是会出现问题，如果出现循环引用的话，引用计数永远不可能为0，所以，该对象永远不会被回收</p>
+<h3 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h3><p>为了解决引用计数法的循环引用问题，Java 使用了可达性分析的方法。通过一系列的“GC roots”对象作为起点搜索。如果在“GC roots”和一个对象之间没有可达路径，则称该对象是不可达的。要注意的是，不可达对象不等价于可回收对象，不可达对象变为可回收对象至少要经过两次标记<br>过程。两次标记后仍然是可回收对象，则将面临回收。</p>
+<h3 id="Java-引用类型"><a href="#Java-引用类型" class="headerlink" title="Java 引用类型"></a>Java 引用类型</h3><h4 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h4><p>把一个对象赋给一个引用变量，这个引用变量就是一个强引用。当一个对象被强引用变量引用时，它处于可达状态，它是不可能被垃圾回收机制回收的，即使该对象以后永远都不会被用到 JVM 也不会回收。因此强引用是造成 Java 内存泄漏的主要原因之一</p>
+<h4 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h4><p>弱引用需要用 WeakReference 类来实现，它比软引用的生存期更短，对于只有弱引用的对象来说，只要垃圾回收机制一运行，不管 JVM 的内存空间是否足够，总会回收该对象占用的内存</p>
+<h4 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h4><p>软引用需要用 SoftReference 类来实现，对于只有软引用的对象来说，当系统内存足够时它不会被回收，当系统内存空间不足时它会被回收。软引用通常用在对内存敏感的程序中。</p>
+<h4 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h4><p>虚引用需要 PhantomReference 类来实现，它不能单独使用，必须和引用队列联合使用。虚引用的主要作用是跟踪对象被垃圾回收的状态</p>
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><p>（更多详情可以看 Go的垃圾回收算法，进行比对 <a href="https://zypuu.github.io/2021/01/12/GO%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">GO的垃圾回收</a>）</p>
+<h3 id="标记清除Mark-Sweep"><a href="#标记清除Mark-Sweep" class="headerlink" title="标记清除Mark-Sweep"></a>标记清除Mark-Sweep</h3><p>最基础的垃圾回收算法，分为两个阶段，标注和清除。标记阶段标记出所有需要回收的对象，清除阶段回收被标记的对象所占用的空间<br><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/1.jpg" alt="1"><br>该算法最大的问题是内存碎片化严重，后续可能发生大对象不能找到可利用空间的问题</p>
+<h3 id="标记复制Mark-Copying"><a href="#标记复制Mark-Copying" class="headerlink" title="标记复制Mark-Copying"></a>标记复制Mark-Copying</h3><p>为了解决 Mark-Sweep 算法内存碎片化的缺陷而被提出的算法。按内存容量将内存划分为等大小<br>的两块。每次只使用其中一块，当这一块内存满后将尚存活的对象复制到另一块上去，把已使用<br>的内存清掉<br><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/2.jpg" alt="1"><br>算法虽然实现简单，内存效率高，不易产生碎片，但是最大的问题是可用内存被压缩到了原<br>本的一半。且存活对象增多的话，Copying 算法的效率会大大降低</p>
+<h3 id="标记整理Mark-Copying"><a href="#标记整理Mark-Copying" class="headerlink" title="标记整理Mark-Copying"></a>标记整理Mark-Copying</h3><p>结合了以上两个算法，为了避免缺陷而提出。标记阶段和 Mark-Sweep 算法相同，标记后不是清<br>理对象，而是将存活对象移向内存的一端。然后清除端边界外的对象</p>
+<p><img src="/2023/01/18/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/3.jpg" alt="1"></p>
+<h3 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h3><p>分代收集法是目前大部分 JVM 所采用的方法，其核心思想是根据对象存活的不同生命周期将内存划分为不同的域，一般情况下将 GC 堆划分为老生代和新生代。<br>老生代的特点是每次垃圾回收时只有少量对象需要被回收<br>新生代的特点是每次垃圾回收时都有大量垃圾需要被回收<br>因此可以根据不同区域选择不同的算法</p>
+<h4 id="新生代标记复制"><a href="#新生代标记复制" class="headerlink" title="新生代标记复制"></a>新生代标记复制</h4><p>因为新生代中每次垃圾回收都要回收大部分对象，即要复制的操作比较少，但通常并不是按照 1：1 来划分新生代。一般将新生代划分为一块较大的 Eden 空间和两个较小的 Survivor 空间(From Space, To Space)，每次使用Eden 空间和其中的一块 Survivor 空间，当进行回收时，将该两块空间中还存活的对象复制到另一块 Survivor 空间中。</p>
+<p>每次垃圾收集都能发现大批对象已死, 只有少量存活. 因此选用复制算法, 只需要付出少量<br>存活对象的复制成本就可以完成收集</p>
+<h4 id="老年代标记整理"><a href="#老年代标记整理" class="headerlink" title="老年代标记整理"></a>老年代标记整理</h4><p>因为对象存活率高、没有额外空间对它进行分配担保, 就必须采用“标记—清理”或“标<br>记—整理”算法来进行回收, 不必进行内存复制, 且直接腾出空闲内存</p>
+<ol>
+<li>JAVA 虚拟机提到过的处于方法区的永生代(Permanet Generation)，它用来存储 class 类，<br>常量，方法描述等。对永生代的回收主要包括废弃常量和无用的类。</li>
+<li>对象的内存分配主要在新生代的 Eden Space 和 Survivor Space 的 From Space(Survivor 目<br>前存放对象的那一块)，少数情况会直接分配到老生代。</li>
+<li>当新生代的 Eden Space 和 From Space 空间不足时就会发生一次 GC，进行 GC 后，Eden<br>Space 和 From Space 区的存活对象会被挪到 To Space，然后将 Eden Space 和 From<br>Space 进行清理。</li>
+<li>如果 To Space 无法足够存储某个对象，则将这个对象存储到老生代。</li>
+<li>在进行 GC 后，使用的便是 Eden Space 和 To Space 了，如此反复循环。</li>
+<li>当对象在 Survivor 区躲过一次 GC 后，其年龄就会+1。默认情况下年龄到达 15 的对象会被<br>移到老生代中</li>
+</ol>
+<h3 id="分区收集算法"><a href="#分区收集算法" class="headerlink" title="分区收集算法"></a>分区收集算法</h3><p>分区算法则将整个堆空间划分为连续的不同小区间, 每个小区间独立使用, 独立回收. 这样做的好处是可以控制一次回收多少个小区间 , 根据目标停顿时间, 每次合理地回收若干个小区间(而不是<br>整个堆), 从而减少一次 GC 所产生的停顿。</p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><h3 id="新生代垃圾回收器"><a href="#新生代垃圾回收器" class="headerlink" title="新生代垃圾回收器"></a>新生代垃圾回收器</h3><h4 id="Serial-垃圾收集器（单线程、复制算法）"><a href="#Serial-垃圾收集器（单线程、复制算法）" class="headerlink" title="Serial 垃圾收集器（单线程、复制算法）"></a>Serial 垃圾收集器（单线程、复制算法）</h4><p>最基本垃圾收集器，使用复制算法，曾经是JDK1.3.1 之前新生代唯一的垃圾收集器。Serial 是一个单线程的收集器，它不但只会使用一个 CPU 或一条线程去完成垃圾收集工作，并且在进行垃圾收集的同时，必须暂停其他所有的工作线程，直到垃圾收集结束。<br>Serial 垃圾收集器虽然在收集垃圾过程中需要暂停所有其他的工作线程，但是它简单高效，对于限<br>定单个 CPU 环境来说，没有线程交互的开销，可以获得最高的单线程垃圾收集效率，因此 Serial<br>垃圾收集器依然是 java 虚拟机运行在 Client 模式下默认的新生代垃圾收集器</p>
+<h4 id="ParNew-垃圾收集器（Serial-多线程）"><a href="#ParNew-垃圾收集器（Serial-多线程）" class="headerlink" title="ParNew 垃圾收集器（Serial+多线程）"></a>ParNew 垃圾收集器（Serial+多线程）</h4><p>收集器默认开启和 CPU 数目相同的线程数，ParNew虽然是除了多线程外和Serial 收集器几乎完全一样，但是ParNew垃圾收集器是很多 java<br>虚拟机运行在 Server 模式下新生代的默认垃圾收集器</p>
+<h4 id="Parallel-Scavenge-收集器（多线程复制算法、高效）"><a href="#Parallel-Scavenge-收集器（多线程复制算法、高效）" class="headerlink" title="Parallel Scavenge 收集器（多线程复制算法、高效）"></a>Parallel Scavenge 收集器（多线程复制算法、高效）</h4><p>自适应调节策略也是 ParallelScavenge 收集器与 ParNew 收集器的一个重要区别，同样使用复制算法，也是一个多线程的垃圾收集器，它重点关注的是程序达到一个可控制的吞吐量（吞吐量=运行用户代码时间/(运行用户代码时间+垃圾收集时间)）高吞吐量可以最高效率地利用 CPU 时间，尽快地完成程序的运算任务，主要适用于在后台运算而不需要太多交互的任务</p>
+<h3 id="老年代垃圾回收器"><a href="#老年代垃圾回收器" class="headerlink" title="老年代垃圾回收器"></a>老年代垃圾回收器</h3><h4 id="Serial-Old-收集器（单线程标记整理算法-）"><a href="#Serial-Old-收集器（单线程标记整理算法-）" class="headerlink" title="Serial Old 收集器（单线程标记整理算法 ）"></a>Serial Old 收集器（单线程标记整理算法 ）</h4><p>Serial Old 是 Serial 垃圾收集器年老代版本，它同样是个单线程的收集器，使用标记-整理算法，<br>这个收集器也主要是运行在 Client 默认的 java 虚拟机默认的年老代垃圾收集器</p>
+<h4 id="Parallel-Old-收集器（多线程标记整理算法）"><a href="#Parallel-Old-收集器（多线程标记整理算法）" class="headerlink" title="Parallel Old 收集器（多线程标记整理算法）"></a>Parallel Old 收集器（多线程标记整理算法）</h4><p>Parallel Old 收集器是Parallel Scavenge的年老代版本，使用多线程的标记-整理算法，在 JDK1.6<br>才开始提供</p>
+<h4 id="CMS-收集器（多线程标记清除算法）"><a href="#CMS-收集器（多线程标记清除算法）" class="headerlink" title="CMS 收集器（多线程标记清除算法）"></a>CMS 收集器（多线程标记清除算法）</h4><p>Concurrent mark sweep(CMS)收集器是一种年老代垃圾收集器，其最主要目标是获取最短垃圾回收停顿时间，和其他年老代使用标记-整理算法不同，它使用多线程的标记-清除算法。最短的垃圾收集停顿时间可以为交互比较高的程序提高用户体验</p>
+<h5 id="初始标记"><a href="#初始标记" class="headerlink" title="初始标记"></a>初始标记</h5><p>只是标记一下 GC Roots 能直接关联的对象，速度很快，仍然需要暂停所有的工作线程。</p>
+<h5 id="并发标记"><a href="#并发标记" class="headerlink" title="并发标记"></a>并发标记</h5><p>进行 GC Roots 跟踪的过程，和用户线程一起工作，不需要暂停工作线程。</p>
+<h5 id="重新标记"><a href="#重新标记" class="headerlink" title="重新标记"></a>重新标记</h5><p>为了修正在并发标记期间，因用户程序继续运行而导致标记产生变动的那一部分对象的标记<br>记录，仍然需要暂停所有的工作线程</p>
+<h5 id="并发清除"><a href="#并发清除" class="headerlink" title="并发清除"></a>并发清除</h5><p>清除 GC Roots 不可达对象，和用户线程一起工作，不需要暂停工作线程。由于耗时最长的并<br>发标记和并发清除过程中，垃圾收集线程可以和用户现在一起并发工作，所以总体上来看<br>CMS 收集器的内存回收和用户线程是一起并发地执行</p>
+<h4 id="G1-收集器"><a href="#G1-收集器" class="headerlink" title="G1 收集器"></a>G1 收集器</h4><p>Garbage first 垃圾收集器是目前垃圾收集器理论发展的最前沿成果，相比与 CMS 收集器，G1 收<br>集器两个最突出的改进是：</p>
+<ol>
+<li>基于标记-整理算法，不产生内存碎片。</li>
+<li>可以非常精确控制停顿时间，在不牺牲吞吐量前提下，实现低停顿垃圾回收。<br>G1 收集器避免全区域垃圾收集，它把堆内存划分为大小固定的几个独立区域，并且跟踪这些区域<br>的垃圾收集进度，同时在后台维护一个优先级列表，每次根据所允许的收集时间，优先回收垃圾<br>最多的区域。区域划分和优先级区域回收机制，确保 G1 收集器可以在有限时间获得最高的垃圾收<br>集效率</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>垃圾回收</tag>
       </tags>
   </entry>
   <entry>
@@ -3879,6 +3879,26 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
       </tags>
   </entry>
   <entry>
+    <title>二叉树的最大深度</title>
+    <url>/2021/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/</url>
+    <content><![CDATA[<p>给定一个二叉树，找出其最大深度。</p>
+<p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。</p>
+<p>说明: 叶子节点是指没有子节点的节点</p>
+<h3 id="深度优先"><a href="#深度优先" class="headerlink" title="深度优先"></a>深度优先</h3><p>递归方式</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func maxDepth(root *TreeNode) int &#123;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max(maxDepth(root.Left), maxDepth(root.Right)) + <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func max(a, b int) int &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过递归的方式，深度优先搜索，如果知道了左子树，右子树的最大深度，l,r</p>
+<p>则树的最大深度是max(l,r)+1</p>
+<p>时间on<br>空间o高度</p>
+<h3 id="广度优先"><a href="#广度优先" class="headerlink" title="广度优先"></a>广度优先</h3><p>遍历方式</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func maxDepth(root *TreeNode) int &#123;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 队列，并加入第一个节点</span></span><br><span class="line">    queue := []*TreeNode&#123;&#125;</span><br><span class="line">    queue = append(queue, root)</span><br><span class="line">    ans := <span class="number">0</span></span><br><span class="line">    <span class="comment">// 遍历队列</span></span><br><span class="line">    <span class="keyword">for</span> len(queue) &gt; <span class="number">0</span> &#123;</span><br><span class="line">    	<span class="comment">// 获取当前队列长度，第一层是1</span></span><br><span class="line">        sz := len(queue)</span><br><span class="line">        <span class="comment">// 遍历，出队，长度减1，第一层遍历完，结果加一</span></span><br><span class="line">        <span class="keyword">for</span> sz &gt; <span class="number">0</span> &#123;</span><br><span class="line">        	<span class="comment">// 将树的每一层，都放进队列</span></span><br><span class="line">            node := queue[<span class="number">0</span>]</span><br><span class="line">            <span class="comment">// 队列先进先出</span></span><br><span class="line">            queue = queue[<span class="number">1</span>:]</span><br><span class="line">            <span class="comment">// 将队列的左右儿子加入，也就是下一层</span></span><br><span class="line">            <span class="keyword">if</span> node.Left != nil &#123;</span><br><span class="line">                queue = append(queue, node.Left)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> node.Right != nil &#123;</span><br><span class="line">                queue = append(queue, node.Right)</span><br><span class="line">            &#125;</span><br><span class="line">            sz--</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 结果加一，上一层遍历完，sz=0，队列加入了下一层的值，继续遍历下一层</span></span><br><span class="line">        ans++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>数据算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>二叉树的前序遍历</title>
     <url>/2020/12/10/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
     <content><![CDATA[<p>二叉树的前序遍历： 根-&gt;左-&gt;右</p>
@@ -3938,26 +3958,6 @@ PS:外面计数+1，work执行结束，减一， 如果有子路径，加1，进
 
 <h4 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h4><p>记录父节点</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode &#123;</span><br><span class="line">	<span class="comment">// 父节点路径</span></span><br><span class="line">    parent := map[int]*TreeNode&#123;&#125;</span><br><span class="line">    <span class="comment">// 访问路径</span></span><br><span class="line">    visited := map[int]bool&#123;&#125;</span><br><span class="line">    <span class="comment">// 遍历树</span></span><br><span class="line">    <span class="keyword">var</span> dfs func(*TreeNode)</span><br><span class="line">    dfs = <span class="function"><span class="title">func</span>(<span class="params">r *TreeNode</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> r == nil &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 只看左右节点，因为只记录父节点</span></span><br><span class="line">        <span class="keyword">if</span> r.Left != nil &#123;</span><br><span class="line">            parent[r.Left.Val] = r</span><br><span class="line">            dfs(r.Left)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> r.Right != nil &#123;</span><br><span class="line">            parent[r.Right.Val] = r</span><br><span class="line">            dfs(r.Right)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(root)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 记录节点的访问路径，从下向上</span></span><br><span class="line">    <span class="keyword">for</span> p != nil &#123;</span><br><span class="line">        visited[p.Val] = <span class="literal">true</span></span><br><span class="line">        p = parent[p.Val]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 看另一节点是否有相同值，有则返回就是结果</span></span><br><span class="line">    <span class="keyword">for</span> q != nil &#123;</span><br><span class="line">        <span class="keyword">if</span> visited[q.Val] &#123;</span><br><span class="line">            <span class="keyword">return</span> q</span><br><span class="line">        &#125;</span><br><span class="line">        q = parent[q.Val]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>数据算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>二叉树的最大深度</title>
-    <url>/2021/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/</url>
-    <content><![CDATA[<p>给定一个二叉树，找出其最大深度。</p>
-<p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。</p>
-<p>说明: 叶子节点是指没有子节点的节点</p>
-<h3 id="深度优先"><a href="#深度优先" class="headerlink" title="深度优先"></a>深度优先</h3><p>递归方式</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">func maxDepth(root *TreeNode) int &#123;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max(maxDepth(root.Left), maxDepth(root.Right)) + <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func max(a, b int) int &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过递归的方式，深度优先搜索，如果知道了左子树，右子树的最大深度，l,r</p>
-<p>则树的最大深度是max(l,r)+1</p>
-<p>时间on<br>空间o高度</p>
-<h3 id="广度优先"><a href="#广度优先" class="headerlink" title="广度优先"></a>广度优先</h3><p>遍历方式</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">func maxDepth(root *TreeNode) int &#123;</span><br><span class="line">    <span class="keyword">if</span> root == nil &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 队列，并加入第一个节点</span></span><br><span class="line">    queue := []*TreeNode&#123;&#125;</span><br><span class="line">    queue = append(queue, root)</span><br><span class="line">    ans := <span class="number">0</span></span><br><span class="line">    <span class="comment">// 遍历队列</span></span><br><span class="line">    <span class="keyword">for</span> len(queue) &gt; <span class="number">0</span> &#123;</span><br><span class="line">    	<span class="comment">// 获取当前队列长度，第一层是1</span></span><br><span class="line">        sz := len(queue)</span><br><span class="line">        <span class="comment">// 遍历，出队，长度减1，第一层遍历完，结果加一</span></span><br><span class="line">        <span class="keyword">for</span> sz &gt; <span class="number">0</span> &#123;</span><br><span class="line">        	<span class="comment">// 将树的每一层，都放进队列</span></span><br><span class="line">            node := queue[<span class="number">0</span>]</span><br><span class="line">            <span class="comment">// 队列先进先出</span></span><br><span class="line">            queue = queue[<span class="number">1</span>:]</span><br><span class="line">            <span class="comment">// 将队列的左右儿子加入，也就是下一层</span></span><br><span class="line">            <span class="keyword">if</span> node.Left != nil &#123;</span><br><span class="line">                queue = append(queue, node.Left)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> node.Right != nil &#123;</span><br><span class="line">                queue = append(queue, node.Right)</span><br><span class="line">            &#125;</span><br><span class="line">            sz--</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 结果加一，上一层遍历完，sz=0，队列加入了下一层的值，继续遍历下一层</span></span><br><span class="line">        ans++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>数据算法</category>
       </categories>
@@ -4681,6 +4681,32 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
       </tags>
   </entry>
   <entry>
+    <title>关于Mysql的sql注入问题</title>
+    <url>/2018/06/15/%E5%85%B3%E4%BA%8EMysql%E7%9A%84sql%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="什么是sql注入"><a href="#什么是sql注入" class="headerlink" title="什么是sql注入"></a>什么是sql注入</h2><p>所谓SQL注入，就是通过把SQL命令插入到Web表单提交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令。具体来说，它是利用现有应用程序，将(恶意的)SQL命令注入到后台数据库引擎执行的能力，它可以通过在Web表单中输入(恶意)SQL语句得到一个存在安全漏洞的网站上的数据库，而不是按照设计者意图去执行SQL语句。</p>
+<h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>SQL注入产生的原因：程序开发过程中不注意规范书写 sql语句和对特殊字符进行过滤，导致客户端可以通过全局变量POST 和GET 提交一些 sql语句正常执行。<br>比如：拼接字符串的方法</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">    sql = <span class="string">&#x27;select * from goods where name=&quot;%s&quot;&#x27;</span> % find_name</span><br><span class="line">   # 执行select语句，并返回受影响的行数：查询所有数据</span><br><span class="line"># findname为要输入的查询对象</span><br></pre></td></tr></table></figure>
+<p>输入 “ or 1=1 or “ (双引号也要输入)就会产生sql注入</p>
+<h2 id="后果"><a href="#后果" class="headerlink" title="后果"></a>后果</h2><p>如果是让别人发现了你的这个注入的漏洞的话，你的整个数据库有可能直接获得管理员的权限，也就是说这个数据库又可以能掌握在别人的手里，里面的数据想查询就查询，想删除就删除，想对你数据库怎样就怎样，后果很严重。</p>
+<h2 id="预防sql注入"><a href="#预防sql注入" class="headerlink" title="预防sql注入"></a>预防sql注入</h2><h3 id="解决办法一：查询参数预防sql注入，预编译"><a href="#解决办法一：查询参数预防sql注入，预编译" class="headerlink" title="解决办法一：查询参数预防sql注入，预编译"></a>解决办法一：查询参数预防sql注入，预编译</h3><p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> args = (id, type)</span><br><span class="line"><span class="number">2</span> cur.execute(<span class="string">&#x27;select id, type ,name from xl_bugs where id = %s and type = %s&#x27;</span>, args )</span><br></pre></td></tr></table></figure>
+<p>使用如此参数带入方式，python会自动过滤args中的特殊字符，制止SQL注入的产生。</p>
+<h3 id="解决办法二：正则表达式过滤传入参数"><a href="#解决办法二：正则表达式过滤传入参数" class="headerlink" title="解决办法二：正则表达式过滤传入参数"></a>解决办法二：正则表达式过滤传入参数</h3><p>检测SQL meta-characters的正则表达式 ：/(%27)|(\’)|(--)|(%23)|(#)/ix</p>
+<p>修正检测SQL meta-characters的正则表达式 ：/((%3D)|(=))[^\n]*((%27)|(\’)|(--)|(%3B)|(:))/i</p>
+<p>典型的SQL 注入攻击的正则表达式 ：/\w*((%27)|(\’))((%6F)|o|(%4F))((%72)|r|(%52))/ix</p>
+<p>检测SQL注入，UNION查询关键字的正则表达式 ：/((%27)|(\’))union/ix(%27)|(\’)</p>
+<p>检测MS SQL Server SQL注入攻击的正则表达式：/exec(\s|+)+(s|x)p\w+/ix</p>
+<h3 id="解决办法三：前端js防sql注入"><a href="#解决办法三：前端js防sql注入" class="headerlink" title="解决办法三：前端js防sql注入"></a>解决办法三：前端js防sql注入</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> url = location.search;</span><br><span class="line"><span class="keyword">var</span> re=<span class="regexp">/^\?(.*)(select%20|insert%20|delete%20from%20|count\(|drop%20table|update%20truncate%20|asc\(|mid\(|char\(|xp_cmdshell|exec%20master|net%20localgroup%20administrators|\&quot;|:|net%20user|\|%20or%20)(.*)$/gi</span>;</span><br><span class="line"><span class="keyword">var</span> e = re.test(url);</span><br><span class="line"><span class="keyword">if</span>(e) &#123;</span><br><span class="line">    alert(<span class="string">&quot;地址中含有非法字符～&quot;</span>);</span><br><span class="line">    location.href=<span class="string">&quot;error.asp&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前端验证只能起到一定作用，还需要后台参数化阻止SQL注入。</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于Mysql的视图与事务</title>
     <url>/2018/04/30/%E5%85%B3%E4%BA%8EMysql%E7%9A%84%E8%A7%86%E5%9B%BE%E3%80%81%E4%BA%8B%E5%8A%A1/</url>
     <content><![CDATA[<h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>视图是一个虚拟表，其内容由查询定义。同真实的表一样，视图包含一系列带有名称的列和行数据。但是，视图并不在数据库中以存储的数据值集形式存在。行和列数据来自由定义视图的查询所引用的表，并且在引用视图时动态生成。<br>对其中所引用的基础表来说，视图的作用类似于筛选。定义视图的筛选可以来自当前或其它数据库的一个或多个表，或者其它视图。通过视图进行查询没有任何限制，通过它们进行数据修改时的限制也很少。<br>视图是存储在数据库中的查询的SQL 语句，它主要出于两种原因：安全原因， 视图可以隐藏一些数据，如：社会保险基金表，可以用视图只显示姓名，地址，而不显示社会保险号和工资数等，另一原因是可使复杂的查询易于理解和使用。这个视图就像一个“窗口”，从中只能看到你想看的数据列。这意味着你可以在这个视图上使用SELECT 语句，而你看到的将是你在视图定义里给出的那些数据列。</p>
@@ -4727,32 +4753,6 @@ Linux 内核版本又分为 稳定版 和 开发版，两种版本是相互关�
       </categories>
       <tags>
         <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于Mysql的sql注入问题</title>
-    <url>/2018/06/15/%E5%85%B3%E4%BA%8EMysql%E7%9A%84sql%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="什么是sql注入"><a href="#什么是sql注入" class="headerlink" title="什么是sql注入"></a>什么是sql注入</h2><p>所谓SQL注入，就是通过把SQL命令插入到Web表单提交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令。具体来说，它是利用现有应用程序，将(恶意的)SQL命令注入到后台数据库引擎执行的能力，它可以通过在Web表单中输入(恶意)SQL语句得到一个存在安全漏洞的网站上的数据库，而不是按照设计者意图去执行SQL语句。</p>
-<h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>SQL注入产生的原因：程序开发过程中不注意规范书写 sql语句和对特殊字符进行过滤，导致客户端可以通过全局变量POST 和GET 提交一些 sql语句正常执行。<br>比如：拼接字符串的方法</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">    sql = <span class="string">&#x27;select * from goods where name=&quot;%s&quot;&#x27;</span> % find_name</span><br><span class="line">   # 执行select语句，并返回受影响的行数：查询所有数据</span><br><span class="line"># findname为要输入的查询对象</span><br></pre></td></tr></table></figure>
-<p>输入 “ or 1=1 or “ (双引号也要输入)就会产生sql注入</p>
-<h2 id="后果"><a href="#后果" class="headerlink" title="后果"></a>后果</h2><p>如果是让别人发现了你的这个注入的漏洞的话，你的整个数据库有可能直接获得管理员的权限，也就是说这个数据库又可以能掌握在别人的手里，里面的数据想查询就查询，想删除就删除，想对你数据库怎样就怎样，后果很严重。</p>
-<h2 id="预防sql注入"><a href="#预防sql注入" class="headerlink" title="预防sql注入"></a>预防sql注入</h2><h3 id="解决办法一：查询参数预防sql注入，预编译"><a href="#解决办法一：查询参数预防sql注入，预编译" class="headerlink" title="解决办法一：查询参数预防sql注入，预编译"></a>解决办法一：查询参数预防sql注入，预编译</h3><p>例如：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> args = (id, type)</span><br><span class="line"><span class="number">2</span> cur.execute(<span class="string">&#x27;select id, type ,name from xl_bugs where id = %s and type = %s&#x27;</span>, args )</span><br></pre></td></tr></table></figure>
-<p>使用如此参数带入方式，python会自动过滤args中的特殊字符，制止SQL注入的产生。</p>
-<h3 id="解决办法二：正则表达式过滤传入参数"><a href="#解决办法二：正则表达式过滤传入参数" class="headerlink" title="解决办法二：正则表达式过滤传入参数"></a>解决办法二：正则表达式过滤传入参数</h3><p>检测SQL meta-characters的正则表达式 ：/(%27)|(\’)|(--)|(%23)|(#)/ix</p>
-<p>修正检测SQL meta-characters的正则表达式 ：/((%3D)|(=))[^\n]*((%27)|(\’)|(--)|(%3B)|(:))/i</p>
-<p>典型的SQL 注入攻击的正则表达式 ：/\w*((%27)|(\’))((%6F)|o|(%4F))((%72)|r|(%52))/ix</p>
-<p>检测SQL注入，UNION查询关键字的正则表达式 ：/((%27)|(\’))union/ix(%27)|(\’)</p>
-<p>检测MS SQL Server SQL注入攻击的正则表达式：/exec(\s|+)+(s|x)p\w+/ix</p>
-<h3 id="解决办法三：前端js防sql注入"><a href="#解决办法三：前端js防sql注入" class="headerlink" title="解决办法三：前端js防sql注入"></a>解决办法三：前端js防sql注入</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> url = location.search;</span><br><span class="line"><span class="keyword">var</span> re=<span class="regexp">/^\?(.*)(select%20|insert%20|delete%20from%20|count\(|drop%20table|update%20truncate%20|asc\(|mid\(|char\(|xp_cmdshell|exec%20master|net%20localgroup%20administrators|\&quot;|:|net%20user|\|%20or%20)(.*)$/gi</span>;</span><br><span class="line"><span class="keyword">var</span> e = re.test(url);</span><br><span class="line"><span class="keyword">if</span>(e) &#123;</span><br><span class="line">    alert(<span class="string">&quot;地址中含有非法字符～&quot;</span>);</span><br><span class="line">    location.href=<span class="string">&quot;error.asp&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>前端验证只能起到一定作用，还需要后台参数化阻止SQL注入。</p>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -6963,6 +6963,63 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
       </tags>
   </entry>
   <entry>
+    <title>系统维护，净室工程</title>
+    <url>/2024/04/12/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4%EF%BC%8C%E5%87%80%E5%AE%A4%E5%B7%A5%E7%A8%8B/</url>
+    <content><![CDATA[<h3 id="系统维护"><a href="#系统维护" class="headerlink" title="系统维护"></a>系统维护</h3><p>系统维护是整个系统开发过程中耗时最长的，系统的可维护性可以定义为维护人员理解、改正、改动和改进这个软件的难易程度，其评价指标如下：</p>
+<p>易分析性：软件产品诊断软件中的缺陷或失效原因或识别待修改部分的能力。</p>
+<p>易改变性：软件产品使指定的修改可以被实现的能力，实现包括编码、设计和文档的更改。</p>
+<p>稳定性：软件产品避免由于软件修改而造成意外结果的能力。</p>
+<p>易测试性：软件产品使已修改软件能被确认的能力。</p>
+<p>系统维护包括硬件维护、软件维护和数据维护，其中软件维护类型如下：</p>
+<p>正确性维护：发现了bug而进行的修改。</p>
+<p>适应性维护：由于外部环境发生了改变，被动进行的对软件的修改和升级。</p>
+<p>完善性维护：基于用户主动对软件提出更多的需求，修改软件，增加更多的功能，使其比之前的软件功能、性能更高，更加完善。</p>
+<p>预防性维护：对未来可能发生的问题进行预防性的修改。</p>
+<h4 id="遗留系统"><a href="#遗留系统" class="headerlink" title="遗留系统"></a>遗留系统</h4><p>是指任何基本上不能进行修改和演化以满足新的变化了的业务需求的信息系统</p>
+<p>高水平低价值：集成</p>
+<p>高水平高价值：改造</p>
+<p>低水平低价值：淘汰</p>
+<p>低水平高价值：继承</p>
+<h4 id="系统转换"><a href="#系统转换" class="headerlink" title="系统转换"></a>系统转换</h4><p>是指新系统开发完毕，投入运行，取代现有系统的过程，有下面三种转换计划：</p>
+<p>直接转换：现有系统被新系统直接取代了，风险很大，适用于新系统不复杂，或者现有系统已经不能使用的情况。优点是节省成本，只适合小系统</p>
+<p>并行转换：新系统和老系统并行工作一段时间，新系统经过试运行后再取代，若新系统在试运行过程中有问题，也不影响现有系统的运行，风险极小，在试运行过程中还可以比较新老系统的性能，适用于大型系统。缺点是耗费人力和时间资源，难以控制两个系统间的数据转换。</p>
+<p>分段转换：分期分批逐步转换，是直接和并行转换的集合，将大型系统分为多个子系统，依次试运行每个子系统，成熟一个子系统，就转换一个子系统。同样适用于大型项目，只是更耗时，而且现有系统和新系统间混合使用，需要协调好接口等问题。</p>
+<h4 id="数据转换与迁移"><a href="#数据转换与迁移" class="headerlink" title="数据转换与迁移"></a>数据转换与迁移</h4><p>系统切换前通过工具迁移、系统切换前采用手工录入、系统切换后通过新系统生成</p>
+<h3 id="净室软件工程（CSE）"><a href="#净室软件工程（CSE）" class="headerlink" title="净室软件工程（CSE）"></a>净室软件工程（CSE）</h3><p>一种应用数学与统计学理论以经济的方式生产高质量软件的工程技术，力图通过严格的工程化的软件过程达到开发中的零缺陷或接近零缺陷，强调的是预防大于检查。净室方法不是先制作一个产品，再去消除缺陷，而是要求在规约和设计中消除错误，然后以“净”的方式制作，可以降低软件开发中的风险，以合理的成本开发出高质量的软件</p>
+<p>在净室软件工程背后的哲学是：通过在第1次正确地书写代码增量，并在测试前验证它们的正确性，来避免对成本很高的错误消除过程的依赖。它的过程模型是在代码增量积聚到系统的过程的同时，进行代码增量的统计质量验证。它甚至提倡开发者不需要进行单元测试，而是进行正确性验证和统计质量控制。</p>
+<p>净室软件工程(CSE)的理论基础主要是函数理论和抽样理论。</p>
+<p>净室软件工程应用技术手段：</p>
+<p> 统计过程控制下的增量式开发。</p>
+<p>基于函数的规范与设计。</p>
+<p>正确性验证（CSE的核心）</p>
+<p>统计测试和软件认证。</p>
+<p>净室软件工程在使用过程的一些缺点：</p>
+<p>CSE太理论化，需要更多的数学知识。其正确性验证的步骤比较困难且比较耗时。</p>
+<p>CSE开发小组不进行传统的模块测试，这是不现实的。</p>
+<p>CSE也会带有传统软件工程的一些弊端</p>
+<h3 id="基于构件的软件工程（CBES）"><a href="#基于构件的软件工程（CBES）" class="headerlink" title="基于构件的软件工程（CBES）"></a>基于构件的软件工程（CBES）</h3><p>一种基于分布对象技术、强调通过可复用构件设计与构造软件系统的软件复用途径。CBSE体现了“购买而不是重新构造”的哲学，将软件开发的重点从程序编写转移到了基于己有构件的组装。用于CBSE的构件应该具备以下特征：</p>
+<p>可组装型</p>
+<p>可部署性</p>
+<p>文档化</p>
+<p>独立性</p>
+<p>标准化</p>
+<p>CBSE过程是支持基于构件组装的软件开发过程，过程中的6个主要活动：系统需求概览、识别候选构件、根据发现的构件修改需求、体系结构设计、构件定制与适配、组装构件创建系统。</p>
+<p>CBSE过程与传统软件开发过程不同点：</p>
+<p>CBSE早期需要完整的需求(即需求明确)，以便尽可能多地识别出可复用的构件。</p>
+<p>在过程早期阶段根据可利用的构件来细化和修改需求。如果可利用的构件不能满足用户需求，就应该考虑由复用构件支持的相关需求。</p>
+<p>在系统体系结构设计完成后，会有一个进一步的对构件搜索及设计精化的活动。可能需要为某些构件寻找备用构件，或者修改构件以适合功能和架构的要求。</p>
+<p>开发就是将己经找到的构件集成在一起的组装过程。</p>
+<p>构件组装是指构件相互直接集成或是用专门编写的“胶水代码”将它们整合在一起来创造一个系统或另一个构件的过程。常见的组装构件有以下3种组装方式：</p>
+<p>顺序组装，层次组装，叠加组装</p>
+]]></content>
+      <categories>
+        <category>系统架构设计</category>
+      </categories>
+      <tags>
+        <tag>架构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>系统测试</title>
     <url>/2024/03/11/%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/</url>
     <content><![CDATA[<p>系统测试：为了发现错误而执行程序的过程，成功的测试是发现了至今尚未发现的错误的测试</p>
@@ -7013,63 +7070,6 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
 <p>软件的两种属性：外部属性指面向管理者和用户的属性，可直接测量，一般为性能指标。内部属性指软件产品本身的的属性，如可靠性等，只能间接测量。</p>
 <p>McCabe度量法：又称为环路复杂度，假设有向图中有向边数为m,节点数为n,则此有向图的环路复杂度为m-n+2.</p>
 <p>注意m和n代表的含义不能混淆，可以用一个最简单的环路来做特殊值记忆此公式，另外，针对一个程序流程图，每一个分支边(连线)就是一条有向边，每一条语句(语句框)就是一个顶点。</p>
-]]></content>
-      <categories>
-        <category>系统架构设计</category>
-      </categories>
-      <tags>
-        <tag>架构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>系统维护，净室工程</title>
-    <url>/2024/04/12/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4%EF%BC%8C%E5%87%80%E5%AE%A4%E5%B7%A5%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id="系统维护"><a href="#系统维护" class="headerlink" title="系统维护"></a>系统维护</h3><p>系统维护是整个系统开发过程中耗时最长的，系统的可维护性可以定义为维护人员理解、改正、改动和改进这个软件的难易程度，其评价指标如下：</p>
-<p>易分析性：软件产品诊断软件中的缺陷或失效原因或识别待修改部分的能力。</p>
-<p>易改变性：软件产品使指定的修改可以被实现的能力，实现包括编码、设计和文档的更改。</p>
-<p>稳定性：软件产品避免由于软件修改而造成意外结果的能力。</p>
-<p>易测试性：软件产品使已修改软件能被确认的能力。</p>
-<p>系统维护包括硬件维护、软件维护和数据维护，其中软件维护类型如下：</p>
-<p>正确性维护：发现了bug而进行的修改。</p>
-<p>适应性维护：由于外部环境发生了改变，被动进行的对软件的修改和升级。</p>
-<p>完善性维护：基于用户主动对软件提出更多的需求，修改软件，增加更多的功能，使其比之前的软件功能、性能更高，更加完善。</p>
-<p>预防性维护：对未来可能发生的问题进行预防性的修改。</p>
-<h4 id="遗留系统"><a href="#遗留系统" class="headerlink" title="遗留系统"></a>遗留系统</h4><p>是指任何基本上不能进行修改和演化以满足新的变化了的业务需求的信息系统</p>
-<p>高水平低价值：集成</p>
-<p>高水平高价值：改造</p>
-<p>低水平低价值：淘汰</p>
-<p>低水平高价值：继承</p>
-<h4 id="系统转换"><a href="#系统转换" class="headerlink" title="系统转换"></a>系统转换</h4><p>是指新系统开发完毕，投入运行，取代现有系统的过程，有下面三种转换计划：</p>
-<p>直接转换：现有系统被新系统直接取代了，风险很大，适用于新系统不复杂，或者现有系统已经不能使用的情况。优点是节省成本，只适合小系统</p>
-<p>并行转换：新系统和老系统并行工作一段时间，新系统经过试运行后再取代，若新系统在试运行过程中有问题，也不影响现有系统的运行，风险极小，在试运行过程中还可以比较新老系统的性能，适用于大型系统。缺点是耗费人力和时间资源，难以控制两个系统间的数据转换。</p>
-<p>分段转换：分期分批逐步转换，是直接和并行转换的集合，将大型系统分为多个子系统，依次试运行每个子系统，成熟一个子系统，就转换一个子系统。同样适用于大型项目，只是更耗时，而且现有系统和新系统间混合使用，需要协调好接口等问题。</p>
-<h4 id="数据转换与迁移"><a href="#数据转换与迁移" class="headerlink" title="数据转换与迁移"></a>数据转换与迁移</h4><p>系统切换前通过工具迁移、系统切换前采用手工录入、系统切换后通过新系统生成</p>
-<h3 id="净室软件工程（CSE）"><a href="#净室软件工程（CSE）" class="headerlink" title="净室软件工程（CSE）"></a>净室软件工程（CSE）</h3><p>一种应用数学与统计学理论以经济的方式生产高质量软件的工程技术，力图通过严格的工程化的软件过程达到开发中的零缺陷或接近零缺陷，强调的是预防大于检查。净室方法不是先制作一个产品，再去消除缺陷，而是要求在规约和设计中消除错误，然后以“净”的方式制作，可以降低软件开发中的风险，以合理的成本开发出高质量的软件</p>
-<p>在净室软件工程背后的哲学是：通过在第1次正确地书写代码增量，并在测试前验证它们的正确性，来避免对成本很高的错误消除过程的依赖。它的过程模型是在代码增量积聚到系统的过程的同时，进行代码增量的统计质量验证。它甚至提倡开发者不需要进行单元测试，而是进行正确性验证和统计质量控制。</p>
-<p>净室软件工程(CSE)的理论基础主要是函数理论和抽样理论。</p>
-<p>净室软件工程应用技术手段：</p>
-<p> 统计过程控制下的增量式开发。</p>
-<p>基于函数的规范与设计。</p>
-<p>正确性验证（CSE的核心）</p>
-<p>统计测试和软件认证。</p>
-<p>净室软件工程在使用过程的一些缺点：</p>
-<p>CSE太理论化，需要更多的数学知识。其正确性验证的步骤比较困难且比较耗时。</p>
-<p>CSE开发小组不进行传统的模块测试，这是不现实的。</p>
-<p>CSE也会带有传统软件工程的一些弊端</p>
-<h3 id="基于构件的软件工程（CBES）"><a href="#基于构件的软件工程（CBES）" class="headerlink" title="基于构件的软件工程（CBES）"></a>基于构件的软件工程（CBES）</h3><p>一种基于分布对象技术、强调通过可复用构件设计与构造软件系统的软件复用途径。CBSE体现了“购买而不是重新构造”的哲学，将软件开发的重点从程序编写转移到了基于己有构件的组装。用于CBSE的构件应该具备以下特征：</p>
-<p>可组装型</p>
-<p>可部署性</p>
-<p>文档化</p>
-<p>独立性</p>
-<p>标准化</p>
-<p>CBSE过程是支持基于构件组装的软件开发过程，过程中的6个主要活动：系统需求概览、识别候选构件、根据发现的构件修改需求、体系结构设计、构件定制与适配、组装构件创建系统。</p>
-<p>CBSE过程与传统软件开发过程不同点：</p>
-<p>CBSE早期需要完整的需求(即需求明确)，以便尽可能多地识别出可复用的构件。</p>
-<p>在过程早期阶段根据可利用的构件来细化和修改需求。如果可利用的构件不能满足用户需求，就应该考虑由复用构件支持的相关需求。</p>
-<p>在系统体系结构设计完成后，会有一个进一步的对构件搜索及设计精化的活动。可能需要为某些构件寻找备用构件，或者修改构件以适合功能和架构的要求。</p>
-<p>开发就是将己经找到的构件集成在一起的组装过程。</p>
-<p>构件组装是指构件相互直接集成或是用专门编写的“胶水代码”将它们整合在一起来创造一个系统或另一个构件的过程。常见的组装构件有以下3种组装方式：</p>
-<p>顺序组装，层次组装，叠加组装</p>
 ]]></content>
       <categories>
         <category>系统架构设计</category>
@@ -7409,6 +7409,135 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
 <p>所以一般先进行移臂调度，切换不同磁道，再进行旋转调度，旋转到指定扇区</p>
 <p>因此， 会产生寻道时间和等待时间 。公式为： 存取时间 = 寻道时间＋等待时间（平均定位时间 ＋转动延迟） 。<br>注意： 寻道时间是指磁头移动到磁道所需的时间； 等待时间为等待读写的扇区转到磁头下方所用的时间 。</p>
 <h4 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h4><p>1、先来先服务FCFS： 根据进程请求访问磁盘的先后顺序进行调度<br>2、最短寻道时间优先SSTF： 请求访问的磁道与当前磁道最近的进程优先调度，使得<br>每 次的寻道时间最短 。会产生“饥饿 ”现象， 即远处进程可能永远无法访问 。<br>3、扫描算法SCAN： 又称“ 电梯算法 ”，磁头在磁盘上双向移动， 其会选择离磁头当 前所在磁道最近的请求访问的磁道， 并且与磁头移动方向一致，磁头永远都是从里 向外或者从外向里一直移动完才掉头， 与电梯类似<br>4、单向扫描调度算法CSCAN： 与SCAN不同的是， 其只做单向移动， 即只能从里向外 或者从外向里 。</p>
+]]></content>
+      <categories>
+        <category>系统架构设计</category>
+      </categories>
+      <tags>
+        <tag>架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机指令系统</title>
+    <url>/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>计算机指令的组成： 一条指令由操作码和操作数两部分组成， 操作码决定要<br>完 成的操作， 操作数指参加运算的数据及其所在的单元地址 。</p>
+<p>执行过程：<br>取指令——分析指令——执行指令三个步骤， 首先将<br>程 序计数器PC中的指令地址取出， 送入地址总线， CPU依据指令地址去内存<br>中 取出指令内容存入指令寄存器IR； 而后由指令译码器进行分析， 分析指<br>令操作 码； 最后执行指令， 取出指令执行所需的源操作数</p>
+<h3 id="指令寻址方式，找到下一条指令"><a href="#指令寻址方式，找到下一条指令" class="headerlink" title="指令寻址方式，找到下一条指令"></a>指令寻址方式，找到下一条指令</h3><h4 id="顺序寻址方式"><a href="#顺序寻址方式" class="headerlink" title="顺序寻址方式"></a>顺序寻址方式</h4><p>当执行一段程序时，根据PC（程序计数器） 中指令，是一条指令接着一条指 令地顺序执行</p>
+<h4 id="跳跃寻址方式"><a href="#跳跃寻址方式" class="headerlink" title="跳跃寻址方式"></a>跳跃寻址方式</h4><p>指下一条指令的地址码不是由程序计数器给出， 而是由本条指令直接给出 。<br>程 序跳跃后， 按新的指令地址开始顺序执行 。因此， 程序计数器的内容也必须相应改变， 以便及<br>时跟 踪新的指令地址 ，可以实现程序的无条件转移和有条件转移。</p>
+<h3 id="指令寻址方式，找到操作数"><a href="#指令寻址方式，找到操作数" class="headerlink" title="指令寻址方式，找到操作数"></a>指令寻址方式，找到操作数</h3><h4 id="立即寻址方式"><a href="#立即寻址方式" class="headerlink" title="立即寻址方式"></a>立即寻址方式</h4><p>指令的地址码字段指出的不是地址， 而是操作数本身 。</p>
+<h4 id="直接寻址方式"><a href="#直接寻址方式" class="headerlink" title="直接寻址方式"></a>直接寻址方式</h4><p>在指令的地址字段中直接指出操作数在主存中的地址 。</p>
+<h4 id="间接寻址方式"><a href="#间接寻址方式" class="headerlink" title="间接寻址方式"></a>间接寻址方式</h4><p>指令地址码字段所指向的存储单元中存储的是操作数的地址 。</p>
+<h4 id="寄存器寻址方式"><a href="#寄存器寻址方式" class="headerlink" title="寄存器寻址方式"></a>寄存器寻址方式</h4><p>指令中的地址码是寄存器的编号 。</p>
+<h4 id="基址寻址方式"><a href="#基址寻址方式" class="headerlink" title="基址寻址方式"></a>基址寻址方式</h4><p> 将基址寄存器的内容加上指令中的形式地址而形成操作数的有效地址， 其优<br>点 是可以扩大寻址能力 。</p>
+<h4 id="变址寻址方式"><a href="#变址寻址方式" class="headerlink" title="变址寻址方式"></a>变址寻址方式</h4><p>变址寻址方式计算有效地址的方法与基址寻址方式很相似， 它是将变址寄存<br>器 的内容加上指令中的形式地址而形成操作数的有效地址 。</p>
+<h3 id="指令系统"><a href="#指令系统" class="headerlink" title="指令系统"></a>指令系统</h3><h4 id="CISC是复杂指令系统"><a href="#CISC是复杂指令系统" class="headerlink" title="CISC是复杂指令系统"></a>CISC是复杂指令系统</h4><p>兼容性强， 指令繁多 、长度可变， 由微程序实现；</p>
+<h4 id="RISC是精简指令系统"><a href="#RISC是精简指令系统" class="headerlink" title="RISC是精简指令系统"></a>RISC是精简指令系统</h4><p>指令少，使用频率接近， 主要依靠硬件实现（通用寄存器 、硬布线逻辑控制） 。</p>
+<table>
+<thead>
+<tr>
+<th>指令系统类型</th>
+<th>指令</th>
+<th>寻址方式</th>
+<th>实现方式</th>
+<th>其他</th>
+<th>代表</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CISC是复杂指令系统</td>
+<td>兼容性强， 指令繁多 、长度可变，使用频率差别大</td>
+<td>支持多种</td>
+<td>微程序，也可以采用流水线技术，但不适合</td>
+<td>研制周期长</td>
+<td>x86</td>
+</tr>
+<tr>
+<td>RISC是精简指令系统</td>
+<td>指令少，使用频率接近，定长格式，大部分单周期指令</td>
+<td>支持较少</td>
+<td>增加了通用寄存器，硬布线逻辑控制为主，更适合采用流水线</td>
+<td>优化编译，有效支持高级语言</td>
+<td>ARM，RISC-V</td>
+</tr>
+</tbody></table>
+<h3 id="指令流水线"><a href="#指令流水线" class="headerlink" title="指令流水线"></a>指令流水线</h3><p>取指 -&gt; 分析 -&gt; 执行<br>将指令分成不同段， 每段 由不同的部分去处理， 因此可以产生叠加的 效果， 所有的部件去处理指令的不同段</p>
+<p>流水线是指程序在执行多条指令重叠操作的一种准并行处理实现技术</p>
+<h4 id="流水线技术"><a href="#流水线技术" class="headerlink" title="流水线技术"></a>流水线技术</h4><p>（ 1）超流水线（ Super Pipe Line）技术 。 它通过细化流水 、增加级数和提高主频，使 得在每个机器周期内能完成一个甚至两个浮 点操作 。其实质是以时间换取空间 。<br>（ 2）超标量（ Super Scalar）技术 。它通 过内装多条流水线来同时执行多个处理， 其 时钟频率虽然与一般流水接近， 却有更小的 CPI 。其实质是以空间换取时间 。<br>（ 3）超长指令字（ Very Long Instruction<br>Word，VLIW）技术 。 VLIW和超标量都是 20世纪80年代出现的概念， 其共同点是要同 时执行多条指令， 其不同在于超标量依靠硬 件来实现并行处理的调度，VLIW则充分发挥 软件的作用， 而使硬件简化， 性能提高</p>
+<h4 id="流水线周期"><a href="#流水线周期" class="headerlink" title="流水线周期"></a>流水线周期</h4><ol>
+<li><p>流水线周期： 指令分成不同执行段， 其中执行时间最长的段为流水线周期 。</p>
+</li>
+<li><p>流水线执行时间： </p>
+<p>理论公式：1条指令总执行时间＋（总指令条数-1）＊流水线周期 。</p>
+<p>实践公式：执行阶段数x流水线周期 + （总指令条数-1）＊流水线周期 </p>
+</li>
+<li><p>流水线吞吐率计算： 吞吐率即单位时间内执行的指令条数 。<br> 公式： 指令条数／流水线执行时间 。</p>
+</li>
+<li><p>流水线的加速比计算： 加速比即使用流水线后的效率提升度， 即比不使用流水线快了多少倍， 越高表明流水线效率越高，<br> 公式： 不使用流水线执行时间／使用流水线执行时间 。</p>
+</li>
+</ol>
+<h3 id="Flynn分类法"><a href="#Flynn分类法" class="headerlink" title="Flynn分类法"></a>Flynn分类法</h3><table>
+<thead>
+<tr>
+<th>体系结构</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单指令单数据流（SISD）</td>
+<td>传统的串行计算机，冯诺依曼架构</td>
+</tr>
+<tr>
+<td>单指令多数据流（SIMD）</td>
+<td>单核计算机，GPU（显卡）</td>
+</tr>
+<tr>
+<td>多指令单数据流（MISD）</td>
+<td>理论模型，没有实际到应用中</td>
+</tr>
+<tr>
+<td>多指令多数据流（MIMD）</td>
+<td>主流计算机，intel，amd等多核处理器</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>系统架构设计</category>
+      </categories>
+      <tags>
+        <tag>架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机操作存储，文件，设备管理</title>
+    <url>/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h2 id="存储管理"><a href="#存储管理" class="headerlink" title="存储管理"></a>存储管理</h2><h3 id="页式存储"><a href="#页式存储" class="headerlink" title="页式存储"></a>页式存储</h3><p>页式存储是操作系统的一种存储管理方式。通过页表来进行映射程序中的页在内存中的块的存储</p>
+<p>进程(程序)中的地址， 我们称之为逻辑地址(虚地址),而内存中的地址我们称之为物理地址(实地址)；</p>
+<p>每个页分为页号和页内地址， 页号用来和块号对应， 代表存储的位置， 大小可以代表页的数量，页内地址代表的是存储的数据内容， 大小可以代表数据大小</p>
+<p>优点： 利用率高 、碎片小（只在最后一个页中有） 、分配及管理简单 。缺点： 增加了系统开销，可能产生抖动现象。</p>
+<p>默认页面大小是4K，逻辑地址十六进制1D16H，H代表是十六进制，所以数据是1D16， 通常来说1是页码，D16是数据，所以物理地址就是1对应的块号，数据不变还是D16</p>
+<h4 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h4><p>缺页表示需要执行的页不在内存物理块中， 需要从外部调入内存， 会增加执行时间，因此， 缺页数越多， 系统效率越低。</p>
+<p>最优算法： OPT，理论上的算法， 无法实现， 是在进程执行完后进行的最佳效率计算， 用来让其他算法比较差距 。原理是选择未来最长时间内不被访问的页面置换， 这样可以保证未来执行的都是马上要访问的。<br>先进先出算法： FIFO， 先调入内存的页先被置换淘汰， 会产生抖动现象， 即分配的页数越多， 缺页率可能越多（即效率越低）<br>最近最少使用： LRU，在最近的过去， 进程执行过程中， 过去最少使用的页面被置换淘汰， 根据局部性原理，这种方式效率高， 且不会产生抖动现象。</p>
+<p>最少访问过的先淘汰掉</p>
+<h4 id="快表（TLB）"><a href="#快表（TLB）" class="headerlink" title="快表（TLB）"></a>快表（TLB）</h4><p>快表是一块小容量的相联存储器， 由快速存储器组成， 按内容访问， 速度快， 并且可以从硬件上保证按内容并行查找， 一般用来存放当前访问最频繁的少数活动页面的页号(可以看成是页表的频繁访问数据的副本)。</p>
+<p>快表是将页表存于Cache中<br>慢表是将页表存于内存上</p>
+<p>因此慢表需要访问两次内存才能取出数据， 而快表是访问一次Cache和一次内存， 因此更快</p>
+<p>第一次去拿页号，第二次去拿物理地址</p>
+<h3 id="段式存储"><a href="#段式存储" class="headerlink" title="段式存储"></a>段式存储</h3><p>将进程空间分为一个个段， 每段也有段号和段内地址， 与页式存储不同的是， 每段物理大小 不同， 分段是根据逻辑整体分段的</p>
+<p>地址表示： （段号， 段内偏移）：其中段内偏移不能超过该段号对应的段长， 否则越界错误，而此地址对应的真正内存地址应该是： 段号对应的基地址（所存储的位置）+段内偏移。</p>
+<p>优点： 程序逻辑完整， 修改互不影响<br>缺点： 内存碎片浪费大，导致内存利用率低。</p>
+<p>段表，段号，基地址，段长，看是否越界，是看的段长，不是基地址（0，1597）。0是段号，1597是段内偏移，就是段长</p>
+<h3 id="段页存储"><a href="#段页存储" class="headerlink" title="段页存储"></a>段页存储</h3><p>对进程空间先分段， 后分页，段表每个段号再对应一个页表， 优缺点如下：<br>优点： 空间浪费小 、存储共享容易 、能动态连接。<br>缺点： 由于管理软件的增加， 复杂性和开销也增加， 执行速度下降</p>
+<h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>计算机系统中采用的索引文件结构如下图所示：<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/1.jpg" alt="1"><br>系统中有13个索引节点， 0-9为直接索引， 即每个索引节点存放的是内容， 假设每个物理<br>盘大小为4KB， 共可存4KB*10=40KB数据；<br>10号索引节点为一级间接索引节点， 大小为4KB， 存放的并非直接数据， 而是链接到直<br>接 物理盘块的地址， 假设每个地址占4B， 则共有1024个地址， 对应1024个物理盘， 可<br>存1024x4KB=4096KB数据。<br>二级索引节点类似， 直接盘存放一级地址， 一级地址再存放物理盘快地址，而后链接到存放数据的物理盘块， 容量又扩大了一个数量级， 为1024x1024x4KB数据。</p>
+<p>8个地址项0，1，2，3，4，5，6，7，每个地址项大小4字节，5个地址为直接索引0，1，2，3，4，2个是一级索引5，6，一个是二级索引7，，磁盘索引块和磁盘数据块大小为1KB，访问文件的逻辑块号为5和518，块号为5是第6个，块号518是第519个，地址是4字节，1kb大小，则一级索引就可以存256个，两个1级索引就是512，，加上前面5个直接索引就是5个数据，就是517</p>
+<p>单个文件最大长度就是直接索引加一级索引加二级索引的总和</p>
+<h3 id="树形文件"><a href="#树形文件" class="headerlink" title="树形文件"></a>树形文件</h3><p>相对路径： 是从当前路径开始的路径，不包括当前的工作目录。<br>绝对路径： 是从根目录开始的路径。</p>
+<h3 id="空间存储"><a href="#空间存储" class="headerlink" title="空间存储"></a>空间存储</h3><p>空闲区表法： 将所有空闲空间整合成一张表， 即空闲文件目录。<br>空闲链表法： 将所有空闲空间链接成一个链表， 根据需要分配。<br>成组链接法： 既分组， 每组内又链接成链表， 是上述两种方法的综合。<br>位示图法： 对每个物理空间用一位标识， 为1则使用， 为0则空闲， 形成一 张位示图。</p>
+<p>32位，0到31每个对应一个物理块，一排就是一个字，字长就是32，第几个字就是第几排</p>
+<p>4195号就是第4196个数据，4196除以32得131余4，131存满，第132个字，也就是第132排</p>
+<p>余4就是第4个位置，0，1，2，3， 3号位是1，已经存储了</p>
+<h2 id="微内核操作系统"><a href="#微内核操作系统" class="headerlink" title="微内核操作系统"></a>微内核操作系统</h2><p>微内核， 顾名思义， 就是尽可能的将内核做的很小， 只将最为核心必要的东西放入内核中， 其<br>他 能独立的东西都放入用户进程中， 这样， 系统就被分为了用户态和内核态<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/2.jpg" alt="1"></p>
+<h2 id="嵌入式操作系统"><a href="#嵌入式操作系统" class="headerlink" title="嵌入式操作系统"></a>嵌入式操作系统</h2><p>嵌入式操作系统特点： 微型化 、代码质量高 、专业化 、实时性强 、可裁剪可配置。<br>实时嵌入式操作系统的内核服务： 异常和中断 、计时器 、I/O管理。<br>常见的嵌入式RTOS（实时操作系统）：VxWorks、RT-Linux、QNX、pSOS。<br>嵌入式系统初始化过程按照自底向上 、从硬件到软件的次序依次为：<br>芯片级初始化-&gt;板卡级初始化-&gt;系统级初始化。<br>芯片级是微处理器的初始化， 板卡级是其他硬件设备初始化， 系统级初始化就是软 件及操作系统初始化。</p>
+<h2 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h2><h3 id="SPOOLING技术"><a href="#SPOOLING技术" class="headerlink" title="SPOOLING技术"></a>SPOOLING技术</h3><p>外设建立两个缓冲区，输入井和输出井，数据排队打印，每个进程都在用一个打印机，设备虚拟化</p>
 ]]></content>
       <categories>
         <category>系统架构设计</category>
@@ -8482,135 +8611,6 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
       </tags>
   </entry>
   <entry>
-    <title>计算机指令系统</title>
-    <url>/2024/01/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>计算机指令的组成： 一条指令由操作码和操作数两部分组成， 操作码决定要<br>完 成的操作， 操作数指参加运算的数据及其所在的单元地址 。</p>
-<p>执行过程：<br>取指令——分析指令——执行指令三个步骤， 首先将<br>程 序计数器PC中的指令地址取出， 送入地址总线， CPU依据指令地址去内存<br>中 取出指令内容存入指令寄存器IR； 而后由指令译码器进行分析， 分析指<br>令操作 码； 最后执行指令， 取出指令执行所需的源操作数</p>
-<h3 id="指令寻址方式，找到下一条指令"><a href="#指令寻址方式，找到下一条指令" class="headerlink" title="指令寻址方式，找到下一条指令"></a>指令寻址方式，找到下一条指令</h3><h4 id="顺序寻址方式"><a href="#顺序寻址方式" class="headerlink" title="顺序寻址方式"></a>顺序寻址方式</h4><p>当执行一段程序时，根据PC（程序计数器） 中指令，是一条指令接着一条指 令地顺序执行</p>
-<h4 id="跳跃寻址方式"><a href="#跳跃寻址方式" class="headerlink" title="跳跃寻址方式"></a>跳跃寻址方式</h4><p>指下一条指令的地址码不是由程序计数器给出， 而是由本条指令直接给出 。<br>程 序跳跃后， 按新的指令地址开始顺序执行 。因此， 程序计数器的内容也必须相应改变， 以便及<br>时跟 踪新的指令地址 ，可以实现程序的无条件转移和有条件转移。</p>
-<h3 id="指令寻址方式，找到操作数"><a href="#指令寻址方式，找到操作数" class="headerlink" title="指令寻址方式，找到操作数"></a>指令寻址方式，找到操作数</h3><h4 id="立即寻址方式"><a href="#立即寻址方式" class="headerlink" title="立即寻址方式"></a>立即寻址方式</h4><p>指令的地址码字段指出的不是地址， 而是操作数本身 。</p>
-<h4 id="直接寻址方式"><a href="#直接寻址方式" class="headerlink" title="直接寻址方式"></a>直接寻址方式</h4><p>在指令的地址字段中直接指出操作数在主存中的地址 。</p>
-<h4 id="间接寻址方式"><a href="#间接寻址方式" class="headerlink" title="间接寻址方式"></a>间接寻址方式</h4><p>指令地址码字段所指向的存储单元中存储的是操作数的地址 。</p>
-<h4 id="寄存器寻址方式"><a href="#寄存器寻址方式" class="headerlink" title="寄存器寻址方式"></a>寄存器寻址方式</h4><p>指令中的地址码是寄存器的编号 。</p>
-<h4 id="基址寻址方式"><a href="#基址寻址方式" class="headerlink" title="基址寻址方式"></a>基址寻址方式</h4><p> 将基址寄存器的内容加上指令中的形式地址而形成操作数的有效地址， 其优<br>点 是可以扩大寻址能力 。</p>
-<h4 id="变址寻址方式"><a href="#变址寻址方式" class="headerlink" title="变址寻址方式"></a>变址寻址方式</h4><p>变址寻址方式计算有效地址的方法与基址寻址方式很相似， 它是将变址寄存<br>器 的内容加上指令中的形式地址而形成操作数的有效地址 。</p>
-<h3 id="指令系统"><a href="#指令系统" class="headerlink" title="指令系统"></a>指令系统</h3><h4 id="CISC是复杂指令系统"><a href="#CISC是复杂指令系统" class="headerlink" title="CISC是复杂指令系统"></a>CISC是复杂指令系统</h4><p>兼容性强， 指令繁多 、长度可变， 由微程序实现；</p>
-<h4 id="RISC是精简指令系统"><a href="#RISC是精简指令系统" class="headerlink" title="RISC是精简指令系统"></a>RISC是精简指令系统</h4><p>指令少，使用频率接近， 主要依靠硬件实现（通用寄存器 、硬布线逻辑控制） 。</p>
-<table>
-<thead>
-<tr>
-<th>指令系统类型</th>
-<th>指令</th>
-<th>寻址方式</th>
-<th>实现方式</th>
-<th>其他</th>
-<th>代表</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CISC是复杂指令系统</td>
-<td>兼容性强， 指令繁多 、长度可变，使用频率差别大</td>
-<td>支持多种</td>
-<td>微程序，也可以采用流水线技术，但不适合</td>
-<td>研制周期长</td>
-<td>x86</td>
-</tr>
-<tr>
-<td>RISC是精简指令系统</td>
-<td>指令少，使用频率接近，定长格式，大部分单周期指令</td>
-<td>支持较少</td>
-<td>增加了通用寄存器，硬布线逻辑控制为主，更适合采用流水线</td>
-<td>优化编译，有效支持高级语言</td>
-<td>ARM，RISC-V</td>
-</tr>
-</tbody></table>
-<h3 id="指令流水线"><a href="#指令流水线" class="headerlink" title="指令流水线"></a>指令流水线</h3><p>取指 -&gt; 分析 -&gt; 执行<br>将指令分成不同段， 每段 由不同的部分去处理， 因此可以产生叠加的 效果， 所有的部件去处理指令的不同段</p>
-<p>流水线是指程序在执行多条指令重叠操作的一种准并行处理实现技术</p>
-<h4 id="流水线技术"><a href="#流水线技术" class="headerlink" title="流水线技术"></a>流水线技术</h4><p>（ 1）超流水线（ Super Pipe Line）技术 。 它通过细化流水 、增加级数和提高主频，使 得在每个机器周期内能完成一个甚至两个浮 点操作 。其实质是以时间换取空间 。<br>（ 2）超标量（ Super Scalar）技术 。它通 过内装多条流水线来同时执行多个处理， 其 时钟频率虽然与一般流水接近， 却有更小的 CPI 。其实质是以空间换取时间 。<br>（ 3）超长指令字（ Very Long Instruction<br>Word，VLIW）技术 。 VLIW和超标量都是 20世纪80年代出现的概念， 其共同点是要同 时执行多条指令， 其不同在于超标量依靠硬 件来实现并行处理的调度，VLIW则充分发挥 软件的作用， 而使硬件简化， 性能提高</p>
-<h4 id="流水线周期"><a href="#流水线周期" class="headerlink" title="流水线周期"></a>流水线周期</h4><ol>
-<li><p>流水线周期： 指令分成不同执行段， 其中执行时间最长的段为流水线周期 。</p>
-</li>
-<li><p>流水线执行时间： </p>
-<p>理论公式：1条指令总执行时间＋（总指令条数-1）＊流水线周期 。</p>
-<p>实践公式：执行阶段数x流水线周期 + （总指令条数-1）＊流水线周期 </p>
-</li>
-<li><p>流水线吞吐率计算： 吞吐率即单位时间内执行的指令条数 。<br> 公式： 指令条数／流水线执行时间 。</p>
-</li>
-<li><p>流水线的加速比计算： 加速比即使用流水线后的效率提升度， 即比不使用流水线快了多少倍， 越高表明流水线效率越高，<br> 公式： 不使用流水线执行时间／使用流水线执行时间 。</p>
-</li>
-</ol>
-<h3 id="Flynn分类法"><a href="#Flynn分类法" class="headerlink" title="Flynn分类法"></a>Flynn分类法</h3><table>
-<thead>
-<tr>
-<th>体系结构</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>单指令单数据流（SISD）</td>
-<td>传统的串行计算机，冯诺依曼架构</td>
-</tr>
-<tr>
-<td>单指令多数据流（SIMD）</td>
-<td>单核计算机，GPU（显卡）</td>
-</tr>
-<tr>
-<td>多指令单数据流（MISD）</td>
-<td>理论模型，没有实际到应用中</td>
-</tr>
-<tr>
-<td>多指令多数据流（MIMD）</td>
-<td>主流计算机，intel，amd等多核处理器</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>系统架构设计</category>
-      </categories>
-      <tags>
-        <tag>架构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机操作存储，文件，设备管理</title>
-    <url>/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h2 id="存储管理"><a href="#存储管理" class="headerlink" title="存储管理"></a>存储管理</h2><h3 id="页式存储"><a href="#页式存储" class="headerlink" title="页式存储"></a>页式存储</h3><p>页式存储是操作系统的一种存储管理方式。通过页表来进行映射程序中的页在内存中的块的存储</p>
-<p>进程(程序)中的地址， 我们称之为逻辑地址(虚地址),而内存中的地址我们称之为物理地址(实地址)；</p>
-<p>每个页分为页号和页内地址， 页号用来和块号对应， 代表存储的位置， 大小可以代表页的数量，页内地址代表的是存储的数据内容， 大小可以代表数据大小</p>
-<p>优点： 利用率高 、碎片小（只在最后一个页中有） 、分配及管理简单 。缺点： 增加了系统开销，可能产生抖动现象。</p>
-<p>默认页面大小是4K，逻辑地址十六进制1D16H，H代表是十六进制，所以数据是1D16， 通常来说1是页码，D16是数据，所以物理地址就是1对应的块号，数据不变还是D16</p>
-<h4 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h4><p>缺页表示需要执行的页不在内存物理块中， 需要从外部调入内存， 会增加执行时间，因此， 缺页数越多， 系统效率越低。</p>
-<p>最优算法： OPT，理论上的算法， 无法实现， 是在进程执行完后进行的最佳效率计算， 用来让其他算法比较差距 。原理是选择未来最长时间内不被访问的页面置换， 这样可以保证未来执行的都是马上要访问的。<br>先进先出算法： FIFO， 先调入内存的页先被置换淘汰， 会产生抖动现象， 即分配的页数越多， 缺页率可能越多（即效率越低）<br>最近最少使用： LRU，在最近的过去， 进程执行过程中， 过去最少使用的页面被置换淘汰， 根据局部性原理，这种方式效率高， 且不会产生抖动现象。</p>
-<p>最少访问过的先淘汰掉</p>
-<h4 id="快表（TLB）"><a href="#快表（TLB）" class="headerlink" title="快表（TLB）"></a>快表（TLB）</h4><p>快表是一块小容量的相联存储器， 由快速存储器组成， 按内容访问， 速度快， 并且可以从硬件上保证按内容并行查找， 一般用来存放当前访问最频繁的少数活动页面的页号(可以看成是页表的频繁访问数据的副本)。</p>
-<p>快表是将页表存于Cache中<br>慢表是将页表存于内存上</p>
-<p>因此慢表需要访问两次内存才能取出数据， 而快表是访问一次Cache和一次内存， 因此更快</p>
-<p>第一次去拿页号，第二次去拿物理地址</p>
-<h3 id="段式存储"><a href="#段式存储" class="headerlink" title="段式存储"></a>段式存储</h3><p>将进程空间分为一个个段， 每段也有段号和段内地址， 与页式存储不同的是， 每段物理大小 不同， 分段是根据逻辑整体分段的</p>
-<p>地址表示： （段号， 段内偏移）：其中段内偏移不能超过该段号对应的段长， 否则越界错误，而此地址对应的真正内存地址应该是： 段号对应的基地址（所存储的位置）+段内偏移。</p>
-<p>优点： 程序逻辑完整， 修改互不影响<br>缺点： 内存碎片浪费大，导致内存利用率低。</p>
-<p>段表，段号，基地址，段长，看是否越界，是看的段长，不是基地址（0，1597）。0是段号，1597是段内偏移，就是段长</p>
-<h3 id="段页存储"><a href="#段页存储" class="headerlink" title="段页存储"></a>段页存储</h3><p>对进程空间先分段， 后分页，段表每个段号再对应一个页表， 优缺点如下：<br>优点： 空间浪费小 、存储共享容易 、能动态连接。<br>缺点： 由于管理软件的增加， 复杂性和开销也增加， 执行速度下降</p>
-<h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>计算机系统中采用的索引文件结构如下图所示：<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/1.jpg" alt="1"><br>系统中有13个索引节点， 0-9为直接索引， 即每个索引节点存放的是内容， 假设每个物理<br>盘大小为4KB， 共可存4KB*10=40KB数据；<br>10号索引节点为一级间接索引节点， 大小为4KB， 存放的并非直接数据， 而是链接到直<br>接 物理盘块的地址， 假设每个地址占4B， 则共有1024个地址， 对应1024个物理盘， 可<br>存1024x4KB=4096KB数据。<br>二级索引节点类似， 直接盘存放一级地址， 一级地址再存放物理盘快地址，而后链接到存放数据的物理盘块， 容量又扩大了一个数量级， 为1024x1024x4KB数据。</p>
-<p>8个地址项0，1，2，3，4，5，6，7，每个地址项大小4字节，5个地址为直接索引0，1，2，3，4，2个是一级索引5，6，一个是二级索引7，，磁盘索引块和磁盘数据块大小为1KB，访问文件的逻辑块号为5和518，块号为5是第6个，块号518是第519个，地址是4字节，1kb大小，则一级索引就可以存256个，两个1级索引就是512，，加上前面5个直接索引就是5个数据，就是517</p>
-<p>单个文件最大长度就是直接索引加一级索引加二级索引的总和</p>
-<h3 id="树形文件"><a href="#树形文件" class="headerlink" title="树形文件"></a>树形文件</h3><p>相对路径： 是从当前路径开始的路径，不包括当前的工作目录。<br>绝对路径： 是从根目录开始的路径。</p>
-<h3 id="空间存储"><a href="#空间存储" class="headerlink" title="空间存储"></a>空间存储</h3><p>空闲区表法： 将所有空闲空间整合成一张表， 即空闲文件目录。<br>空闲链表法： 将所有空闲空间链接成一个链表， 根据需要分配。<br>成组链接法： 既分组， 每组内又链接成链表， 是上述两种方法的综合。<br>位示图法： 对每个物理空间用一位标识， 为1则使用， 为0则空闲， 形成一 张位示图。</p>
-<p>32位，0到31每个对应一个物理块，一排就是一个字，字长就是32，第几个字就是第几排</p>
-<p>4195号就是第4196个数据，4196除以32得131余4，131存满，第132个字，也就是第132排</p>
-<p>余4就是第4个位置，0，1，2，3， 3号位是1，已经存储了</p>
-<h2 id="微内核操作系统"><a href="#微内核操作系统" class="headerlink" title="微内核操作系统"></a>微内核操作系统</h2><p>微内核， 顾名思义， 就是尽可能的将内核做的很小， 只将最为核心必要的东西放入内核中， 其<br>他 能独立的东西都放入用户进程中， 这样， 系统就被分为了用户态和内核态<br><img src="/2024/01/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8%EF%BC%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/2.jpg" alt="1"></p>
-<h2 id="嵌入式操作系统"><a href="#嵌入式操作系统" class="headerlink" title="嵌入式操作系统"></a>嵌入式操作系统</h2><p>嵌入式操作系统特点： 微型化 、代码质量高 、专业化 、实时性强 、可裁剪可配置。<br>实时嵌入式操作系统的内核服务： 异常和中断 、计时器 、I/O管理。<br>常见的嵌入式RTOS（实时操作系统）：VxWorks、RT-Linux、QNX、pSOS。<br>嵌入式系统初始化过程按照自底向上 、从硬件到软件的次序依次为：<br>芯片级初始化-&gt;板卡级初始化-&gt;系统级初始化。<br>芯片级是微处理器的初始化， 板卡级是其他硬件设备初始化， 系统级初始化就是软 件及操作系统初始化。</p>
-<h2 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h2><h3 id="SPOOLING技术"><a href="#SPOOLING技术" class="headerlink" title="SPOOLING技术"></a>SPOOLING技术</h3><p>外设建立两个缓冲区，输入井和输出井，数据排队打印，每个进程都在用一个打印机，设备虚拟化</p>
-]]></content>
-      <categories>
-        <category>系统架构设计</category>
-      </categories>
-      <tags>
-        <tag>架构</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>计算机操作系统进程管理</title>
     <url>/2024/01/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<h3 id="计算机操作系统"><a href="#计算机操作系统" class="headerlink" title="计算机操作系统"></a>计算机操作系统</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>通过资源管理提高计算机系统的效率； 改善人机界面向用户提供友好的工作环境。</p>
@@ -9424,6 +9424,11 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
     <content><![CDATA[]]></content>
   </entry>
   <entry>
+    <title>categories</title>
+    <url>/categories/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>关于</title>
     <url>/about/index.html</url>
     <content><![CDATA[<h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p>我是一个在命运长河里挣扎的小鱼，90后，目前是小白一枚。<br>虽然心中不甘，但是目前确实是 <strong>Worst One</strong> 。<br>目标是成为全栈工程师、系统架构师。虽然前路迷茫，但是我会一步一步往前走。</p>
@@ -9432,11 +9437,6 @@ Captcha是一个第三方工具，提供生成验证码图片通用解决办法�
   <entry>
     <title>留言板</title>
     <url>/comment/index.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>categories</title>
-    <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
