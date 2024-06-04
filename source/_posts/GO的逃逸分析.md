@@ -111,8 +111,7 @@ golang即时用new分配的内存，函数返回后，没有用了，就丢到�
 
 以下命令可以查看逃逸分析
 ``` javascript
-go build -gcflags '-m -l' test.go
-go tool compile "-m" main.go
+go build -gcflags=-m main.go
 ```
 
 Go逃逸分析最基本的原则是：如果一个函数返回对一个变量的引用，那么它就会发生逃逸。
