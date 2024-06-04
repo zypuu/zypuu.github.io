@@ -1,7 +1,7 @@
 ---
 title: GO的基本数据结构：int，字符串，结构体，指针
 date: 2020-12-22 17:06:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的基本类型 int string struct point

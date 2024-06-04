@@ -1,7 +1,7 @@
 ---
 title: GO的context
 date: 2021-01-21 17:12:00
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的context

@@ -1,7 +1,7 @@
 ---
 title: GO的程序启动
 date: 2020-12-29 10:12:20
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的程序启动流程

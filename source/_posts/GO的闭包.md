@@ -1,7 +1,7 @@
 ---
 title: GO的闭包
 date: 2020-12-28 14:07:20
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的闭包

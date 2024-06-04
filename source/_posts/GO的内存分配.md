@@ -1,7 +1,7 @@
 ---
 title: GO的内存分配
 date: 2021-01-06 13:48:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的内存分配

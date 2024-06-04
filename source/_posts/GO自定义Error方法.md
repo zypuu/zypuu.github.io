@@ -1,7 +1,7 @@
 ---
 title: GO自定义Error方法
 date: 2020-12-27 11:10:22
-tags: Go
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，自定义error的方法，用于业务使用

@@ -1,7 +1,7 @@
 ---
 title: GO的基本数据结构：channel
 date: 2021-01-14 17:09:00
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的基本数据结构 channel

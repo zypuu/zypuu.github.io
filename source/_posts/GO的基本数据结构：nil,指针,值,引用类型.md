@@ -1,7 +1,7 @@
 ---
 title: GO基本数据结构：nil,指针,值,引用类型
 date: 2020-12-24 16:29:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的基本结构，nil,指针，值，引用类型

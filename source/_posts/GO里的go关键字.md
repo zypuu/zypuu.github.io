@@ -1,7 +1,7 @@
 ---
 title: GO里的go关键字
 date: 2020-12-27 11:30:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go关键字
@@ -47,5 +47,4 @@ runtime.newproc函数中
 1.新建一个栈空间，将栈参数的12个字节拷贝到新栈空间中并让栈指针指向参数
 2.线程状态有点像当被调度器剥夺CPU后一样，寄存器PC、SP会被保存到类似于进程控制块的一个结构体struct G内
 3.f被存放在了struct G的entry域，后面进行调度器恢复goroutine的运行，新线程将从f开始执行。
-
 

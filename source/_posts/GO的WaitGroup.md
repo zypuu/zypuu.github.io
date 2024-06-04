@@ -1,7 +1,7 @@
 ---
 title: GO的WaitGroup
 date: 2024-04-20 11:02:20
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: GO的WaitGroup用法，以及源码分析，以及使用注意事项

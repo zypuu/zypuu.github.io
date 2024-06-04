@@ -1,7 +1,7 @@
 ---
 title: GO的协程：goroutine
 date: 2021-01-04 15:18:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的协程调度个人解析

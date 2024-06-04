@@ -1,7 +1,7 @@
 ---
 title: GO的make和new的区别
 date: 2020-12-21 17:20:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言

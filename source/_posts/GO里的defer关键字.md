@@ -1,7 +1,7 @@
 ---
 title: GO里的defer关键字
 date: 2020-12-27 13:26:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，defer关键字

@@ -1,7 +1,7 @@
 ---
 title: GO基本数据结构：slice
 date: 2020-12-21 17:56:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的基本结构，slice切片

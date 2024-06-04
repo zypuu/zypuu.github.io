@@ -1,7 +1,7 @@
 ---
 title: GO的基本数据结构：map
 date: 2020-12-23 16:14:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的基本类型 map

@@ -1,7 +1,7 @@
 ---
 title: GO的逃逸分析
 date: 2021-01-08 09:46:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的逃逸分析，变量内存分配

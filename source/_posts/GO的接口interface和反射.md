@@ -1,7 +1,7 @@
 ---
 title: GO的接口interface和反射
 date: 2021-01-20 14:48:22
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: 解析go语言，go的基本结构，interface与reflect

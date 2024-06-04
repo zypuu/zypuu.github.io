@@ -1,7 +1,7 @@
 ---
 title: GO的常见小问题
 date: 2021-03-18 16:02:20
-tags: GO
+tags: go
 categories: GO
 comments: true
 description: go语言的常见问题记录
