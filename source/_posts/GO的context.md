@@ -398,3 +398,180 @@ func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc) {
 ```
 
 ## 使用场景
+
+#### ctx控制goroutine生命周期
+
+Context 可以被用来控制 goroutine 的生命周期，从而避免出现 goroutine 泄漏或者不必要的等待操作。
+
+```go
+func users(ctx context.Context, req *Request) {
+    // 启动一个 goroutine 来处理请求
+    go func(ctx context.Context) {
+        // 处理请求...
+    }(ctx)
+}
+```
+
+将 Context 对象作为参数传递给了 goroutine 函数，这样在请求被取消时，goroutine 就可以及时退出。
+
+#### withValue传递数据
+
+Context 还可以被用来在不同的 goroutine 之间传递请求域的相关数据。为了实现这个目的，我们可以使用Context 的 WithValue() 方法
+
+```go
+type key int
+
+const (
+    userKey key = iota
+)
+
+func users(ctx context.Context, req *Request) {
+    // 从请求中获取用户信息
+    user := req.GetUser
+    // 将用户信息保存到 Context 中
+    ctx = context.WithValue(ctx, userKey, user)
+    
+    // 启动一个 goroutine 来处理请求
+    go func(ctx context.Context) {
+        // 从 Context 中获取用户信息
+        user := ctx.Value(userKey).(*User)
+    
+        // 处理请求...
+    }(ctx)
+
+}
+```
+
+在 goroutine 函数中，我们使用 `ctx.Value()`方法来获取 Context 中保存的用户信息。
+
+Context 中保存的键值对数据应该是线程安全的，因为它们可能会在多个 goroutine 中同时访问
+
+#### withCancel取消操作
+
+```go
+func users(ctx context.Context, req *Request) {
+    // 创建一个可以取消的 Context 对象
+    ctx, cancel := context.WithCancel(ctx)
+
+    // 启动一个 goroutine 来处理请求
+    go func(ctx context.Context) {
+        // 等待请求完成或者被取消
+        select {
+        case <-time.After(time.Second):
+            // 请求完成
+            fmt.Println("Request finish")
+        case <-ctx.Done():
+            // 请求被取消
+            fmt.Println("Request canceled")
+        }
+    }(ctx)
+
+    // 等待一段时间后取消请求
+    time.Sleep(time.Millisecond * 800)
+    cancel()
+}
+```
+
+我们使用 WithCancel() 方法创建了一个可以取消的 Context 对象，并将取消操作封装在了一个 cancel() 函数中。然后我们启动了一个 goroutine 函数，使用 select 语句等待请求完成或者被取消，最后在主函数中等待一段时间后调用 cancel() 函数来取消请求。
+
+#### withDeadline设置截止时间
+
+```go
+func users(ctx context.Context, req *Request) {
+    // 设置请求的截止时间为当前时间加上 1 秒钟
+    ctx, cancel := context.WithDeadline(ctx, time.Now().Add(time.Second))
+
+    // 启动一个 goroutine 来处理请求
+    go func(ctx context.Context) {
+        // 等待请求完成或者超时
+        select {
+            case <-time.After(time.Millisecond * 500):
+            // 请求完成
+            fmt.Println("Request finish")
+            case <-ctx.Done():
+            // 请求超时或者被取消
+            fmt.Println("Request canceled or timed out")
+        }
+    }(ctx)
+
+    // 等待一段时间后取消请求
+    time.Sleep(time.Millisecond * 1500)
+    cancel()
+}
+```
+
+我们使用 WithDeadline() 方法设置了一个截止时间为当前时间加上 1 秒钟的 Context 对象，并将超时操作封装在了一个 cancel() 函数中。然后我们启动了一个 goroutine 函数，使用 select 语句等待请求完成或者超时，最后在主函数中等待一段时间后调用 cancel() 函数来取消请求。
+
+在使用 WithDeadline() 方法设置截止时间的时候，如果截止时间已经过期，则 Context 对象将被立即取消。
+
+#### withTimeout设置超时时间
+
+除了使用 WithDeadline() 方法进行截止时间设置之外，Context 还可以被用来设置超时时间
+
+```go
+func users(ctx context.Context, req *Request) {
+    // 设置请求的超时时间为 1 秒钟
+    ctx, cancel := context.WithTimeout(ctx, time.Second)
+
+    // 启动一个 goroutine 来处理请求
+    go func(ctx context.Context) {
+        // 等待请求完成或者超时
+        select {
+        case <-time.After(time.Millisecond * 500):
+            // 请求完成
+            fmt.Println("Request completed")
+        case <-ctx.Done():
+            // 请求超时或者被取消
+            fmt.Println("Request canceled or timed out")
+        }
+    }(ctx)
+
+    // 等待一段时间后取消请求
+    time.Sleep(time.Millisecond * 1500)
+    cancel()
+}
+```
+
+#### ctx传递
+
+```go
+func users(ctx context.Context, req *Request) {
+    // 在处理 HTTP 请求的函数中创建 Context 对象
+    ctx, cancel := context.WithTimeout(ctx, time.Second)
+    defer cancel()
+
+    // 调用数据库查询函数并传递 Context 对象
+    result, err := findUserByName(ctx, req)
+    if err != nil {
+        // 处理查询错误...
+    }
+
+    // 处理查询结果...
+}
+
+func findUserByName(ctx context.Context, req *Request) (*Result, error) {
+    // 在数据库查询函数中使用传递的 Context 对象
+    rows, err := db.QueryContext(ctx, "SELECT * FROM users WHERE name = ?", req.Name)
+    if err != nil {
+     // 处理查询错误...
+   }
+   defer rows.Close()
+   // 处理查询结果...
+}
+```
+
+我们在处理 HTTP 请求的函数中创建了一个 Context 对象，并将它作为参数传递给了一个数据库查询函数 findUserByName()。在 findUserByName() 函数中，我们使用传递的 Context 对象来调用 db.QueryContext() 方法进行查询操作。由于传递的 Context 对象可能会在查询过程中被取消，因此我们需要在查询完成后检查查询操作的错误，以便进行相应的处理。
+
+在进行 Context 的传递时，我们需要保证传递的 Context 对象是原始 Context 对象的子 Context，以便在需要取消操作时能够同时取消所有相关的 goroutine。如果传递的 Context 对象不是原始 Context 对象的子 Context，则取消操作只会影响到当前 goroutine，而无法取消其他相关的 goroutine。
+
+
+
+#### 使用总结
+
+Context 可以用于管理 goroutine 的生命周期和取消操作，避免出现资源泄漏和死锁等问题，同时也可以提高应用程序的性能和可维护性。
+
+- 在创建 goroutine 时，需要将原始 Context 对象作为参数传递给它。
+- 在 goroutine 中，需要使用传递的 Context 对象来进行取消操作，以便能够及时释放相关的资源。
+- Context 的传递时，需要保证传递的 Context 对象是原始 Context 对象的子 Context，以便在需要取消操作时能够同时取消所有相关的 goroutine。
+- 在使用 WithCancel 和 WithTimeout 方法创建 Context 对象时，需要及时调用 cancel 函数，以便能够及时释放资源。
+- 在一些场景下，可以使用 WithValue 方法将数据存储到 Context 中，以便在不同的 goroutine 之间共享数据。
